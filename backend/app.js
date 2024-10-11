@@ -1,28 +1,85 @@
-const express = require('express');
-const cors = require('cors');
-require('dotenv').config();
-const sequelize = require('./config/database');
-require('./models/associations'); // Importar las asociaciones
+// app.js
+
+import express from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import morgan from 'morgan';
+import helmet from 'helmet';
+import rateLimit from 'express-rate-limit';
+import { Server } from 'socket.io';
+import http from 'http';
+import sequelize from './config/database.js';
+import logger from './config/logger.js';
+import usuarioRoutes from './routes/usuarioRoutes.js';
+import skillRoutes from './routes/skillRoutes.js';
+import proyectoRoutes from './routes/proyectoRoutes.js';
+import mensajeContactoRoutes from './routes/mensajeContactoRoutes.js';
+import './models/associations.js'; // Asegúrate de importar las asociaciones
+
+dotenv.config();
 
 const app = express();
 
-// Middlewares
-app.use(cors());
+// Configuración de middleware
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cors({
+  origin: process.env.CORS_ORIGIN || '*',
+}));
+app.use(helmet());
+
+// Registro de solicitudes HTTP
+app.use(morgan('combined', { stream: { write: message => logger.info(message.trim()) } }));
+
+// Límite de tasa de solicitudes
+const limiter = rateLimit({
+  windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000, // 15 minutos
+  max: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS) || 100, // Límite de solicitudes
+  message: 'Demasiadas solicitudes desde esta IP, por favor intenta de nuevo después de 15 minutos.',
+});
+
+app.use(limiter);
 
 // Rutas
-app.use('/usuarios', require('./routes/usuarioRoutes'));
-app.use('/proyectos', require('./routes/proyectoRoutes'));
-app.use('/skills', require('./routes/skillRoutes'));
-app.use('/contacto', require('./routes/mensajeContactoRoutes'));
+app.use('/api/usuarios', usuarioRoutes);
+app.use('/api/skills', skillRoutes);
+app.use('/api/proyectos', proyectoRoutes);
+app.use('/api/mensajes', mensajeContactoRoutes);
 
-// Sincronizar con la base de datos
-sequelize.sync({ alter: true }).then(() => {
-  console.log('Base de datos sincronizada');
-  // Iniciar el servidor
-  app.listen(3001, () => {
-    console.log('Servidor iniciado en el puerto 3001');
+// Manejo de errores (debe ir después de las rutas)
+app.use((err, req, res, next) => {
+  logger.error(err.stack);
+  res.status(500).json({ error: 'Ocurrió un error en el servidor.' });
+});
+
+// Sincronización con la base de datos
+sequelize.sync()
+  .then(() => {
+    logger.info('Base de datos sincronizada');
+  })
+  .catch((error) => {
+    logger.error('Error al sincronizar la base de datos:', error);
   });
-}).catch(err => {
-  console.error('Error al sincronizar la base de datos:', err);
+
+// Configuración de Socket.IO
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: process.env.CORS_ORIGIN || '*',
+  },
+});
+
+io.on('connection', (socket) => {
+  logger.info(`Nuevo cliente conectado: ${socket.id}`);
+
+  socket.on('disconnect', () => {
+    logger.info(`Cliente desconectado: ${socket.id}`);
+  });
+
+  // Aquí puedes manejar eventos personalizados
+});
+
+const PORT = process.env.PORT || 3001;
+server.listen(PORT, () => {
+  logger.info(`Servidor iniciado en el puerto ${PORT}`);
 });
