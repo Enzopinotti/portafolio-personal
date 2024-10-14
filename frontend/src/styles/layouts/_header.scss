@@ -1,0 +1,136 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: $spacing-unit * 2;
+
+  .logo {
+    font-size: 1.5rem;
+    
+    .text_logo{
+      color: $color-text;
+      text-decoration: none;
+    }
+  }
+
+  .menu-icon {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 30px;
+    height: 25px;
+    cursor: pointer;
+
+    .menu-icon-line {
+      width: 100%;
+      height: 3px;
+      background-color: $color-text;
+    }
+  }
+
+  .navigation {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    backdrop-filter: blur(5px);
+    transform: translateY(-100%);
+    transition: transform 0.3s ease-in-out;
+    z-index: 1000;
+
+    &.open {
+      transform: translateY(0);
+    }
+
+    .menu-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: $spacing-unit * 4;
+
+      .menu-buttons {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: $spacing-unit * 2;
+
+        button,
+        .download-button {
+          margin: $spacing-unit 0;
+          padding: $spacing-unit;
+          font-size: 1rem;
+          color: $color-text;
+          background-color: transparent;
+          border: 1px solid $color-text;
+          text-decoration: none;
+          cursor: pointer;
+        }
+      }
+
+      .nav-links {
+        list-style: none;
+        padding: 0;
+
+        li {
+          margin: $spacing-unit 0;
+
+          a {
+            font-size: 1.5rem;
+            color: $color-text;
+            text-decoration: none;
+
+            &:hover {
+              color: $color-primary;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  /* Estilos para pantallas grandes */
+  @media (min-width: 768px) {
+    .menu-icon {
+      display: none;
+    }
+
+    .navigation {
+      position: static;
+      transform: none;
+      display: flex;
+      background: none;
+      backdrop-filter: none;
+      height: auto;
+
+      .menu-content {
+        flex-direction: row;
+        align-items: center;
+
+        .menu-buttons {
+          flex-direction: row;
+          margin: 0;
+
+          button,
+          .download-button {
+            margin-left: $spacing-unit;
+          }
+        }
+
+        .nav-links {
+          display: flex;
+          margin-left: $spacing-unit * 2;
+
+          li {
+            margin: 0 $spacing-unit;
+
+            a {
+              font-size: 1rem;
+            }
+          }
+        }
+      }
+    }
+  }
+}

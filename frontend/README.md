@@ -1,70 +1,172 @@
-# Getting Started with Create React App
+# Frontend Portafolio – Documentación  
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Introducción
 
-## Available Scripts
+Este proyecto es una aplicación frontend construida con **React**. Sirve como sitio web de portafolio personal, mostrando servicios, proyectos, publicaciones de blog e información de contacto. La aplicación presenta transiciones de página suaves, diseño responsivo y una estética moderna inspirada en temas cyberpunk.
 
-In the project directory, you can run:
+## Características
 
-### `npm start`
+- **Arquitectura Modular**: Componentes bien organizados y reutilizables.
+- **Diseño Responsivo**: Enfoque mobile-first que asegura compatibilidad en todos los dispositivos.
+- **Transiciones Animadas**: Transiciones de página fluidas usando **Framer Motion**.
+- **Estilizado con SCSS**: Estilos organizados con variables, mixins y parciales.
+- **Contexto de Navegación**: Manejo dinámico de la navegación con React Context API.
+- **Accesibilidad**: Consideración de HTML semántico y atributos ARIA.
+- **División de Código**: Carga eficiente con estrategias de división de código.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Estructura del Proyecto
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+src/
 
-### `npm test`
+├── components/
+│   │
+│   ├── layouts/
+│   │   │
+│   │   ├── Footer.js
+│   │   │
+│   │   ├── Header.js
+│   │   │
+│   │   ├── Layout.js
+│   │   │
+│   │   ├── Main.js
+│   │   │
+│   │   ├── Nav.js
+│   │   │
+│   │   └── Telefono.js
+│   │
+│   ├── FloatingButton.js
+│   │
+│   └── SkillBubble.js
+│
+├── context/
+│   │
+│   └── NavigationContext.js
+│
+├── pages/
+│   │
+│   ├── Blog.js
+│   │
+│   ├── Contacto.js
+│   │
+│   ├── Inicio.js
+│   │
+│   ├── Proyectos.js
+│   │
+│   └── Servicios.js
+│
+├── styles/
+│   │
+│   ├── abstracts/
+│   │   │
+│   │   ├── \_mixins.scss
+│   │   │
+│   │   └── \_variables.scss
+│   │
+│   ├── base/
+│   │   │
+│   │   ├── \_reset.scss
+│   │   │
+│   │   └── \_typography.scss │   ├── layouts/
+│   │
+│   │   ├── \_footer.scss
+│   │   │  
+│   │   ├── \_header.scss
+│   │   │
+│   │   ├── \_layout.scss
+│   │   │
+│   │   └── \_telefono.scss
+│   │
+│   └── main.scss
+│
+├── App.js
+│
+├── index.js
+│
+└── package.json
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Requisitos Previos
 
-### `npm run build`
+- **Node.js** (versión 14 o superior)
+- **npm** (versión 6 o superior)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Instalación
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Para comenzar con el proyecto, sigue estos pasos:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+1.**Clona el repositorio**:
 
-### `npm run eject`
+git clone[ https://github.com/Enzopinotti/portafolio-personal.git ]
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+2.**Navega al directorio del proyecto**:
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+cd portafolio-personal
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+3.**Instala las dependencias**:
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+npm install
 
-## Learn More
+## Dependencias
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+El proyecto depende de las siguientes principales dependencias:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- **React**: Librería de UI para construir componentes.
+- **React Router DOM**: Enrutamiento y navegación.
+- **Framer Motion**: Animaciones y transiciones.
+- **Sass**: Estilizado con sintaxis SCSS.
+- **React Icons**: Librería de íconos para React.
+- **QRCode.react**: Generación de códigos QR en React.
+- **React Modal**: Diálogos modales accesibles.
+- **React Circular Progressbar**: Indicadores circulares de progreso.
+- **Formik & Yup**: Manejo y validación de formularios.
+- **Axios**: Cliente HTTP basado en promesas.
 
-### Code Splitting
+Consulta el archivo **package.json** para la lista completa y versiones.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## Ejecutando la Aplicación
 
-### Analyzing the Bundle Size
+Para ejecutar la aplicación en modo de desarrollo:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+npm start
 
-### Making a Progressive Web App
+La aplicación estará disponible en <http://localhost:3000>.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+Notas de Desarrollo
 
-### Advanced Configuration
+Advertencia de Deprecación de Sass
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+**Problema**: Aparece una advertencia de deprecación debido a la API JS heredada en Dart Sass.
 
-### Deployment
+**Recomendación**: Esta advertencia puede ignorarse por ahora, ya que se espera que se resuelva en futuras actualizaciones de las dependencias. No afecta el funcionamiento de la aplicación.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+**Detalle de la Advertencia**:
 
-### `npm run build` fails to minify
+Deprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+More info:[https://sass-lang.com/d/legacy-js-api](https://sass-lang.com/d/legacy-js-api)
+
+## Buenas Prácticas
+
+- **Componentes Modulares**: Cada componente tiene una única responsabilidad y es reutilizable.
+- **Context API**: Utilizado para el estado que necesita ser accedido por múltiples componentes.
+- **Código Limpio**:
+- Convenciones de nombres consistentes.
+- Comentarios para lógica compleja.
+- Evitar código innecesario.
+- **Diseño Responsivo**: Se utilizan consultas de medios y unidades flexibles para asegurar que la aplicación se vea bien en todos los dispositivos.
+- **Accesibilidad**:
+- Elementos HTML semánticos.
+- Atributos ARIA donde sea necesario.
+
+## Mejoras Futuras
+
+- **Pruebas Unitarias**: Implementar pruebas usando Jest y React Testing Library.
+- **Migración a TypeScript**: Mejorar la seguridad de tipos y mantenibilidad del código.
+- **Optimización de Rendimiento**:
+- Implementar división de código con React.lazy y Suspense.
+- Optimizar imágenes y recursos.
+- **Mejoras de SEO**:
+  - Implementar renderizado del lado del servidor (SSR) si es necesario.
+  - Utilizar metaetiquetas apropiadamente.
+- **Autenticación de Usuario**:
+- Integrar funcionalidad de inicio de sesión con APIs de backend.
+- Proteger rutas que requieren autenticación.

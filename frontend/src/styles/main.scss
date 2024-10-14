@@ -1,0 +1,17 @@
+// src/styles/main.scss
+
+// Abstracts
+@import 'abstracts/variables';
+@import 'abstracts/mixins';
+
+// Base Styles
+@import 'base/reset';
+@import 'base/typography';
+
+// Layouts
+@import 'layouts/layout';
+@import 'layouts/header';
+@import 'layouts/footer';
+@import 'layouts/telefono';
+
+// Puedes importar otros estilos aquí si lo deseas

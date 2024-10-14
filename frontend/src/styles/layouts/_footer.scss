@@ -1,0 +1,13 @@
+// src/styles/layouts/_footer.scss
+
+.footer {
+    position: fixed;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    color: $color-text;
+    opacity: 0.8;
+  }
+  

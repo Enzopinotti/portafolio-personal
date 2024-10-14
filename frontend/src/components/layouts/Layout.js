@@ -1,0 +1,45 @@
+// src/components/layouts/Layout.js
+
+import React from 'react';
+import { useLocation } from 'react-router-dom';
+import Header from './Header.js';
+import Footer from './Footer.js';
+import Telefono from './Telefono.js';
+import Main from './Main.js';
+import Background from './Background.js';
+
+const Layout = () => {
+  const location = useLocation();
+  const background = getBackground(location.pathname);
+
+  return (
+    <div className="layout">
+      {/* Fondo animado */}
+      <Background background={background} />
+      <Header />
+      <Main />
+      <Footer />
+      <Telefono />
+    </div>
+  );
+};
+
+export default Layout;
+
+// Función para obtener la información del fondo según la ruta
+function getBackground(pathname) {
+  switch (pathname) {
+    case '/':
+      return { url: '/images/background-inicio.jpg', key: 'inicio' };
+    case '/servicios':
+      return { url: '/images/background-servicios.jpg', key: 'servicios' };
+    case '/proyectos':
+      return { url: '/images/background-proyectos.jpg', key: 'proyectos' };
+    case '/blog':
+      return { url: '/images/background-blog.jpg', key: 'blog' };
+    case '/contacto':
+      return { url: '/images/background-contacto.jpg', key: 'contacto' };
+    default:
+      return { url: '/images/background-default.jpg', key: 'default' };
+  }
+}
