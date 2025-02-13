@@ -147,3 +147,54 @@ export const verProyecto = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+export const buscarProyectos = async (req, res) => {
+  try {
+    const { titulo, fechaInicio, fechaFin } = req.query;
+    const whereClause = {};
+
+    if (titulo) {
+      // Usar LIKE para coincidencias parciales
+      whereClause.titulo = { [Op.like]: `%${titulo}%` };
+    }
+    if (fechaInicio) {
+      whereClause.fechaInicio = { [Op.gte]: fechaInicio };
+    }
+    if (fechaFin) {
+      // Podrías compararlo con fechaFin o con fechaInicio <= fechaFin
+      whereClause.fechaFin = { [Op.lte]: fechaFin };
+    }
+
+    const proyectos = await Proyecto.findAll({
+      where: whereClause,
+      // Podrías incluir Skills, Imagen, etc.
+    });
+
+    res.status(200).json(proyectos);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+export const asignarSkillAProyecto = async (req, res) => {
+  try {
+    const { idProyecto, idSkill } = req.params;
+
+    // Verifica que existen ambos
+    const proyecto = await Proyecto.findByPk(idProyecto);
+    if (!proyecto) {
+      return res.status(404).json({ error: 'Proyecto no encontrado.' });
+    }
+    const skill = await Skill.findByPk(idSkill);
+    if (!skill) {
+      return res.status(404).json({ error: 'Skill no encontrada.' });
+    }
+
+    // Asocia la skill al proyecto
+    await proyecto.addSkill(skill); // addSkill es un método de Sequelize al tener belongsToMany
+
+    res.status(200).json({ mensaje: 'Skill asignada exitosamente al proyecto.' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};

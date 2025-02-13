@@ -2,6 +2,8 @@
 
 import { Router } from 'express';
 import {
+  asignarSkillAProyecto,
+  buscarProyectos,
   crearProyecto,
   editarProyecto,
   eliminarProyecto,
@@ -26,5 +28,9 @@ router.get('/', listarProyectos);
 
 // Ruta para ver detalles de un proyecto específico
 router.get('/:id', verProyecto);
+
+router.get('/buscar', buscarProyectos);
+
+router.post('/:idProyecto/skills/:idSkill', asignarSkillAProyecto);
 
 export default router;

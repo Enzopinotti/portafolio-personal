@@ -17,7 +17,7 @@ const Usuario = sequelize.define(
     },
     apellido: {
       type: DataTypes.STRING(255),
-      allowNull: true,                // O false, según tu lógica
+      allowNull: true, // coincidir con la migración
       field: 'apellido',
     },
     email: {
@@ -29,23 +29,29 @@ const Usuario = sequelize.define(
     password: {
       type: DataTypes.STRING(255),
       allowNull: false,
-      field: 'password',              // En la BD sería la columna "password"
+      field: 'password', // antes era 'contraseña'
+    },
+    avatar: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      field: 'avatar',
     },
     idRol: {
       type: DataTypes.INTEGER.UNSIGNED,
       allowNull: false,
       field: 'id_rol',
     },
+    estado: {
+      type: DataTypes.ENUM('visitante', 'usuario', 'admin'),
+      allowNull: false,
+      defaultValue: 'visitante',
+      field: 'estado',
+    },
     fechaRegistro: {
       type: DataTypes.DATE,
       allowNull: false,
       defaultValue: DataTypes.NOW,
       field: 'fecha_registro',
-    },
-    refreshToken: {
-      type: DataTypes.STRING(512),
-      allowNull: true,
-      field: 'refresh_token',
     },
   },
   {

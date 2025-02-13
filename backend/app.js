@@ -14,6 +14,10 @@ import usuarioRoutes from './routes/usuarioRoutes.js';
 import skillRoutes from './routes/skillRoutes.js';
 import proyectoRoutes from './routes/proyectoRoutes.js';
 import mensajeContactoRoutes from './routes/mensajeContactoRoutes.js';
+import testimonioRoutes from './routes/testimonioRoutes.js'
+import articuloRoutes from './routes/articuloRoutes.js'
+import servicioRoutes from './routes/servicioRoutes.js'
+import rolRoutes from './routes/rolRoutes.js'
 import './models/associations.js'; // Asegúrate de importar las asociaciones
 
 dotenv.config();
@@ -45,6 +49,10 @@ app.use('/api/usuarios', usuarioRoutes);
 app.use('/api/skills', skillRoutes);
 app.use('/api/proyectos', proyectoRoutes);
 app.use('/api/mensajes', mensajeContactoRoutes);
+app.use('/api/testimonios', testimonioRoutes);
+app.use('/api/articulos', articuloRoutes);
+app.use('/api/servicios', servicioRoutes);
+app.use('/api/roles', rolRoutes);
 
 // Manejo de errores (debe ir después de las rutas)
 app.use((err, req, res, next) => {
