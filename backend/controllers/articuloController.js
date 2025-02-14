@@ -1,39 +1,38 @@
+// controllers/articuloController.js
 import Articulo from '../models/Articulo.js';
 import Usuario from '../models/Usuario.js';
+import logger from '../config/logger.js';
+import Boom from '@hapi/boom';
 
-/**
- * Crear un nuevo artículo
- */
-export const crearArticulo = async (req, res) => {
+export const crearArticulo = async (req, res, next) => {
   try {
     const { titulo, contenido, fechaPublicacion, autor, categoria } = req.body;
-
-    // Si estás manejando la referencia al usuario (id_usuario), lo sacas del token
     const idUsuario = req.usuario ? req.usuario.idUsuario : null;
+    logger.info(`Crear Artículo: Usuario ${idUsuario || 'Visitante'} crea el artículo "${titulo}"`);
 
     const nuevoArticulo = await Articulo.create({
       titulo,
       contenido,
       fechaPublicacion: fechaPublicacion || new Date(),
-      autor,       // o podrías no usar 'autor' si usas la FK a usuario
+      autor,
       categoria,
-      idUsuario,   // si existe la columna en la tabla
+      idUsuario,
     });
 
+    logger.info(`Crear Artículo: Artículo creado exitosamente (ID: ${nuevoArticulo.id_articulo}).`);
     res.status(201).json({
       mensaje: 'Artículo creado exitosamente.',
       articulo: nuevoArticulo,
     });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    logger.error(`Error en crearArticulo: ${error.message}`);
+    return next(Boom.internal(error.message));
   }
 };
 
-/**
- * Listar artículos
- */
-export const listarArticulos = async (req, res) => {
+export const listarArticulos = async (req, res, next) => {
   try {
+    logger.info('Listar Artículos: Obteniendo todos los artículos.');
     const articulos = await Articulo.findAll({
       include: [
         {
@@ -43,20 +42,18 @@ export const listarArticulos = async (req, res) => {
       ],
       order: [['fechaPublicacion', 'DESC']],
     });
-
+    logger.info(`Listar Artículos: Se obtuvieron ${articulos.length} artículos.`);
     res.status(200).json(articulos);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    logger.error(`Error en listarArticulos: ${error.message}`);
+    return next(Boom.internal(error.message));
   }
 };
 
-/**
- * Ver artículo por ID
- */
-export const verArticulo = async (req, res) => {
+export const verArticulo = async (req, res, next) => {
   try {
     const { id } = req.params;
-
+    logger.info(`Ver Artículo: Buscando artículo con ID ${id}`);
     const articulo = await Articulo.findByPk(id, {
       include: [
         {
@@ -65,69 +62,59 @@ export const verArticulo = async (req, res) => {
         },
       ],
     });
-
     if (!articulo) {
-      return res.status(404).json({ error: 'Artículo no encontrado.' });
+      logger.info(`Ver Artículo: Artículo con ID ${id} no encontrado.`);
+      return next(Boom.notFound('Artículo no encontrado.'));
     }
-
+    logger.info(`Ver Artículo: Artículo con ID ${id} encontrado.`);
     res.status(200).json(articulo);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    logger.error(`Error en verArticulo: ${error.message}`);
+    return next(Boom.internal(error.message));
   }
 };
 
-/**
- * Editar artículo
- */
-export const editarArticulo = async (req, res) => {
+export const editarArticulo = async (req, res, next) => {
   try {
     const { id } = req.params;
     const { titulo, contenido, fechaPublicacion, autor, categoria } = req.body;
-
+    logger.info(`Editar Artículo: Editando artículo con ID ${id}`);
     const articulo = await Articulo.findByPk(id);
-
     if (!articulo) {
-      return res.status(404).json({ error: 'Artículo no encontrado.' });
+      logger.info(`Editar Artículo: Artículo con ID ${id} no encontrado.`);
+      return next(Boom.notFound('Artículo no encontrado.'));
     }
-
-    // Verificar permisos (si deseas solo permitir que el autor o admin lo edite)
-
     if (titulo) articulo.titulo = titulo;
     if (contenido) articulo.contenido = contenido;
     if (fechaPublicacion) articulo.fechaPublicacion = fechaPublicacion;
     if (autor) articulo.autor = autor;
     if (categoria) articulo.categoria = categoria;
-
     await articulo.save();
-
+    logger.info(`Editar Artículo: Artículo con ID ${id} actualizado.`);
     res.status(200).json({
       mensaje: 'Artículo actualizado exitosamente.',
       articulo,
     });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    logger.error(`Error en editarArticulo: ${error.message}`);
+    return next(Boom.internal(error.message));
   }
 };
 
-/**
- * Eliminar artículo
- */
-export const eliminarArticulo = async (req, res) => {
+export const eliminarArticulo = async (req, res, next) => {
   try {
     const { id } = req.params;
-
+    logger.info(`Eliminar Artículo: Buscando artículo con ID ${id}`);
     const articulo = await Articulo.findByPk(id);
-
     if (!articulo) {
-      return res.status(404).json({ error: 'Artículo no encontrado.' });
+      logger.info(`Eliminar Artículo: Artículo con ID ${id} no encontrado.`);
+      return next(Boom.notFound('Artículo no encontrado.'));
     }
-
-    // Verificar permisos
-
     await articulo.destroy();
-
+    logger.info(`Eliminar Artículo: Artículo con ID ${id} eliminado.`);
     res.status(200).json({ mensaje: 'Artículo eliminado exitosamente.' });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    logger.error(`Error en eliminarArticulo: ${error.message}`);
+    return next(Boom.internal(error.message));
   }
 };

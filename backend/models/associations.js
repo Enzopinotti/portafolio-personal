@@ -12,6 +12,7 @@ import Articulo from './Articulo.js';
 import ProyectoServicio from './ProyectoServicio.js';
 import Servicio from './Servicio.js';
 import ProyectoSkill from './ProyectoSkill.js';
+import AuditLog from './AuditLog.js';
 
 
 // Relaciones Usuario - Rol
@@ -118,4 +119,12 @@ Skill.belongsToMany(Proyecto, {
   through: ProyectoSkill,
   foreignKey: 'id_skill',
   otherKey: 'id_proyecto',
+});
+
+AuditLog.belongsTo(Usuario, {
+  foreignKey: 'userId' 
+});
+
+Usuario.hasMany(AuditLog, {
+  foreignKey: 'userId' 
 });

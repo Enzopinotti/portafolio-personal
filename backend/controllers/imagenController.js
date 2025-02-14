@@ -1,26 +1,23 @@
 // controllers/imagenController.js
-
 import cloudinary from '../config/cloudinary.js';
 import fs from 'fs';
+import logger from '../config/logger.js';
+import Boom from '@hapi/boom';
 
-export const subirImagen = async (req, res) => {
+export const subirImagen = async (req, res, next) => {
   try {
-    // Suponiendo que usas Multer y el archivo está disponible en req.file
+    logger.info('Subir Imagen: Iniciando carga de imagen.');
     const resultado = await cloudinary.uploader.upload(req.file.path, {
       folder: 'imagenes',
     });
-
-    // Eliminar el archivo local después de subirlo
     fs.unlinkSync(req.file.path);
-
-    // Guardar la información en la base de datos si es necesario
-    // ...
-
+    logger.info(`Subir Imagen: Imagen subida exitosamente. URL: ${resultado.secure_url}`);
     res.status(200).json({
       mensaje: 'Imagen subida exitosamente',
       url: resultado.secure_url,
     });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    logger.error(`Error en subirImagen: ${error.message}`);
+    return next(Boom.internal(error.message));
   }
 };

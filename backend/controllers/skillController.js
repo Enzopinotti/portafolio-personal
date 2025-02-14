@@ -1,77 +1,77 @@
 // controllers/skillController.js
-
 import Skill from '../models/Skill.js';
 import CategoriaSkill from '../models/CategoriaSkill.js';
 import Imagen from '../models/Imagen.js';
+import logger from '../config/logger.js';
+import Boom from '@hapi/boom';
 
-export const crearSkill = async (req, res) => {
+export const crearSkill = async (req, res, next) => {
   try {
     const { nombre, nivel, idCategoriaSkill, idImagen } = req.body;
-
-    // Verificar si la skill ya existe
+    logger.info(`Crear Skill: Intento de creación de skill "${nombre}"`);
     const skillExistente = await Skill.findOne({ where: { nombre } });
     if (skillExistente) {
-      return res.status(400).json({ error: 'La skill ya existe.' });
+      logger.info(`Crear Skill: La skill "${nombre}" ya existe.`);
+      return next(Boom.badRequest('La skill ya existe.'));
     }
-
     const nuevaSkill = await Skill.create({
       nombre,
       nivel,
       idCategoriaSkill,
       idImagen,
     });
-
+    logger.info(`Skill creada exitosamente: "${nombre}" (ID: ${nuevaSkill.id_skill})`);
     res.status(201).json({ mensaje: 'Skill creada exitosamente.', skill: nuevaSkill });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    logger.error(`Error al crear skill: ${error.message}`);
+    return next(Boom.internal(error.message));
   }
 };
 
-export const editarSkill = async (req, res) => {
+export const editarSkill = async (req, res, next) => {
   try {
     const { id } = req.params;
     const { nombre, nivel, idCategoriaSkill, idImagen } = req.body;
-
+    logger.info(`Editar Skill: Editando skill con ID ${id}`);
     const skill = await Skill.findByPk(id);
-
     if (!skill) {
-      return res.status(404).json({ error: 'Skill no encontrada.' });
+      logger.info(`Editar Skill: Skill con ID ${id} no encontrada.`);
+      return next(Boom.notFound('Skill no encontrada.'));
     }
-
-    // Actualizar los campos
     if (nombre) skill.nombre = nombre;
     if (nivel) skill.nivel = nivel;
     if (idCategoriaSkill) skill.idCategoriaSkill = idCategoriaSkill;
     if (idImagen) skill.idImagen = idImagen;
-
     await skill.save();
-
+    logger.info(`Editar Skill: Skill con ID ${id} actualizada.`);
     res.status(200).json({ mensaje: 'Skill actualizada exitosamente.', skill });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    logger.error(`Error al editar skill: ${error.message}`);
+    return next(Boom.internal(error.message));
   }
 };
 
-export const eliminarSkill = async (req, res) => {
+export const eliminarSkill = async (req, res, next) => {
   try {
     const { id } = req.params;
-
+    logger.info(`Eliminar Skill: Buscando skill con ID ${id}`);
     const skill = await Skill.findByPk(id);
-
     if (!skill) {
-      return res.status(404).json({ error: 'Skill no encontrada.' });
+      logger.info(`Eliminar Skill: Skill con ID ${id} no encontrada.`);
+      return next(Boom.notFound('Skill no encontrada.'));
     }
-
     await skill.destroy();
-
+    logger.info(`Eliminar Skill: Skill con ID ${id} eliminada.`);
     res.status(200).json({ mensaje: 'Skill eliminada exitosamente.' });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    logger.error(`Error al eliminar skill: ${error.message}`);
+    return next(Boom.internal(error.message));
   }
 };
 
-export const listarSkills = async (req, res) => {
+export const listarSkills = async (req, res, next) => {
   try {
+    logger.info('Listar Skills: Obteniendo todas las skills.');
     const skills = await Skill.findAll({
       include: [
         {
@@ -84,17 +84,18 @@ export const listarSkills = async (req, res) => {
         },
       ],
     });
-
+    logger.info(`Listar Skills: Se obtuvieron ${skills.length} skills.`);
     res.status(200).json(skills);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    logger.error(`Error al listar skills: ${error.message}`);
+    return next(Boom.internal(error.message));
   }
 };
 
-export const verSkill = async (req, res) => {
+export const verSkill = async (req, res, next) => {
   try {
     const { id } = req.params;
-
+    logger.info(`Ver Skill: Buscando skill con ID ${id}`);
     const skill = await Skill.findByPk(id, {
       include: [
         {
@@ -107,13 +108,14 @@ export const verSkill = async (req, res) => {
         },
       ],
     });
-
     if (!skill) {
-      return res.status(404).json({ error: 'Skill no encontrada.' });
+      logger.info(`Ver Skill: Skill con ID ${id} no encontrada.`);
+      return next(Boom.notFound('Skill no encontrada.'));
     }
-
+    logger.info(`Ver Skill: Skill con ID ${id} encontrada.`);
     res.status(200).json(skill);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    logger.error(`Error al ver skill: ${error.message}`);
+    return next(Boom.internal(error.message));
   }
 };
