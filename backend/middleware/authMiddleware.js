@@ -6,7 +6,7 @@ export const verificarToken = (req, res, next) => {
     return res.status(401).json({ error: 'No se proporcionó el token de acceso.' });
   }
 
-  const token = authHeader.split(' ')[1]; // Espera "Bearer <token>"
+  const token = authHeader.split(' ')[1]; 
   if (!token) {
     return res.status(401).json({ error: 'Token de acceso inválido.' });
   }
@@ -15,7 +15,7 @@ export const verificarToken = (req, res, next) => {
     if (err) {
       return res.status(403).json({ error: 'Token de acceso expirado o inválido.' });
     }
-    req.usuario = decoded; // { idUsuario, idRol, iat, exp, ...}
+    req.usuario = decoded; 
     next();
   });
 };
