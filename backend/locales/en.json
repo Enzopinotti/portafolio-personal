@@ -1,0 +1,13 @@
+{
+    "welcome": "Welcome",
+    "login": {
+        "success": "Login successful."
+    },
+    "error": {
+        "notFound": "Not Found",
+        "internal": "Internal server error"
+    },
+    "mensaje": {
+        "registroExitoso": "Visitor registration successful."
+    }
+}

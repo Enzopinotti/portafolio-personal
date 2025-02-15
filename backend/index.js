@@ -7,18 +7,14 @@ import logger from './config/logger.js';
 const server = http.createServer(app);
 
 const io = new Server(server, {
-  cors: {
-    origin: process.env.CORS_ORIGIN || '*',
-  },
+  cors: { origin: process.env.CORS_ORIGIN || '*' },
 });
 
 io.on('connection', (socket) => {
   logger.info(`Nuevo cliente conectado: ${socket.id}`);
-
   socket.on('disconnect', () => {
     logger.info(`Cliente desconectado: ${socket.id}`);
   });
-
 });
 
 const PORT = process.env.PORT || 3001;

@@ -9,14 +9,14 @@ import cookieParser from 'cookie-parser';
 import passport from 'passport';
 import logger from './config/logger.js';
 import sequelize from './config/database.js';
-import routes from './routes/index.js'; // Importa el enrutador central
-import './models/associations.js'; // Asegúrate de importar las asociaciones
+import i18n from './config/i18n.js';
+import routes from './routes/index.js';
+import './models/associations.js';
 
 dotenv.config();
 
 const app = express();
 
-// Middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors({
@@ -25,35 +25,38 @@ app.use(cors({
 }));
 app.use(helmet());
 app.set('trust proxy', true);
-app.use(morgan('combined', { stream: { write: message => logger.info(message.trim()) } }));
+app.use(morgan('combined', { stream: { write: (msg) => logger.info(msg.trim()) } }));
 app.use(cookieParser());
 
+// Configuración de i18n
+app.use(i18n.init);
+
+// Middleware para cambiar el idioma según ?lang=xx
+app.use((req, res, next) => {
+  if (req.query.lang && i18n.getLocales().includes(req.query.lang)) {
+    req.setLocale(req.query.lang);
+  }
+  next();
+});
+
 const limiter = rateLimit({
-  windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000, // 15 minutos
-  max: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS) || 100, // Límite de solicitudes
-  message: 'Demasiadas solicitudes desde esta IP, por favor intenta de nuevo después de 15 minutos.',
+  windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000,
+  max: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS) || 100,
+  message: 'Demasiadas solicitudes, intenta de nuevo más tarde.',
 });
 app.use(limiter);
 
-// Inicializar Passport (sin sesiones)
 app.use(passport.initialize());
-
-// Usar el enrutador central bajo el prefijo /api
 app.use('/api', routes);
 
-// Middleware de manejo de errores (después de las rutas)
+// Middleware de manejo de errores
 app.use((err, req, res, next) => {
   logger.error(err.stack);
   res.status(500).json({ error: 'Ocurrió un error en el servidor.' });
 });
 
-// Sincronización con la base de datos
 sequelize.sync()
-  .then(() => {
-    logger.info('Base de datos sincronizada');
-  })
-  .catch((error) => {
-    logger.error('Error al sincronizar la base de datos:', error);
-  });
+  .then(() => logger.info('Base de datos sincronizada'))
+  .catch((error) => logger.error('Error al sincronizar la base de datos:', error));
 
 export default app;

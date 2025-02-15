@@ -1,0 +1,14 @@
+{
+    "welcome": "Bem-vindo",
+    "login": {
+      "success": "Login bem-sucedido."
+    },
+    "error": {
+      "notFound": "Não encontrado",
+      "internal": "Erro interno do servidor"
+    },
+    "mensaje": {
+      "registroExitoso": "Registro de visitante realizado com sucesso."
+    }
+  }
+  
