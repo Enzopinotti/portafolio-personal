@@ -4,11 +4,20 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { FaTimes } from 'react-icons/fa';
 import GoogleIcon from './GoogleIcon.js'; 
+import LoginForm from './LoginForm.js';
 
-const modalVariants = {
-  hidden: { opacity: 0, y: '-100vh' },
-  visible: { opacity: 1, y: '0' },
-  exit: { opacity: 0, y: '100vh' },
+const getModalVariants = (direction = 'forward') => {
+  return direction === 'forward'
+    ? {
+        hidden: { opacity: 0, y: '-100vh' },
+        visible: { opacity: 1, y: '0' },
+        exit: { opacity: 0, y: '100vh' }
+      }
+    : {
+        hidden: { opacity: 0, y: '100vh' },
+        visible: { opacity: 1, y: '0' },
+        exit: { opacity: 0, y: '-100vh' }
+      };
 };
 
 const LoginModal = ({
@@ -21,9 +30,15 @@ const LoginModal = ({
   direction = 'forward'
 }) => {
   const { t } = useTranslation();
+  const variants = getModalVariants(direction);
 
+  // Función para iniciar el flujo de Google
+  const handleGoogleLogin = () => {
+    // Redirige al usuario al endpoint de autenticación con Google del backend
+    window.location.href = `${process.env.REACT_APP_API_URL}/usuarios/auth/google`;
+  };
   return (
-    <AnimatePresence>
+    <AnimatePresence mode="wait">
       {isOpen && (
         <motion.div
           className="modal-overlay"
@@ -34,7 +49,7 @@ const LoginModal = ({
         >
           <motion.div
             className="modal-content"
-            variants={modalVariants}
+            variants={variants}
             initial="hidden"
             animate="visible"
             exit="exit"
@@ -46,17 +61,11 @@ const LoginModal = ({
             </button>
             <h2>{t('loginModal.title')}</h2>
             <p className="welcome-text">{t('loginModal.welcome')}</p>
-            <button type="button" className="google-button" onClick={onGoogleLogin}>
+            <button type="button" className="google-button" onClick={handleGoogleLogin}>
               <GoogleIcon className="google-icon" />
               {t('loginModal.google')}
             </button>
-            <form onSubmit={onLogin} className="login-form">
-              <input type="email" placeholder={t('loginModal.email')} required />
-              <input type="password" placeholder={t('loginModal.password')} required />
-              <button type="submit" className="submit-button">
-                {t('loginModal.submit')}
-              </button>
-            </form>
+            <LoginForm onLoginSuccess={onLogin} />
             <div className="links-container">
               <button type="button" className="text-button" onClick={onForgotPassword}>
                 {t('loginModal.forgotPassword')}

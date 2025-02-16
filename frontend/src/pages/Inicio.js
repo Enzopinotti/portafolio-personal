@@ -8,7 +8,7 @@ import TypewriterWithThinking from '../components/TypewriterWithThinking.js';
 const Inicio = () => {
   const { navigationDirection } = useContext(NavigationContext);
   const { t, i18n } = useTranslation();
-
+  console.log('API URL:', process.env.REACT_APP_API_URL);
   const variants = {
     initial: { y: navigationDirection === 'forward' ? '100vh' : '-100vh', opacity: 0 },
     animate: { y: 0, opacity: 1 },

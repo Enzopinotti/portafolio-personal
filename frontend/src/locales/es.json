@@ -10,26 +10,28 @@
       "contact": "Contacto"
     }
   },
-    "loginModal": {
+      "loginModal": {
       "title": "Iniciar Sesión",
-      "google": "Iniciar con Google",
+      "welcome": "¡Bienvenido de nuevo!",
       "email": "Correo electrónico",
       "password": "Contraseña",
+      "loading": "Cargando...",
       "submit": "Entrar",
+      "google": "Iniciar con Google",
       "forgotPassword": "¿Olvidaste tu contraseña?",
-      "register": "¿No tienes cuenta? Regístrate",
-      "close": "Cerrar",
-      "welcome": "¡Bienvenido a mi portafolio de desarrollo!"
+      "register": "¿No tienes cuenta? Regístrate"
     },
     "registerModal": {
-      "title": "Regístrate",
-      "welcome": "¡Únete a mi portafolio de desarrollo y comienza tu camino!",
-      "name": "Nombre Completo",
+      "title": "Registro",
+      "welcome": "¡Únete a nosotros!",
+      "name": "Nombre",
       "email": "Correo electrónico",
       "password": "Contraseña",
-      "confirmPassword": "Confirmar Contraseña",
+      "confirmPassword": "Confirmar contraseña",
+      "loading": "Registrando...",
       "submit": "Registrarse",
-      "alreadyHaveAccount": "¿Ya tienes cuenta? Inicia Sesión"
+      "alreadyHaveAccount": "¿Ya tienes cuenta? Inicia sesión",
+      "passwordMismatch": "Las contraseñas no coinciden."
     },
     "forgotModal": {
       "title": "Recuperar Contraseña",
@@ -41,6 +43,10 @@
     "home": {
       "welcome": "Hola, bienvenido a mi sitio personal.",
       "intro": "Mi nombre es Enzo Pinotti, un "
+    },
+    "error": {
+      "internal": "Error interno del servidor",
+      "notFound": "No encontrado"
     }
     
   }

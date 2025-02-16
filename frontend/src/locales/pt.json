@@ -12,24 +12,26 @@
   },
    "loginModal": {
       "title": "Entrar",
-      "google": "Entrar com Google",
+      "welcome": "Bem-vindo de volta!",
       "email": "Email",
       "password": "Senha",
+      "loading": "Carregando...",
       "submit": "Entrar",
+      "google": "Entrar com Google",
       "forgotPassword": "Esqueceu sua senha?",
-      "register": "Não tem conta? Cadastre-se",
-      "close": "Fechar",
-      "welcome": "Bem-vindo ao meu portfólio de desenvolvimento!"
+      "register": "Não tem conta? Registre-se"
     },
     "registerModal": {
-      "title": "Cadastre-se",
-      "welcome": "Junte-se ao meu portfólio de desenvolvimento e comece sua jornada!",
-      "name": "Nome Completo",
+      "title": "Registrar",
+      "welcome": "Junte-se a nós!",
+      "name": "Nome",
       "email": "Email",
       "password": "Senha",
       "confirmPassword": "Confirmar Senha",
+      "loading": "Registrando...",
       "submit": "Registrar",
-      "alreadyHaveAccount": "Já tem uma conta? Entrar"
+      "alreadyHaveAccount": "Já tem conta? Entrar",
+      "passwordMismatch": "As senhas não coincidem."
     },
     "forgotModal": {
       "title": "Redefinir Senha",
@@ -41,6 +43,10 @@
     "home": {
       "welcome": "Olá, bem-vindo ao meu site pessoal.",
       "intro": "Meu nome é Enzo Pinotti, um "
+    },
+    "error": {
+      "internal": "Erro interno do servidor",
+      "notFound": "Não encontrado"
     }
   }
   

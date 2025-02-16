@@ -11,8 +11,9 @@ import logger from './config/logger.js';
 import sequelize from './config/database.js';
 import i18n from './config/i18n.js';
 import routes from './routes/index.js';
-import './models/associations.js';
 
+import './models/associations.js';
+import './config/passport.js';
 dotenv.config();
 
 const app = express();
@@ -24,7 +25,11 @@ app.use(cors({
   credentials: true,
 }));
 app.use(helmet());
-app.set('trust proxy', true);
+if (process.env.NODE_ENV === 'production') {
+  app.set('trust proxy', 1); // confía en el primer proxy
+} else {
+  app.set('trust proxy', false);
+}
 app.use(morgan('combined', { stream: { write: (msg) => logger.info(msg.trim()) } }));
 app.use(cookieParser());
 

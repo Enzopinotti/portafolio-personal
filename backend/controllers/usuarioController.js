@@ -97,17 +97,21 @@ export const loginGoogleController = async (req, res, next) => {
       req,
     });
     logger.info(`Usuario ${usuario.email} autenticado con Google exitosamente.`);
+    
+    // Establece la cookie con el refresh token
     res.cookie('refreshToken', refreshJwt, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
-    res.status(200).json({
-      mensaje: 'Autenticación con Google exitosa.',
-      accessToken: accessJwt,
-      usuario,
-    });
+    
+    // Redirige al usuario a la URL del frontend (home)
+    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
+    return res.redirect(frontendUrl);
+    
+    // Si quisieras enviar el access token en la URL (no recomendado por seguridad), podrías hacerlo en query params,
+    // pero en general, al estar el refresh token en cookie, el frontend podrá hacer peticiones seguras al backend.
   } catch (error) {
     logger.error(`Error en loginGoogleController: ${error.message}`);
     return next(Boom.internal(error.message));

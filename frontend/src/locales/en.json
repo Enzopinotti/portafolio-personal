@@ -11,24 +11,26 @@
     }},
     "loginModal": {
       "title": "Log In",
-      "google": "Sign in with Google",
-      "email": "Email address",
+      "welcome": "Welcome back!",
+      "email": "Email",
       "password": "Password",
-      "submit": "Sign in",
-      "forgotPassword": "Forgot your password?",
-      "register": "Don't have an account? Sign up",
-      "close": "Close",
-      "welcome": "Welcome to my developer portfolio!"
+      "loading": "Loading...",
+      "submit": "Log In",
+      "google": "Sign in with Google",
+      "forgotPassword": "Forgot Password?",
+      "register": "Don't have an account? Register"
     },
     "registerModal": {
-      "title": "Sign Up",
-      "welcome": "Join my developer portfolio and start your journey!",
-      "name": "Full Name",
-      "email": "Email Address",
+      "title": "Register",
+      "welcome": "Join us!",
+      "name": "Name",
+      "email": "Email",
       "password": "Password",
       "confirmPassword": "Confirm Password",
+      "loading": "Registering...",
       "submit": "Register",
-      "alreadyHaveAccount": "Already have an account? Log In"
+      "alreadyHaveAccount": "Already have an account? Log in",
+      "passwordMismatch": "Passwords do not match."
     },
       "forgotModal": {
       "title": "Reset Password",
@@ -40,6 +42,10 @@
     "home": {
       "welcome": "Hi, welcome to my personal website.",
       "intro": "My name is Enzo Pinotti, a "
+    },
+    "error": {
+      "internal": "Internal server error",
+      "notFound": "Not found"
     }
   }
   

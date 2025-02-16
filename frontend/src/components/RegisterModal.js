@@ -3,8 +3,8 @@ import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { FaTimes } from 'react-icons/fa';
+import RegisterForm from './RegisterForm.js';
 
-// Función para obtener las variantes de animación según la dirección
 const getModalVariants = (direction = 'forward') => {
   return direction === 'forward'
     ? {
@@ -30,7 +30,7 @@ const RegisterModal = ({
   const variants = getModalVariants(direction);
 
   return (
-    <AnimatePresence>
+    <AnimatePresence mode="wait">
       {isOpen && (
         <motion.div
           className="modal-overlay"
@@ -53,15 +53,7 @@ const RegisterModal = ({
             </button>
             <h2>{t('registerModal.title')}</h2>
             <p className="welcome-text">{t('registerModal.welcome')}</p>
-            <form onSubmit={onRegister} className="register-form">
-              <input type="text" placeholder={t('registerModal.name')} required />
-              <input type="email" placeholder={t('registerModal.email')} required />
-              <input type="password" placeholder={t('registerModal.password')} required />
-              <input type="password" placeholder={t('registerModal.confirmPassword')} required />
-              <button type="submit" className="submit-button">
-                {t('registerModal.submit')}
-              </button>
-            </form>
+            <RegisterForm onRegisterSuccess={onRegister} />
             <div className="links-container">
               <button type="button" className="text-button" onClick={onSwitchToLogin}>
                 {t('registerModal.alreadyHaveAccount')}

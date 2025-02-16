@@ -23,11 +23,18 @@ const router = Router();
 router.post('/registrar', registrarVisitante);
 
 // Ruta para iniciar sesión local con Passport
-router.post(
-  '/login',
-  passport.authenticate('local', { session: false }),
-  loginLocalController
-);
+router.post('/login', (req, res, next) => {
+  passport.authenticate('local', { session: false }, (err, user, info) => {
+    if (err) return next(err);
+    if (!user) {
+      // info.message contiene el mensaje que definiste en la estrategia
+      return res.status(401).json({ error: info.message || 'Autenticación fallida.' });
+    }
+    // Si se autentica, asignamos el usuario a req.user y continuamos
+    req.user = user;
+    next();
+  })(req, res, next);
+}, loginLocalController);
 
 // Ruta para cerrar sesión (requiere autenticación)
 router.post('/logout', verificarToken, cerrarSesion);

@@ -13,17 +13,14 @@ const AuthModal = ({
   onLogin,
   onRegister,
   onGoogleLogin,
+  onForgotPassword
 }) => {
-  // Mantenemos la dirección de la transición
+  // Mantenemos la dirección de la transición para animaciones inversas
   const [direction, setDirection] = useState('forward');
 
   const handleSwitch = (newType) => {
-    // Si cambiamos de "register" o "forgot" a "login", la transición es inversa.
-    if (newType === 'login') {
-      setDirection('backward');
-    } else {
-      setDirection('forward');
-    }
+    // Si cambiamos a "login", la transición es inversa; de lo contrario, normal.
+    setDirection(newType === 'login' ? 'backward' : 'forward');
     onSwitchType(newType);
   };
 
@@ -58,6 +55,7 @@ const AuthModal = ({
           direction={direction}
           onClose={onClose}
           onSwitchToLogin={() => handleSwitch('login')}
+          onForgotPassword={onForgotPassword}
         />
       )}
     </AnimatePresence>
