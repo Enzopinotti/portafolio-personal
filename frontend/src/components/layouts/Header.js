@@ -13,12 +13,31 @@ const Header = () => {
   const [modalType, setModalType] = useState('login'); // "login", "register", o "forgot"
 
   const toggleMenu = () => setIsMenuOpen((prev) => !prev);
+  
+  // Abre el modal de autenticación y define el tipo (login, register, etc.)
   const openAuthModal = (type = 'login') => {
     setIsMenuOpen(false);
     setModalType(type);
     setIsAuthOpen(true);
   };
+
   const closeAuthModal = () => setIsAuthOpen(false);
+
+  // Estos callbacks reciben los datos del backend, NO el evento.
+  const handleLoginSuccess = (data) => {
+    // Aquí manejas el login (por ejemplo, guardas el token en el estado global)
+    // Además, muestra el toast y cierra el modal
+    console.log('Login exitoso:', data);
+    // Ejemplo: toast.success(t('loginModal.success'));
+    closeAuthModal();
+  };
+
+  const handleRegisterSuccess = (data) => {
+    // Muestra el toast de éxito y cambia el modal a login
+    console.log('Registro exitoso:', data);
+    // Ejemplo: toast.success(t('registerModal.success'));
+    setModalType('login');
+  };
 
   return (
     <header className="header">
@@ -52,10 +71,13 @@ const Header = () => {
         isOpen={isAuthOpen}
         onClose={closeAuthModal}
         onSwitchType={(type) => setModalType(type)}
-        onLogin={(e) => { e.preventDefault(); /* Lógica de login con Axios */ }}
-        onRegister={(e) => { e.preventDefault(); /* Lógica de registro con Axios */ }}
-        onForgotPassword={() => { setModalType('forgot'); }}
-        onGoogleLogin={() => { /* Lógica para login con Google */ }}
+        onLogin={handleLoginSuccess}
+        onRegister={handleRegisterSuccess}
+        onForgotPassword={() => setModalType('forgot')}
+        onGoogleLogin={() => {
+          // Lógica para login con Google
+          window.location.href = `${process.env.REACT_APP_API_URL}/usuarios/auth/google`;
+        }}
       />
     </header>
   );

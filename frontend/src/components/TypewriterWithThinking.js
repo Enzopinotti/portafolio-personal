@@ -3,9 +3,9 @@ import React, { useEffect, useState } from 'react';
 
 const defaultConfig = {
   thinkingDuration: 1900, // Duración de la fase "pensando" (ms)
-  typingSpeed: 150,      // Velocidad de escritura (ms por carácter)
-  erasingSpeed: 50,       // Velocidad de borrado (ms por carácter)
-  pauseDuration: 1500,    // Tiempo de pausa al terminar de escribir o borrar (ms)
+  typingSpeed: 100,      // Velocidad de escritura (ms por carácter)
+  erasingSpeed: 30,       // Velocidad de borrado (ms por carácter)
+  pauseDuration: 1000,    // Tiempo de pausa al terminar de escribir o borrar (ms)
 };
 
 const TypewriterWithThinking = ({ words, config = defaultConfig }) => {

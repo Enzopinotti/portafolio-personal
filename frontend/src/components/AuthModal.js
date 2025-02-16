@@ -4,6 +4,8 @@ import { AnimatePresence } from 'framer-motion';
 import LoginModal from './LoginModal.js';
 import RegisterModal from './RegisterModal.js';
 import ForgotPasswordModal from './ForgotPasswordModal.js';
+import { toast } from 'react-toastify';
+import { useTranslation } from 'react-i18next';
 
 const AuthModal = ({
   modalType,          // "login", "register" o "forgot"
@@ -13,15 +15,30 @@ const AuthModal = ({
   onLogin,
   onRegister,
   onGoogleLogin,
-  onForgotPassword
+  onForgotPassword,
 }) => {
-  // Mantenemos la dirección de la transición para animaciones inversas
+  const { t } = useTranslation();
   const [direction, setDirection] = useState('forward');
 
   const handleSwitch = (newType) => {
-    // Si cambiamos a "login", la transición es inversa; de lo contrario, normal.
     setDirection(newType === 'login' ? 'backward' : 'forward');
     onSwitchType(newType);
+  };
+
+  // Callback para registro exitoso: se muestra el toast y se cambia al modal de login.
+  const handleRegisterSuccess = (data) => {
+    // Muestra el toast solo una vez.
+    toast.success(t('registerModal.success') || 'Registro exitoso. Ahora inicia sesión.');
+    // Ejecuta el callback del padre y cambia al modal de login.
+    onRegister(data);
+    handleSwitch('login');
+  };
+
+  // Callback para login exitoso: se muestra el toast y se cierra el modal.
+  const handleLoginSuccess = (data) => {
+    toast.success(t('loginModal.success') || 'Inicio de sesión exitoso.');
+    onLogin(data);
+    onClose();
   };
 
   return (
@@ -32,7 +49,7 @@ const AuthModal = ({
           isOpen={isOpen}
           direction={direction}
           onClose={onClose}
-          onLogin={onLogin}
+          onLogin={handleLoginSuccess}
           onForgotPassword={() => handleSwitch('forgot')}
           onRegister={() => handleSwitch('register')}
           onGoogleLogin={onGoogleLogin}
@@ -44,7 +61,7 @@ const AuthModal = ({
           isOpen={isOpen}
           direction={direction}
           onClose={onClose}
-          onRegister={onRegister}
+          onRegister={handleRegisterSuccess}
           onSwitchToLogin={() => handleSwitch('login')}
         />
       )}

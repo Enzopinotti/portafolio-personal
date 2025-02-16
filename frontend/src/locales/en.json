@@ -18,7 +18,8 @@
       "submit": "Log In",
       "google": "Sign in with Google",
       "forgotPassword": "Forgot Password?",
-      "register": "Don't have an account? Register"
+      "register": "Don't have an account? Register",
+      "success": "Login successful."
     },
     "registerModal": {
       "title": "Register",
@@ -30,14 +31,41 @@
       "loading": "Registering...",
       "submit": "Register",
       "alreadyHaveAccount": "Already have an account? Log in",
-      "passwordMismatch": "Passwords do not match."
+      "passwordMismatch": "Passwords do not match.",
+      "success": "Registration successful. Now confirm your email."
     },
-      "forgotModal": {
+    "emailConfirmation": {
+      "successTitle": "Email Confirmed",
+      "successMessage": "Your email has been successfully confirmed. You can now log in.",
+      "errorTitle": "Confirmation Error",
+      "errorMessage": "There was a problem confirming your email. Please try again or request a new confirmation email.",
+      "expiredTitle": "Token Expired",
+      "expiredMessage": "Your confirmation token has expired. Please request a new confirmation email.",
+      "goToHome": "Go to Home",
+      "resend": "Resend Confirmation",
+      "resendSuccess": "Confirmation email resent. Check your inbox.",
+      "resendError": "Error resending confirmation email.",
+      "loading": "Loading..."
+    },
+    "forgotModal": {
       "title": "Reset Password",
       "welcome": "Enter your email to reset your password.",
       "email": "Email address",
       "submit": "Reset Password",
-      "switchToLogin": "Back to Login"
+      "loading": "Sending...",
+      "switchToLogin": "Back to Login",
+      "success": "A password reset email has been sent.",
+      "error": "There was a problem sending the reset email. Please try again."
+    },
+    "resetPassword": {
+      "title": "Reset Password",
+      "welcome": "Enter your new password.",
+      "newPassword": "New Password",
+      "confirmPassword": "Confirm Password",
+      "loading": "Updating...",
+      "submit": "Update Password",
+      "passwordMismatch": "Passwords do not match.",
+      "success": "Password updated successfully."
     },
     "home": {
       "welcome": "Hi, welcome to my personal website.",
@@ -45,7 +73,16 @@
     },
     "error": {
       "internal": "Internal server error",
-      "notFound": "Not found"
+      "notFound": "Not found",
+      "unauthorized": "Unauthorized",
+      "forbidden": "Forbidden",
+      "badRequest": "Bad request",
+      "emailExists": "The email is already registered.",
+      "loginFailed": "Login failed.",
+      "googleLoginFailed": "Google authentication failed.",
+      "noRefreshToken": "No refresh token provided.",
+      "invalidRefreshToken": "Invalid refresh token (does not match DB).",
+      "expiredRefreshToken": "Expired or invalid refresh token."
     }
-  }
+}
   

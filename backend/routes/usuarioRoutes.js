@@ -10,64 +10,52 @@ import {
   cambiarRolUsuario,
   actualizarAvatar,
   loginLocalController,
-  loginGoogleController
+  loginGoogleController,
+  forgotPassword,
+  confirmEmail,
+  resendConfirmationEmail,
+  resetPassword
 } from '../controllers/usuarioController.js';
 import { verificarToken } from '../middleware/authMiddleware.js';
 import upload from '../config/multer.js';
+import { validateForgotPassword, validateLogin, validateRegister } from '../validations/usuarioValidations.js';
 
 const router = Router();
 
 /* ---------- Rutas locales ---------- */
 
 // Ruta para registrar un nuevo usuario (local)
-router.post('/registrar', registrarVisitante);
+// Se aplica el middleware de validación y sanitización
+router.post('/registrar', validateRegister, registrarVisitante);
 
-// Ruta para iniciar sesión local con Passport
-router.post('/login', (req, res, next) => {
-  passport.authenticate('local', { session: false }, (err, user, info) => {
-    if (err) return next(err);
-    if (!user) {
-      // info.message contiene el mensaje que definiste en la estrategia
-      return res.status(401).json({ error: info.message || 'Autenticación fallida.' });
-    }
-    // Si se autentica, asignamos el usuario a req.user y continuamos
-    req.user = user;
-    next();
-  })(req, res, next);
-}, loginLocalController);
-
-// Ruta para cerrar sesión (requiere autenticación)
+// Login: se valida la data y luego se autentica con Passport y se llama al controlador
+router.post(
+  '/login',
+  validateLogin,
+  passport.authenticate('local', { session: false }),
+  loginLocalController
+);
+// Forgot Password: valida el email y luego llama al controlador
+router.post('/forgot', validateForgotPassword, forgotPassword);
+router.post('/reset-password', resetPassword);
+router.post('/resend-confirmation', resendConfirmationEmail);
+router.post('/confirm-email', confirmEmail);
 router.post('/logout', verificarToken, cerrarSesion);
-
-// Ruta para ver el perfil (requiere autenticación)
 router.get('/perfil', verificarToken, verPerfil);
-
-// Ruta para editar perfil (requiere autenticación)
 router.put('/perfil', verificarToken, editarPerfil);
-
-// Ruta para actualizar avatar (requiere autenticación)
 router.post('/avatar', verificarToken, upload.single('avatar'), actualizarAvatar);
-
-// Ruta para cambiar el rol (requiere autenticación, admin)
 router.put('/:id/cambiar-rol', verificarToken, cambiarRolUsuario);
-
-// Ruta para refrescar token (lee refresh token de cookie)
 router.post('/refresh', refrescarToken);
 
 /* ---------- Rutas para Google OAuth ---------- */
-
-// Inicia el flujo de autenticación con Google
 router.get(
   '/auth/google',
   passport.authenticate('google', { scope: ['profile', 'email'], session: false })
 );
-
-// Callback de Google: utiliza Passport y luego pasa al controlador
 router.get(
   '/auth/google/callback',
   passport.authenticate('google', { session: false, failureRedirect: '/login' }),
   loginGoogleController
 );
-
 
 export default router;

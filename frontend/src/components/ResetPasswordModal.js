@@ -1,9 +1,9 @@
-// src/components/RegisterModal.js
+// src/components/ResetPasswordModal.js
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { FaTimes } from 'react-icons/fa';
-import RegisterForm from './RegisterForm.js';
+import ResetPasswordForm from './ResetPasswordForm.js';
 
 const getModalVariants = (direction = 'forward') => {
   return direction === 'forward'
@@ -19,18 +19,19 @@ const getModalVariants = (direction = 'forward') => {
       };
 };
 
-const RegisterModal = ({
+const ResetPasswordModal = ({
   isOpen,
   onClose,
-  onRegister,
-  onSwitchToLogin = () => {},
-  direction = 'forward'
+  token,
+  onResetSuccess,
+  direction = 'forward',
 }) => {
   const { t } = useTranslation();
   const variants = getModalVariants(direction);
 
-  // Evita cerrar el modal si se está seleccionando texto
   const handleOverlayClick = (e) => {
+    const targetTag = e.target.tagName.toLowerCase();
+    if (targetTag === 'input' || targetTag === 'textarea') return;
     const selectedText = window.getSelection().toString();
     if (selectedText.length > 0) return;
     onClose();
@@ -58,14 +59,9 @@ const RegisterModal = ({
             <button className="close-icon" onClick={onClose}>
               <FaTimes />
             </button>
-            <h2>{t('registerModal.title')}</h2>
-            <p className="welcome-text">{t('registerModal.welcome')}</p>
-            <RegisterForm onRegisterSuccess={onRegister} />
-            <div className="links-container">
-              <button type="button" className="text-button" onClick={onSwitchToLogin}>
-                {t('registerModal.alreadyHaveAccount')}
-              </button>
-            </div>
+            <h2>{t('resetPassword.title')}</h2>
+            <p className="welcome-text">{t('resetPassword.welcome')}</p>
+            <ResetPasswordForm token={token} onResetSuccess={onResetSuccess} />
           </motion.div>
         </motion.div>
       )}
@@ -73,4 +69,4 @@ const RegisterModal = ({
   );
 };
 
-export default RegisterModal;
+export default ResetPasswordModal;

@@ -1,9 +1,8 @@
-// src/components/LoginModal.js
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { FaTimes } from 'react-icons/fa';
-import GoogleIcon from './GoogleIcon.js'; 
+import GoogleIcon from './GoogleIcon.js';
 import LoginForm from './LoginForm.js';
 
 const getModalVariants = (direction = 'forward') => {
@@ -32,11 +31,18 @@ const LoginModal = ({
   const { t } = useTranslation();
   const variants = getModalVariants(direction);
 
-  // Función para iniciar el flujo de Google
+  // Función que evita cerrar el modal si hay texto seleccionado
+  const handleOverlayClick = (e) => {
+    const selectedText = window.getSelection().toString();
+    if (selectedText.length > 0) return;
+    onClose();
+  };
+
+  // Para iniciar el flujo de Google
   const handleGoogleLogin = () => {
-    // Redirige al usuario al endpoint de autenticación con Google del backend
     window.location.href = `${process.env.REACT_APP_API_URL}/usuarios/auth/google`;
   };
+
   return (
     <AnimatePresence mode="wait">
       {isOpen && (
@@ -45,7 +51,7 @@ const LoginModal = ({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          onClick={onClose}
+          onClick={handleOverlayClick}
         >
           <motion.div
             className="modal-content"

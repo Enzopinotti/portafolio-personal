@@ -1,63 +1,54 @@
-import { DataTypes } from 'sequelize';
-import sequelize from '../config/database.js';
+'use strict';
 
-const Usuario = sequelize.define(
-  'Usuario',
-  {
-    idUsuario: {
-      type: DataTypes.INTEGER.UNSIGNED,
-      primaryKey: true,
-      autoIncrement: true,
-      field: 'id_usuario',
-    },
-    nombre: {
-      type: DataTypes.STRING(255),
-      allowNull: false,
-      field: 'nombre',
-    },
-    apellido: {
-      type: DataTypes.STRING(255),
-      allowNull: true, // coincidir con la migración
-      field: 'apellido',
-    },
-    email: {
-      type: DataTypes.STRING(255),
-      allowNull: false,
-      unique: true,
-      field: 'email',
-    },
-    password: {
-      type: DataTypes.STRING(255),
-      allowNull: false,
-      field: 'password', // antes era 'contraseña'
-    },
-    avatar: {
-      type: DataTypes.STRING(255),
-      allowNull: true,
-      field: 'avatar',
-    },
-    idRol: {
-      type: DataTypes.INTEGER.UNSIGNED,
-      allowNull: false,
-      field: 'id_rol',
-    },
-    estado: {
-      type: DataTypes.ENUM('visitante', 'usuario', 'admin'),
-      allowNull: false,
-      defaultValue: 'visitante',
-      field: 'estado',
-    },
-    fechaRegistro: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: DataTypes.NOW,
-      field: 'fecha_registro',
-    },
+/** @type {import('sequelize-cli').Migration} */
+module.exports = {
+  async up(queryInterface, Sequelize) {
+    await queryInterface.createTable('usuario', {
+      id_usuario: {
+        type: Sequelize.INTEGER.UNSIGNED,
+        primaryKey: true,
+        autoIncrement: true,
+        allowNull: false
+      },
+      nombre: {
+        type: Sequelize.STRING(255),
+        allowNull: false
+      },
+      apellido: {
+        type: Sequelize.STRING(255),
+        allowNull: true
+      },
+      email: {
+        type: Sequelize.STRING(255),
+        allowNull: false,
+        unique: true
+      },
+      password: {
+        type: Sequelize.STRING(255),
+        allowNull: false
+      },
+      avatar: {
+        type: Sequelize.STRING(255),
+        allowNull: true
+      },
+      id_rol: {
+        type: Sequelize.INTEGER.UNSIGNED,
+        allowNull: false
+      },
+      estado: {
+        type: Sequelize.ENUM('visitante', 'usuario', 'admin'),
+        allowNull: false,
+        defaultValue: 'visitante'
+      },
+      fecha_registro: {
+        type: Sequelize.DATE,
+        allowNull: false,
+        defaultValue: Sequelize.NOW
+      }
+    });
   },
-  {
-    tableName: 'usuario',
-    timestamps: false,
-  }
-);
 
-export default Usuario;
+  async down(queryInterface, Sequelize) {
+    await queryInterface.dropTable('usuario');
+  }
+};

@@ -19,7 +19,8 @@
       "submit": "Entrar",
       "google": "Iniciar con Google",
       "forgotPassword": "¿Olvidaste tu contraseña?",
-      "register": "¿No tienes cuenta? Regístrate"
+      "register": "¿No tienes cuenta? Regístrate",
+      "success": "Inicio de sesión exitoso."
     },
     "registerModal": {
       "title": "Registro",
@@ -31,14 +32,41 @@
       "loading": "Registrando...",
       "submit": "Registrarse",
       "alreadyHaveAccount": "¿Ya tienes cuenta? Inicia sesión",
-      "passwordMismatch": "Las contraseñas no coinciden."
+      "passwordMismatch": "Las contraseñas no coinciden.",
+      "success": "Registro exitoso. Ahora confirma tu correo."
+    },
+    "emailConfirmation": {
+      "successTitle": "Email Confirmado",
+      "successMessage": "Tu correo ha sido confirmado exitosamente. Ahora puedes iniciar sesión.",
+      "errorTitle": "Error en la Confirmación",
+      "errorMessage": "Hubo un problema al confirmar tu correo. Por favor, intenta nuevamente o solicita un nuevo correo de confirmación.",
+      "expiredTitle": "Token Expirado",
+      "expiredMessage": "Tu token de confirmación ha expirado. Por favor, solicita un nuevo correo de confirmación.",
+      "goToHome": "Ir al inicio",
+      "resend": "Reenviar Confirmación",
+      "resendSuccess": "Correo reenviado. Revisa tu email.",
+      "resendError": "Error al reenviar el correo.",
+      "loading": "Cargando..."
     },
     "forgotModal": {
-      "title": "Recuperar Contraseña",
-      "welcome": "Ingresa tu correo para recuperar tu contraseña.",
+      "title": "Restablecer Contraseña",
+      "welcome": "Ingresa tu correo para restablecer tu contraseña.",
       "email": "Correo electrónico",
-      "submit": "Recuperar Contraseña",
-      "switchToLogin": "Volver a Iniciar Sesión"
+      "submit": "Restablecer Contraseña",
+      "loading": "Enviando...",
+      "switchToLogin": "Volver a Iniciar Sesión",
+      "success": "Se ha enviado un correo para restablecer tu contraseña.",
+      "error": "Hubo un problema al enviar el correo. Por favor, intenta nuevamente."
+    },
+    "resetPassword": {
+      "title": "Restablecer contraseña",
+      "welcome": "Ingresa tu nueva contraseña.",
+      "newPassword": "Nueva contraseña",
+      "confirmPassword": "Confirmar contraseña",
+      "loading": "Actualizando...",
+      "submit": "Actualizar contraseña",
+      "passwordMismatch": "Las contraseñas no coinciden.",
+      "success": "Contraseña actualizada exitosamente."
     },
     "home": {
       "welcome": "Hola, bienvenido a mi sitio personal.",
@@ -46,7 +74,16 @@
     },
     "error": {
       "internal": "Error interno del servidor",
-      "notFound": "No encontrado"
+      "notFound": "No se encontró lo solicitado",
+      "unauthorized": "No autorizado",
+      "forbidden": "Acceso prohibido",
+      "badRequest": "Solicitud incorrecta",
+      "emailExists": "El email ya está registrado.",
+      "loginFailed": "Autenticación fallida.",
+      "googleLoginFailed": "Autenticación con Google fallida.",
+      "noRefreshToken": "No se proporcionó el refresh token.",
+      "invalidRefreshToken": "Refresh token inválido (no coincide en la BD).",
+      "expiredRefreshToken": "Refresh token expirado o inválido."
     }
     
   }

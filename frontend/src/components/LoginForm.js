@@ -1,3 +1,4 @@
+// src/components/LoginForm.js
 import React, { useState } from 'react';
 import { loginUser } from '../services/authService.js';
 import { useTranslation } from 'react-i18next';
@@ -10,15 +11,12 @@ const LoginForm = ({ onLoginSuccess }) => {
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); // Se llama correctamente al evento.
     setErrorMsg(null);
     setLoading(true);
     try {
-        console.log('entre')
-      // Se envía el campo "contraseña" para que coincida con la estrategia
       const data = await loginUser({ email, contraseña: password });
-      console.log(data)
-      onLoginSuccess(data);
+      onLoginSuccess(data); // Pasa solo los datos a la función callback.
     } catch (err) {
       setErrorMsg(err.error || t('error.internal'));
     } finally {

@@ -47,6 +47,32 @@ const Usuario = sequelize.define(
       allowNull: true,
       field: 'refresh_token',
     },
+    emailToken: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      field: 'emailToken', // Asegura que se use exactamente este nombre
+    },
+    emailTokenExpires: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      field: 'emailTokenExpires',
+    },
+    emailConfirmed: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+      field: 'emailConfirmed',
+    },
+    resetToken: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      field: 'resetToken',
+    },
+    resetTokenExpires: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      field: 'resetTokenExpires',
+    },
   },
   {
     tableName: 'usuario',

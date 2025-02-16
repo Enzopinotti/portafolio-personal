@@ -3,41 +3,51 @@ import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { FaTimes } from 'react-icons/fa';
+import ForgotPasswordForm from './ForgotPasswordForm.js';
 
-// Función similar para definir variantes según la dirección
 const getModalVariants = (direction = 'forward') => {
   return direction === 'forward'
     ? {
         hidden: { opacity: 0, y: '-100vh' },
         visible: { opacity: 1, y: '0' },
-        exit: { opacity: 0, y: '100vh' }
+        exit: { opacity: 0, y: '100vh' },
       }
     : {
         hidden: { opacity: 0, y: '100vh' },
         visible: { opacity: 1, y: '0' },
-        exit: { opacity: 0, y: '-100vh' }
+        exit: { opacity: 0, y: '-100vh' },
       };
 };
 
 const ForgotPasswordModal = ({
   isOpen,
   onClose,
-  onForgotPasswordSubmit,
+  onForgotPasswordSubmit, // Este callback se pasará desde el formulario si lo necesitas
   onSwitchToLogin = () => {},
-  direction = 'forward'
+  onForgotSuccess = () => {},
+  direction = 'forward',
 }) => {
   const { t } = useTranslation();
   const variants = getModalVariants(direction);
 
+  // Evita cerrar el modal si se está interactuando con inputs o si hay texto seleccionado
+  const handleOverlayClick = (e) => {
+    const targetTag = e.target.tagName.toLowerCase();
+    if (targetTag === 'input' || targetTag === 'textarea') return;
+    const selectedText = window.getSelection().toString();
+    if (selectedText.length > 0) return;
+    onClose();
+  };
+
   return (
-    <AnimatePresence>
+    <AnimatePresence mode="wait">
       {isOpen && (
         <motion.div
           className="modal-overlay"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          onClick={onClose}
+          onClick={handleOverlayClick}
         >
           <motion.div
             className="modal-content"
@@ -53,12 +63,7 @@ const ForgotPasswordModal = ({
             </button>
             <h2>{t('forgotModal.title')}</h2>
             <p className="welcome-text">{t('forgotModal.welcome')}</p>
-            <form onSubmit={onForgotPasswordSubmit} className="forgot-form">
-              <input type="email" placeholder={t('forgotModal.email')} required />
-              <button type="submit" className="submit-button">
-                {t('forgotModal.submit')}
-              </button>
-            </form>
+            <ForgotPasswordForm onForgotSuccess={onForgotSuccess} />
             <div className="links-container">
               <button type="button" className="text-button" onClick={onSwitchToLogin}>
                 {t('forgotModal.switchToLogin')}

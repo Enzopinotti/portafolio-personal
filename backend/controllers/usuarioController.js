@@ -8,38 +8,94 @@ import Boom from '@hapi/boom';
 import { generarAccessToken, generarRefreshToken } from '../utils/tokenUtils.js';
 import { registrarEvento } from '../utils/auditLogger.js';
 import logger from '../config/logger.js';
+import transporter from '../config/email.js';
+import crypto from 'crypto';
+import path from 'path';
+import { __dirname } from '../utils/pathUtils.js';
+import fs from 'fs';
+import hbs from 'handlebars';
 
 dotenv.config();
 
 export const registrarVisitante = async (req, res, next) => {
   try {
-    const { nombre, email, contraseña } = req.body;
+    const { nombre, email, contraseña, clientURI } = req.body;
     const usuarioExistente = await Usuario.findOne({ where: { email } });
     if (usuarioExistente) {
       logger.info(`Registro fallido: email ${email} ya registrado.`);
       return next(Boom.badRequest('El email ya está registrado.'));
     }
+
+    // Generar token para confirmación y fecha de expiración (ej. 1 hora)
+    const emailToken = crypto.randomBytes(32).toString('hex');
+    const emailTokenExpires = new Date(Date.now() + 3600000); // 1 hora
+
     const hashedPassword = await bcrypt.hash(contraseña, 10);
     const nuevoUsuario = await Usuario.create({
       nombre,
       email,
       password: hashedPassword,
       idRol: 3,
+      emailToken,
+      emailTokenExpires,
+      emailConfirmed: false,
     });
+
     const accessToken = generarAccessToken({ idUsuario: nuevoUsuario.idUsuario, idRol: nuevoUsuario.idRol });
     const refreshToken = generarRefreshToken({ idUsuario: nuevoUsuario.idUsuario });
     nuevoUsuario.refreshToken = refreshToken;
     await nuevoUsuario.save();
+
     await registrarEvento({
       userId: nuevoUsuario.idUsuario,
       action: 'REGISTER',
       target: 'usuario',
-      details: { email, message: 'Registro de visitante exitoso' },
+      details: { email, message: 'Registro exitoso' },
       req,
     });
+
     logger.info(`Usuario registrado exitosamente: ${email}`);
+
+    // Preparar el template de correo
+    const templatePath = path.join(__dirname, '../templates/confirmEmail.hbs');
+    const templateSource = fs.readFileSync(templatePath, 'utf8');
+    const template = hbs.compile(templateSource);
+
+    // Construir el link de confirmación usando el clientURI enviado desde el front
+    const confirmLink = `${clientURI}/confirm-email?token=${emailToken}&email=${email}`;
+
+
+    const templateData = {
+      nombre,
+      confirmLink,
+      colorPrimary: process.env.COLOR_PRIMARY || '#00bcd4',
+      colorSecondary: process.env.COLOR_SECONDARY || '#ff4081',
+      colorWhite: process.env.COLOR_WHITE || '#ffffff',
+      colorTextDark: process.env.COLOR_TEXT_DARK || '#333333',
+      spacingUnit: process.env.SPACING_UNIT || '8px'
+    };
+
+    const htmlToSend = template(templateData);
+
+    // Configurar el correo
+    const mailOptions = {
+      from: process.env.EMAIL_FROM,
+      to: email,
+      subject: 'Confirma tu email',
+      html: htmlToSend,
+    };
+
+    // Enviar el correo
+    transporter.sendMail(mailOptions, (err, info) => {
+      if (err) {
+        logger.error(`Error al enviar correo de confirmación: ${err.message}`);
+      } else {
+        logger.info(`Correo de confirmación enviado: ${info.response}`);
+      }
+    });
+
     res.status(201).json({
-      mensaje: 'Usuario registrado exitosamente.',
+      mensaje: 'Usuario registrado exitosamente. Se ha enviado un correo para confirmar tu email.',
       accessToken,
       refreshToken,
     });
@@ -138,6 +194,98 @@ export const cerrarSesion = async (req, res, next) => {
     res.status(200).json({ mensaje: 'Cierre de sesión exitoso.' });
   } catch (error) {
     logger.error(`Error en cerrarSesion: ${error.message}`);
+    return next(Boom.internal(error.message));
+  }
+};
+
+export const forgotPassword = async (req, res, next) => {
+  try {
+    const { email, clientURI } = req.body;
+    if (!email || !clientURI) {
+      return next(Boom.badRequest('Se requieren el email y el clientURI.'));
+    }
+    const usuario = await Usuario.findOne({ where: { email } });
+    // Para seguridad, si no se encuentra usuario se responde igual
+    if (!usuario) {
+      return res.status(200).json({ mensaje: 'Se ha enviado un correo para restablecer tu contraseña.' });
+    }
+
+    // Generar token de restablecimiento y fecha de expiración (ej. 1 hora)
+    const resetToken = crypto.randomBytes(32).toString('hex');
+    const resetTokenExpires = new Date(Date.now() + 3600000);
+
+    // Almacenar estos datos en el usuario (asegúrate de haber agregado estos campos en el modelo/migración)
+    usuario.resetToken = resetToken;
+    usuario.resetTokenExpires = resetTokenExpires;
+    await usuario.save();
+
+    // Preparar el template del correo de restablecimiento
+    const templatePath = path.join(__dirname, '../templates/forgotPassword.hbs');
+    const templateSource = fs.readFileSync(templatePath, 'utf8');
+    const template = hbs.compile(templateSource);
+
+    // Construir el link de restablecimiento usando el clientURI enviado desde el front
+    const resetLink = `${clientURI}/reset-password?token=${resetToken}`;
+
+    const templateData = {
+      nombre: usuario.nombre,
+      resetLink,
+      colorPrimary: process.env.COLOR_PRIMARY || '#00bcd4',
+      colorSecondary: process.env.COLOR_SECONDARY || '#ff4081',
+      colorWhite: process.env.COLOR_WHITE || '#ffffff',
+      colorTextDark: process.env.COLOR_TEXT_DARK || '#333333',
+      spacingUnit: process.env.SPACING_UNIT || '8px'
+    };
+
+    const htmlToSend = template(templateData);
+
+    const mailOptions = {
+      from: process.env.EMAIL_FROM,
+      to: email,
+      subject: 'Restablece tu contraseña',
+      html: htmlToSend,
+    };
+
+    transporter.sendMail(mailOptions, (err, info) => {
+      if (err) {
+        logger.error(`Error al enviar correo de restablecimiento: ${err.message}`);
+      } else {
+        logger.info(`Correo de restablecimiento enviado: ${info.response}`);
+      }
+    });
+
+    res.status(200).json({ mensaje: 'Se ha enviado un correo para restablecer tu contraseña.' });
+  } catch (error) {
+    logger.error(`Error en forgotPassword: ${error.message}`);
+    return next(Boom.internal(error.message));
+  }
+};
+
+export const resetPassword = async (req, res, next) => {
+  try {
+    logger.info ('Intentando restablecer contraseña...');
+    const { token, newPassword } = req.body;
+    if (!token || !newPassword) {
+      return next(Boom.badRequest('Se requieren el token y la nueva contraseña.'));
+    }
+    // Buscar el usuario por el token de reseteo
+    const usuario = await Usuario.findOne({ where: { resetToken: token } });
+    if (!usuario) {
+      return next(Boom.notFound('Token inválido.'));
+    }
+    // Verificar si el token ha expirado
+    if (usuario.resetTokenExpires < new Date()) {
+      return next(Boom.badRequest('El token ha expirado.'));
+    }
+    // Hashear la nueva contraseña y actualizar
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    usuario.password = hashedPassword;
+    usuario.resetToken = null;
+    usuario.resetTokenExpires = null;
+    await usuario.save();
+    res.status(200).json({ mensaje: 'Contraseña actualizada exitosamente.' });
+  } catch (error) {
+    logger.error(`Error en resetPassword: ${error.message}`);
     return next(Boom.internal(error.message));
   }
 };
@@ -296,6 +444,108 @@ export const cambiarRolUsuario = async (req, res, next) => {
     });
   } catch (error) {
     logger.error(`Error en cambiarRolUsuario: ${error.message}`);
+    return next(Boom.internal(error.message));
+  }
+};
+
+export const confirmEmail = async (req, res, next) => {
+  try {
+    // Se espera el token en el body (ya que usamos POST)
+    console.log('entre, token:', req.body.token);
+    const { token } = req.body;
+    if (!token) {
+      return next(Boom.badRequest('Token es requerido.'));
+    }
+
+    // Buscar el usuario con ese token
+    const usuario = await Usuario.findOne({ where: { emailToken: token } });
+    if (!usuario) {
+      return next(Boom.notFound('Token inválido.'));
+    }
+
+    // Verificar si el token ha expirado
+    if (usuario.emailTokenExpires < new Date()) {
+      return next(Boom.badRequest('El token ha expirado.'));
+    }
+
+    // Actualizar el usuario: confirmar el email y limpiar el token y su fecha
+    usuario.emailConfirmed = true;
+    usuario.emailToken = null;
+    usuario.emailTokenExpires = null;
+    await usuario.save();
+
+    res.status(200).json({ mensaje: 'Email confirmado exitosamente.' });
+  } catch (error) {
+    logger.error(`Error en confirmEmail: ${error.message}`);
+    return next(Boom.internal(error.message));
+  }
+};
+
+export const resendConfirmationEmail = async (req, res, next) => {
+  try {
+    const { email, clientURI } = req.body;
+    if (!email || !clientURI) {
+      return next(Boom.badRequest('Se requieren el email y el clientURI.'));
+    }
+
+    const usuario = await Usuario.findOne({ where: { email } });
+    if (!usuario) {
+      return next(Boom.notFound('Usuario no encontrado.'));
+    }
+
+    if (usuario.emailConfirmed) {
+      return next(Boom.badRequest('El email ya está confirmado.'));
+    }
+
+    // Generar un nuevo token para confirmación y fecha de expiración (ej. 1 hora)
+    const emailToken = crypto.randomBytes(32).toString('hex');
+    const emailTokenExpires = new Date(Date.now() + 3600000); // 1 hora
+
+    // Actualizar el usuario con el nuevo token
+    usuario.emailToken = emailToken;
+    usuario.emailTokenExpires = emailTokenExpires;
+    await usuario.save();
+
+    // Preparar el template de correo (usando handlebars)
+    const templatePath = path.join(__dirname, '../templates/confirmEmail.hbs');
+    const templateSource = fs.readFileSync(templatePath, 'utf8');
+    const template = hbs.compile(templateSource);
+
+    // Construir el link de confirmación usando el clientURI enviado desde el front
+    const confirmLink = `${clientURI}/confirm-email?token=${emailToken}`;
+
+    const templateData = {
+      nombre: usuario.nombre,
+      confirmLink,
+      colorPrimary: process.env.COLOR_PRIMARY || '#00bcd4',
+      colorSecondary: process.env.COLOR_SECONDARY || '#ff4081',
+      colorWhite: process.env.COLOR_WHITE || '#ffffff',
+      colorTextDark: process.env.COLOR_TEXT_DARK || '#333333',
+      spacingUnit: process.env.SPACING_UNIT || '8px'
+    };
+
+    const htmlToSend = template(templateData);
+
+    // Configurar el correo
+    const mailOptions = {
+      from: process.env.EMAIL_FROM,
+      to: email,
+      subject: 'Confirma tu email',
+      html: htmlToSend,
+    };
+
+    // Enviar el correo
+    transporter.sendMail(mailOptions, (err, info) => {
+      if (err) {
+        logger.error(`Error al reenviar correo de confirmación: ${err.message}`);
+      } else {
+        logger.info(`Correo de confirmación reenviado: ${info.response}`);
+      }
+    });
+
+    res.status(200).json({ mensaje: 'Correo de confirmación reenviado exitosamente.' });
+  } catch (error) {
+    logger.error(`Error en resendConfirmationEmail: ${error.message}`);
     return next(Boom.internal(error.message));
   }
 };

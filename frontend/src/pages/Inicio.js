@@ -29,9 +29,9 @@ const Inicio = () => {
   // Configuración personalizada para el efecto
   const typewriterConfig = {
     thinkingDuration: 1900,
-    typingSpeed: 150,
-    erasingSpeed: 50,
-    pauseDuration: 1500,
+    typingSpeed: 100,
+    erasingSpeed: 30,
+    pauseDuration: 1000,
   };
 
   return (

@@ -1,7 +1,7 @@
 // src/components/layouts/Main.js
 
 import React from 'react';
-import { Routes, Route, useLocation } from 'react-router-dom';
+import { Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import Inicio from '../../pages/Inicio.js';
 import Servicios from '../../pages/Servicios.js';
@@ -21,6 +21,7 @@ const Main = () => {
           <Route path="/proyectos" element={<Proyectos />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/contacto" element={<Contacto />} />
+          <Route path="/confirm-email" element={<Navigate to="/" replace />} />
         </Routes>
       </AnimatePresence>
     </main>

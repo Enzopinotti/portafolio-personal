@@ -19,7 +19,8 @@
       "submit": "Entrar",
       "google": "Entrar com Google",
       "forgotPassword": "Esqueceu sua senha?",
-      "register": "Não tem conta? Registre-se"
+      "register": "Não tem conta? Registre-se",
+      "success": "Login bem-sucedido."
     },
     "registerModal": {
       "title": "Registrar",
@@ -31,14 +32,41 @@
       "loading": "Registrando...",
       "submit": "Registrar",
       "alreadyHaveAccount": "Já tem conta? Entrar",
-      "passwordMismatch": "As senhas não coincidem."
+      "passwordMismatch": "As senhas não coincidem.",
+      "success": "Registro bem-sucedido. Agora confirme seu e-mail"
+    },
+    "emailConfirmation": {
+      "successTitle": "Email Confirmado",
+      "successMessage": "Seu email foi confirmado com sucesso. Agora você pode fazer login.",
+      "errorTitle": "Erro na Confirmação",
+      "errorMessage": "Houve um problema ao confirmar seu email. Por favor, tente novamente ou solicite um novo email de confirmação.",
+      "expiredTitle": "Token Expirado",
+      "expiredMessage": "Seu token de confirmação expirou. Por favor, solicite um novo email de confirmação.",
+      "goToHome": "Ir para Home",
+      "resend": "Reenviar Confirmação",
+      "resendSuccess": "Email de confirmação reenviado. Verifique sua caixa de entrada.",
+      "resendError": "Erro ao reenviar o email de confirmação.",
+      "loading": "Carregando..."
     },
     "forgotModal": {
       "title": "Redefinir Senha",
       "welcome": "Digite seu email para redefinir sua senha.",
-      "email": "Email",
+      "email": "Endereço de Email",
       "submit": "Redefinir Senha",
-      "switchToLogin": "Voltar para Entrar"
+      "loading": "Enviando...",
+      "switchToLogin": "Voltar para Login",
+      "success": "Um email para redefinir sua senha foi enviado.",
+      "error": "Ocorreu um problema ao enviar o email. Por favor, tente novamente."
+    },
+    "resetPassword": {
+      "title": "Redefinir Senha",
+      "welcome": "Digite sua nova senha.",
+      "newPassword": "Nova Senha",
+      "confirmPassword": "Confirmar Senha",
+      "loading": "Atualizando...",
+      "submit": "Atualizar Senha",
+      "passwordMismatch": "As senhas não coincidem.",
+      "success": "Senha atualizada com sucesso."
     },
     "home": {
       "welcome": "Olá, bem-vindo ao meu site pessoal.",
@@ -46,7 +74,16 @@
     },
     "error": {
       "internal": "Erro interno do servidor",
-      "notFound": "Não encontrado"
+      "notFound": "Não encontrado",
+      "unauthorized": "Não autorizado",
+      "forbidden": "Proibido",
+      "badRequest": "Requisição incorreta",
+      "emailExists": "O e-mail já está registrado.",
+      "loginFailed": "Falha no login.",
+      "googleLoginFailed": "Falha na autenticação com o Google.",
+      "noRefreshToken": "Nenhum token de atualização fornecido.",
+      "invalidRefreshToken": "Token de atualização inválido (não corresponde ao BD).",
+      "expiredRefreshToken": "Token de atualização expirado ou inválido."
     }
   }
   

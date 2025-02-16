@@ -54,11 +54,18 @@ app.use(limiter);
 app.use(passport.initialize());
 app.use('/api', routes);
 
-// Middleware de manejo de errores
+// Middleware de manejo de errores (después de las rutas)
 app.use((err, req, res, next) => {
+  // Si el error es de Boom, extrae el status y el mensaje
+  const status = err.output && err.output.statusCode ? err.output.statusCode : 500;
+  const message =
+    err.output && err.output.payload && err.output.payload.message
+      ? err.output.payload.message
+      : 'Ocurrió un error en el servidor.';
   logger.error(err.stack);
-  res.status(500).json({ error: 'Ocurrió un error en el servidor.' });
+  res.status(status).json({ error: message });
 });
+
 
 sequelize.sync()
   .then(() => logger.info('Base de datos sincronizada'))

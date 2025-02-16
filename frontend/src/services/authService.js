@@ -15,6 +15,7 @@ const postData = async (endpoint, data) => {
   });
   console.log('respuesta: ', response);
   if (!response.ok) {
+    
     const errorData = await response.json();
     throw errorData;
   }
@@ -37,4 +38,22 @@ export const refreshToken = async () => {
 
 export const logoutUser = async () => {
   return postData('/usuarios/logout', {});
+};
+
+export const confirmEmail = async (token) => {
+  return postData('/usuarios/confirm-email', { token });
+};
+
+// Nueva función para reenviar confirmación
+export const resendConfirmation = async (email, clientURI) => {
+  return postData('/usuarios/resend-confirmation', { email, clientURI });
+};
+
+export const forgotPassword = async (userData) => {
+  // Envía { email, clientURI } al endpoint de forgot password
+  return postData('/usuarios/forgot', userData);
+};
+
+export const resetPassword = async (token, newPassword) => {
+  return postData('/usuarios/reset-password', { token, newPassword });
 };
