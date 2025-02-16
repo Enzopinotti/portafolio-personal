@@ -1,0 +1,46 @@
+{
+    "header": {
+    "login": "Entrar",
+    "downloadCV": "Baixar CV",
+    "nav": {
+      "home": "Início",
+      "services": "Serviços",
+      "projects": "Projetos",
+      "blog": "Blog",
+      "contact": "Contato"
+    }
+  },
+   "loginModal": {
+      "title": "Entrar",
+      "google": "Entrar com Google",
+      "email": "Email",
+      "password": "Senha",
+      "submit": "Entrar",
+      "forgotPassword": "Esqueceu sua senha?",
+      "register": "Não tem conta? Cadastre-se",
+      "close": "Fechar",
+      "welcome": "Bem-vindo ao meu portfólio de desenvolvimento!"
+    },
+    "registerModal": {
+      "title": "Cadastre-se",
+      "welcome": "Junte-se ao meu portfólio de desenvolvimento e comece sua jornada!",
+      "name": "Nome Completo",
+      "email": "Email",
+      "password": "Senha",
+      "confirmPassword": "Confirmar Senha",
+      "submit": "Registrar",
+      "alreadyHaveAccount": "Já tem uma conta? Entrar"
+    },
+    "forgotModal": {
+      "title": "Redefinir Senha",
+      "welcome": "Digite seu email para redefinir sua senha.",
+      "email": "Email",
+      "submit": "Redefinir Senha",
+      "switchToLogin": "Voltar para Entrar"
+    },
+    "home": {
+      "welcome": "Olá, bem-vindo ao meu site pessoal.",
+      "intro": "Meu nome é Enzo Pinotti, um "
+    }
+  }
+  

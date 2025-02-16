@@ -1,0 +1,42 @@
+// src/styles/pages/home.scss
+@import '../abstracts/_variables.scss';
+
+.home-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: $spacing-unit * 2;
+  text-align: center;
+  color: $color-white;
+  width: 68%;
+  user-select: none;
+  h1 {
+    font-size: 1.8rem;  
+    margin-bottom: $spacing-unit * 2;
+  }
+
+  p {
+    font-size: 1.2rem;     
+    line-height: 1.4;
+    font-weight: 400;
+    span{
+      font-size: 1.5rem;
+    }
+  }
+}
+
+@media (min-width: 768px) {
+  .home-container {
+    h1 {
+      font-size: 4.5rem;  // Fuente mayor en pantallas grandes
+      margin-bottom: $spacing-unit * 7;
+    }
+    p {
+      font-size: 1.55rem; // Fuente mayor para párrafos en desktop
+      span{
+        font-size: 1.9rem;
+      }
+    }
+  }
+}

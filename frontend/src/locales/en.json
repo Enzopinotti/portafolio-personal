@@ -1,0 +1,45 @@
+{
+    "header": {
+    "login": "Log In",
+    "downloadCV": "Download CV",
+    "nav": {
+      "home": "Home",
+      "services": "Services",
+      "projects": "Projects",
+      "blog": "Blog",
+      "contact": "Contact"
+    }},
+    "loginModal": {
+      "title": "Log In",
+      "google": "Sign in with Google",
+      "email": "Email address",
+      "password": "Password",
+      "submit": "Sign in",
+      "forgotPassword": "Forgot your password?",
+      "register": "Don't have an account? Sign up",
+      "close": "Close",
+      "welcome": "Welcome to my developer portfolio!"
+    },
+    "registerModal": {
+      "title": "Sign Up",
+      "welcome": "Join my developer portfolio and start your journey!",
+      "name": "Full Name",
+      "email": "Email Address",
+      "password": "Password",
+      "confirmPassword": "Confirm Password",
+      "submit": "Register",
+      "alreadyHaveAccount": "Already have an account? Log In"
+    },
+      "forgotModal": {
+      "title": "Reset Password",
+      "welcome": "Enter your email to reset your password.",
+      "email": "Email address",
+      "submit": "Reset Password",
+      "switchToLogin": "Back to Login"
+    },
+    "home": {
+      "welcome": "Hi, welcome to my personal website.",
+      "intro": "My name is Enzo Pinotti, a "
+    }
+  }
+  

@@ -13,5 +13,11 @@
 @import 'layouts/header';
 @import 'layouts/footer';
 @import 'layouts/telefono';
+@import 'components/LoginModal.scss';
+@import 'components/LanguageSwitcher.scss';
+@import 'components/RegisterModal.scss';
+@import 'components/ForgotPasswordModal.scss';
+@import 'components/home.scss';
+@import 'components/typewriterWithThinking.scss';
 
 // Puedes importar otros estilos aquí si lo deseas

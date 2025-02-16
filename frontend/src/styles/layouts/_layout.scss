@@ -6,7 +6,6 @@
     min-height: 100vh;
     background-size: cover;
     background-position: center;
-    color: $color-text;
     position: relative;
     .background {
       position: fixed;
@@ -17,7 +16,7 @@
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
-      z-index: -1; // Asegura que el fondo esté detrás del contenido
+      z-index: -1; 
   
       // Añadir la sombra negra en los bordes
       &::after {
@@ -43,6 +42,10 @@
       flex: 1;
       overflow: hidden;
       position: relative;
+      display: flex;
+      width: 100%;
+      justify-content: center;
+      align-items: center;
     }
   }
   

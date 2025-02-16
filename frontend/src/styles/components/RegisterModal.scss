@@ -1,0 +1,129 @@
+// src/components/RegisterModal.scss
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba($color-black, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    transition: background 0.3s ease;
+  }
+  
+  .modal-content {
+    position: relative;
+    background: $color-white;
+    border-radius: 10px;
+    padding: 1.5rem;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 4px 12px rgba($color-black, 0.15);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+  
+    .close-icon {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: transparent;
+      border: none;
+      font-size: 1.5rem;
+      color: $color-gray-dark;
+      cursor: pointer;
+      transition: transform 0.3s ease, color 0.3s ease;
+      &:hover {
+        transform: rotate(90deg);
+        color: $color-blue;
+      }
+    }
+  
+    h2 {
+      margin: 0 0 0.5rem;
+      font-size: 1.5rem;
+      color: $color-gray-dark;
+    }
+  
+    .welcome-text {
+      margin-bottom: 1.5rem;
+      font-size: 1rem;
+      color: $color-gray-dark;
+    }
+  
+    .register-form {
+      display: flex;
+      flex-direction: column;
+  
+      input {
+        padding: 0.75rem;
+        margin-bottom: 1rem;
+        border: 1px solid $color-gray-medium;
+        border-radius: 4px;
+        font-size: 1rem;
+        transition: border-color 0.3s ease;
+        &:focus {
+          outline: none;
+          border-color: $color-blue;
+        }
+      }
+  
+      .submit-button {
+        background: $color-green;
+        color: $color-white;
+        padding: 0.75rem;
+        border: none;
+        border-radius: 4px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background 0.3s ease, transform 0.3s ease;
+        &:hover {
+          background: $color-green-dark;
+          transform: translateY(-2px);
+        }
+      }
+    }
+  
+    .links-container {
+      margin-top: 1rem;
+      .text-button {
+        background: none;
+        border: none;
+        color: $color-blue;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: color 0.3s ease;
+        &:hover {
+          color: $color-blue-dark;
+        }
+      }
+    }
+  }
+  
+  @media (min-width: 768px) {
+    .modal-content {
+      max-width: 450px;
+      padding: 2rem;
+      h2 {
+        font-size: 1.75rem;
+        margin-bottom: 1rem;
+      }
+      .welcome-text {
+        font-size: 1.125rem;
+      }
+      .register-form input,
+      .register-form .submit-button {
+        font-size: 1.125rem;
+      }
+      .links-container .text-button {
+        font-size: 1rem;
+      }
+      .close-icon {
+        font-size: 1.75rem;
+      }
+    }
+  }
+  

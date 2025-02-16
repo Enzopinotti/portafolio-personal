@@ -1,13 +1,51 @@
-// src/styles/layouts/_telefono.scss
+@import '../abstracts/_variables.scss';
 
 .telefono {
-    position: fixed;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    writing-mode: vertical-rl;
-    text-orientation: mixed;
-    color: $color-text;
-    opacity: 0.8;
+  // Posición para mobile (vertical en el lateral derecho)
+  position: fixed;
+  right: $spacing-unit;
+  top: 50%;
+  text-align: center;
+  width: 100vw;
+  transform: translateY(-50%);
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  color: $color-text-light;
+  opacity: 0.8;
+  padding-bottom: 0.5rem;
+  animation: pulse 2s infinite ease-in-out;
+
+  @keyframes pulse {
+    0%, 100% {
+      transform: translateY(-50%) scale(1);
+      opacity: 0.8;
+    }
+    50% {
+      transform: translateY(-50%) scale(1.05);
+      opacity: 1;
+    }
   }
-  
+
+  @media (min-width: 768px) {
+    // En pantallas grandes, se muestra horizontalmente en la parte inferior
+    writing-mode: horizontal-tb;
+    bottom: $spacing-unit;
+    top: auto;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1rem;
+    opacity: 0.9;
+    animation: pulseDesktop 2s infinite ease-in-out;
+    
+    @keyframes pulseDesktop {
+      0%, 100% {
+        transform: translateX(-50%) scale(1);
+        opacity: 0.9;
+      }
+      50% {
+        transform: translateX(-50%) scale(1.05);
+        opacity: 1;
+      }
+    }
+  }
+}

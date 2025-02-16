@@ -1,13 +1,62 @@
-// src/styles/layouts/_footer.scss
+@import '../abstracts/_variables.scss';
 
 .footer {
-    position: fixed;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
+  position: fixed;
+  left: 0;
+  top: 0; // Ajusta este valor según la altura de tu header
+  bottom: 0;
+  width: 50px; // Ancho del footer vertical
+  backdrop-filter: blur(2px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: $spacing-unit;
+  z-index: 0;
+  user-select: none;
+  .social-icons {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-unit;
+    padding: 0.4rem;
+    
+    a {
+      color: $color-text-light;
+      transition: transform 0.3s ease, color 0.3s ease, text-shadow 0.3s ease;
+      width: 20px;
+      &:hover {
+        transform: scale(1.1);
+        text-shadow: 0 0 4px rgba(255,255,255,0.5);
+      }
+      
+      &:nth-child(1) {
+        // Instagram: color oficial: #E1306C
+        &:hover {
+          color: #E1306C;
+        }
+      }
+      
+      &:nth-child(2) {
+        // LinkedIn: color oficial: #0077B5
+        &:hover {
+          color: #0077B5;
+        }
+      }
+      
+      &:nth-child(3) {
+        // WhatsApp: color oficial: #25D366
+        &:hover {
+          color: #25D366;
+        }
+      }
+    }
+  }
+
+  .copyright {
+    padding-right: 0.5rem;
     writing-mode: vertical-rl;
     text-orientation: mixed;
-    color: $color-text;
-    opacity: 0.8;
+    font-size: 0.8rem;
+    color: $color-text-light;
+    margin-bottom: $spacing-unit;
   }
-  
+}

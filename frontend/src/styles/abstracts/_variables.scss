@@ -1,9 +1,26 @@
 // src/styles/abstracts/_variables.scss
 
-// Colores
+// Colores principales
 $color-primary: #00bcd4;
 $color-secondary: #ff4081;
-$color-text: #ffffff;
+
+// Colores neutrales y de soporte
+$color-black: #000000;
+$color-white: #ffffff;
+$color-gray-light: #f0f0f0;
+$color-gray-medium: #cccccc;  // Usado para bordes, por ejemplo.
+$color-gray-dark: #272727;
+
+// Colores para textos
+$color-text-light: #ffffff;  // Para textos sobre fondos oscuros.
+$color-text-dark: #333333;   // Para textos sobre fondos claros.
+
+// Colores de acento
+$color-blue: #007BFF;
+$color-blue-dark: #0056b3;
+$color-green: #28a745;
+$color-green-dark: #218838;
+$color-orange: #f39c12;
 
 // Tipografía
 $font-family-base: 'Work Sans', sans-serif;

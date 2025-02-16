@@ -5,7 +5,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import Boom from '@hapi/boom';
-import { generarAccessToken, generarRefreshToken } from '../config/tokenUtils.js';
+import { generarAccessToken, generarRefreshToken } from '../utils/tokenUtils.js';
 import { registrarEvento } from '../utils/auditLogger.js';
 import logger from '../config/logger.js';
 
