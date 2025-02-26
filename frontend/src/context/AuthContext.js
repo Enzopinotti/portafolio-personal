@@ -1,37 +1,42 @@
 // src/context/AuthContext.js
-
 import React, { createContext, useState, useEffect } from 'react';
-import jwt_decode from 'jwt-decode';
+import { getProfile, logoutUser } from '../services/authService.js';
 
 export const AuthContext = createContext();
 
-const AuthProvider = ({ children }) => {
+export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      const decoded = jwt_decode(token);
-      setUser(decoded);
+  const fetchProfile = async () => {
+    try {
+      // getProfile llama al endpoint GET /perfil para obtener la información del usuario
+      const data = await getProfile();
+      setUser(data);
+    } catch (error) {
+      console.error('Error al obtener perfil:', error);
+      setUser(null);
+    } finally {
+      setLoading(false);
     }
-  }, []);
-
-  const login = (token) => {
-    localStorage.setItem('token', token);
-    const decoded = jwt_decode(token);
-    setUser(decoded);
   };
 
-  const logout = () => {
-    localStorage.removeItem('token');
+  useEffect(() => {
+    fetchProfile();
+  }, []);
+
+  const logout = async () => {
+    try {
+      await logoutUser();
+    } catch (error) {
+      console.error('Error al cerrar sesión:', error);
+    }
     setUser(null);
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, setUser, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );
 };
-
-export default AuthProvider;

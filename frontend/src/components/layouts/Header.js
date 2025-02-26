@@ -1,20 +1,23 @@
 // src/components/layouts/Header.js
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import Nav from './Nav.js';
 import LanguageSwitcher from '../LanguageSwitcher.js';
 import AuthModal from '../AuthModal.js';
+import { AuthContext } from '../../context/AuthContext.js';
+import { FaUserCircle } from 'react-icons/fa';
 
 const Header = () => {
   const { t } = useTranslation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAuthOpen, setIsAuthOpen] = useState(false);
-  const [modalType, setModalType] = useState('login'); // "login", "register", o "forgot"
+  const [modalType, setModalType] = useState('login');
+  const { user, logout } = useContext(AuthContext);
+  const [showDropdown, setShowDropdown] = useState(false);
 
-  const toggleMenu = () => setIsMenuOpen((prev) => !prev);
-  
-  // Abre el modal de autenticación y define el tipo (login, register, etc.)
+  const toggleMenu = () => setIsMenuOpen(prev => !prev);
+
   const openAuthModal = (type = 'login') => {
     setIsMenuOpen(false);
     setModalType(type);
@@ -23,20 +26,9 @@ const Header = () => {
 
   const closeAuthModal = () => setIsAuthOpen(false);
 
-  // Estos callbacks reciben los datos del backend, NO el evento.
-  const handleLoginSuccess = (data) => {
-    // Aquí manejas el login (por ejemplo, guardas el token en el estado global)
-    // Además, muestra el toast y cierra el modal
-    console.log('Login exitoso:', data);
-    // Ejemplo: toast.success(t('loginModal.success'));
-    closeAuthModal();
-  };
-
-  const handleRegisterSuccess = (data) => {
-    // Muestra el toast de éxito y cambia el modal a login
-    console.log('Registro exitoso:', data);
-    // Ejemplo: toast.success(t('registerModal.success'));
-    setModalType('login');
+  const handleLogout = async () => {
+    await logout();
+    setShowDropdown(false);
   };
 
   return (
@@ -53,9 +45,29 @@ const Header = () => {
         <div className="menu-content">
           <Nav handleMenuToggle={toggleMenu} />
           <div className="menu-buttons">
-            <button onClick={() => openAuthModal('login')}>
-              {t('header.login')}
-            </button>
+            {user ? (
+              <div className="user-menu">
+                <FaUserCircle
+                  size={32}
+                  onClick={() => setShowDropdown(!showDropdown)}
+                  style={{ cursor: 'pointer' }}
+                />
+                {showDropdown && (
+                  <div className="dropdown">
+                    <Link to="/perfil" onClick={() => setShowDropdown(false)}>
+                      {t('header.myProfile') || 'Mi Perfil'}
+                    </Link>
+                    <button onClick={handleLogout}>
+                      {t('header.logout') || 'Cerrar Sesión'}
+                    </button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <button onClick={() => openAuthModal('login')}>
+                {t('header.login')}
+              </button>
+            )}
             <a href="URL_DEL_CV" download="Mi_CV.pdf" className="download-button">
               {t('header.downloadCV')}
             </a>
@@ -66,19 +78,24 @@ const Header = () => {
       <div className="header-extras">
         <LanguageSwitcher />
       </div>
-      <AuthModal
-        modalType={modalType}
-        isOpen={isAuthOpen}
-        onClose={closeAuthModal}
-        onSwitchType={(type) => setModalType(type)}
-        onLogin={handleLoginSuccess}
-        onRegister={handleRegisterSuccess}
-        onForgotPassword={() => setModalType('forgot')}
-        onGoogleLogin={() => {
-          // Lógica para login con Google
-          window.location.href = `${process.env.REACT_APP_API_URL}/usuarios/auth/google`;
-        }}
-      />
+      {!user && (
+        <AuthModal
+          modalType={modalType}
+          isOpen={isAuthOpen}
+          onClose={closeAuthModal}
+          onSwitchType={(type) => setModalType(type)}
+          onLogin={(data) => {
+            closeAuthModal();
+          }}
+          onRegister={(data) => {
+            setModalType('login');
+          }}
+          onForgotPassword={() => setModalType('forgot')}
+          onGoogleLogin={() => {
+            window.location.href = `${process.env.REACT_APP_API_URL}/usuarios/auth/google`;
+          }}
+        />
+      )}
     </header>
   );
 };

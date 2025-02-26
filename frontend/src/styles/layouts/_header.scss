@@ -120,7 +120,33 @@
       }
     }
   }
-
+  .user-menu {
+    position: relative;
+    display: inline-block;
+    .dropdown {
+      position: absolute;
+      top: 110%;
+      right: 0;
+      background-color: $color-white;
+      border: 1px solid $color-gray-medium;
+      border-radius: 4px;
+      box-shadow: 0 4px 12px rgba($color-black, 0.15);
+      padding: $spacing-unit;
+      display: flex;
+      flex-direction: column;
+      a, button {
+        background: none;
+        border: none;
+        color: $color-blue;
+        padding: $spacing-unit;
+        text-align: left;
+        cursor: pointer;
+        &:hover {
+          color: $color-blue-dark;
+        }
+      }
+    }
+  }
   @media (min-width: 768px) {
     .menu-icon {
       display: none;

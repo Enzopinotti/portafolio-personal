@@ -57,3 +57,15 @@ export const forgotPassword = async (userData) => {
 export const resetPassword = async (token, newPassword) => {
   return postData('/usuarios/reset-password', { token, newPassword });
 };
+
+export const getProfile = async () => {
+  const response = await fetch(`${API_URL}/usuarios/perfil`, {
+    method: 'GET',
+    credentials: 'include',
+  });
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw errorData;
+  }
+  return response.json();
+};

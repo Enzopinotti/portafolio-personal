@@ -14,6 +14,7 @@ import EmailConfirmationModal from './components/EmailConfirmationModal.js';
 import ResetPasswordModal from './components/ResetPasswordModal.js';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { AuthProvider } from './context/AuthContext.js';
 
 const AppContent = ({ onShowForgotPassword }) => {
   const location = useLocation();
@@ -84,9 +85,11 @@ function App() {
   return (
     <Router>
       <NavigationProvider>
-        <Routes>
-          <Route path="/*" element={<AppContent />} />
-        </Routes>
+        <AuthProvider>
+          <Routes>
+            <Route path="/*" element={<AppContent />} />
+          </Routes>
+        </AuthProvider>
       </NavigationProvider>
     </Router>
   );
