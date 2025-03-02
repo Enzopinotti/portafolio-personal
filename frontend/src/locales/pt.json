@@ -26,6 +26,7 @@
       "title": "Registrar",
       "welcome": "Junte-se a nós!",
       "name": "Nome",
+      "surname": "Sobrenome",
       "email": "Email",
       "password": "Senha",
       "confirmPassword": "Confirmar Senha",

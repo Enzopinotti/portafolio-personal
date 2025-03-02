@@ -3,11 +3,15 @@ import React, { useState } from 'react';
 import { resetPassword } from '../services/authService.js';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 const ResetPasswordForm = ({ token, onResetSuccess }) => {
   const { t } = useTranslation();
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [showNewPass, setShowNewPass] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
+
   const [errorMsg, setErrorMsg] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -32,21 +36,36 @@ const ResetPasswordForm = ({ token, onResetSuccess }) => {
 
   return (
     <form onSubmit={handleSubmit} className="reset-password-form">
-      <input
-        type="password"
-        placeholder={t('resetPassword.newPassword') || 'Nueva contraseña'}
-        value={newPassword}
-        onChange={(e) => setNewPassword(e.target.value)}
-        required
-      />
-      <input
-        type="password"
-        placeholder={t('resetPassword.confirmPassword') || 'Confirmar contraseña'}
-        value={confirmPassword}
-        onChange={(e) => setConfirmPassword(e.target.value)}
-        required
-      />
+      {/* Nueva contraseña */}
+      <div className="password-field">
+        <input
+          type={showNewPass ? 'text' : 'password'}
+          placeholder={t('resetPassword.newPassword') || 'Nueva contraseña'}
+          value={newPassword}
+          onChange={(e) => setNewPassword(e.target.value)}
+          required
+        />
+        <span className="toggle-password" onClick={() => setShowNewPass(!showNewPass)}>
+          {showNewPass ? <FaEyeSlash /> : <FaEye />}
+        </span>
+      </div>
+
+      {/* Confirmar contraseña */}
+      <div className="password-field">
+        <input
+          type={showConfirm ? 'text' : 'password'}
+          placeholder={t('resetPassword.confirmPassword') || 'Confirmar contraseña'}
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+          required
+        />
+        <span className="toggle-password" onClick={() => setShowConfirm(!showConfirm)}>
+          {showConfirm ? <FaEyeSlash /> : <FaEye />}
+        </span>
+      </div>
+
       {errorMsg && <p className="error">{errorMsg}</p>}
+
       <button type="submit" className="submit-button" disabled={loading}>
         {loading ? t('resetPassword.loading') || 'Actualizando...' : t('resetPassword.submit') || 'Actualizar contraseña'}
       </button>

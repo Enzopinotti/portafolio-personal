@@ -57,8 +57,28 @@
     .register-form {
       display: flex;
       flex-direction: column;
-  
+      user-select: none;
+      .password-field{
+        position: relative;
+        input {
+          padding-right: 2.5rem;
+          width: 100%;
+        }
+        .toggle-password {
+          position: absolute;
+          top: 40%;
+          right: 0.75rem;
+          transform: translateY(-50%);
+          cursor: pointer;
+          color: $color-gray-medium;
+          font-size: 1.2rem;
+          &:hover {
+            color: $color-blue;
+          }
+        }
+      }
       input {
+        padding-right: 2.5rem;
         padding: 0.75rem;
         margin-bottom: 1rem;
         border: 1px solid $color-gray-medium;
@@ -70,7 +90,7 @@
           border-color: $color-blue;
         }
       }
-  
+      
       .submit-button {
         background: $color-green;
         color: $color-white;
@@ -96,6 +116,7 @@
         font-size: 0.9rem;
         cursor: pointer;
         transition: color 0.3s ease;
+        user-select: none;
         &:hover {
           color: $color-blue-dark;
         }

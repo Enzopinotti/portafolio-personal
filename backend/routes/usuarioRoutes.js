@@ -1,6 +1,7 @@
 // routes/usuarioRoutes.js
 import { Router } from 'express';
 import passport from 'passport';
+import Boom from '@hapi/boom';
 import {
   registrarVisitante,
   cerrarSesion,
@@ -28,13 +29,24 @@ const router = Router();
 // Se aplica el middleware de validación y sanitización
 router.post('/registrar', validateRegister, registrarVisitante);
 
-// Login: se valida la data y luego se autentica con Passport y se llama al controlador
-router.post(
-  '/login',
-  validateLogin,
-  passport.authenticate('local', { session: false }),
-  loginLocalController
-);
+// * Login local con callback manual
+router.post('/login', validateLogin, (req, res, next) => {
+  passport.authenticate('local', { session: false }, (err, user, info) => {
+    if (err) {
+      // Error interno (ej. DB) en la estrategia
+      return next(Boom.internal(err.message || 'Error en la autenticación.'));
+    }
+    if (!user) {
+      // Credenciales inválidas => 401
+      // "info.message" viene de la estrategia local
+      return next(Boom.unauthorized(info?.message || 'Email o contraseña incorrectos.'));
+    }
+    // Si hay usuario, lo guardamos en req.user y llamamos al controlador
+    req.user = user;
+    return loginLocalController(req, res, next);
+  })(req, res, next);
+});
+
 // Forgot Password: valida el email y luego llama al controlador
 router.post('/forgot', validateForgotPassword, forgotPassword);
 router.post('/reset-password', resetPassword);

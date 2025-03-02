@@ -19,7 +19,7 @@ dotenv.config();
 
 export const registrarVisitante = async (req, res, next) => {
   try {
-    const { nombre, email, contraseña, clientURI } = req.body;
+    const { nombre, apellido ,email, contraseña, clientURI } = req.body;
     const usuarioExistente = await Usuario.findOne({ where: { email } });
     if (usuarioExistente) {
       logger.info(`Registro fallido: email ${email} ya registrado.`);
@@ -33,9 +33,10 @@ export const registrarVisitante = async (req, res, next) => {
     const hashedPassword = await bcrypt.hash(contraseña, 10);
     const nuevoUsuario = await Usuario.create({
       nombre,
+      apellido,
       email,
       password: hashedPassword,
-      idRol: 3,
+      idRol: 2,
       emailToken,
       emailTokenExpires,
       emailConfirmed: false,
@@ -145,29 +146,22 @@ export const loginGoogleController = async (req, res, next) => {
     if (!usuario) {
       return next(Boom.badRequest('Autenticación con Google fallida.'));
     }
-    await registrarEvento({
-      userId: usuario.idUsuario,
-      action: 'LOGIN_GOOGLE',
-      target: 'usuario',
-      details: { email: usuario.email, success: true },
-      req,
-    });
+
     logger.info(`Usuario ${usuario.email} autenticado con Google exitosamente.`);
-    
-    // Establece la cookie con el refresh token
+
+    // Guarda el refresh token en cookie HTTP-only
     res.cookie('refreshToken', refreshJwt, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
-    
-    // Redirige al usuario a la URL del frontend (home)
+
+    // Redirige con el access token en el query param
     const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
-    return res.redirect(frontendUrl);
-    
-    // Si quisieras enviar el access token en la URL (no recomendado por seguridad), podrías hacerlo en query params,
-    // pero en general, al estar el refresh token en cookie, el frontend podrá hacer peticiones seguras al backend.
+    const redirectUrl = `${frontendUrl}?accessToken=${accessJwt}`;
+
+    return res.redirect(redirectUrl);
   } catch (error) {
     logger.error(`Error en loginGoogleController: ${error.message}`);
     return next(Boom.internal(error.message));
@@ -346,7 +340,7 @@ export const refrescarToken = async (req, res, next) => {
 export const verPerfil = async (req, res, next) => {
   try {
     const usuario = await Usuario.findByPk(req.usuario.idUsuario, {
-      attributes: ['idUsuario', 'nombre', 'email'],
+      attributes: ['idUsuario', 'nombre', 'apellido' , 'email'],
       include: [{ model: Rol, attributes: ['nombre'] }],
     });
     if (!usuario) {

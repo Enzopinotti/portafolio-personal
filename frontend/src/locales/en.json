@@ -25,6 +25,7 @@
       "title": "Register",
       "welcome": "Join us!",
       "name": "Name",
+      "surname": "Surname",
       "email": "Email",
       "password": "Password",
       "confirmPassword": "Confirm Password",

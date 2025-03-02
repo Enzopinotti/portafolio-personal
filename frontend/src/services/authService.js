@@ -10,7 +10,7 @@ const postData = async (endpoint, data) => {
   const response = await fetch(`${API_URL}${endpoint}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    credentials: 'include', // Para enviar y recibir cookies
+    credentials: 'include', 
     body: JSON.stringify(data),
   });
   console.log('respuesta: ', response);
@@ -20,6 +20,17 @@ const postData = async (endpoint, data) => {
     throw errorData;
   }
   return response.json();
+};
+
+export const refreshAccessToken = async () => {
+  const response = await fetch(`${API_URL}/usuarios/refresh`, {
+    method: 'POST',
+    credentials: 'include'
+  });
+  if (!response.ok) {
+    throw await response.json();
+  }
+  return response.json(); // => { accessToken }
 };
 
 export const loginUser = async (credentials) => {
@@ -58,10 +69,14 @@ export const resetPassword = async (token, newPassword) => {
   return postData('/usuarios/reset-password', { token, newPassword });
 };
 
-export const getProfile = async () => {
+export const getProfile = async (accessToken) => {
+  // Aquí usamos el access token en la cabecera Authorization
   const response = await fetch(`${API_URL}/usuarios/perfil`, {
     method: 'GET',
-    credentials: 'include',
+    credentials: 'include', // para enviar la cookie con refreshToken
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
   });
   if (!response.ok) {
     const errorData = await response.json();

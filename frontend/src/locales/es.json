@@ -26,6 +26,7 @@
       "title": "Registro",
       "welcome": "¡Únete a nosotros!",
       "name": "Nombre",
+      "surname": "Apellido",
       "email": "Correo electrónico",
       "password": "Contraseña",
       "confirmPassword": "Confirmar contraseña",

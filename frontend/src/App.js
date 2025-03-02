@@ -1,12 +1,11 @@
 // src/App.js
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import {
   BrowserRouter as Router,
   Routes,
   Route,
   useLocation,
   useNavigate,
-  Navigate,
 } from 'react-router-dom';
 import NavigationProvider from './context/NavigationContext.js';
 import Layout from './components/layouts/Layout.js';
@@ -14,11 +13,15 @@ import EmailConfirmationModal from './components/EmailConfirmationModal.js';
 import ResetPasswordModal from './components/ResetPasswordModal.js';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { AuthProvider } from './context/AuthContext.js';
+import { AuthProvider, AuthContext } from './context/AuthContext.js';
 
-const AppContent = ({ onShowForgotPassword }) => {
+const AppContent = () => {
   const location = useLocation();
   const navigate = useNavigate();
+
+  // Importar la función "login" desde AuthContext
+  const { login } = useContext(AuthContext);
+
   const [showEmailConfirmation, setShowEmailConfirmation] = useState(false);
   const [showResetPassword, setShowResetPassword] = useState(false);
   const [token, setToken] = useState(null);
@@ -26,13 +29,15 @@ const AppContent = ({ onShowForgotPassword }) => {
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const resetToken = params.get('token');
-    // Si el path es /reset-password y hay token, mostramos el modal de reset
+    const accessToken = params.get('accessToken');
+
+    // Manejar reset password
     if (location.pathname === '/reset-password' && resetToken) {
       setToken(resetToken);
       setShowResetPassword(true);
       navigate('/', { replace: true });
     } else {
-      // Si hay token y el path es /confirm-email, mostramos el modal de confirmación
+      // Manejar email confirmation
       const confirmToken = params.get('token');
       if (confirmToken) {
         setToken(confirmToken);
@@ -40,7 +45,16 @@ const AppContent = ({ onShowForgotPassword }) => {
         navigate('/', { replace: true });
       }
     }
-  }, [location, navigate]);
+
+    // Manejar login con Google (accessToken en query param)
+    if (accessToken) {
+      // Llamamos a login(...) del AuthContext
+      login(accessToken);
+
+      // Quitar el query param de la URL
+      window.history.replaceState({}, '', '/');
+    }
+  }, [location, navigate, login]);
 
   const handleGoToLogin = () => {
     setShowEmailConfirmation(false);
@@ -57,18 +71,16 @@ const AppContent = ({ onShowForgotPassword }) => {
     <>
       <Layout />
       <ToastContainer position="top-right" autoClose={3000} />
+      
       {showEmailConfirmation && (
         <EmailConfirmationModal
           isOpen={showEmailConfirmation}
           onClose={() => setShowEmailConfirmation(false)}
           onGoToLogin={handleGoToLogin}
-          onGoToForgotPassword={() => {
-            setShowEmailConfirmation(false);
-            // Opcional: abrir modal de forgot password si se desea
-          }}
           token={token}
         />
       )}
+
       {showResetPassword && (
         <ResetPasswordModal
           isOpen={showResetPassword}
