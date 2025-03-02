@@ -49,17 +49,35 @@ export const enviarMensaje = async (req, res, next) => {
 
 export const listarMensajes = async (req, res, next) => {
   try {
-    logger.info('Listar Mensajes: Obteniendo todos los mensajes de contacto.');
-    const mensajes = await MensajeContacto.findAll({
+    logger.info('Listar Mensajes: Obteniendo todos los mensajes de contacto (paginados).');
+
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+
+    const options = {
+      page,
+      paginate: limit,
       include: [
         {
           model: Usuario,
           attributes: ['idUsuario', 'nombre'],
         },
       ],
+    };
+
+    const { docs, pages, total } = await MensajeContacto.paginate(options);
+
+    logger.info(
+      `Listar Mensajes: Se obtuvieron ${docs.length} mensajes en la página ${page}. Total: ${total}.`
+    );
+
+    res.status(200).json({
+      mensajes: docs,
+      total,
+      pages,
+      currentPage: page,
+      limit,
     });
-    logger.info(`Listar Mensajes: Se obtuvieron ${mensajes.length} mensajes.`);
-    res.status(200).json(mensajes);
   } catch (error) {
     logger.error(`Error en listarMensajes: ${error.message}`);
     return next(Boom.internal(error.message));

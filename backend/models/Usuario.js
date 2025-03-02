@@ -1,5 +1,6 @@
 import { DataTypes } from 'sequelize';
 import sequelize from '../config/database.js';
+import sequelizePaginate from 'sequelize-paginate';
 
 const Usuario = sequelize.define(
   'Usuario',
@@ -79,5 +80,7 @@ const Usuario = sequelize.define(
     timestamps: false,
   }
 );
+
+sequelizePaginate.paginate(Usuario);
 
 export default Usuario;

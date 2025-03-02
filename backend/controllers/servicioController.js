@@ -28,17 +28,35 @@ export const crearServicio = async (req, res, next) => {
 
 export const listarServicios = async (req, res, next) => {
   try {
-    logger.info('Listar Servicios: Obteniendo todos los servicios.');
-    const servicios = await Servicio.findAll({
+    logger.info('Listar Servicios: Obteniendo todos los servicios paginados.');
+
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+
+    const options = {
+      page,
+      paginate: limit,
       include: [
         {
           model: Imagen,
           attributes: ['idImagen', 'ruta', 'descripcion'],
         },
       ],
+    };
+
+    const { docs, pages, total } = await Servicio.paginate(options);
+
+    logger.info(
+      `Servicios obtenidos en la página ${page}: ${docs.length}. Total: ${total}.`
+    );
+
+    res.status(200).json({
+      servicios: docs,
+      total,
+      pages,
+      currentPage: page,
+      limit,
     });
-    logger.info(`Servicios obtenidos: ${servicios.length}`);
-    res.status(200).json(servicios);
   } catch (error) {
     logger.error(`Error al listar servicios: ${error.message}`);
     return next(Boom.internal(error.message));

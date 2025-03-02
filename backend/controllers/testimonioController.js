@@ -12,53 +12,64 @@ import Boom from '@hapi/boom';
 export const crearTestimonio = async (req, res, next) => {
   try {
     const { nombre, mensaje } = req.body;
-    const idUsuario = req.usuario ? req.usuario.idUsuario : null;
+    const idUsuario = req.usuario.idUsuario; // al venir de verificarToken
 
-    logger.info(`Crear Testimonio: Iniciando creación para usuario: ${idUsuario || 'Visitante'}`);
-
+    // Por defecto, se crea con publicado: false
     const nuevoTestimonio = await Testimonio.create({
       nombre,
       mensaje,
       idUsuario,
+      publicado: false,
     });
 
-    // Registrar evento de auditoría (opcional)
-    await registrarEvento({
-      userId: idUsuario,
-      action: 'CREATE_TESTIMONIO',
-      target: 'testimonio',
-      details: { nombre, mensaje },
-      req,
-    });
-    logger.info(`Testimonio creado exitosamente (ID: ${nuevoTestimonio.id_testimonio}).`);
-
-    res.status(201).json({ 
-      mensaje: 'Testimonio creado exitosamente.', 
-      testimonio: nuevoTestimonio 
+    // ...
+    res.status(201).json({
+      mensaje: 'Testimonio creado. Esperando revisión del administrador.',
+      testimonio: nuevoTestimonio
     });
   } catch (error) {
-    logger.error(`Error al crear testimonio: ${error.message}`);
     return next(Boom.internal(error.message));
   }
 };
+
 
 /**
  * Listar todos los testimonios, incluyendo datos básicos del usuario.
  */
 export const listarTestimonios = async (req, res, next) => {
   try {
-    logger.info('Listar Testimonios: Obteniendo todos los testimonios.');
-    const testimonios = await Testimonio.findAll({
+    logger.info('Listar Testimonios: Obteniendo todos los testimonios paginados.');
+
+    // Tomar page y limit desde query params ?page=1&limit=10
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+
+    // Puedes agregar un order y includes
+    const options = {
+      page,             // página actual
+      paginate: limit,  // cuántos por página
+      order: [['fecha', 'DESC']],
       include: [
         {
           model: Usuario,
           attributes: ['idUsuario', 'nombre', 'email'],
         },
       ],
-      order: [['fecha', 'DESC']],
+    };
+
+    // Usamos Testimonio.paginate
+    const { docs, pages, total } = await Testimonio.paginate(options);
+
+    logger.info(`Se obtuvieron ${docs.length} testimonios en la página ${page}. Total: ${total}.`);
+
+    // Retornamos un objeto con docs y la info de paginación
+    return res.status(200).json({
+      testimonios: docs,
+      total,
+      pages,
+      currentPage: page,
+      limit,
     });
-    logger.info(`Testimonios obtenidos: ${testimonios.length}`);
-    res.status(200).json(testimonios);
   } catch (error) {
     logger.error(`Error al listar testimonios: ${error.message}`);
     return next(Boom.internal(error.message));
@@ -99,25 +110,38 @@ export const editarTestimonio = async (req, res, next) => {
   try {
     const { id } = req.params;
     const { nombre, mensaje } = req.body;
-    logger.info(`Editar Testimonio: Intentando editar testimonio con ID ${id}`);
+
     const testimonio = await Testimonio.findByPk(id);
     if (!testimonio) {
-      logger.info(`Editar Testimonio: Testimonio con ID ${id} no encontrado.`);
       return next(Boom.notFound('Testimonio no encontrado.'));
     }
+
+    // Ver si es admin
+    let esAdmin = false;
+    if (req.usuario.idRol === 1) { // o verif. Rol 'admin'
+      esAdmin = true;
+    }
+
+    // Si NO es admin y no es el dueño, error
+    if (!esAdmin && testimonio.idUsuario !== req.usuario.idUsuario) {
+      return next(Boom.forbidden('No puedes editar este testimonio.'));
+    }
+
+    // Hacer la actualización
     if (nombre) testimonio.nombre = nombre;
     if (mensaje) testimonio.mensaje = mensaje;
+
     await testimonio.save();
-    logger.info(`Editar Testimonio: Testimonio con ID ${id} actualizado.`);
+
     res.status(200).json({
-      mensaje: 'Testimonio actualizado exitosamente.',
+      mensaje: 'Testimonio actualizado.',
       testimonio,
     });
   } catch (error) {
-    logger.error(`Error al editar testimonio: ${error.message}`);
     return next(Boom.internal(error.message));
   }
 };
+
 
 /**
  * Eliminar un testimonio.
@@ -125,21 +149,27 @@ export const editarTestimonio = async (req, res, next) => {
 export const eliminarTestimonio = async (req, res, next) => {
   try {
     const { id } = req.params;
-    logger.info(`Eliminar Testimonio: Buscando testimonio con ID ${id}`);
+
     const testimonio = await Testimonio.findByPk(id);
     if (!testimonio) {
-      logger.info(`Eliminar Testimonio: Testimonio con ID ${id} no encontrado.`);
       return next(Boom.notFound('Testimonio no encontrado.'));
     }
+
+    let esAdmin = false;
+    if (req.usuario.idRol === 1) {
+      esAdmin = true;
+    }
+
+    if (!esAdmin && testimonio.idUsuario !== req.usuario.idUsuario) {
+      return next(Boom.forbidden('No puedes eliminar este testimonio.'));
+    }
+
     await testimonio.destroy();
-    logger.info(`Eliminar Testimonio: Testimonio con ID ${id} eliminado.`);
     res.status(200).json({ mensaje: 'Testimonio eliminado exitosamente.' });
   } catch (error) {
-    logger.error(`Error al eliminar testimonio: ${error.message}`);
     return next(Boom.internal(error.message));
   }
 };
-
 /**
  * Listar todos los testimonios de un usuario específico.
  */
@@ -155,6 +185,30 @@ export const listarTestimoniosDeUsuario = async (req, res, next) => {
     res.status(200).json(testimonios);
   } catch (error) {
     logger.error(`Error al listar testimonios de usuario: ${error.message}`);
+    return next(Boom.internal(error.message));
+  }
+};
+
+export const publicarTestimonio = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { publicar = true } = req.body; // true o false
+
+    const testimonio = await Testimonio.findByPk(id);
+    if (!testimonio) {
+      return next(Boom.notFound('Testimonio no encontrado.'));
+    }
+
+    // Aquí no chequeamos el rol, porque ya lo hicimos en el middleware.
+    testimonio.publicado = publicar;
+    await testimonio.save();
+
+    const estado = publicar ? 'publicado' : 'oculto';
+    res.status(200).json({
+      mensaje: `Testimonio ${estado} exitosamente.`,
+      testimonio,
+    });
+  } catch (error) {
     return next(Boom.internal(error.message));
   }
 };

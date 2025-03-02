@@ -32,18 +32,37 @@ export const crearArticulo = async (req, res, next) => {
 
 export const listarArticulos = async (req, res, next) => {
   try {
-    logger.info('Listar Artículos: Obteniendo todos los artículos.');
-    const articulos = await Articulo.findAll({
+    logger.info('Listar Artículos: Obteniendo todos los artículos (paginados).');
+
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+
+    const options = {
+      page,
+      paginate: limit,
+      // Ordenar por fechaPublicacion desc
+      order: [['fechaPublicacion', 'DESC']],
       include: [
         {
           model: Usuario,
           attributes: ['idUsuario', 'nombre', 'email'],
         },
       ],
-      order: [['fechaPublicacion', 'DESC']],
+    };
+
+    const { docs, pages, total } = await Articulo.paginate(options);
+
+    logger.info(
+      `Listar Artículos: Se obtuvieron ${docs.length} artículos en la página ${page}. Total: ${total}.`
+    );
+
+    res.status(200).json({
+      articulos: docs,
+      total,
+      pages,
+      currentPage: page,
+      limit,
     });
-    logger.info(`Listar Artículos: Se obtuvieron ${articulos.length} artículos.`);
-    res.status(200).json(articulos);
   } catch (error) {
     logger.error(`Error en listarArticulos: ${error.message}`);
     return next(Boom.internal(error.message));

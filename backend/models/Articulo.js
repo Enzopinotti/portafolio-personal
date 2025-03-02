@@ -2,6 +2,7 @@
 
 import { DataTypes } from 'sequelize';
 import sequelize from '../config/database.js';
+import sequelizePaginate from 'sequelize-paginate';
 
 const Articulo = sequelize.define(
   'Articulo',
@@ -50,5 +51,7 @@ const Articulo = sequelize.define(
     timestamps: false,
   }
 );
+
+sequelizePaginate.paginate(Articulo);
 
 export default Articulo;

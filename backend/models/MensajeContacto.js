@@ -2,7 +2,7 @@
 
 import { DataTypes } from 'sequelize';
 import sequelize from '../config/database.js';
-
+import sequelizePaginate from 'sequelize-paginate';
 const MensajeContacto = sequelize.define(
   'MensajeContacto',
   {
@@ -52,5 +52,7 @@ const MensajeContacto = sequelize.define(
     timestamps: false,
   }
 );
+
+sequelizePaginate.paginate(MensajeContacto);
 
 export default MensajeContacto;

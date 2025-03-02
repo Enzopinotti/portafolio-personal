@@ -2,6 +2,7 @@
 
 import { DataTypes } from 'sequelize';
 import sequelize from '../config/database.js';
+import sequelizePaginate from 'sequelize-paginate';
 
 const Testimonio = sequelize.define(
   'Testimonio',
@@ -30,8 +31,13 @@ const Testimonio = sequelize.define(
     },
     idUsuario: {
       type: DataTypes.INTEGER.UNSIGNED,
-      allowNull: true, // puede ser nulo si es un visitante
+      allowNull: true, 
       field: 'id_usuario',
+    },
+    publicado: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false, 
     },
   },
   {
@@ -39,5 +45,7 @@ const Testimonio = sequelize.define(
     timestamps: false,
   }
 );
+
+sequelizePaginate.paginate(Testimonio);
 
 export default Testimonio;

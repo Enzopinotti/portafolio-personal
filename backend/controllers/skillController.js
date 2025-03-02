@@ -71,8 +71,14 @@ export const eliminarSkill = async (req, res, next) => {
 
 export const listarSkills = async (req, res, next) => {
   try {
-    logger.info('Listar Skills: Obteniendo todas las skills.');
-    const skills = await Skill.findAll({
+    logger.info('Listar Skills: Obteniendo todas las skills paginadas.');
+
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+
+    const options = {
+      page,
+      paginate: limit,
       include: [
         {
           model: CategoriaSkill,
@@ -83,9 +89,22 @@ export const listarSkills = async (req, res, next) => {
           attributes: ['idImagen', 'ruta', 'descripcion'],
         },
       ],
+    };
+
+    // Usamos Skill.paginate en lugar de findAll
+    const { docs, pages, total } = await Skill.paginate(options);
+
+    logger.info(
+      `Listar Skills: Se obtuvieron ${docs.length} skills en la página ${page}. Total: ${total}.`
+    );
+
+    res.status(200).json({
+      skills: docs,
+      total,
+      pages,
+      currentPage: page,
+      limit,
     });
-    logger.info(`Listar Skills: Se obtuvieron ${skills.length} skills.`);
-    res.status(200).json(skills);
   } catch (error) {
     logger.error(`Error al listar skills: ${error.message}`);
     return next(Boom.internal(error.message));

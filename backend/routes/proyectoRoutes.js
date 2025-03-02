@@ -10,18 +10,19 @@ import {
   listarProyectos,
   verProyecto,
 } from '../controllers/proyectoController.js';
+import { verificarRolAdmin } from '../middleware/rolMiddleware.js';
 import { verificarToken } from '../middleware/authMiddleware.js';
 
 const router = Router();
 
 // Ruta para crear un nuevo proyecto (requiere autenticación)
-router.post('/crear', verificarToken, crearProyecto);
+router.post('/crear', verificarToken, verificarRolAdmin, crearProyecto);
 
 // Ruta para editar un proyecto existente (requiere autenticación)
-router.put('/:id', verificarToken, editarProyecto);
+router.put('/:id', verificarToken, verificarRolAdmin ,editarProyecto);
 
 // Ruta para eliminar un proyecto (requiere autenticación)
-router.delete('/:id', verificarToken, eliminarProyecto);
+router.delete('/:id', verificarToken, verificarRolAdmin ,eliminarProyecto);
 
 // Ruta para listar todos los proyectos
 router.get('/', listarProyectos);
@@ -31,6 +32,6 @@ router.get('/:id', verProyecto);
 
 router.get('/buscar', buscarProyectos);
 
-router.post('/:idProyecto/skills/:idSkill', asignarSkillAProyecto);
+router.post('/:idProyecto/skills/:idSkill', verificarRolAdmin ,asignarSkillAProyecto);
 
 export default router;

@@ -2,6 +2,7 @@
 
 import { DataTypes } from 'sequelize';
 import sequelize from '../config/database.js';
+import sequelizePaginate from 'sequelize-paginate';
 
 const Servicio = sequelize.define(
   'Servicio',
@@ -38,5 +39,7 @@ const Servicio = sequelize.define(
     timestamps: false,
   }
 );
+
+sequelizePaginate.paginate(Servicio);
 
 export default Servicio;

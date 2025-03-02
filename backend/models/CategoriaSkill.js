@@ -2,6 +2,7 @@
 
 import { DataTypes } from 'sequelize';
 import sequelize from '../config/database.js';
+import sequelizePaginate from 'sequelize-paginate';
 
 const CategoriaSkill = sequelize.define(
   'CategoriaSkill',
@@ -24,5 +25,7 @@ const CategoriaSkill = sequelize.define(
     timestamps: false,
   }
 );
+
+sequelizePaginate.paginate(CategoriaSkill);
 
 export default CategoriaSkill;
