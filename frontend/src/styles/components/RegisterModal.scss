@@ -18,46 +18,79 @@
     position: relative;
     background: $color-white;
     border-radius: 10px;
-    padding: 1.5rem;
     width: 90%;
-    max-width: 400px;
+    max-width: 800px;
     box-shadow: 0 4px 12px rgba($color-black, 0.15);
     text-align: center;
     display: flex;
     flex-direction: column;
-  
-    .close-icon {
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-      background: transparent;
-      border: none;
-      font-size: 1.5rem;
-      color: $color-gray-dark;
-      cursor: pointer;
-      transition: transform 0.3s ease, color 0.3s ease;
-      &:hover {
-        transform: rotate(90deg);
-        color: $color-blue;
+    
+    .rightModal{
+      .close-icon {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background: transparent;
+        border: none;
+        font-size: 1.5rem;
+        color: $color-gray-dark;
+        cursor: pointer;
+        transition: transform 0.3s ease, color 0.3s ease;
+        &:hover {
+          transform: rotate(90deg);
+          color: $color-blue;
+        }
       }
-    }
-  
-    h2 {
-      margin: 0 0 0.5rem;
-      font-size: 1.5rem;
-      color: $color-gray-dark;
-    }
-  
-    .welcome-text {
-      margin-bottom: 1.5rem;
-      font-size: 1rem;
-      color: $color-gray-dark;
+    
+      h2 {
+        margin: 0 0 0.5rem;
+        font-size: 1.5rem;
+        color: $color-gray-dark;
+      }
+    
+      .welcome-text {
+        margin-bottom: 1.5rem;
+        font-size: 1rem;
+        color: $color-gray-dark;
+      }
+    
+      .google-button {
+        background: transparent;
+        border: 2px solid rgba($color-blue, 0.5);
+        color: $color-blue;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.75rem 1rem;
+        margin-bottom: 1rem;
+        border-radius: 4px;
+        font-size: 1rem;
+        user-select: none;
+        cursor: pointer;
+        transition: background 0.3s ease, color 0.3s ease, transform 0.3s ease;
+        
+        &:hover {
+          background: rgba($color-blue, 0.55);
+          color: $color-white;
+          transform: translateY(-2px);
+        }
+        
+        .google-icon {
+          margin-right: 0.5rem;
+          transition: transform 0.3s ease;
+        }
+        
+        &:hover .google-icon {
+          transform: rotate(10deg);
+        }
+      }
     }
   
     .register-form {
       display: flex;
       flex-direction: column;
       user-select: none;
+      width: 100%;
       .password-field{
         position: relative;
         input {
@@ -92,17 +125,26 @@
       }
       
       .submit-button {
-        background: $color-green;
+        background: linear-gradient(90deg, $color-primary 0%, $color-secondary 100%);
+        background-size: 200% auto;
+        background-position: left center;
+        transition: background-position 0.5s ease, transform 0.3s ease;
         color: $color-white;
         padding: 0.75rem;
         border: none;
-        border-radius: 4px;
+        border-radius: 25px;
         font-size: 1rem;
+        user-select: none;
         cursor: pointer;
         transition: background 0.3s ease, transform 0.3s ease;
+        -webkit-border-radius: 25px;
+        -moz-border-radius: 25px;
+        -ms-border-radius: 25px;
+        -o-border-radius: 25px;
+        
         &:hover {
-          background: $color-green-dark;
-          transform: translateY(-2px);
+          background-position: right center; // desplazamos el fondo al hover
+          transform: scale(1.05); // efecto de agrandamiento
         }
       }
     }
@@ -127,7 +169,6 @@
   @media (min-width: 768px) {
     .modal-content {
       max-width: 450px;
-      padding: 2rem;
       h2 {
         font-size: 1.75rem;
         margin-bottom: 1rem;

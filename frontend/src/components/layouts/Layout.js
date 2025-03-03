@@ -1,5 +1,4 @@
 // src/components/layouts/Layout.js
-
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import Header from './Header.js';
@@ -14,7 +13,6 @@ const Layout = () => {
 
   return (
     <div className="layout">
-      {/* Fondo animado */}
       <Background background={background} />
       <Header />
       <Main />
@@ -26,11 +24,10 @@ const Layout = () => {
 
 export default Layout;
 
-// Función para obtener la información del fondo según la ruta
 function getBackground(pathname) {
   switch (pathname) {
     case '/':
-      return { url: '/images/background-inicio.jpg', key: 'inicio' };
+      return { url: '/videos/videoInicio.mp4', key: 'inicio' }; // Video en la página de inicio
     case '/servicios':
       return { url: '/images/background-servicios.jpg', key: 'servicios' };
     case '/proyectos':

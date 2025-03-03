@@ -1,4 +1,5 @@
-import React from 'react';
+// src/components/LoginModal.js
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { FaTimes } from 'react-icons/fa';
@@ -31,6 +32,17 @@ const LoginModal = ({
   const { t } = useTranslation();
   const variants = getModalVariants(direction);
 
+  // Hook para detectar el ancho de la ventana
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // Escoger imagen según el ancho
+  const imageSrc = windowWidth < 800 ? '/images/patronDos.png' : '/images/patronUno.png';
+
   // Función que evita cerrar el modal si hay texto seleccionado
   const handleOverlayClick = (e) => {
     const selectedText = window.getSelection().toString();
@@ -62,23 +74,28 @@ const LoginModal = ({
             transition={{ duration: 0.5 }}
             onClick={(e) => e.stopPropagation()}
           >
-            <button className="close-icon" onClick={onClose}>
-              <FaTimes />
-            </button>
-            <h2>{t('loginModal.title')}</h2>
-            <p className="welcome-text">{t('loginModal.welcome')}</p>
-            <button type="button" className="google-button" onClick={handleGoogleLogin}>
-              <GoogleIcon className="google-icon" />
-              {t('loginModal.google')}
-            </button>
-            <LoginForm onLoginSuccess={onLogin} />
-            <div className="links-container">
-              <button type="button" className="text-button" onClick={onForgotPassword}>
-                {t('loginModal.forgotPassword')}
+            <div className="leftModal">
+              <img src={imageSrc} alt="login" />
+            </div>
+            <div className="rightModal">
+              <button className="close-icon" onClick={onClose}>
+                <FaTimes />
               </button>
-              <button type="button" className="text-button" onClick={onRegister}>
-                {t('loginModal.register')}
+              <h2>{t('loginModal.title')}</h2>
+              <p className="welcome-text">{t('loginModal.welcome')}</p>
+              <button type="button" className="google-button" onClick={handleGoogleLogin}>
+                <GoogleIcon className="google-icon" />
+                {t('loginModal.google')}
               </button>
+              <LoginForm onLoginSuccess={onLogin} />
+              <div className="links-container">
+                <button type="button" className="text-button" onClick={onForgotPassword}>
+                  {t('loginModal.forgotPassword')}
+                </button>
+                <button type="button" className="text-button" onClick={onRegister}>
+                  {t('loginModal.register')}
+                </button>
+              </div>
             </div>
           </motion.div>
         </motion.div>

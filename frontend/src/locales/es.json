@@ -2,6 +2,7 @@
     "header": {
     "login": "Iniciar Sesión",
     "downloadCV": "Descargar CV",
+    "myProfile": "Mi Perfil",
     "nav": {
       "home": "Inicio",
       "services": "Servicios",
@@ -12,7 +13,7 @@
   },
       "loginModal": {
       "title": "Iniciar Sesión",
-      "welcome": "¡Bienvenido de nuevo!",
+      "welcome": "¡Bienvenido!",
       "email": "Correo electrónico",
       "password": "Contraseña",
       "loading": "Cargando...",
@@ -24,7 +25,7 @@
     },
     "registerModal": {
       "title": "Registro",
-      "welcome": "¡Únete a nosotros!",
+      "welcome": "Trabajemos juntos.",
       "name": "Nombre",
       "surname": "Apellido",
       "email": "Correo electrónico",

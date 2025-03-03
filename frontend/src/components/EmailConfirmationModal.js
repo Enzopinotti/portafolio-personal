@@ -24,16 +24,24 @@ const EmailConfirmationModal = ({
   isOpen,
   onClose,
   onGoToLogin,
-  onGoToForgotPassword, // Callback para abrir el modal "Forgot Password"
+  onGoToForgotPassword, // Callback para abrir el modal "Forgot Password" (opcional)
   direction = 'forward',
-  token,      // Token recibido del query string
+  token,      // Token recibido (por query string)
   userEmail   // Email del usuario, necesario para reenviar la confirmación
 }) => {
   const { t } = useTranslation();
-  // status puede ser: 'loading', 'success', 'expired' o 'error'
-  const [status, setStatus] = useState('loading');
+  const [status, setStatus] = useState('loading'); // 'loading', 'success', 'expired', 'error'
   const [loadingResend, setLoadingResend] = useState(false);
   const variants = getModalVariants(direction);
+
+  // Hook para detectar el ancho de la ventana y seleccionar imagen
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+  const imageSrc = windowWidth < 800 ? '/images/patronDos.png' : '/images/patronUno.png';
 
   useEffect(() => {
     if (token) {
@@ -57,7 +65,9 @@ const EmailConfirmationModal = ({
     try {
       await resendConfirmation(userEmail, process.env.REACT_APP_CLIENT_URI || 'http://localhost:3000');
       toast.success(t('emailConfirmation.resendSuccess'));
-      onGoToForgotPassword(); // Por ejemplo, abre el modal "Forgot Password"
+      if (onGoToForgotPassword) {
+        onGoToForgotPassword(); // Abre el modal "Forgot Password" si se desea
+      }
       onClose(); // Cierra el modal de confirmación
     } catch (err) {
       toast.error(t('emailConfirmation.resendError'));
@@ -85,36 +95,46 @@ const EmailConfirmationModal = ({
             transition={{ duration: 0.5 }}
             onClick={(e) => e.stopPropagation()}
           >
-            <button className="close-icon" onClick={onClose}>
-              <FaTimes />
-            </button>
-            {status === 'loading' ? (
-              <p>{t('emailConfirmation.loading')}</p>
-            ) : status === 'success' ? (
-              <>
-                <h2>{t('emailConfirmation.successTitle')}</h2>
-                <p>{t('emailConfirmation.successMessage')}</p>
-                <button className="submit-button" onClick={onGoToLogin}>
-                  {t('emailConfirmation.goToHome')}
-                </button>
-              </>
-            ) : status === 'expired' ? (
-              <>
-                <h2>{t('emailConfirmation.expiredTitle')}</h2>
-                <p>{t('emailConfirmation.expiredMessage')}</p>
-                <button className="submit-button" onClick={handleResendConfirmation} disabled={loadingResend}>
-                  {loadingResend ? t('emailConfirmation.loading') : t('emailConfirmation.resend')}
-                </button>
-              </>
-            ) : (
-              <>
-                <h2>{t('emailConfirmation.errorTitle')}</h2>
-                <p>{t('emailConfirmation.errorMessage')}</p>
-                <button className="submit-button" onClick={onGoToLogin}>
-                  {t('emailConfirmation.goToHome')}
-                </button>
-              </>
-            )}
+            {/* Sección izquierda con la imagen dinámica */}
+            <div className="leftModal">
+              <img src={imageSrc} alt="Email Confirmation" />
+            </div>
+            <div className="rightModal">
+              <button className="close-icon" onClick={onClose}>
+                <FaTimes />
+              </button>
+              {status === 'loading' ? (
+                <p>{t('emailConfirmation.loading')}</p>
+              ) : status === 'success' ? (
+                <>
+                  <h2>{t('emailConfirmation.successTitle')}</h2>
+                  <p>{t('emailConfirmation.successMessage')}</p>
+                  <button className="submit-button" onClick={onGoToLogin}>
+                    {t('emailConfirmation.goToHome')}
+                  </button>
+                </>
+              ) : status === 'expired' ? (
+                <>
+                  <h2>{t('emailConfirmation.expiredTitle')}</h2>
+                  <p>{t('emailConfirmation.expiredMessage')}</p>
+                  <button
+                    className="submit-button"
+                    onClick={handleResendConfirmation}
+                    disabled={loadingResend}
+                  >
+                    {loadingResend ? t('emailConfirmation.loading') : t('emailConfirmation.resend')}
+                  </button>
+                </>
+              ) : (
+                <>
+                  <h2>{t('emailConfirmation.errorTitle')}</h2>
+                  <p>{t('emailConfirmation.errorMessage')}</p>
+                  <button className="submit-button" onClick={onGoToLogin}>
+                    {t('emailConfirmation.goToHome')}
+                  </button>
+                </>
+              )}
+            </div>
           </motion.div>
         </motion.div>
       )}

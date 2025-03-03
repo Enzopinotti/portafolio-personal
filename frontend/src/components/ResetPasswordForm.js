@@ -35,7 +35,7 @@ const ResetPasswordForm = ({ token, onResetSuccess }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="reset-password-form">
+    <form onSubmit={handleSubmit} className="reset-form">
       {/* Nueva contraseña */}
       <div className="password-field">
         <input

@@ -2,6 +2,7 @@
     "header": {
     "login": "Log In",
     "downloadCV": "Download CV",
+    "myProfile": "My Profile",
     "nav": {
       "home": "Home",
       "services": "Services",
@@ -23,7 +24,7 @@
     },
     "registerModal": {
       "title": "Register",
-      "welcome": "Join us!",
+      "welcome": "Work with me!",
       "name": "Name",
       "surname": "Surname",
       "email": "Email",

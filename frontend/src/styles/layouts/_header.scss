@@ -12,11 +12,10 @@
 
   .logo {
     user-select: none;
-    font-size: 1.5rem;
-    .text_logo {
-      color: $color-white;
-      text-decoration: none;
-      font-size: 2rem;
+    .link_logo {
+      img {
+        width: 70px;
+      }
     }
   }
 
@@ -24,6 +23,7 @@
   .menu-icon {
     display: block;
     cursor: pointer;
+    color: white;
     width: 30px;
     height: 25px;
     flex-direction: column;
@@ -89,7 +89,7 @@
             text-decoration: none;
             transition: color 0.3s ease;
             &:hover {
-              color: $color-orange;
+              color: $color-primary;
             }
           }
         }
@@ -117,36 +117,72 @@
             color: $color-white;
           }
         }
+        
       }
     }
   }
-  .user-menu {
-    position: relative;
-    display: inline-block;
-    .dropdown {
-      position: absolute;
-      top: 110%;
-      right: 0;
-      background-color: $color-white;
-      border: 1px solid $color-gray-medium;
-      border-radius: 4px;
-      box-shadow: 0 4px 12px rgba($color-black, 0.15);
-      padding: $spacing-unit;
-      display: flex;
-      flex-direction: column;
-      a, button {
-        background: none;
-        border: none;
-        color: $color-blue;
-        padding: $spacing-unit;
-        text-align: left;
+  .header-extras{
+    display: flex;
+    align-items: center;
+    .menu-icon{
+      position: relative;
+      bottom: 0.3rem;
+    }
+    .login_button{
+      margin-right: 1rem;
+
+      button {
+        width: 120px;
+        margin: 0.5rem 0;
+        padding: 0.75rem 0.8rem;
+        font-size: 0.9rem;
+        color: $color-white;
+        background-color: transparent;
+        border: 1px solid $color-white;
+        border-radius: 4px;
         cursor: pointer;
+        transition: background-color 0.3s ease, color 0.3s ease;
         &:hover {
-          color: $color-blue-dark;
+          background-color: $color-secondary;
+          border-color: $color-secondary;
+          color: $color-white;
+        }
+      }
+    }
+    
+    .user-menu {
+      position: relative;
+      display: inline-block;
+      margin-right: 1rem;
+      .user-info{
+        color: $color-white;
+      }
+      .dropdown {
+        position: absolute;
+        top: 110%;
+        right: 0;
+        background-color: $color-white;
+        border: 1px solid $color-gray-medium;
+        border-radius: 4px;
+        box-shadow: 0 4px 12px rgba($color-black, 0.15);
+        padding: $spacing-unit;
+        display: flex;
+        flex-direction: column;
+        a, button {
+          background: none;
+          border: none;
+          color: $color-blue;
+          padding: $spacing-unit;
+          text-align: left;
+          cursor: pointer;
+          &:hover {
+            color: $color-blue-dark;
+          }
         }
       }
     }
   }
+  
   @media (min-width: 768px) {
     .menu-icon {
       display: none;
@@ -169,7 +205,7 @@
         align-items: center;
         justify-content: space-between;
         margin: 0;
-        padding: 0rem 2rem;
+        padding: 0rem 4rem 0rem 1rem;
 
         .nav-links {
           display: flex;
@@ -178,7 +214,8 @@
             a {
               font-size: 1rem;
               &:hover {
-                color: $color-orange;
+                color: $color-primary;
+                text-shadow: 0px 0px 7px rgba($color-secondary, 0.5);
               }
             }
           }
@@ -192,6 +229,16 @@
           }
         }
       }
+    }
+  }
+}
+@media (max-width: 930px) {
+  .download-button {
+    display: none;
+  }
+  .navigation.open .menu-content{
+    .download-button{
+      display: flex;
     }
   }
 }

@@ -1,7 +1,24 @@
-// src/styles/pages/home.scss
 @import '../abstracts/_variables.scss';
 
+.home-page {
+  position: relative; // Para posicionar el video absoluto respecto a este contenedor
+  width: 100%;
+  overflow: hidden; // Evita scroll por contenido fuera del viewport
+
+  .background-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; // Para que se adapte y cubra todo el contenedor
+    z-index: -1; // Se coloca detrás del contenido
+  }
+}
+
 .home-container {
+  position: relative; // Asegura que su contenido se posicione sobre el video
+  left: 1rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -9,18 +26,21 @@
   padding: $spacing-unit * 2;
   text-align: center;
   color: $color-white;
-  width: 68%;
+  width: 80%;
   user-select: none;
+  z-index: 1; // Por encima del video
+
   h1 {
-    font-size: 1.8rem;  
+    font-size: 1.8rem;
     margin-bottom: $spacing-unit * 2;
+    font-weight: 800;
   }
 
   p {
-    font-size: 1.2rem;     
+    font-size: 1.2rem;
     line-height: 1.4;
     font-weight: 400;
-    span{
+    span {
       font-size: 1.5rem;
     }
   }
@@ -29,12 +49,13 @@
 @media (min-width: 768px) {
   .home-container {
     h1 {
-      font-size: 4.5rem;  // Fuente mayor en pantallas grandes
+      font-size: 4.5rem;
       margin-bottom: $spacing-unit * 7;
+      font-weight: 900;
     }
     p {
-      font-size: 1.55rem; // Fuente mayor para párrafos en desktop
-      span{
+      font-size: 1.55rem;
+      span {
         font-size: 1.9rem;
       }
     }

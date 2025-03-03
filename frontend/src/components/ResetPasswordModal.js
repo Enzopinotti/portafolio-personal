@@ -1,5 +1,5 @@
 // src/components/ResetPasswordModal.js
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { FaTimes } from 'react-icons/fa';
@@ -24,10 +24,20 @@ const ResetPasswordModal = ({
   onClose,
   token,
   onResetSuccess,
-  direction = 'forward',
+  direction = 'forward'
 }) => {
   const { t } = useTranslation();
   const variants = getModalVariants(direction);
+
+  // Hook para detectar el ancho de la ventana
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+  // Si la pantalla es menor a 800px, usamos 'patronDos.png'; en otro caso, 'patronUno.png'
+  const imageSrc = windowWidth < 800 ? '/images/patronDos.png' : '/images/patronUno.png';
 
   const handleOverlayClick = (e) => {
     const targetTag = e.target.tagName.toLowerCase();
@@ -56,12 +66,17 @@ const ResetPasswordModal = ({
             transition={{ duration: 0.5 }}
             onClick={(e) => e.stopPropagation()}
           >
-            <button className="close-icon" onClick={onClose}>
-              <FaTimes />
-            </button>
-            <h2>{t('resetPassword.title')}</h2>
-            <p className="welcome-text">{t('resetPassword.welcome')}</p>
-            <ResetPasswordForm token={token} onResetSuccess={onResetSuccess} />
+            <div className="leftModal">
+              <img src={imageSrc} alt="Reset Password" />
+            </div>
+            <div className="rightModal">
+              <button className="close-icon" onClick={onClose}>
+                <FaTimes />
+              </button>
+              <h2>{t('resetPassword.title')}</h2>
+              <p className="welcome-text">{t('resetPassword.welcome')}</p>
+              <ResetPasswordForm token={token} onResetSuccess={onResetSuccess} />
+            </div>
           </motion.div>
         </motion.div>
       )}

@@ -1,5 +1,5 @@
 // src/components/ForgotPasswordModal.js
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { FaTimes } from 'react-icons/fa';
@@ -22,13 +22,24 @@ const getModalVariants = (direction = 'forward') => {
 const ForgotPasswordModal = ({
   isOpen,
   onClose,
-  onForgotPasswordSubmit, // Este callback se pasará desde el formulario si lo necesitas
+  onForgotPasswordSubmit, // callback opcional para enviar formulario
   onSwitchToLogin = () => {},
   onForgotSuccess = () => {},
   direction = 'forward',
 }) => {
   const { t } = useTranslation();
   const variants = getModalVariants(direction);
+
+  // Hook para detectar el ancho de la ventana
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+  
+  // Seleccionar imagen según el ancho
+  const imageSrc = windowWidth < 800 ? '/images/patronDos.png' : '/images/patronUno.png';
 
   // Evita cerrar el modal si se está interactuando con inputs o si hay texto seleccionado
   const handleOverlayClick = (e) => {
@@ -58,16 +69,21 @@ const ForgotPasswordModal = ({
             transition={{ duration: 0.5 }}
             onClick={(e) => e.stopPropagation()}
           >
-            <button className="close-icon" onClick={onClose}>
-              <FaTimes />
-            </button>
-            <h2>{t('forgotModal.title')}</h2>
-            <p className="welcome-text">{t('forgotModal.welcome')}</p>
-            <ForgotPasswordForm onForgotSuccess={onForgotSuccess} />
-            <div className="links-container">
-              <button type="button" className="text-button" onClick={onSwitchToLogin}>
-                {t('forgotModal.switchToLogin')}
+            <div className="leftModal">
+              <img src={imageSrc} alt="Forgot Password" />
+            </div>
+            <div className="rightModal">
+              <button className="close-icon" onClick={onClose}>
+                <FaTimes />
               </button>
+              <h2>{t('forgotModal.title')}</h2>
+              <p className="welcome-text">{t('forgotModal.welcome')}</p>
+              <ForgotPasswordForm onForgotSuccess={onForgotSuccess} />
+              <div className="links-container">
+                <button type="button" className="text-button" onClick={onSwitchToLogin}>
+                  {t('forgotModal.switchToLogin')}
+                </button>
+              </div>
             </div>
           </motion.div>
         </motion.div>
