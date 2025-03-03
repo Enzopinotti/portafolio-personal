@@ -15,7 +15,8 @@ import {
   forgotPassword,
   confirmEmail,
   resendConfirmationEmail,
-  resetPassword
+  resetPassword,
+  eliminarAvatar
 } from '../controllers/usuarioController.js';
 import { verificarToken } from '../middleware/authMiddleware.js';
 import upload from '../config/multer.js';
@@ -56,6 +57,7 @@ router.post('/logout', verificarToken, cerrarSesion);
 router.get('/perfil', verificarToken, verPerfil);
 router.put('/perfil', verificarToken, editarPerfil);
 router.post('/avatar', verificarToken, upload.single('avatar'), actualizarAvatar);
+router.delete('/avatar', verificarToken, eliminarAvatar);
 router.put('/:id/cambiar-rol', verificarToken, cambiarRolUsuario);
 router.post('/refresh', refrescarToken);
 

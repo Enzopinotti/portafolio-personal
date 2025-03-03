@@ -14,6 +14,7 @@ import path from 'path';
 import { __dirname } from '../utils/pathUtils.js';
 import fs from 'fs';
 import hbs from 'handlebars';
+import cloudinary from '../config/cloudinary.js';
 
 dotenv.config();
 
@@ -340,7 +341,7 @@ export const refrescarToken = async (req, res, next) => {
 export const verPerfil = async (req, res, next) => {
   try {
     const usuario = await Usuario.findByPk(req.usuario.idUsuario, {
-      attributes: ['idUsuario', 'nombre', 'apellido' , 'email'],
+      attributes: ['idUsuario', 'nombre', 'apellido', 'email', 'avatar'], // <--- agregamos 'avatar'
       include: [{ model: Rol, attributes: ['nombre'] }],
     });
     if (!usuario) {
@@ -356,13 +357,14 @@ export const verPerfil = async (req, res, next) => {
 
 export const editarPerfil = async (req, res, next) => {
   try {
-    const { nombre, email, contraseña } = req.body;
+    const { nombre, apellido ,email, contraseña } = req.body;
     const usuario = await Usuario.findByPk(req.usuario.idUsuario);
     if (!usuario) {
       logger.info(`Editar perfil fallido: Usuario ${req.usuario.idUsuario} no encontrado.`);
       return next(Boom.notFound('Usuario no encontrado.'));
     }
     if (nombre) usuario.nombre = nombre;
+    if (apellido) usuario.apellido = apellido;
     if (email) usuario.email = email;
     if (contraseña) {
       const hashedPassword = await bcrypt.hash(contraseña, 10);
@@ -379,31 +381,64 @@ export const editarPerfil = async (req, res, next) => {
 
 export const actualizarAvatar = async (req, res, next) => {
   try {
-    const resultado = await cloudinary.uploader.upload(req.file.path, {
-      folder: 'avatars',
-    });
-    fs.unlinkSync(req.file.path);
     const usuario = await Usuario.findByPk(req.usuario.idUsuario);
     if (!usuario) {
       logger.info(`Actualizar avatar fallido: Usuario ${req.usuario.idUsuario} no encontrado.`);
       return next(Boom.notFound('Usuario no encontrado.'));
     }
-    usuario.avatar = resultado.secure_url;
-    await usuario.save();
-    await registrarEvento({
-      userId: usuario.idUsuario,
-      action: 'UPDATE_AVATAR',
-      target: 'usuario',
-      details: { avatarUrl: resultado.secure_url },
-      req,
+
+    // 1) Si el usuario tiene un avatarPublicId previo, eliminar la imagen anterior de Cloudinary
+    if (usuario.avatarPublicId) {
+      await cloudinary.uploader.destroy(usuario.avatarPublicId);
+    }
+
+    // 2) Subir la nueva imagen
+    const resultado = await cloudinary.uploader.upload(req.file.path, {
+      folder: 'avatars',
     });
+    fs.unlinkSync(req.file.path); // elimina el archivo temporal
+
+    // 3) Guardar la URL y el public_id
+    usuario.avatar = resultado.secure_url;
+    usuario.avatarPublicId = resultado.public_id; // <--- Nuevo
+
+    await usuario.save();
     logger.info(`Avatar actualizado para usuario ${usuario.email}.`);
-    res.status(200).json({
+
+    return res.status(200).json({
       mensaje: 'Avatar actualizado exitosamente.',
       avatar: resultado.secure_url,
     });
   } catch (error) {
     logger.error(`Error en actualizarAvatar: ${error.message}`);
+    return next(Boom.internal(error.message));
+  }
+};
+
+export const eliminarAvatar = async (req, res, next) => {
+  try {
+    const usuario = await Usuario.findByPk(req.usuario.idUsuario);
+    if (!usuario) {
+      logger.info(`Eliminar avatar fallido: Usuario ${req.usuario.idUsuario} no encontrado.`);
+      return next(Boom.notFound('Usuario no encontrado.'));
+    }
+
+    // Si hay un public_id, se elimina
+    if (usuario.avatarPublicId) {
+      await cloudinary.uploader.destroy(usuario.avatarPublicId);
+    }
+
+    // Volver al placeholder
+    usuario.avatar = null;
+    usuario.avatarPublicId = null;
+    await usuario.save();
+
+    logger.info(`Avatar eliminado para usuario ${usuario.email}.`);
+    return res.status(200).json({
+      mensaje: 'Avatar eliminado. Ahora se usa el placeholder.',
+    });
+  } catch (error) {
+    logger.error(`Error en eliminarAvatar: ${error.message}`);
     return next(Boom.internal(error.message));
   }
 };

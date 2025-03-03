@@ -1,8 +1,9 @@
 {
-    "header": {
+  "header": {
     "login": "Iniciar Sesión",
     "downloadCV": "Descargar CV",
     "myProfile": "Mi Perfil",
+    "logout": "Cerrar Sesión",
     "nav": {
       "home": "Inicio",
       "services": "Servicios",
@@ -49,6 +50,29 @@
       "resendSuccess": "Correo reenviado. Revisa tu email.",
       "resendError": "Error al reenviar el correo.",
       "loading": "Cargando..."
+    },
+    "profile": {
+      "title": "Mi Perfil",
+      "name": "Nombre",
+      "lastName": "Apellido",
+      "email": "Correo electrónico",
+      "password": "Contraseña",
+      "save": "Guardar",
+      "welcome": "¡Hola, ",
+      "logout": "Cerrar Sesión",
+      "deleteAccount": "Eliminar Cuenta",
+      "deleteAccountConfirmation": "¿Estás seguro de que deseas eliminar tu cuenta? Esta acción no se puede deshacer.",
+      "deleteAccountSuccess": "Cuenta eliminada exitosamente.",
+      "deleteAccountError": "Hubo un problema al eliminar tu cuenta. Por favor, intenta nuevamente.",
+      "loading": "Cargando...",
+      "success": "Perfil actualizado exitosamente.",
+      "error": "Hubo un problema al actualizar tu perfil. Por favor, intenta nuevamente.",
+      "updated": "Perfil actualizado exitosamente.",
+      "editAvatar": "Editar Avatar",
+      "avatarUpdated": "Avatar actualizado exitosamente.",
+      "saveAvatar": "Guardar Avatar",
+      "deleteAvatar": "Eliminar Avatar",
+      "avatarDeleted": "Avatar eliminado exitosamente."
     },
     "forgotModal": {
       "title": "Restablecer Contraseña",

@@ -84,3 +84,53 @@ export const getProfile = async (accessToken) => {
   }
   return response.json();
 };
+
+export const editarPerfil = async (perfilData, accessToken) => {
+  const response = await fetch(`${API_URL}/usuarios/perfil`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,  // ¡Necesario!
+    },
+    credentials: 'include',
+    body: JSON.stringify(perfilData),
+  });
+  if (!response.ok) {
+    throw await response.json();
+  }
+  return response.json();
+};
+
+export const actualizarAvatar = async (file, accessToken) => {
+  const formData = new FormData();
+  formData.append('avatar', file);
+
+  const response = await fetch(`${API_URL}/usuarios/avatar`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+    credentials: 'include',
+    body: formData,
+  });
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw errorData;
+  }
+  return response.json(); 
+};
+
+export const eliminarAvatar = async (accessToken) => {
+  const response = await fetch(`${API_URL}/usuarios/avatar`, {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+    credentials: 'include',
+  });
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw errorData;
+  }
+  return response.json(); // { mensaje: '...' }
+};

@@ -1,8 +1,9 @@
 {
-    "header": {
+  "header": {
     "login": "Entrar",
     "downloadCV": "Baixar CV",
     "myProfile": "Meu Perfil",
+    "logout": "Sair",
     "nav": {
       "home": "Início",
       "services": "Serviços",
@@ -49,6 +50,29 @@
       "resendSuccess": "Email de confirmação reenviado. Verifique sua caixa de entrada.",
       "resendError": "Erro ao reenviar o email de confirmação.",
       "loading": "Carregando..."
+    },
+    "profile": {
+      "title": "Meu Perfil",
+      "name": "Nome",
+      "lastName": "Sobrenome",
+      "email": "Email",
+      "password": "Senha",
+      "save": "Salvar",
+      "welcome": "Olá, ",
+      "logout": "Sair",
+      "deleteAccount": "Excluir Conta",
+      "deleteAccountConfirmation": "Tem certeza de que deseja excluir sua conta? Esta ação não pode ser desfeita.",
+      "deleteAccountSuccess": "Conta excluída com sucesso.",
+      "loading": "Carregando...",
+      "deleteAccountError": "Erro ao excluir a conta. Por favor, tente novamente.",
+      "success": "Perfil atualizado com sucesso.",
+      "error": "Erro ao atualizar o perfil. Por favor, tente novamente.",
+      "updated": "Perfil atualizado com sucesso.",
+      "editAvatar": "Editar Avatar",
+      "avatarUpdated": "Avatar atualizado com sucesso.",
+      "saveAvatar": "Salvar Avatar",
+      "deleteAvatar": "Excluir Avatar",
+      "avatarDeleted": "Avatar excluído com sucesso."
     },
     "forgotModal": {
       "title": "Redefinir Senha",

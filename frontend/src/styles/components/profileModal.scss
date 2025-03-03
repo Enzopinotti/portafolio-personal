@@ -1,0 +1,221 @@
+// src/styles/components/_profileModal.scss
+@import '../abstracts/variables';
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba($color-black, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  transition: background 0.3s ease;
+}
+
+.modal-content.profile-modal {
+  position: relative;
+  background: $color-white;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 800px;
+  box-shadow: 0 4px 12px rgba($color-black, 0.15);
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  .error{
+    color: red;
+    margin-bottom: 1rem;
+  }
+  .close-icon {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    color: $color-gray-dark;
+    cursor: pointer;
+    transition: transform 0.3s ease, color 0.3s ease;
+    &:hover {
+      transform: rotate(90deg);
+      color: $color-blue;
+    }
+  }
+
+  h2 {
+    text-align: center;
+    margin-bottom: 1rem;
+    font-size: 1.75rem;
+    color: $color-gray-dark;
+  }
+
+  .modal-body {
+    display: flex;
+    flex-direction: row;
+    gap: 1.5rem;
+
+    .leftModal {
+      display: flex;
+      img {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+        border-radius: 10px;
+      }
+    }
+
+    .rightModal {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+  }
+
+  @media (max-width: 800px) {
+    .modal-body {
+      flex-direction: column;
+    }
+  }
+}
+
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  user-select: none;
+  width: 100%;
+
+  .avatar-delete-button {
+    margin: 0 auto 1rem;
+    display: block;
+    width: fit-content;
+    color: $color-white;
+    border: none;
+    border-radius: 25px;
+    font-size: 1rem;
+    padding: 0.75rem;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.3s ease;
+    &:hover {
+      transform: scale(1.05);
+    }
+  }
+  .avatar-container {
+    width: 130px;
+    height: 130px;
+    margin: 0 auto 1rem; // centrado horizontal
+    position: relative;
+  }
+  
+  .avatar-image {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .avatar-edit-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    background: rgba($color-black, 0.4);
+    color: $color-white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    cursor: pointer;
+
+    &:hover {
+      opacity: 1;
+    }
+    span {
+      margin-top: 0.25rem;
+      font-size: 0.85rem;
+    }
+  }
+
+  .avatar-save-button {
+    margin: 0 auto 1rem; // centrado
+    display: block;
+    width: fit-content;
+  }
+  .form-group {
+    margin-bottom: 1rem;
+    
+    label {
+      display: flex;
+      align-items: center;
+      font-size: 1rem;
+      color: $color-gray-dark;
+      .edit-icon {
+        margin-left: 0.5rem;
+        cursor: pointer;
+        color: $color-blue; // Por defecto, el lápiz es azul
+        transition: color 0.3s ease;
+        &:hover {
+          color: $color-blue-dark;
+        }
+      }
+      .cancel-icon {
+        color: $color-secondary; // La cruz usa el color secundario
+        &:hover {
+          color: lighten($color-secondary, 10%); // un poquito más claro
+        }
+      }
+    }
+    
+    input {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid $color-gray-medium;
+      border-radius: 4px;
+      font-size: 1rem;
+      transition: border-color 0.3s ease;
+      &:disabled {
+        background-color: #f9f9f9;
+        color: $color-gray-dark;
+        input{
+            user-select: none;
+        }
+      }
+      &:focus {
+        outline: none;
+        border-color: $color-blue;
+      }
+    }
+  }
+  
+  .error {
+    color: red;
+    margin-top: 0.5rem;
+  }
+  
+  .submit-button {
+    background: linear-gradient(90deg, $color-primary 0%, $color-secondary 100%);
+    background-size: 200% auto;
+    background-position: left center;
+    transition: background-position 0.5s ease, transform 0.3s ease;
+    color: $color-white;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 25px;
+    font-size: 1rem;
+    cursor: pointer;
+    user-select: none;
+    &:hover {
+      background-position: right center;
+      transform: scale(1.05);
+    }
+  }
+}

@@ -30,7 +30,17 @@ const Usuario = sequelize.define(
     password: {
       type: DataTypes.STRING(255),
       allowNull: false,
-      field: 'password',              // En la BD sería la columna "password"
+      field: 'password',             
+    },
+    avatar: {
+      type: DataTypes.STRING(512),
+      allowNull: true,
+      field: 'avatar',
+    },
+    avatarPublicId: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      field: 'avatar_public_id',
     },
     idRol: {
       type: DataTypes.INTEGER.UNSIGNED,

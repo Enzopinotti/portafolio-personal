@@ -1,15 +1,17 @@
 {
-    "header": {
+  "header": {
     "login": "Log In",
     "downloadCV": "Download CV",
     "myProfile": "My Profile",
+    "logout": "Log Out",
     "nav": {
       "home": "Home",
       "services": "Services",
       "projects": "Projects",
       "blog": "Blog",
       "contact": "Contact"
-    }},
+    }
+  },
     "loginModal": {
       "title": "Log In",
       "welcome": "Welcome back!",
@@ -48,6 +50,30 @@
       "resendSuccess": "Confirmation email resent. Check your inbox.",
       "resendError": "Error resending confirmation email.",
       "loading": "Loading..."
+    },
+    "profile":{
+      "title": "My Profile",
+      "name": "Name",
+      "lastName": "Surname",
+      "email": "Email",
+      "password": "Password",
+      "save": "Save",
+      "welcome": "Welcome to your profile.",
+      "logout": "Log Out",
+      "deleteAccount": "Delete Account",
+      "deleteAccountConfirmation": "Are you sure you want to delete your account? This action cannot be undone.",
+      "deleteAccountSuccess": "Account deleted successfully.",
+      "deleteAccountError": "There was a problem deleting your account. Please try again.",
+      "loading": "Loading...",
+      "success": "Profile updated successfully.",
+      "error": "There was a problem updating your profile. Please try again.",
+      "updated": "Profile updated successfully.",
+      "editAvatar": "Edit Avatar",
+      "avatarUpdated": "Avatar updated successfully.",
+      "saveAvatar": "Save Avatar",
+      "deleteAvatar": "Delete Avatar",
+      "avatarDeleted": "Avatar deleted successfully."
+
     },
     "forgotModal": {
       "title": "Reset Password",

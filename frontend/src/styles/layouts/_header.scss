@@ -102,6 +102,7 @@
         user-select: none;
         button,
         .download-button {
+          width: 160px;
           margin: 0.5rem 0;
           padding: 0.75rem 1.25rem;
           font-size: 1rem;
@@ -130,7 +131,7 @@
     }
     .login_button{
       margin-right: 1rem;
-
+      user-select: none;
       button {
         width: 120px;
         margin: 0.5rem 0;
@@ -154,29 +155,33 @@
       position: relative;
       display: inline-block;
       margin-right: 1rem;
+      user-select: none;
       .user-info{
         color: $color-white;
       }
       .dropdown {
         position: absolute;
-        top: 110%;
+        width: 140px;
+        top: 170%;
         right: 0;
         background-color: $color-white;
         border: 1px solid $color-gray-medium;
         border-radius: 4px;
         box-shadow: 0 4px 12px rgba($color-black, 0.15);
-        padding: $spacing-unit;
         display: flex;
         flex-direction: column;
         a, button {
+          display: flex;
           background: none;
           border: none;
-          color: $color-blue;
-          padding: $spacing-unit;
+          color: $color-primary;
+          padding: 1rem;
+          padding-bottom: 0.6rem;
+          padding-top: 0.6rem;
           text-align: left;
           cursor: pointer;
           &:hover {
-            color: $color-blue-dark;
+            background-color: rgb(244, 242, 242);
           }
         }
       }
@@ -225,6 +230,7 @@
           flex-direction: row;
           button,
           .download-button {
+            width: 160px;
             margin-left: 1rem;
           }
         }
@@ -234,10 +240,12 @@
 }
 @media (max-width: 930px) {
   .download-button {
+    width: 160px;
     display: none;
   }
   .navigation.open .menu-content{
     .download-button{
+      width: 160px;
       display: flex;
     }
   }
