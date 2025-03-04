@@ -67,8 +67,7 @@ const ProfileModal = ({
                 
                 <div className="modal-body">
                 <div className="leftModal">
-                    {/* Aquí el patrón para perfil */}
-                    <img src="/images/patronUno.png" alt="Patrón de Perfil" />
+                <img src={imageSrc} alt="login" />
                 </div>
                 <div className="rightModal">
                     <button className="close-icon" onClick={onClose}>
