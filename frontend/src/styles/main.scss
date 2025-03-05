@@ -8,6 +8,7 @@
 @import 'base/reset';
 @import 'base/typography';
 
+
 // Layouts
 @import 'layouts/layout';
 @import 'layouts/header';
@@ -22,4 +23,14 @@
 @import 'components/EmailConfirmationModal.scss';
 @import 'components/resetPasswordModal.scss';
 @import 'components/profileModal.scss';
+@import 'components/Proyectos.scss';
+@import 'components/AdminModal.scss';
+@import 'components/AdminProyectosModal.scss';
+@import 'components/ConfirmModal.scss';
+@import 'components/AdminSkillsModal.scss';
+@import 'components/AssignCategoryModal.scss';
+@import 'components/AssignSkillModal.scss';
+@import 'components/AdminCategoriasModal.scss';
+@import 'components/AdminServiciosModal.scss';
+@import 'components/AssignServiceModal.scss';
 // Puedes importar otros estilos aquí si lo deseas

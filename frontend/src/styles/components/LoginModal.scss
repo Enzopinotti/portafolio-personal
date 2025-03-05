@@ -27,7 +27,15 @@
     color: red;
     margin-bottom: 1rem;
   }
+  .leftModal{
+    display: flex;
+    height: auto;
+    img{
+      height: 100%;
+    }
+  }
   .rightModal{
+    margin-bottom: 2rem;
     .close-icon {
       position: absolute;
       top: 1rem;
@@ -156,7 +164,6 @@
       display: flex;
       justify-content: space-between;
       margin-top: 1rem;
-  
       .text-button {
         background: none;
         border: none;
@@ -176,7 +183,11 @@
 @media (min-width: 768px) {
   .modal-content {
     max-width: 450px;
+    .leftModal{
+      height: auto !important;
+    }
     .login-form{
+      
       .submit-button {
         background: linear-gradient(90deg, $color-primary 0%, $color-secondary 100%);
         background-size: 200% auto;

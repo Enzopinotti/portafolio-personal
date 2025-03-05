@@ -7,11 +7,16 @@ import logger from '../config/logger.js';
 import { registrarEvento } from '../utils/auditLogger.js';
 import { Op } from 'sequelize';
 import Boom from '@hapi/boom';
+import ProyectoSkill from '../models/ProyectoSkill.js';
+import Servicio from '../models/Servicio.js';
+import ProyectoServicio from '../models/ProyectoServicio.js';
 
 export const crearProyecto = async (req, res, next) => {
   try {
-    const { titulo, descripcion, fechaInicio, fechaFin, enlace, skills } = req.body;
+    const { titulo, descripcion, fechaInicio, fechaFin, enlace, skills, servicios } = req.body;
     logger.info(`Crear Proyecto: Usuario ${req.usuario.idUsuario} crea el proyecto "${titulo}"`);
+
+    // Crear el proyecto
     const nuevoProyecto = await Proyecto.create({
       titulo,
       descripcion,
@@ -19,12 +24,34 @@ export const crearProyecto = async (req, res, next) => {
       fechaFin,
       enlace,
     });
+
+    // Asociar el proyecto al usuario creador
     await nuevoProyecto.addUsuario(req.usuario.idUsuario);
-    logger.info(`Crear Proyecto: Proyecto ID ${nuevoProyecto.id_proyecto} creado y asociado al usuario ${req.usuario.idUsuario}`);
-    if (skills && skills.length > 0) {
-      await nuevoProyecto.addSkills(skills);
+    logger.info(`Crear Proyecto: Proyecto ID ${nuevoProyecto.idProyecto} creado y asociado al usuario ${req.usuario.idUsuario}`);
+
+    // Asignar skills manualmente si se han enviado
+    if (skills && Array.isArray(skills) && skills.length > 0) {
+      const skillIds = skills.map(id => parseInt(id, 10));
+      const nuevosRegistrosSkills = skillIds.map(idSkill => ({
+        id_proyecto: nuevoProyecto.idProyecto,
+        id_skill: idSkill,
+      }));
+      await ProyectoSkill.bulkCreate(nuevosRegistrosSkills);
       logger.info(`Crear Proyecto: Se asociaron ${skills.length} skills al proyecto.`);
     }
+
+    // Asignar servicios manualmente si se han enviado
+    if (servicios && Array.isArray(servicios) && servicios.length > 0) {
+      const servicioIds = servicios.map(id => parseInt(id, 10));
+      const nuevosRegistrosServicios = servicioIds.map(idServicio => ({
+        id_proyecto: nuevoProyecto.idProyecto,
+        id_servicio: idServicio,
+      }));
+      await ProyectoServicio.bulkCreate(nuevosRegistrosServicios);
+      logger.info(`Crear Proyecto: Se asociaron ${servicios.length} servicios al proyecto.`);
+    }
+
+    // Registrar el evento
     await registrarEvento({
       userId: req.usuario.idUsuario,
       action: 'CREATE_PROYECTO',
@@ -32,7 +59,24 @@ export const crearProyecto = async (req, res, next) => {
       details: { titulo, descripcion },
       req,
     });
-    res.status(201).json({ mensaje: 'Proyecto creado exitosamente.', proyecto: nuevoProyecto });
+
+    // Recargar el proyecto con las asociaciones de skills y servicios
+    const proyectoRecargado = await Proyecto.findByPk(nuevoProyecto.idProyecto, {
+      include: [
+        {
+          model: Skill,
+          attributes: ['idSkill', 'nombre', 'nivel'],
+          through: { attributes: [] },
+        },
+        {
+          model: Servicio,
+          attributes: ['idServicio', 'nombre', 'descripcion', 'precio'],
+          through: { attributes: [] },
+        },
+      ],
+    });
+
+    res.status(201).json({ mensaje: 'Proyecto creado exitosamente.', proyecto: proyectoRecargado });
   } catch (error) {
     logger.error(`Error en crearProyecto: ${error.message}`);
     return next(Boom.internal(error.message));
@@ -190,25 +234,89 @@ export const buscarProyectos = async (req, res, next) => {
   }
 };
 
-export const asignarSkillAProyecto = async (req, res, next) => {
+export const asignarSkillsAProyecto = async (req, res, next) => {
   try {
-    const { idProyecto, idSkill } = req.params;
-    logger.info(`Asignar Skill: Usuario ${req.usuario.idUsuario} asigna skill ${idSkill} al proyecto ${idProyecto}`);
+    const { idProyecto } = req.params;
+    const { skills } = req.body; // Se espera un array de IDs
+    logger.info(`Asignar Skills: Asignando skills al proyecto con ID ${idProyecto}`);
+    
+    if (!Array.isArray(skills)) {
+      return next(Boom.badRequest('Se espera un array de IDs en skills.'));
+    }
+    
+    // Convertir los IDs a números
+    const skillIds = skills.map(id => parseInt(id, 10));
+    
     const proyecto = await Proyecto.findByPk(idProyecto);
     if (!proyecto) {
-      logger.info(`Asignar Skill: Proyecto ${idProyecto} no encontrado.`);
+      logger.info(`Asignar Skills: Proyecto con ID ${idProyecto} no encontrado.`);
       return next(Boom.notFound('Proyecto no encontrado.'));
     }
-    const skill = await Skill.findByPk(idSkill);
-    if (!skill) {
-      logger.info(`Asignar Skill: Skill ${idSkill} no encontrada.`);
-      return next(Boom.notFound('Skill no encontrada.'));
-    }
-    await proyecto.addSkill(skill);
-    logger.info(`Asignar Skill: Skill ${idSkill} asignada al proyecto ${idProyecto} exitosamente.`);
-    res.status(200).json({ mensaje: 'Skill asignada exitosamente al proyecto.' });
+    
+    // Asignar las skills usando el método generado por la asociación (setSkills)
+    await proyecto.setSkills(skillIds);
+    
+    // Recargar el proyecto con las skills asignadas
+    const proyectoActualizado = await Proyecto.findByPk(idProyecto, {
+      include: [{
+         model: Skill,
+         attributes: ['idSkill', 'nombre', 'nivel'],
+         through: { attributes: [] }
+      }]
+    });
+    
+    logger.info(`Asignar Skills: Skills asignadas exitosamente al proyecto con ID ${idProyecto}`);
+    res.status(200).json({ mensaje: 'Skills asignadas exitosamente al proyecto.', proyecto: proyectoActualizado });
   } catch (error) {
-    logger.error(`Error en asignarSkillAProyecto: ${error.message}`);
-    return next(Boom.internal(error.message));
+    logger.error(`Error al asignar skills al proyecto: ${error.message}`);
+    return next(Boom.internal(error.message || 'Error al asignar skills'));
+  }
+};
+
+export const asignarServiciosAProyecto = async (req, res, next) => {
+  try {
+    const { idProyecto } = req.params;
+    const { servicios } = req.body; // Se espera un array de IDs
+    logger.info(`Asignar Servicios: Asignando servicios al proyecto con ID ${idProyecto}`);
+
+    if (!Array.isArray(servicios)) {
+      return next(Boom.badRequest('Se espera un array de IDs en servicios.'));
+    }
+
+    // Convertir los IDs a números
+    const servicioIds = servicios.map(id => parseInt(id, 10));
+
+    const proyecto = await Proyecto.findByPk(idProyecto);
+    if (!proyecto) {
+      logger.info(`Asignar Servicios: Proyecto con ID ${idProyecto} no encontrado.`);
+      return next(Boom.notFound('Proyecto no encontrado.'));
+    }
+
+    // Paso 1: Eliminar las asociaciones previas en la tabla intermedia
+    await ProyectoServicio.destroy({ where: { id_proyecto: idProyecto } });
+
+    // Paso 2: Preparar los nuevos registros
+    const nuevosRegistros = servicioIds.map(idServicio => ({
+      id_proyecto: idProyecto,
+      id_servicio: idServicio,
+    }));
+
+    // Paso 3: Insertar las nuevas asociaciones manualmente
+    await ProyectoServicio.bulkCreate(nuevosRegistros);
+
+    // Recargar el proyecto con los servicios asignados
+    const proyectoActualizado = await Proyecto.findByPk(idProyecto, {
+      include: [{
+        model: Servicio,
+        attributes: ['idServicio', 'nombre', 'descripcion', 'precio'],
+        through: { attributes: [] },
+      }],
+    });
+
+    logger.info(`Asignar Servicios: Servicios asignados exitosamente al proyecto con ID ${idProyecto}`);
+    res.status(200).json({ mensaje: 'Servicios asignados exitosamente al proyecto.', proyecto: proyectoActualizado });
+  } catch (error) {
+    logger.error(`Error al asignar servicios al proyecto: ${error.message}`);
+    return next(Boom.internal(error.message || 'Error al asignar servicios'));
   }
 };

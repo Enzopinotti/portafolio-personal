@@ -1,0 +1,123 @@
+// src/components/AssignServiceModal.scss
+
+.assign-service-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2200;
+  }
+  
+  .assign-service-modal {
+    background: $color-white;
+    padding: 1.5rem;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 400px;
+    position: relative;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    text-align: center;
+  }
+  
+  .assign-close {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    background: transparent;
+    border: none;
+    font-size: 1.2rem;
+    color: $color-gray-dark;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    &:hover {
+      transform: rotate(90deg);
+    }
+  }
+  
+  h3 {
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+    color: $color-gray-dark;
+  }
+  
+  .service-list {
+    text-align: left;
+    margin: 1rem 0;
+    
+    .service-label {
+      display: flex;
+      align-items: center;
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+      cursor: pointer;
+      
+      input[type="checkbox"] {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        width: 18px;
+        height: 18px;
+        border: 2px solid $color-gray-medium;
+        border-radius: 50%;
+        margin-right: 0.5rem;
+        position: relative;
+        cursor: pointer;
+        outline: none;
+        transition: background-color 0.3s ease, border-color 0.3s ease;
+        
+        &:checked {
+          background-color: $color-primary;
+          border-color: $color-primary;
+        }
+        
+        &:checked:after {
+          content: "";
+          position: absolute;
+          top: 2px;
+          left: 2px;
+          width: 10px;
+          height: 10px;
+          border-radius: 50%;
+          background: $color-white;
+        }
+      }
+    }
+  }
+  
+  .assign-buttons {
+    display: flex;
+    justify-content: space-around;
+    gap: 1rem;
+    
+    button {
+      flex: 1;
+      padding: 0.75rem;
+      border: none;
+      border-radius: 25px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+    
+    .btn-save {
+      background: linear-gradient(90deg, $color-primary 0%, $color-secondary 100%);
+      color: $color-white;
+      &:hover {
+        transform: scale(1.05);
+      }
+    }
+    
+    .btn-cancel {
+      background: $color-gray-light;
+      color: $color-gray-dark;
+      &:hover {
+        transform: scale(1.05);
+      }
+    }
+  }
+  

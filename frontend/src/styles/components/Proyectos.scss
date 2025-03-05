@@ -1,0 +1,178 @@
+// src/pages/Proyectos.scss
+
+@import '../abstracts/_variables.scss';
+
+.proyectos-page {
+  width: 100%;
+  margin: 0 auto;
+
+  .proyectos-title {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    text-align: center;
+    color: $color-white;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .proyectos-description {
+    font-size: 1.1rem;
+    max-width: 700px;
+    margin: 0 auto 2.5rem;
+    text-align: center;
+    line-height: 1.9;
+    color: $color-white;
+
+  }
+
+  .proyectos-slider {
+    width: 100%;
+    overflow: hidden; // Oculta el contenido que se sale del viewport
+
+    .slider-track {
+      display: flex;
+    }
+  }
+
+  .slider-a {
+    margin-bottom: 3rem;
+  }
+
+  // Slider B sin invertir con CSS, ya se controla la dirección desde el JS
+  .slider-b {
+    // Puedes aplicar ajustes de margen u otros estilos propios
+  }
+
+  .proyecto-pill {
+    background: $color-white;
+    border: 1px solid #ccc;
+    border-radius: 150px;
+    //efecto"pastilla"padding: 1rem 2rem;
+    min-width: 200px;
+    //tamañofijoparatodaslaspastillasmin-height: 150px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin: 0.5rem;
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+    cursor: pointer;
+    -webkit-border-radius: 150px;
+    -moz-border-radius: 150px;
+    -ms-border-radius: 150px;
+    -o-border-radius: 150px;
+    h3 {
+      margin: 0 0 0.5rem;
+      font-size: 1.25rem;
+      color: $color-gray-dark;
+    }
+    p {
+      margin: 0;
+      font-size: 0.95rem;
+      color: $color-gray-dark;
+    }
+
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    }
+  }
+}
+// src/components/SliderInfinito.scss
+
+// src/components/SliderInfinito.scss
+
+.slider-container {
+    overflow: hidden;
+    position: relative;
+    --slides-por-pantalla: 1;
+  }
+  
+  /* A partir de 600px: 2 slides por pantalla */
+  @media (min-width: 600px) {
+    .slider-container {
+      --slides-por-pantalla: 2;
+    }
+  }
+  
+  /* A partir de 1200px: 3 slides por pantalla */
+  @media (min-width: 1200px) {
+    .slider-container {
+      --slides-por-pantalla: 3;
+    }
+  }
+  
+  /* A partir de 1800px: 4 slides por pantalla */
+  @media (min-width: 1800px) {
+    .slider-container {
+      --slides-por-pantalla: 4;
+    }
+  }
+  
+  .slider-track {
+    display: flex;
+    animation: scroll linear infinite;
+    /* La duración se establece en línea desde React (prop velocidad) */
+  
+    @media (hover: hover) {
+      &:hover {
+        animation-play-state: paused;
+      }
+    }
+  }
+  
+  .slide {
+    /* Cada slide ocupa el 1/(--slides-por-pantalla) del contenedor */
+    flex: 0 0 calc(100% / var(--slides-por-pantalla));
+    padding: 0.5rem;
+  }
+  
+  /* Animación base para sliderA: recorre la longitud de la lista original */
+  @keyframes scroll {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(calc(-1 * var(--scroll-distance))); }
+  }
+  
+  /* Animación para sliderB (inversa): parte de -scroll-distance y llega a 0 */
+  @keyframes scroll-reverse {
+    0%   { transform: translateX(calc(-1 * var(--scroll-distance))); }
+    100% { transform: translateX(0); }
+  }
+  
+  /* Asigna la animación inversa a sliderB */
+  .sliderB .slider-track {
+    animation-name: scroll-reverse;
+  }
+  
+  /* Estilos para la "pastilla" del proyecto */
+  .proyecto-pill {
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 50px;
+    padding: 1rem 2rem;
+    min-height: 150px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+  
+    h3 {
+      margin: 0 0 0.5rem;
+      font-size: 1.25rem;
+      color: #333;
+    }
+    p {
+      margin: 0;
+      font-size: 0.95rem;
+      color: #333;
+    }
+  
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    }
+  }

@@ -6,8 +6,9 @@ import Nav from './Nav.js';
 import LanguageSwitcher from '../LanguageSwitcher.js';
 import AuthModal from '../AuthModal.js';
 import ProfileModal from '../ProfileModal.js';
+import AdminModal from '../AdminModal.js';
 import { AuthContext } from '../../context/AuthContext.js';
-import { FaUserCircle, FaBars, FaUser, FaSignOutAlt } from 'react-icons/fa';
+import { FaUserCircle, FaBars, FaUser, FaSignOutAlt, FaUserShield } from 'react-icons/fa';
 
 const Header = () => {
   const { t } = useTranslation();
@@ -17,7 +18,8 @@ const Header = () => {
   const { user, logout } = useContext(AuthContext);
   const [showDropdown, setShowDropdown] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
-
+  const [isAdminOpen, setIsAdminOpen] = useState(false);
+  console.log('user', user);
   const toggleMenu = () => setIsMenuOpen((prev) => !prev);
 
   const openAuthModal = (type = 'login') => {
@@ -28,6 +30,7 @@ const Header = () => {
 
   const closeAuthModal = () => setIsAuthOpen(false);
   const closeProfileModal = () => setIsProfileOpen(false);
+  const closeAdminModal = () => setIsAdminOpen(false);
 
   const handleLogout = async () => {
     await logout();
@@ -83,10 +86,17 @@ const Header = () => {
                   {t('header.myProfile') || 'Mi Perfil'}
                 </button>
                 
-                {user.idRol === 1 && (
-                  <Link to="/admin" onClick={() => setShowDropdown(false)}>
+                {user.Rol.nombre === "admin" && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowDropdown(false);
+                      setIsAdminOpen(true);
+                    }}
+                  >
+                    <FaUserShield style={{ marginRight: '0.5rem' }} />
                     {t('header.adminPanel') || 'Admin Panel'}
-                  </Link>
+                  </button>
                 )}
                 
                 <button onClick={handleLogout}>
@@ -116,10 +126,10 @@ const Header = () => {
         <AuthModal
           modalType={modalType}
           isOpen={isAuthOpen}
-          onClose={closeAuthModal}
+          onClose={() => setIsAuthOpen(false)}
           onSwitchType={(type) => setModalType(type)}
           onLogin={(data) => {
-            closeAuthModal();
+            setIsAuthOpen(false);
           }}
           onRegister={(data) => {
             setModalType('login');
@@ -133,11 +143,12 @@ const Header = () => {
 
       {/* Modal de perfil */}
       {user && (
-        <ProfileModal
-          isOpen={isProfileOpen}
-          onClose={closeProfileModal}
-          user={user}
-        />
+        <ProfileModal isOpen={isProfileOpen} onClose={closeProfileModal} user={user} />
+      )}
+
+      {/* Modal de admin: se abre solo si el usuario tiene rol admin */}
+      {user && user.Rol.nombre === "admin" && (
+        <AdminModal isOpen={isAdminOpen} onClose={closeAdminModal} />
       )}
     </header>
   );

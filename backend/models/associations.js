@@ -13,6 +13,7 @@ import ProyectoServicio from './ProyectoServicio.js';
 import Servicio from './Servicio.js';
 import ProyectoSkill from './ProyectoSkill.js';
 import AuditLog from './AuditLog.js';
+import SkillCategoria from './SkillCategoria.js';
 
 
 // Relaciones Usuario - Rol
@@ -49,18 +50,6 @@ Skill.belongsToMany(Proyecto, {
   foreignKey: 'id_skill',
   otherKey: 'id_proyecto',
 });
-
-// Relaciones Skill - CategoriaSkill
-Skill.belongsTo(CategoriaSkill, {
-    foreignKey: 'id_categoria_skill',
-    onDelete: 'RESTRICT', // o 'CASCADE' según tus necesidades
-    onUpdate: 'CASCADE',
-  });
-  CategoriaSkill.hasMany(Skill, {
-    foreignKey: 'id_categoria_skill',
-    onDelete: 'RESTRICT', // o 'CASCADE' según tus necesidades
-    onUpdate: 'CASCADE',
-  });
 
 // Relaciones Skill - Imagen
 Skill.belongsTo(Imagen, { foreignKey: 'id_imagen', allowNull: true });
@@ -127,4 +116,18 @@ AuditLog.belongsTo(Usuario, {
 
 Usuario.hasMany(AuditLog, {
   foreignKey: 'userId' 
+});
+
+Skill.belongsToMany(CategoriaSkill, {
+  through: SkillCategoria,
+  foreignKey: 'id_skill',           // Columna en SkillCategoria que referencia a Skill
+  otherKey: 'id_categoria_skill',
+  as: 'Categorias',
+  sourceKey: 'idSkill'              // Le decimos a Sequelize que use el atributo idSkill de Skill
+});
+CategoriaSkill.belongsToMany(Skill, {
+  through: SkillCategoria,
+  foreignKey: 'id_categoria_skill',
+  otherKey: 'id_skill',
+  as: 'Skills',
 });

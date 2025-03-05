@@ -4,6 +4,7 @@ import CategoriaSkill from '../models/CategoriaSkill.js';
 import Imagen from '../models/Imagen.js';
 import logger from '../config/logger.js';
 import Boom from '@hapi/boom';
+import SkillCategoria from '../models/SkillCategoria.js';
 
 export const crearSkill = async (req, res, next) => {
   try {
@@ -69,6 +70,7 @@ export const eliminarSkill = async (req, res, next) => {
   }
 };
 
+
 export const listarSkills = async (req, res, next) => {
   try {
     logger.info('Listar Skills: Obteniendo todas las skills paginadas.');
@@ -82,7 +84,9 @@ export const listarSkills = async (req, res, next) => {
       include: [
         {
           model: CategoriaSkill,
+          as: 'Categorias', // Usar el alias definido
           attributes: ['idCategoriaSkill', 'nombre'],
+          through: { attributes: [] },
         },
         {
           model: Imagen,
@@ -91,7 +95,6 @@ export const listarSkills = async (req, res, next) => {
       ],
     };
 
-    // Usamos Skill.paginate en lugar de findAll
     const { docs, pages, total } = await Skill.paginate(options);
 
     logger.info(
@@ -136,5 +139,56 @@ export const verSkill = async (req, res, next) => {
   } catch (error) {
     logger.error(`Error al ver skill: ${error.message}`);
     return next(Boom.internal(error.message));
+  }
+};
+
+export const asignarCategoriaASkill = async (req, res, next) => {
+  try {
+    const { idSkill } = req.params;
+    const { categories } = req.body; // Se espera un array de IDs
+    logger.info(`Asignar Categorías: Asignando categorías a la skill con ID ${idSkill}`);
+
+    if (!Array.isArray(categories)) {
+      return next(Boom.badRequest('Se espera un array de IDs en categories.'));
+    }
+
+    // Convertir los IDs a números
+    const catIds = categories.map(id => parseInt(id, 10));
+
+    const skill = await Skill.findByPk(idSkill);
+    if (!skill) {
+      logger.info(`Asignar Categorías: Skill con ID ${idSkill} no encontrada.`);
+      return next(Boom.notFound('Skill no encontrada.'));
+    }
+
+    console.log('Skill obtenido:', skill.toJSON());
+    console.log('Categorías a setear:', catIds);
+
+    // Paso 1: Eliminar todas las asociaciones existentes para esta skill
+    await SkillCategoria.destroy({ where: { id_skill: idSkill } });
+
+    // Paso 2: Insertar las nuevas asociaciones manualmente
+    const nuevosRegistros = catIds.map(catId => ({
+      id_skill: idSkill,
+      id_categoria_skill: catId,
+    }));
+
+    await SkillCategoria.bulkCreate(nuevosRegistros);
+
+    // Paso 3: Recargar la skill con las asociaciones actualizadas
+    const skillActualizada = await Skill.findByPk(idSkill, {
+      include: [{
+        model: CategoriaSkill,
+        as: 'Categorias',
+        attributes: ['idCategoriaSkill', 'nombre'],
+        through: { attributes: [] },
+      }],
+    });
+
+    logger.info(`Asignar Categorías: Categorías asignadas exitosamente a la skill con ID ${idSkill}`);
+    res.status(200).json({ mensaje: 'Categorías asignadas exitosamente.', skill: skillActualizada });
+  } catch (error) {
+    logger.error(`Error al asignar categorías a la skill: ${error.message}`);
+    return next(Boom.internal(error.message || 'Error al asignar categorías'));
   }
 };

@@ -31,7 +31,7 @@ function getBackground(pathname) {
     case '/servicios':
       return { url: '/images/background-servicios.jpg', key: 'servicios' };
     case '/proyectos':
-      return { url: '/images/background-proyectos.jpg', key: 'proyectos' };
+      return { url: '/images/proyectos.jpg', key: 'proyectos' };
     case '/blog':
       return { url: '/images/background-blog.jpg', key: 'blog' };
     case '/contacto':

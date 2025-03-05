@@ -2,7 +2,8 @@
 
 import { Router } from 'express';
 import {
-  asignarSkillAProyecto,
+  asignarServiciosAProyecto,
+  asignarSkillsAProyecto,
   buscarProyectos,
   crearProyecto,
   editarProyecto,
@@ -32,6 +33,8 @@ router.get('/:id', verProyecto);
 
 router.get('/buscar', buscarProyectos);
 
-router.post('/:idProyecto/skills/:idSkill', verificarRolAdmin ,asignarSkillAProyecto);
+router.post('/:idProyecto/skills', verificarToken, verificarRolAdmin, asignarSkillsAProyecto);
+
+router.post('/:idProyecto/servicios', verificarToken, verificarRolAdmin, asignarServiciosAProyecto);
 
 export default router;

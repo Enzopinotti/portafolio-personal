@@ -2,6 +2,7 @@
 
 import { Router } from 'express';
 import {
+  asignarCategoriaASkill,
   crearSkill,
   editarSkill,
   eliminarSkill,
@@ -27,5 +28,8 @@ router.get('/', listarSkills);
 
 // Ruta para ver detalles de una skill específica
 router.get('/:id', verSkill);
+
+// Nueva ruta para asignar categorías a una skill (requiere autenticación y rol admin)
+router.post('/:idSkill/categorias', verificarToken, verificarRolAdmin, asignarCategoriaASkill);
 
 export default router;

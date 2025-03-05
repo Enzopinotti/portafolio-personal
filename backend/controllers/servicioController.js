@@ -1,7 +1,6 @@
-// controllers/servicioController.js
+// src/controllers/servicioController.js
 import Servicio from '../models/Servicio.js';
 import Imagen from '../models/Imagen.js';
-import Proyecto from '../models/Proyecto.js';
 import logger from '../config/logger.js';
 import Boom from '@hapi/boom';
 

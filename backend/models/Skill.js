@@ -28,11 +28,6 @@ const Skill = sequelize.define(
       },
       field: 'nivel',
     },
-    idCategoriaSkill: {
-      type: DataTypes.INTEGER.UNSIGNED,
-      allowNull: false,
-      field: 'id_categoria_skill',
-    },
     idImagen: {
       type: DataTypes.INTEGER.UNSIGNED,
       allowNull: true,

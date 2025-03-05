@@ -6,23 +6,18 @@ import {
   editarServicio,
   eliminarServicio,
 } from '../controllers/servicioController.js';
-// import { verificarToken } from '../middleware/authMiddleware.js';
+import { verificarToken } from '../middleware/authMiddleware.js';
+import { verificarRolAdmin } from '../middleware/rolMiddleware.js';
 
 const router = Router();
 
-// GET /api/servicios
+// Listar y ver no requieren token, pero crear, editar y eliminar sí
 router.get('/', listarServicios);
-
-// GET /api/servicios/:id
 router.get('/:id', verServicio);
 
-// POST /api/servicios
-router.post('/', crearServicio);
-
-// PUT /api/servicios/:id
-router.put('/:id', editarServicio);
-
-// DELETE /api/servicios/:id
-router.delete('/:id', eliminarServicio);
+// Estas rutas requieren autenticación y rol admin (ajusta según tus necesidades)
+router.post('/', verificarToken, verificarRolAdmin, crearServicio);
+router.put('/:id', verificarToken, verificarRolAdmin, editarServicio);
+router.delete('/:id', verificarToken, verificarRolAdmin, eliminarServicio);
 
 export default router;
