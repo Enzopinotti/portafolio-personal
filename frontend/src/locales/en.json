@@ -112,6 +112,135 @@
       "noRefreshToken": "No refresh token provided.",
       "invalidRefreshToken": "Invalid refresh token (does not match DB).",
       "expiredRefreshToken": "Expired or invalid refresh token."
+    },
+    "adminModal": {
+      "title": "Administration Panel",
+      "buttons": {
+        "projects": "Projects",
+        "users": "Users",
+        "settings": "Settings",
+        "skills": "Skills",
+        "categories": "Categories",
+        "services": "Services"
+      }
+    },
+    "adminProjectsModal": {
+      "altImage": "Admin Pattern",
+      "title": "Project Management",
+      "searchPlaceholder": "Search projects...",
+      "loading": "Loading projects...",
+      "errorLoad": "Error loading projects",
+      "noSkills": "No skills",
+      "noServices": "No services",
+      "actions": {
+        "skills": "Skills",
+        "services": "Services",
+        "assignSkills": "Assign skills",
+        "assignServices": "Assign services",
+        "deleteProject": "Delete project"
+      },
+      "toast": {
+        "deleteSuccess": "Project deleted successfully.",
+        "deleteError": "Error deleting project.",
+        "createMissingFields": "Please enter the title and start date.",
+        "createSuccess": "Project created successfully.",
+        "createError": "Error creating project.",
+        "assignSkillsSuccess": "Skills assigned successfully.",
+        "assignSkillsError": "Error assigning skills.",
+        "assignServicesSuccess": "Services assigned successfully.",
+        "assignServicesError": "Error assigning services."
+      },
+      "confirmMessage": "Are you sure you want to delete this project?"
+    },
+    "adminProjectForm": {
+      "formTitle": "Create new project",
+      "titleLabel": "Title",
+      "titlePlaceholder": "Title",
+      "startDateLabel": "Start Date",
+      "descriptionLabel": "Description",
+      "descriptionPlaceholder": "Description",
+      "linkSkills": "Link Skills:",
+      "linkServices": "Link Services:",
+      "submitButton": "Create Project"
+    },
+    "adminSkillsModal": {
+      "altImage": "Skills Pattern",
+      "title": "Skill Management",
+      "searchPlaceholder": "Search skills...",
+      "loading": "Loading skills...",
+      "errorLoad": "Error loading skills",
+      "noCategory": "No category",
+      "actions": {
+        "categories": "Categories",
+        "level": "Level",
+        "assignCategory": "Assign category",
+        "deleteSkill": "Delete skill",
+        "addCategory": "Add category"
+      },
+      "toast": {
+        "deleteSuccess": "Skill deleted successfully.",
+        "deleteError": "Error deleting skill.",
+        "createMissingFields": "Please enter the name and select a category.",
+        "createSuccess": "Skill created successfully.",
+        "createError": "Error creating skill.",
+        "assignCategorySuccess": "Categories assigned successfully.",
+        "assignCategoryError": "Error assigning categories."
+      },
+      "confirmMessage": "Are you sure you want to delete this skill?"
+    },
+    "adminSkillForm": {
+      "formTitle": "Create new Skill",
+      "nameLabel": "Name",
+      "namePlaceholder": "Skill name",
+      "levelLabel": "Level: {{level}}%",
+      "categoryLabel": "Category",
+      "submitButton": "Create Skill"
+    },
+    "adminCategoriasModal": {
+      "altImage": "Categories Pattern",
+      "title": "Category Management",
+      "searchPlaceholder": "Search categories...",
+      "loading": "Loading categories...",
+      "errorLoad": "Error loading categories",
+      "toast": {
+        "deleteSuccess": "Category deleted successfully.",
+        "deleteError": "Error deleting category.",
+        "createMissingFields": "Please enter the category name.",
+        "createSuccess": "Category created successfully.",
+        "createError": "Error creating category."
+      },
+      "confirmMessage": "Are you sure you want to delete this category?"
+    },
+    "adminCategoriaForm": {
+      "formTitle": "Create new Category",
+      "nameLabel": "Name",
+      "namePlaceholder": "Category name",
+      "submitButton": "Create Category"
+    },
+    "adminServiciosModal": {
+      "altImage": "Services Pattern",
+      "title": "Service Management",
+      "searchPlaceholder": "Search services...",
+      "loading": "Loading services...",
+      "errorLoad": "Error loading services",
+      "toast": {
+        "deleteSuccess": "Service deleted successfully.",
+        "deleteError": "Error deleting service.",
+        "createMissingFields": "Please enter the service name.",
+        "createSuccess": "Service created successfully.",
+        "createError": "Error creating service."
+      },
+      "confirmMessage": "Are you sure you want to delete this service?"
+    },
+    "adminServicioForm": {
+      "formTitle": "Create new Service",
+      "nameLabel": "Name",
+      "namePlaceholder": "Service name",
+      "descriptionLabel": "Description",
+      "descriptionPlaceholder": "Service description",
+      "priceLabel": "Price",
+      "pricePlaceholder": "Price",
+      "submitButton": "Create Service"
     }
 }
   

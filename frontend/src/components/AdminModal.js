@@ -10,6 +10,7 @@ import {
   FaTags,
   FaConciergeBell  // ícono para servicios
 } from 'react-icons/fa';
+import { useTranslation } from 'react-i18next';
 import AdminProyectosModal from './AdminProyectosModal.js';
 import AdminSkillsModal from './AdminSkillsModal.js';
 import AdminCategoriasModal from './AdminCategoriasModal.js';
@@ -30,6 +31,7 @@ const getModalVariants = (direction = 'forward') => {
 };
 
 const AdminModal = ({ isOpen, onClose }) => {
+  const { t } = useTranslation();
   const [subModal, setSubModal] = useState(null); // "proyectos", "usuarios", "config", "skills", "categorias" o "servicios"
   const [direction, setDirection] = useState('forward');
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
@@ -80,34 +82,34 @@ const AdminModal = ({ isOpen, onClose }) => {
             </button>
             <div className="admin-modal-body">
               <div className="leftModal">
-                <img src={imageSrc} alt="Admin Pattern" />
+                <img src={imageSrc} alt={t('adminModal.altImage', 'Admin Pattern')} />
               </div>
               <div className="rightModal">
-                <h2>Panel de Administración</h2>
+                <h2>{t('adminModal.title')}</h2>
                 <div className="admin-buttons">
                   <button onClick={() => handleSwitch('proyectos')}>
                     <FaProjectDiagram size={48} />
-                    <span>Proyectos</span>
+                    <span>{t('adminModal.buttons.projects')}</span>
                   </button>
                   <button onClick={() => handleSwitch('usuarios')}>
                     <FaUsers size={48} />
-                    <span>Usuarios</span>
+                    <span>{t('adminModal.buttons.users')}</span>
                   </button>
                   <button onClick={() => handleSwitch('config')}>
                     <FaCog size={48} />
-                    <span>Configuración</span>
+                    <span>{t('adminModal.buttons.settings')}</span>
                   </button>
                   <button onClick={() => handleSwitch('skills')}>
                     <FaWrench size={48} />
-                    <span>Skills</span>
+                    <span>{t('adminModal.buttons.skills')}</span>
                   </button>
                   <button onClick={() => handleSwitch('categorias')}>
                     <FaTags size={48} />
-                    <span>Categorías</span>
+                    <span>{t('adminModal.buttons.categories')}</span>
                   </button>
                   <button onClick={() => handleSwitch('servicios')}>
                     <FaConciergeBell size={48} />
-                    <span>Servicios</span>
+                    <span>{t('adminModal.buttons.services')}</span>
                   </button>
                 </div>
               </div>
@@ -152,7 +154,7 @@ const AdminModal = ({ isOpen, onClose }) => {
         />
       )}
 
-      {/* Se pueden agregar más sub-modales para 'usuarios' o 'config' */}
+      {/* Puedes agregar más sub-modales para 'usuarios' o 'config' */}
     </AnimatePresence>
   );
 };

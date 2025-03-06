@@ -7,6 +7,7 @@ import { listServicios, createServicio, deleteServicio } from '../services/servi
 import { AuthContext } from '../context/AuthContext.js';
 import { toast } from 'react-toastify';
 import ConfirmModal from './ConfirmModal.js';
+import { useTranslation } from 'react-i18next';
 
 const getModalVariants = (direction = 'forward') => {
   return direction === 'forward'
@@ -15,6 +16,7 @@ const getModalVariants = (direction = 'forward') => {
 };
 
 const AdminServiciosModal = ({ isOpen, onClose, direction = 'forward' }) => {
+  const { t } = useTranslation();
   const { accessToken } = useContext(AuthContext);
   const variants = getModalVariants(direction);
 
@@ -31,16 +33,17 @@ const AdminServiciosModal = ({ isOpen, onClose, direction = 'forward' }) => {
     setLoading(true);
     listServicios()
       .then((data) => {
-        // Suponiendo que el endpoint devuelve un objeto { servicios, total, pages, ... } o un array
+        // Se espera que el endpoint devuelva { servicios, ... } o un array
         setServicios(data.servicios || data);
         setLoading(false);
       })
       .catch((err) => {
-        setError(err.message || 'Error al cargar servicios');
+        const errMsg = err.message || t('adminServiciosModal.errorLoad');
+        setError(errMsg);
         setLoading(false);
-        toast.error(err.message || 'Error al cargar servicios');
+        toast.error(errMsg);
       });
-  }, [isOpen]);
+  }, [isOpen, t]);
 
   const filteredServicios = servicios.filter((servicio) =>
     servicio.nombre.toLowerCase().includes(searchTerm.toLowerCase())
@@ -49,18 +52,18 @@ const AdminServiciosModal = ({ isOpen, onClose, direction = 'forward' }) => {
   const handleCreate = (e) => {
     e.preventDefault();
     if (!newServicio.nombre.trim()) {
-      toast.error('Por favor, ingrese el nombre del servicio.');
+      toast.error(t('adminServiciosModal.toast.createMissingFields'));
       return;
     }
     createServicio(newServicio, accessToken)
       .then((response) => {
         setServicios([...servicios, response.servicio]);
         setNewServicio({ nombre: '', descripcion: '', precio: '' });
-        toast.success('Servicio creado exitosamente.');
+        toast.success(t('adminServiciosModal.toast.createSuccess'));
       })
       .catch((err) => {
         console.error('Error al crear servicio:', err);
-        toast.error('Error al crear servicio.');
+        toast.error(t('adminServiciosModal.toast.createError'));
       });
   };
 
@@ -69,11 +72,11 @@ const AdminServiciosModal = ({ isOpen, onClose, direction = 'forward' }) => {
     deleteServicio(servicioToDelete, accessToken)
       .then(() => {
         setServicios(servicios.filter((s) => s.idServicio !== servicioToDelete));
-        toast.success('Servicio eliminado exitosamente.');
+        toast.success(t('adminServiciosModal.toast.deleteSuccess'));
       })
       .catch((err) => {
         console.error('Error al eliminar servicio:', err);
-        toast.error('Error al eliminar servicio.');
+        toast.error(t('adminServiciosModal.toast.deleteError'));
       })
       .finally(() => {
         setConfirmOpen(false);
@@ -130,19 +133,19 @@ const AdminServiciosModal = ({ isOpen, onClose, direction = 'forward' }) => {
               </div>
               <div className="admin-modal-body">
                 <div className="leftModal">
-                  <img src={imageSrc} alt="Patrón de Servicios" />
+                  <img src={imageSrc} alt={t('adminServiciosModal.altImage')} />
                 </div>
                 <div className="rightModal">
-                  <h2>Gestión de Servicios</h2>
+                  <h2>{t('adminServiciosModal.title')}</h2>
                   <div className="search-container">
                     <input
                       type="text"
-                      placeholder="Buscar servicios..."
+                      placeholder={t('adminServiciosModal.searchPlaceholder')}
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
                     />
                   </div>
-                  {loading && <p>Cargando servicios...</p>}
+                  {loading && <p>{t('adminServiciosModal.loading')}</p>}
                   {error && <p className="error">{error}</p>}
                   <div className="projects-list">
                     {filteredServicios.map((servicio) => (
@@ -150,7 +153,9 @@ const AdminServiciosModal = ({ isOpen, onClose, direction = 'forward' }) => {
                         <div className="project-info">
                           <h3>{servicio.nombre}</h3>
                           <p>{servicio.descripcion}</p>
-                          <p>Precio: ${servicio.precio}</p>
+                          <p>
+                            {t('adminServicioForm.priceLabel')}: ${servicio.precio}
+                          </p>
                         </div>
                         <button
                           className="delete-button"
@@ -174,7 +179,7 @@ const AdminServiciosModal = ({ isOpen, onClose, direction = 'forward' }) => {
       </AnimatePresence>
       <ConfirmModal
         isOpen={confirmOpen}
-        message="¿Estás seguro de eliminar este servicio?"
+        message={t('adminServiciosModal.confirmMessage')}
         onConfirm={confirmDelete}
         onCancel={() => {
           setConfirmOpen(false);

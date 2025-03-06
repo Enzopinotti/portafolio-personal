@@ -17,6 +17,7 @@ import { toast } from 'react-toastify';
 import ConfirmModal from './ConfirmModal.js';
 import AssignSkillModal from './AssignSkillModal.js';
 import AssignServiceModal from './AssignServiceModal.js';
+import { useTranslation } from 'react-i18next';
 
 const getModalVariants = (direction = 'forward') => {
   return direction === 'forward'
@@ -25,6 +26,7 @@ const getModalVariants = (direction = 'forward') => {
 };
 
 const AdminProyectosModal = ({ isOpen, onClose, direction = 'forward' }) => {
+  const { t } = useTranslation();
   const { accessToken } = useContext(AuthContext);
   const variants = getModalVariants(direction);
 
@@ -50,6 +52,15 @@ const AdminProyectosModal = ({ isOpen, onClose, direction = 'forward' }) => {
   const [assignServiceModalOpen, setAssignServiceModalOpen] = useState(false);
   const [projectToAssignServices, setProjectToAssignServices] = useState(null);
 
+  // Manejo del responsive para la imagen de fondo
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+  const imageSrc = windowWidth < 800 ? '/images/patronDos.png' : '/images/patronUno.png';
+
   // Cargar datos cuando se abre el modal
   useEffect(() => {
     if (!isOpen) return;
@@ -60,9 +71,10 @@ const AdminProyectosModal = ({ isOpen, onClose, direction = 'forward' }) => {
         setLoading(false);
       })
       .catch((err) => {
-        setError(err.message || 'Error al cargar proyectos');
+        const errMsg = err.message || t('adminProjectsModal.errorLoad');
+        setError(errMsg);
         setLoading(false);
-        toast.error(err.message || 'Error al cargar proyectos');
+        toast.error(errMsg);
       });
 
     listSkills()
@@ -80,7 +92,7 @@ const AdminProyectosModal = ({ isOpen, onClose, direction = 'forward' }) => {
       .catch((err) => {
         console.error('Error al cargar servicios:', err);
       });
-  }, [isOpen]);
+  }, [isOpen, t]);
 
   const filteredProjects = projects.filter(project =>
     project.titulo.toLowerCase().includes(searchTerm.toLowerCase())
@@ -92,11 +104,11 @@ const AdminProyectosModal = ({ isOpen, onClose, direction = 'forward' }) => {
     deleteProject(projectToDelete, accessToken)
       .then(() => {
         setProjects(projects.filter(project => project.idProyecto !== projectToDelete));
-        toast.success('Proyecto eliminado exitosamente.');
+        toast.success(t('adminProjectsModal.toast.deleteSuccess'));
       })
       .catch((err) => {
         console.error('Error al eliminar proyecto:', err);
-        toast.error('Error al eliminar proyecto.');
+        toast.error(t('adminProjectsModal.toast.deleteError'));
       })
       .finally(() => {
         setConfirmOpen(false);
@@ -113,18 +125,18 @@ const AdminProyectosModal = ({ isOpen, onClose, direction = 'forward' }) => {
   const handleCreate = (e) => {
     e.preventDefault();
     if (!newProject.titulo.trim() || !newProject.fechaInicio.trim()) {
-      toast.error('Por favor, ingrese el título y la fecha de inicio.');
+      toast.error(t('adminProjectsModal.toast.createMissingFields'));
       return;
     }
     createProject(newProject, accessToken)
       .then((response) => {
         setProjects([...projects, response.proyecto]);
         setNewProject({ titulo: '', descripcion: '', fechaInicio: '', skills: [], servicios: [] });
-        toast.success('Proyecto creado exitosamente.');
+        toast.success(t('adminProjectsModal.toast.createSuccess'));
       })
       .catch((err) => {
         console.error('Error al crear proyecto:', err);
-        toast.error('Error al crear proyecto.');
+        toast.error(t('adminProjectsModal.toast.createError'));
       });
   };
 
@@ -141,11 +153,11 @@ const AdminProyectosModal = ({ isOpen, onClose, direction = 'forward' }) => {
         setProjects(projects.map(project =>
           project.idProyecto === projectToAssignSkills.idProyecto ? response.proyecto : project
         ));
-        toast.success('Skills asignadas exitosamente.');
+        toast.success(t('adminProjectsModal.toast.assignSkillsSuccess'));
       })
       .catch((err) => {
         console.error('Error al asignar skills:', err);
-        toast.error('Error al asignar skills.');
+        toast.error(t('adminProjectsModal.toast.assignSkillsError'));
       })
       .finally(() => {
         setAssignSkillModalOpen(false);
@@ -166,26 +178,17 @@ const AdminProyectosModal = ({ isOpen, onClose, direction = 'forward' }) => {
         setProjects(projects.map(project =>
           project.idProyecto === projectToAssignServices.idProyecto ? response.proyecto : project
         ));
-        toast.success('Servicios asignados exitosamente.');
+        toast.success(t('adminProjectsModal.toast.assignServicesSuccess'));
       })
       .catch((err) => {
         console.error('Error al asignar servicios:', err);
-        toast.error('Error al asignar servicios.');
+        toast.error(t('adminProjectsModal.toast.assignServicesError'));
       })
       .finally(() => {
         setAssignServiceModalOpen(false);
         setProjectToAssignServices(null);
       });
   };
-
-  // Manejo del responsive para la imagen de fondo
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  useEffect(() => {
-    const handleResize = () => setWindowWidth(window.innerWidth);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-  const imageSrc = windowWidth < 800 ? '/images/patronDos.png' : '/images/patronUno.png';
 
   const handleOverlayClick = (e) => {
     const selectedText = window.getSelection().toString();
@@ -223,19 +226,19 @@ const AdminProyectosModal = ({ isOpen, onClose, direction = 'forward' }) => {
               </div>
               <div className="admin-modal-body">
                 <div className="leftModal">
-                  <img src={imageSrc} alt="Patrón de Admin" />
+                  <img src={imageSrc} alt={t('adminProjectsModal.altImage')} />
                 </div>
                 <div className="rightModal">
-                  <h2>Gestión de Proyectos</h2>
+                  <h2>{t('adminProjectsModal.title')}</h2>
                   <div className="search-container">
                     <input
                       type="text"
-                      placeholder="Buscar proyectos..."
+                      placeholder={t('adminProjectsModal.searchPlaceholder')}
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
                     />
                   </div>
-                  {loading && <p>Cargando proyectos...</p>}
+                  {loading && <p>{t('adminProjectsModal.loading')}</p>}
                   {error && <p className="error">{error}</p>}
                   <div className="projects-list">
                     {filteredProjects.map((project) => (
@@ -244,37 +247,37 @@ const AdminProyectosModal = ({ isOpen, onClose, direction = 'forward' }) => {
                           <h3>{project.titulo}</h3>
                           <p>{project.descripcion}</p>
                           <p>
-                            Skills:{" "}
+                            {t('adminProjectsModal.actions.skills') || 'Skills'}:{" "}
                             {project.Skills && project.Skills.length > 0
                               ? project.Skills.map(skill => skill.nombre).join(', ')
-                              : 'Sin skills'}
+                              : t('adminProjectsModal.noSkills')}
                           </p>
                           <p>
-                            Servicios:{" "}
+                            {t('adminProjectsModal.actions.services') || 'Services'}:{" "}
                             {project.Servicios && project.Servicios.length > 0
                               ? project.Servicios.map(servicio => servicio.nombre).join(', ')
-                              : 'Sin servicios'}
+                              : t('adminProjectsModal.noServices')}
                           </p>
                         </div>
                         <div className="project-actions">
                           <button
                             className="assign-skill-button"
                             onClick={() => handleAssignSkills(project)}
-                            title="Asignar skills"
+                            title={t('adminProjectsModal.actions.assignSkills')}
                           >
                             <FaPlus />
                           </button>
                           <button
                             className="assign-service-button"
                             onClick={() => handleAssignServicios(project)}
-                            title="Asignar servicios"
+                            title={t('adminProjectsModal.actions.assignServices')}
                           >
                             <FaPlus />
                           </button>
                           <button
                             className="delete-button"
                             onClick={() => handleDelete(project.idProyecto)}
-                            title="Eliminar proyecto"
+                            title={t('adminProjectsModal.actions.deleteProject')}
                           >
                             <FaTimes />
                           </button>
@@ -297,7 +300,7 @@ const AdminProyectosModal = ({ isOpen, onClose, direction = 'forward' }) => {
       </AnimatePresence>
       <ConfirmModal
         isOpen={confirmOpen}
-        message="¿Estás seguro de eliminar este proyecto?"
+        message={t('adminProjectsModal.confirmMessage')}
         onConfirm={confirmDelete}
         onCancel={() => {
           setConfirmOpen(false);

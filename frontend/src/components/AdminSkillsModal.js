@@ -9,27 +9,28 @@ import { AuthContext } from '../context/AuthContext.js';
 import { toast } from 'react-toastify';
 import ConfirmModal from './ConfirmModal.js';
 import AssignCategoryModal from './AssignCategoryModal.js';
+import { useTranslation } from 'react-i18next';
 
 const getModalVariants = (direction = 'forward') => {
   return direction === 'forward'
     ? {
         hidden: { opacity: 0, x: '100vw' },
         visible: { opacity: 1, x: '0' },
-        exit: { opacity: 0, x: '-100vw' },
+        exit: { opacity: 0, x: '-100vw' }
       }
     : {
         hidden: { opacity: 0, x: '-100vw' },
         visible: { opacity: 1, x: '0' },
-        exit: { opacity: 0, x: '100vw' },
+        exit: { opacity: 0, x: '100vw' }
       };
 };
 
 const AdminSkillsModal = ({ isOpen, onClose, direction = 'forward' }) => {
+  const { t } = useTranslation();
   const { accessToken } = useContext(AuthContext);
   const variants = getModalVariants(direction);
   
   const [skills, setSkills] = useState([]);
-  console.log(skills)
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   
@@ -55,9 +56,10 @@ const AdminSkillsModal = ({ isOpen, onClose, direction = 'forward' }) => {
         setLoading(false);
       })
       .catch((err) => {
-        setError(err.message || 'Error al cargar skills');
+        const errMsg = err.message || t('adminSkillsModal.errorLoad');
+        setError(errMsg);
         setLoading(false);
-        toast.error(err.message || 'Error al cargar skills');
+        toast.error(errMsg);
       });
     // Cargar las categorías disponibles
     listCategoriaSkills()
@@ -67,7 +69,7 @@ const AdminSkillsModal = ({ isOpen, onClose, direction = 'forward' }) => {
       .catch((err) => {
         console.error('Error al cargar categorías de skills:', err);
       });
-  }, [isOpen]);
+  }, [isOpen, t]);
   
   const filteredSkills = skills.filter(skill =>
     skill.nombre.toLowerCase().includes(searchTerm.toLowerCase())
@@ -78,11 +80,11 @@ const AdminSkillsModal = ({ isOpen, onClose, direction = 'forward' }) => {
     deleteSkill(skillToDelete, accessToken)
       .then(() => {
         setSkills(skills.filter(skill => skill.idSkill !== skillToDelete));
-        toast.success('Skill eliminada exitosamente.');
+        toast.success(t('adminSkillsModal.toast.deleteSuccess'));
       })
       .catch((err) => {
         console.error('Error al eliminar skill:', err);
-        toast.error('Error al eliminar skill.');
+        toast.error(t('adminSkillsModal.toast.deleteError'));
       })
       .finally(() => {
         setConfirmOpen(false);
@@ -98,23 +100,23 @@ const AdminSkillsModal = ({ isOpen, onClose, direction = 'forward' }) => {
   const handleCreate = (e) => {
     e.preventDefault();
     if (!newSkill.nombre.trim() || !newSkill.idCategoriaSkill) {
-      toast.error('Por favor, ingrese el nombre y seleccione una categoría.');
+      toast.error(t('adminSkillsModal.toast.createMissingFields'));
       return;
     }
     const nivel = parseInt(newSkill.nivel, 10);
     if (isNaN(nivel) || nivel < 0 || nivel > 100) {
-      toast.error('El nivel debe estar entre 0 y 100.');
+      toast.error('El nivel debe estar entre 0 y 100.'); // Puedes traducir este mensaje si lo deseas.
       return;
     }
     createSkill({ ...newSkill, nivel }, accessToken)
       .then((response) => {
         setSkills([...skills, response.skill]);
         setNewSkill({ nombre: '', nivel: '', idCategoriaSkill: '' });
-        toast.success('Skill creada exitosamente.');
+        toast.success(t('adminSkillsModal.toast.createSuccess'));
       })
       .catch((err) => {
         console.error('Error al crear skill:', err);
-        toast.error('Error al crear skill.');
+        toast.error(t('adminSkillsModal.toast.createError'));
       });
   };
 
@@ -125,18 +127,16 @@ const AdminSkillsModal = ({ isOpen, onClose, direction = 'forward' }) => {
   };
 
   const handleSaveAssignment = (selectedCategories) => {
-    // Usar skillToAssign.idSkill en lugar de skillToAssign
     assignCategoryToSkill(skillToAssign.idSkill, selectedCategories, accessToken)
       .then((response) => {
-        // Actualizamos la skill con las categorías asignadas
         setSkills(skills.map(skill =>
           skill.idSkill === skillToAssign.idSkill ? response.skill : skill
         ));
-        toast.success('Categorías asignadas exitosamente.');
+        toast.success(t('adminSkillsModal.toast.assignCategorySuccess'));
       })
       .catch((err) => {
         console.error('Error al asignar categorías:', err);
-        toast.error('Error al asignar categorías.');
+        toast.error(t('adminSkillsModal.toast.assignCategoryError'));
       })
       .finally(() => {
         setAssignModalOpen(false);
@@ -144,7 +144,6 @@ const AdminSkillsModal = ({ isOpen, onClose, direction = 'forward' }) => {
       });
   };
   
-
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   useEffect(() => {
     const handleResize = () => setWindowWidth(window.innerWidth);
@@ -189,50 +188,51 @@ const AdminSkillsModal = ({ isOpen, onClose, direction = 'forward' }) => {
               </div>
               <div className="admin-modal-body">
                 <div className="leftModal">
-                  <img src={imageSrc} alt="Patrón de Skills" />
+                  <img src={imageSrc} alt={t('adminSkillsModal.altImage')} />
                 </div>
                 <div className="rightModal">
-                  <h2>Gestión de Skills</h2>
+                  <h2>{t('adminSkillsModal.title')}</h2>
                   <div className="search-container">
                     <input
                       type="text"
-                      placeholder="Buscar skills..."
+                      placeholder={t('adminSkillsModal.searchPlaceholder')}
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
                     />
                   </div>
-                  {loading && <p>Cargando skills...</p>}
+                  {loading && <p>{t('adminSkillsModal.loading')}</p>}
                   {error && <p className="error">{error}</p>}
                   <div className="projects-list">
                     {filteredSkills.map((skill) => (
-                        <div key={skill.idSkill} className="project-item">
+                      <div key={skill.idSkill} className="project-item">
                         <div className="project-info">
-                            <h3>{skill.nombre}</h3>
-                            <p>Nivel: {skill.nivel}%</p>
-                            <p className="categoria">
-                            Categorías: {skill.Categorias && skill.Categorias.length > 0
-                                ? skill.Categorias.map((cat) => cat.nombre).join(', ')
-                                : 'Sin categoría'}
-                            </p>
+                          <h3>{skill.nombre}</h3>
+                          <p>{t('adminSkillsModal.actions.level')}: {skill.nivel}%</p>
+                          <p className="categoria">
+                          {t('adminSkillsModal.actions.categories')}: {skill.Categorias && skill.Categorias.length > 0
+                              ? skill.Categorias.map((cat) => cat.nombre).join(', ')
+                              : t('adminSkillsModal.noCategory')}
+                          </p>
                         </div>
                         <div className="skill-actions">
-                            <button
-                                className="add-category-button"
-                                onClick={() => handleAssignCategory(skill)}
-                                title="Añadir categoría"
-                            >
+                          <button
+                            className="add-category-button"
+                            onClick={() => handleAssignCategory(skill)}
+                            title={t('adminSkillsModal.actions.addCategory')}
+                          >
                             <FaPlus />
-                            </button>
-                            <button
+                          </button>
+                          <button
                             className="delete-button"
                             onClick={() => handleDelete(skill.idSkill)}
-                            >
+                            title={t('adminSkillsModal.actions.deleteSkill')}
+                          >
                             <FaTimes />
-                            </button>
+                          </button>
                         </div>
-                        </div>
+                      </div>
                     ))}
-                    </div>
+                  </div>
                   <AdminSkillForm
                     newSkill={newSkill}
                     setNewSkill={setNewSkill}
@@ -247,7 +247,7 @@ const AdminSkillsModal = ({ isOpen, onClose, direction = 'forward' }) => {
       </AnimatePresence>
       <ConfirmModal
         isOpen={confirmOpen}
-        message="¿Estás seguro de eliminar esta skill?"
+        message={t('adminSkillsModal.confirmMessage')}
         onConfirm={confirmDelete}
         onCancel={() => {
           setConfirmOpen(false);
@@ -259,11 +259,11 @@ const AdminSkillsModal = ({ isOpen, onClose, direction = 'forward' }) => {
         availableCategories={availableCategories}
         onSave={handleSaveAssignment}
         onCancel={() => {
-            setAssignModalOpen(false);
-            setSkillToAssign(null);
+          setAssignModalOpen(false);
+          setSkillToAssign(null);
         }}
         currentCategories={skillToAssign ? skillToAssign.Categorias || [] : []}
-        />
+      />
     </>
   );
 };

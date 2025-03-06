@@ -1,7 +1,10 @@
 // src/components/AdminProjectForm.jsx
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 const AdminProjectForm = ({ newProject, setNewProject, handleCreate, availableSkills, availableServices }) => {
+  const { t } = useTranslation();
+
   // Manejar cambios en los checkboxes para skills
   const handleSkillCheckboxChange = (e) => {
     const value = parseInt(e.target.value, 10);
@@ -26,18 +29,18 @@ const AdminProjectForm = ({ newProject, setNewProject, handleCreate, availableSk
 
   return (
     <form className="new-project-form" onSubmit={handleCreate}>
-      <h3 className="titulo-form">Crear nuevo proyecto</h3>
+      <h3 className="titulo-form">{t('adminProjectForm.formTitle')}</h3>
       
-      <label htmlFor="titulo">Título</label>
+      <label htmlFor="titulo">{t('adminProjectForm.titleLabel')}</label>
       <input
         id="titulo"
         type="text"
-        placeholder="Título"
+        placeholder={t('adminProjectForm.titlePlaceholder')}
         value={newProject.titulo || ''}
         onChange={(e) => setNewProject({ ...newProject, titulo: e.target.value })}
       />
       
-      <label htmlFor="fechaInicio">Fecha de inicio:</label>
+      <label htmlFor="fechaInicio">{t('adminProjectForm.startDateLabel')}</label>
       <input
         id="fechaInicio"
         type="date"
@@ -45,17 +48,17 @@ const AdminProjectForm = ({ newProject, setNewProject, handleCreate, availableSk
         onChange={(e) => setNewProject({ ...newProject, fechaInicio: e.target.value })}
       />
       
-      <label htmlFor="descripcion">Descripción:</label>
+      <label htmlFor="descripcion">{t('adminProjectForm.descriptionLabel')}</label>
       <textarea
         id="descripcion"
-        placeholder="Descripción"
+        placeholder={t('adminProjectForm.descriptionPlaceholder')}
         value={newProject.descripcion || ''}
         onChange={(e) => setNewProject({ ...newProject, descripcion: e.target.value })}
       />
 
       {availableSkills && availableSkills.length > 0 && (
         <>
-          <label>Vincular Skills:</label>
+          <label>{t('adminProjectForm.linkSkills')}</label>
           <div className="skills-checkboxes">
             {availableSkills.map((skill) => (
               <label key={skill.idSkill} className="skill-checkbox-label">
@@ -74,7 +77,7 @@ const AdminProjectForm = ({ newProject, setNewProject, handleCreate, availableSk
 
       {availableServices && availableServices.length > 0 && (
         <>
-          <label>Vincular Servicios:</label>
+          <label>{t('adminProjectForm.linkServices')}</label>
           <div className="services-checkboxes">
             {availableServices.map((servicio) => (
               <label key={servicio.idServicio} className="service-checkbox-label">
@@ -91,7 +94,7 @@ const AdminProjectForm = ({ newProject, setNewProject, handleCreate, availableSk
         </>
       )}
 
-      <button type="submit">Crear Proyecto</button>
+      <button type="submit">{t('adminProjectForm.submitButton')}</button>
     </form>
   );
 };

@@ -7,22 +7,24 @@ import ConfirmModal from './ConfirmModal.js';
 import { listCategoriaSkills, createCategoriaSkill, deleteCategoriaSkill } from '../services/categoriaSkillService.js';
 import { AuthContext } from '../context/AuthContext.js';
 import { toast } from 'react-toastify';
+import { useTranslation } from 'react-i18next';
 
 const getModalVariants = (direction = 'forward') => {
   return direction === 'forward'
     ? {
         hidden: { opacity: 0, x: '100vw' },
         visible: { opacity: 1, x: '0' },
-        exit: { opacity: 0, x: '-100vw' },
+        exit: { opacity: 0, x: '-100vw' }
       }
     : {
         hidden: { opacity: 0, x: '-100vw' },
         visible: { opacity: 1, x: '0' },
-        exit: { opacity: 0, x: '100vw' },
+        exit: { opacity: 0, x: '100vw' }
       };
 };
 
 const AdminCategoriasModal = ({ isOpen, onClose, direction = 'forward' }) => {
+  const { t } = useTranslation();
   const { accessToken } = useContext(AuthContext);
   const variants = getModalVariants(direction);
 
@@ -54,11 +56,12 @@ const AdminCategoriasModal = ({ isOpen, onClose, direction = 'forward' }) => {
         setLoading(false);
       })
       .catch((err) => {
-        setError(err.message || 'Error al cargar categorías');
+        const errMsg = err.message || t('adminCategoriasModal.errorLoad');
+        setError(errMsg);
         setLoading(false);
-        toast.error(err.message || 'Error al cargar categorías');
+        toast.error(err.message || t('adminCategoriasModal.errorLoad'));
       });
-  }, [isOpen]);
+  }, [isOpen, t]);
 
   const filteredCategorias = categorias.filter(cat =>
     cat.nombre.toLowerCase().includes(searchTerm.toLowerCase())
@@ -69,11 +72,11 @@ const AdminCategoriasModal = ({ isOpen, onClose, direction = 'forward' }) => {
     deleteCategoriaSkill(categoriaToDelete, accessToken)
       .then(() => {
         setCategorias(categorias.filter(cat => cat.idCategoriaSkill !== categoriaToDelete));
-        toast.success('Categoría eliminada exitosamente.');
+        toast.success(t('adminCategoriasModal.toast.deleteSuccess'));
       })
       .catch((err) => {
         console.error('Error al eliminar categoría:', err);
-        toast.error('Error al eliminar categoría.');
+        toast.error(t('adminCategoriasModal.toast.deleteError'));
       })
       .finally(() => {
         setConfirmOpen(false);
@@ -89,18 +92,18 @@ const AdminCategoriasModal = ({ isOpen, onClose, direction = 'forward' }) => {
   const handleCreate = (e) => {
     e.preventDefault();
     if (!newCategoria.nombre.trim()) {
-      toast.error('Por favor, ingrese el nombre de la categoría.');
+      toast.error(t('adminCategoriasModal.toast.createMissingFields'));
       return;
     }
     createCategoriaSkill(newCategoria, accessToken)
       .then((response) => {
         setCategorias([...categorias, response.categoria]);
         setNewCategoria({ nombre: '' });
-        toast.success('Categoría creada exitosamente.');
+        toast.success(t('adminCategoriasModal.toast.createSuccess'));
       })
       .catch((err) => {
         console.error('Error al crear categoría:', err);
-        toast.error('Error al crear categoría.');
+        toast.error(t('adminCategoriasModal.toast.createError'));
       });
   };
 
@@ -140,19 +143,19 @@ const AdminCategoriasModal = ({ isOpen, onClose, direction = 'forward' }) => {
               </div>
               <div className="admin-modal-body">
                 <div className="leftModal">
-                  <img src={imageSrc} alt="Patrón de Categorías" />
+                  <img src={imageSrc} alt={t('adminCategoriasModal.altImage')} />
                 </div>
                 <div className="rightModal">
-                  <h2>Gestión de Categorías</h2>
+                  <h2>{t('adminCategoriasModal.title')}</h2>
                   <div className="search-container">
                     <input
                       type="text"
-                      placeholder="Buscar categorías..."
+                      placeholder={t('adminCategoriasModal.searchPlaceholder')}
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
                     />
                   </div>
-                  {loading && <p>Cargando categorías...</p>}
+                  {loading && <p>{t('adminCategoriasModal.loading')}</p>}
                   {error && <p className="error">{error}</p>}
                   <div className="projects-list">
                     {filteredCategorias.map((cat) => (
@@ -182,7 +185,7 @@ const AdminCategoriasModal = ({ isOpen, onClose, direction = 'forward' }) => {
       </AnimatePresence>
       <ConfirmModal
         isOpen={confirmOpen}
-        message="¿Estás seguro de eliminar esta categoría?"
+        message={t('adminCategoriasModal.confirmMessage')}
         onConfirm={confirmDelete}
         onCancel={() => {
           setConfirmOpen(false);

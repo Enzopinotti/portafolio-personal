@@ -111,6 +111,135 @@
       "noRefreshToken": "Nenhum token de atualização fornecido.",
       "invalidRefreshToken": "Token de atualização inválido (não corresponde ao BD).",
       "expiredRefreshToken": "Token de atualização expirado ou inválido."
+    },
+    "adminModal": {
+    "title": "Painel de Admin",
+    "buttons": {
+      "projects": "Projetos",
+      "users": "Usuários",
+      "settings": "Configuração",
+      "skills": "Skills",
+      "categories": "Categorias",
+      "services": "Serviços"
+    }
+  },
+    "adminProjectsModal": {
+      "altImage": "Padrão de Admin",
+      "title": "Gestão de Projetos",
+      "searchPlaceholder": "Pesquisar projetos...",
+      "loading": "Carregando projetos...",
+      "errorLoad": "Erro ao carregar projetos",
+      "noSkills": "Sem skills",
+      "noServices": "Sem serviços",
+      "actions": {
+        "skills": "Skills",
+        "services": "Serviços",
+        "assignSkills": "Atribuir skills",
+        "assignServices": "Atribuir serviços",
+        "deleteProject": "Excluir projeto"
+      },
+      "toast": {
+        "deleteSuccess": "Projeto excluído com sucesso.",
+        "deleteError": "Erro ao excluir projeto.",
+        "createMissingFields": "Por favor, insira o título e a data de início.",
+        "createSuccess": "Projeto criado com sucesso.",
+        "createError": "Erro ao criar projeto.",
+        "assignSkillsSuccess": "Skills atribuídas com sucesso.",
+        "assignSkillsError": "Erro ao atribuir skills.",
+        "assignServicesSuccess": "Serviços atribuídos com sucesso.",
+        "assignServicesError": "Erro ao atribuir serviços."
+      },
+      "confirmMessage": "Tem certeza de que deseja excluir este projeto?"
+    },
+    "adminProjectForm": {
+      "formTitle": "Criar novo projeto",
+      "titleLabel": "Título",
+      "titlePlaceholder": "Título",
+      "startDateLabel": "Data de início",
+      "descriptionLabel": "Descrição",
+      "descriptionPlaceholder": "Descrição",
+      "linkSkills": "Vincular Skills:",
+      "linkServices": "Vincular Serviços:",
+      "submitButton": "Criar Projeto"
+    },
+    "adminSkillsModal": {
+      "altImage": "Padrão de Skills",
+      "title": "Gestão de Skills",
+      "searchPlaceholder": "Pesquisar skills...",
+      "loading": "Carregando skills...",
+      "errorLoad": "Erro ao carregar skills",
+      "noCategory": "Sem categoria",
+      "actions": {
+        "categories": "Categorias",
+        "level": "Nível",
+        "assignCategory": "Atribuir categoria",
+        "deleteSkill": "Excluir skill",
+        "addCategory": "Adicionar categoria"
+      },
+      "toast": {
+        "deleteSuccess": "Skill excluída com sucesso.",
+        "deleteError": "Erro ao excluir skill.",
+        "createMissingFields": "Por favor, insira o nome e selecione uma categoria.",
+        "createSuccess": "Skill criada com sucesso.",
+        "createError": "Erro ao criar skill.",
+        "assignCategorySuccess": "Categorias atribuídas com sucesso.",
+        "assignCategoryError": "Erro ao atribuir categorias."
+      },
+      "confirmMessage": "Tem certeza de que deseja excluir esta skill?"
+    },
+    "adminSkillForm": {
+      "formTitle": "Criar nova Skill",
+      "nameLabel": "Nome",
+      "namePlaceholder": "Nome da skill",
+      "levelLabel": "Nível: {{level}}%",
+      "categoryLabel": "Categoria",
+      "submitButton": "Criar Skill"
+    },
+    "adminCategoriasModal": {
+      "altImage": "Padrão de Categorias",
+      "title": "Gestão de Categorias",
+      "searchPlaceholder": "Pesquisar categorias...",
+      "loading": "Carregando categorias...",
+      "errorLoad": "Erro ao carregar categorias",
+      "toast": {
+        "deleteSuccess": "Categoria excluída com sucesso.",
+        "deleteError": "Erro ao excluir categoria.",
+        "createMissingFields": "Por favor, insira o nome da categoria.",
+        "createSuccess": "Categoria criada com sucesso.",
+        "createError": "Erro ao criar categoria."
+      },
+      "confirmMessage": "Tem certeza de que deseja excluir esta categoria?"
+    },
+    "adminCategoriaForm": {
+      "formTitle": "Criar nova Categoria",
+      "nameLabel": "Nome",
+      "namePlaceholder": "Nome da categoria",
+      "submitButton": "Criar Categoria"
+    },
+    "adminServiciosModal": {
+      "altImage": "Padrão de Serviços",
+      "title": "Gestão de Serviços",
+      "searchPlaceholder": "Pesquisar serviços...",
+      "loading": "Carregando serviços...",
+      "errorLoad": "Erro ao carregar serviços",
+      "toast": {
+        "deleteSuccess": "Serviço excluído com sucesso.",
+        "deleteError": "Erro ao excluir serviço.",
+        "createMissingFields": "Por favor, insira o nome do serviço.",
+        "createSuccess": "Serviço criado com sucesso.",
+        "createError": "Erro ao criar serviço."
+      },
+      "confirmMessage": "Tem certeza de que deseja excluir este serviço?"
+    },
+    "adminServicioForm": {
+      "formTitle": "Criar novo Serviço",
+      "nameLabel": "Nome",
+      "namePlaceholder": "Nome do serviço",
+      "descriptionLabel": "Descrição",
+      "descriptionPlaceholder": "Descrição do serviço",
+      "priceLabel": "Preço",
+      "pricePlaceholder": "Preço",
+      "submitButton": "Criar Serviço"
     }
   }
   

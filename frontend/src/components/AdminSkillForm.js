@@ -1,6 +1,10 @@
+// src/components/AdminSkillForm.jsx
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 const AdminSkillForm = ({ newSkill, setNewSkill, handleCreate, availableCategories }) => {
+  const { t } = useTranslation();
+
   const handleCategoryChange = (e) => {
     setNewSkill({ ...newSkill, idCategoriaSkill: e.target.value });
   };
@@ -11,13 +15,13 @@ const AdminSkillForm = ({ newSkill, setNewSkill, handleCreate, availableCategori
 
   return (
     <form className="new-skill-form" onSubmit={handleCreate}>
-      <h3 className="titulo-form">Crear nueva Skill</h3>
+      <h3 className="titulo-form">{t('adminSkillForm.formTitle')}</h3>
       
-      <label htmlFor="nombre">Nombre</label>
+      <label htmlFor="nombre">{t('adminSkillForm.nameLabel')}</label>
       <input
         id="nombre"
         type="text"
-        placeholder="Nombre de la skill"
+        placeholder={t('adminSkillForm.namePlaceholder')}
         value={newSkill.nombre || ''}
         onChange={(e) =>
           setNewSkill({ ...newSkill, nombre: e.target.value })
@@ -25,7 +29,7 @@ const AdminSkillForm = ({ newSkill, setNewSkill, handleCreate, availableCategori
       />
       
       <label htmlFor="nivel">
-        Nivel: {newSkill.nivel ? newSkill.nivel : 0}%
+        {t('adminSkillForm.levelLabel', { level: newSkill.nivel ? newSkill.nivel : 0 })}
       </label>
       <input
         id="nivel"
@@ -36,13 +40,13 @@ const AdminSkillForm = ({ newSkill, setNewSkill, handleCreate, availableCategori
         onChange={handleNivelChange}
       />
       
-      <label htmlFor="categoria">Categoría</label>
+      <label htmlFor="categoria">{t('adminSkillForm.categoryLabel')}</label>
       <select
         id="categoria"
         value={newSkill.idCategoriaSkill || ''}
         onChange={handleCategoryChange}
       >
-        <option value="">Seleccione una categoría</option>
+        <option value="">{t('adminSkillForm.categoryLabel')}</option>
         {availableCategories &&
           availableCategories.map((cat) => (
             <option key={cat.idCategoriaSkill} value={cat.idCategoriaSkill}>
@@ -51,7 +55,7 @@ const AdminSkillForm = ({ newSkill, setNewSkill, handleCreate, availableCategori
           ))}
       </select>
       
-      <button type="submit">Crear Skill</button>
+      <button type="submit">{t('adminSkillForm.submitButton')}</button>
     </form>
   );
 };
