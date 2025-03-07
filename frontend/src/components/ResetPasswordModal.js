@@ -36,8 +36,8 @@ const ResetPasswordModal = ({
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
-  // Si la pantalla es menor a 800px, usamos 'patronDos.png'; en otro caso, 'patronUno.png'
-  const imageSrc = windowWidth < 800 ? '/images/patronDos.png' : '/images/patronUno.png';
+  // Si la pantalla es menor a 800px, usamos 'PatronDos.png'; en otro caso, 'patronUno.png'
+  const imageSrc = windowWidth < 800 ? '/images/PatronDos.png' : '/images/patronUno.png';
 
   const handleOverlayClick = (e) => {
     const targetTag = e.target.tagName.toLowerCase();

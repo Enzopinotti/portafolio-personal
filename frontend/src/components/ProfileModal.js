@@ -44,7 +44,7 @@ const ProfileModal = ({
         return () => window.removeEventListener('resize', handleResize);
     }, []);
       // Seleccionar imagen según el ancho
-    const imageSrc = windowWidth < 800 ? '/images/patronDos.png' : '/images/patronUno.png';
+    const imageSrc = windowWidth < 800 ? '/images/PatronDos.png' : '/images/patronUno.png';
     return (
         <AnimatePresence mode="wait">
         {isOpen && (

@@ -43,7 +43,7 @@ const AdminCategoriasModal = ({ isOpen, onClose, direction = 'forward' }) => {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
-  const imageSrc = windowWidth < 800 ? '/images/patronDos.png' : '/images/patronUno.png';
+  const imageSrc = windowWidth < 800 ? '/images/PatronDos.png' : '/images/patronUno.png';
 
   // Cargar categorías al montar el modal
   useEffect(() => {
