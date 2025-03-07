@@ -7,15 +7,13 @@ module.exports = {
       {
         id_skill: 1,
         nombre: "JavaScript",
-        nivel: 80,  
-        id_categoria_skill: 1, 
+        nivel: 80,   
         id_imagen: null
       },
       {
         id_skill: 2,
         nombre: "Node.js",
         nivel: 75,
-        id_categoria_skill: 2,
         id_imagen: null
       }
     ], {});
