@@ -3,6 +3,90 @@ import Usuario from '../models/Usuario.js';
 import Rol from '../models/Rol.js';
 import logger from '../config/logger.js';  // o usa console.error/console.log
 import Boom from '@hapi/boom';
+import bcrypt from 'bcrypt';
+import path from 'path';
+import fs from 'fs';
+import hbs from 'handlebars';
+import transporter from '../config/email.js'; // Configuración de nodemailer
+import { __dirname } from '../utils/pathUtils.js';
+
+export const crearUsuarioAdmin = async (req, res, next) => {
+  try {
+    const { nombre, apellido, email, contraseña, idRol, sendEmail } = req.body;
+    logger.info(`Admin - Crear Usuario: intentando crear usuario con email ${email}`);
+
+    // Verificar si el email ya está registrado
+    const usuarioExistente = await Usuario.findOne({ where: { email } });
+    if (usuarioExistente) {
+      logger.info(`Admin - Creación fallida: email ${email} ya registrado.`);
+      return next(Boom.badRequest('El email ya está registrado.'));
+    }
+
+    // Hashear la contraseña
+    const hashedPassword = await bcrypt.hash(contraseña, 10);
+
+    // Crear el usuario; se asigna rol por defecto si no se especifica
+    const nuevoUsuario = await Usuario.create({
+      nombre,
+      apellido,
+      email,
+      password: hashedPassword,
+      idRol: idRol || 2,
+      emailConfirmed: true // Para el admin, se asume confirmación inmediata
+    });
+
+    logger.info(`Admin - Usuario creado exitosamente: ${email}`);
+
+    // Si sendEmail es verdadero, enviar un email de notificación
+    if (sendEmail) {
+      // Construir el enlace de acceso (por ejemplo, a la página de login)
+      const loginLink = `${process.env.CLIENT_URI || 'http://localhost:3000'}/login`;
+
+      // Ruta al template de email (asegúrate de que exista en esa ubicación)
+      const templatePath = path.join(__dirname, '../templates/adminUserCreated.hbs');
+      const templateSource = fs.readFileSync(templatePath, 'utf8');
+      const template = hbs.compile(templateSource);
+
+      // Importante: se pasa la contraseña en texto plano
+      const templateData = {
+        nombre,
+        email,
+        loginLink,
+        password: contraseña,
+        colorPrimary: process.env.COLOR_PRIMARY || '#007bff',
+        colorSecondary: process.env.COLOR_SECONDARY || '#00aaff',
+        colorWhite: process.env.COLOR_WHITE || '#ffffff',
+        colorTextDark: process.env.COLOR_TEXT_DARK || '#333333',
+        spacingUnit: process.env.SPACING_UNIT || '8px'
+      };
+
+      const htmlToSend = template(templateData);
+
+      const mailOptions = {
+        from: process.env.EMAIL_FROM,
+        to: email,
+        subject: 'Cuenta creada en la plataforma',
+        html: htmlToSend
+      };
+
+      transporter.sendMail(mailOptions, (err, info) => {
+        if (err) {
+          logger.error(`Error al enviar correo de notificación: ${err.message}`);
+        } else {
+          logger.info(`Correo de notificación enviado: ${info.response}`);
+        }
+      });
+    }
+
+    res.status(201).json({
+      mensaje: 'Usuario creado exitosamente.',
+      usuario: nuevoUsuario
+    });
+  } catch (error) {
+    logger.error(`Admin - Error al crear usuario: ${error.message}`);
+    return next(Boom.internal(error.message));
+  }
+};
 
 /**
  * Listar usuarios con paginación.

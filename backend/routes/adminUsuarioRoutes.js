@@ -5,6 +5,7 @@ import {
   verUsuarioAdmin,
   editarUsuarioAdmin,
   eliminarUsuarioAdmin,
+  crearUsuarioAdmin,
 } from '../controllers/adminUsuarioController.js';
 
 import { verificarToken } from '../middleware/authMiddleware.js';
@@ -12,12 +13,14 @@ import { verificarRolAdmin } from '../middleware/rolMiddleware.js';
 
 const router = Router();
 
+
 /**
  * GET /api/admin/usuarios
  * - Lista todos los usuarios (paginados)
  */
 router.get('/', verificarToken, verificarRolAdmin, listarUsuarios);
 
+router.post('/', verificarToken, verificarRolAdmin, crearUsuarioAdmin);
 /**
  * GET /api/admin/usuarios/:id
  * - Ver detalle de un usuario

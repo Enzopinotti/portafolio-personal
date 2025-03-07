@@ -15,6 +15,8 @@ import AdminProyectosModal from './AdminProyectosModal.js';
 import AdminSkillsModal from './AdminSkillsModal.js';
 import AdminCategoriasModal from './AdminCategoriasModal.js';
 import AdminServiciosModal from './AdminServiciosModal.js'; 
+import AdminUsersModal from './AdminUsersModal.js';
+import AdminSettingsModal from './AdminSettingsModal.js';
 
 const getModalVariants = (direction = 'forward') => {
   return direction === 'forward'
@@ -95,10 +97,6 @@ const AdminModal = ({ isOpen, onClose }) => {
                     <FaUsers size={48} />
                     <span>{t('adminModal.buttons.users')}</span>
                   </button>
-                  <button onClick={() => handleSwitch('config')}>
-                    <FaCog size={48} />
-                    <span>{t('adminModal.buttons.settings')}</span>
-                  </button>
                   <button onClick={() => handleSwitch('skills')}>
                     <FaWrench size={48} />
                     <span>{t('adminModal.buttons.skills')}</span>
@@ -110,6 +108,10 @@ const AdminModal = ({ isOpen, onClose }) => {
                   <button onClick={() => handleSwitch('servicios')}>
                     <FaConciergeBell size={48} />
                     <span>{t('adminModal.buttons.services')}</span>
+                  </button>
+                  <button onClick={() => handleSwitch('config')}>
+                    <FaCog size={48} />
+                    <span>{t('adminModal.buttons.settings')}</span>
                   </button>
                 </div>
               </div>
@@ -153,8 +155,22 @@ const AdminModal = ({ isOpen, onClose }) => {
           direction={direction}
         />
       )}
-
-      {/* Puedes agregar más sub-modales para 'usuarios' o 'config' */}
+      {/* Sub-modal: Gestión de Usuarios */}
+      {isOpen && subModal === 'usuarios' && (
+        <AdminUsersModal
+          isOpen={isOpen}
+          onClose={handleBack}
+          direction={direction}
+        />
+      )}
+      {/* Sub-modal: Configuración */}
+      {isOpen && subModal === 'config' && (
+        <AdminSettingsModal
+          isOpen={isOpen}
+          onClose={handleBack}
+          direction={direction}
+        />
+      )}
     </AnimatePresence>
   );
 };

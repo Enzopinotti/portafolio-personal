@@ -16,7 +16,7 @@ const Footer = () => {
         <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">
           <FaLinkedinIn size={24} />
         </a>
-        <a href="https://wa.me/1234567890" target="_blank" rel="noopener noreferrer">
+        <a href="https://wa.me/2346304036" target="_blank" rel="noopener noreferrer">
           <FaWhatsapp size={24} />
         </a>
       </div>

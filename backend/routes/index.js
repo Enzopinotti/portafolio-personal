@@ -11,6 +11,7 @@ import rolRoutes from './rolRoutes.js';
 import auditLogRoutes from './auditLogRoutes.js';
 import categoriaSkillRoutes from './categoriaSkillRoutes.js';
 import adminUsuarioRoutes from './adminUsuarioRoutes.js';
+import settingsRoutes from './settingsRoutes.js';
 
 const router = Router();
 
@@ -25,6 +26,7 @@ router.use('/servicios', servicioRoutes);
 router.use('/roles', rolRoutes);
 router.use('/auditLogs', auditLogRoutes);
 router.use('/categorias', categoriaSkillRoutes);
-router.use('/api/admin/usuarios', adminUsuarioRoutes);
+router.use('/admin/usuarios', adminUsuarioRoutes);
+router.use('/settings', settingsRoutes);
 
 export default router;

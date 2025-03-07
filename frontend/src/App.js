@@ -14,6 +14,7 @@ import ResetPasswordModal from './components/ResetPasswordModal.js';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { AuthProvider, AuthContext } from './context/AuthContext.js';
+import { SettingsProvider } from './context/SettingsContext.js';
 
 const AppContent = () => {
   const location = useLocation();
@@ -97,11 +98,13 @@ function App() {
   return (
     <Router>
       <NavigationProvider>
-        <AuthProvider>
-          <Routes>
-            <Route path="/*" element={<AppContent />} />
-          </Routes>
-        </AuthProvider>
+        <SettingsProvider>
+          <AuthProvider>
+            <Routes>
+              <Route path="/*" element={<AppContent />} />
+            </Routes>
+          </AuthProvider>
+        </SettingsProvider>
       </NavigationProvider>
     </Router>
   );

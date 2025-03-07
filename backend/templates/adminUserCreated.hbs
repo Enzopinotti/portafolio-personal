@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Cuenta Creada</title>
+  <style>
+    body {
+      font-family: 'Work Sans', sans-serif;
+      background-color: {{colorWhite}};
+      margin: 0;
+      padding: {{spacingUnit}};
+      color: {{colorTextDark}};
+    }
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: #fff;
+      border: 1px solid {{colorSecondary}};
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: {{colorPrimary}};
+    }
+    .btn {
+      display: inline-block;
+      padding: 10px 20px;
+      margin-top: 20px;
+      background-color: {{colorPrimary}};
+      color: #fff;
+      text-decoration: none;
+      border-radius: 4px;
+    }
+    .footer {
+      margin-top: 20px;
+      font-size: 0.8rem;
+      color: {{colorSecondary}};
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Hola {{nombre}},</h1>
+    <p>Se ha creado tu cuenta en la plataforma. A continuación, te enviamos tus datos de acceso:</p>
+    <p><strong>Email:</strong> {{email}}</p>
+    <p><strong>Contraseña:</strong> {{password}}</p>
+    <a href="{{loginLink}}" class="btn">Acceder a la plataforma</a>
+    <p class="footer">Si tienes alguna duda, contacta con soporte.</p>
+  </div>
+</body>
+</html>

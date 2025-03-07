@@ -240,6 +240,74 @@
       "priceLabel": "Precio",
       "pricePlaceholder": "Precio",
       "submitButton": "Crear Servicio"
+    },
+    "adminUsersModal": {
+      "altImage": "Patrón de Usuarios",
+      "title": "Gestión de Usuarios",
+      "searchPlaceholder": "Buscar usuarios...",
+      "loading": "Cargando usuarios...",
+      "errorLoad": "Error al cargar usuarios",
+      "noUsers": "No se encontraron usuarios",
+      "actions": {
+        "deleteUser": "Eliminar usuario",
+        "editUser": "Editar usuario"
+      },
+      "toast": {
+        "deleteSuccess": "Usuario eliminado exitosamente.",
+        "deleteError": "Error al eliminar usuario.",
+        "createMissingFields": "Por favor, ingrese el nombre y el correo.",
+        "createSuccess": "Usuario creado exitosamente.",
+        "createError": "Error al crear usuario."
+      },
+      "confirmMessage": "¿Estás seguro de eliminar este usuario?"
+    },
+    "adminUserForm": {
+      "formTitle": "Crear Nuevo Usuario",
+      "nameLabel": "Nombre",
+      "namePlaceholder": "Nombre del usuario",
+      "lastNameLabel": "Apellido",
+      "lastNamePlaceholder": "Apellido del usuario",
+      "emailLabel": "Correo electrónico",
+      "emailPlaceholder": "Correo del usuario",
+      "passwordLabel": "Contraseña",
+      "passwordPlaceholder": "Ingrese la contraseña",
+      "roleLabel": "Rol",
+      "rolePlaceholder": "Seleccione un rol",
+      "sendEmailLabel": "Notificar por email",
+      "submitButton": "Crear Usuario"
+    },
+    "adminSettingsModal": {
+      "title": "Configuración",
+      "loading": "Cargando configuración...",
+      "formTitle": "Actualizar Configuración del Sitio",
+      "siteTitleLabel": "Título del Sitio",
+      "siteTitlePlaceholder": "Ingrese el título del sitio",
+      "siteDescriptionLabel": "Descripción del Sitio",
+      "siteDescriptionPlaceholder": "Ingrese la descripción del sitio",
+      "supportEmailLabel": "Correo de Soporte",
+      "supportEmailPlaceholder": "Ingrese el correo de soporte",
+      "facebookUrlLabel": "URL de Facebook",
+      "facebookUrlPlaceholder": "Ingrese la URL de Facebook",
+      "twitterUrlLabel": "URL de Twitter",
+      "twitterUrlPlaceholder": "Ingrese la URL de Twitter",
+      "instagramUrlLabel": "URL de Instagram",
+      "instagramUrlPlaceholder": "Ingrese la URL de Instagram",
+      "linkedinUrlLabel": "URL de LinkedIn",
+      "linkedinUrlPlaceholder": "Ingrese la URL de LinkedIn",
+      "primaryColorLabel": "Color Primario",
+      "primaryColorPlaceholder": "Ingrese el color primario (hex)",
+      "secondaryColorLabel": "Color Secundario",
+      "secondaryColorPlaceholder": "Ingrese el color secundario (hex)",
+      "backgroundColorLabel": "Color de Fondo",
+      "backgroundColorPlaceholder": "Ingrese el color de fondo (hex)",
+      "textColorLabel": "Color de Texto",
+      "textColorPlaceholder": "Ingrese el color de texto (hex)",
+      "submitButton": "Guardar Configuración",
+      "toast": {
+        "updateSuccess": "Configuración actualizada exitosamente.",
+        "updateError": "Error al actualizar la configuración."
+      },
+      "errorLoad": "Error al cargar la configuración"
     }
       
   }

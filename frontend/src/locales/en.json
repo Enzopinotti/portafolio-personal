@@ -241,6 +241,74 @@
       "priceLabel": "Price",
       "pricePlaceholder": "Price",
       "submitButton": "Create Service"
+    },
+    "adminUsersModal": {
+      "altImage": "Users Pattern",
+      "title": "User Management",
+      "searchPlaceholder": "Search users...",
+      "loading": "Loading users...",
+      "errorLoad": "Error loading users",
+      "noUsers": "No users found",
+      "actions": {
+        "deleteUser": "Delete user",
+        "editUser": "Edit user"
+      },
+      "toast": {
+        "deleteSuccess": "User deleted successfully.",
+        "deleteError": "Error deleting user.",
+        "createMissingFields": "Please enter the name and email.",
+        "createSuccess": "User created successfully.",
+        "createError": "Error creating user."
+      },
+      "confirmMessage": "Are you sure you want to delete this user?"
+    },
+    "adminUserForm": {
+      "formTitle": "Create New User",
+      "nameLabel": "Name",
+      "namePlaceholder": "User name",
+      "lastNameLabel": "Last Name",
+      "lastNamePlaceholder": "User last name",
+      "emailLabel": "Email",
+      "emailPlaceholder": "User email",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "Enter password",
+      "roleLabel": "Role",
+      "rolePlaceholder": "Select role",
+      "sendEmailLabel": "Notify by email",
+      "submitButton": "Create User"
+    },
+    "adminSettingsModal": {
+      "title": "Settings",
+      "loading": "Loading settings...",
+      "formTitle": "Update Site Settings",
+      "siteTitleLabel": "Site Title",
+      "siteTitlePlaceholder": "Enter site title",
+      "siteDescriptionLabel": "Site Description",
+      "siteDescriptionPlaceholder": "Enter site description",
+      "supportEmailLabel": "Support Email",
+      "supportEmailPlaceholder": "Enter support email",
+      "facebookUrlLabel": "Facebook URL",
+      "facebookUrlPlaceholder": "Enter Facebook URL",
+      "twitterUrlLabel": "Twitter URL",
+      "twitterUrlPlaceholder": "Enter Twitter URL",
+      "instagramUrlLabel": "Instagram URL",
+      "instagramUrlPlaceholder": "Enter Instagram URL",
+      "linkedinUrlLabel": "LinkedIn URL",
+      "linkedinUrlPlaceholder": "Enter LinkedIn URL",
+      "primaryColorLabel": "Primary Color",
+      "primaryColorPlaceholder": "Enter primary color (hex)",
+      "secondaryColorLabel": "Secondary Color",
+      "secondaryColorPlaceholder": "Enter secondary color (hex)",
+      "backgroundColorLabel": "Background Color",
+      "backgroundColorPlaceholder": "Enter background color (hex)",
+      "textColorLabel": "Text Color",
+      "textColorPlaceholder": "Enter text color (hex)",
+      "submitButton": "Save Settings",
+      "toast": {
+        "updateSuccess": "Settings updated successfully.",
+        "updateError": "Error updating settings."
+      },
+      "errorLoad": "Error loading settings"
     }
 }
   
