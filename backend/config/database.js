@@ -1,10 +1,10 @@
 // config/database.js
 
 import { Sequelize } from 'sequelize';
-import dotenv from 'dotenv';
 
-dotenv.config();
+import dotenvFlow from 'dotenv-flow';
 
+dotenvFlow.config();
 const sequelize = new Sequelize(
   process.env.DB_NAME,
   process.env.DB_USER,
