@@ -1,7 +1,6 @@
 // app.js
 import express from 'express';
 import cors from 'cors';
-import dotenv from 'dotenv';
 import morgan from 'morgan';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
@@ -14,7 +13,8 @@ import routes from './routes/index.js';
 
 import './models/associations.js';
 import './config/passport.js';
-dotenv.config();
+import dotenvFlow from 'dotenv-flow';
+dotenvFlow.config();
 
 const app = express();
 
