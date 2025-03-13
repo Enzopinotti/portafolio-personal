@@ -22,7 +22,7 @@ export const SettingsProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    fetchSettings();
+    //fetchSettings();
   }, []);
 
   return (

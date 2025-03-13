@@ -71,7 +71,7 @@ const AdminModal = ({ isOpen, onClose }) => {
           onClick={onClose}
         >
           <motion.div
-            className="modal-content admin-modal"
+            className="modal-content admin-modal main"
             variants={variants}
             initial="hidden"
             animate="visible"

@@ -1,5 +1,41 @@
 // src/components/AdminProyectosModal.scss
 
+.modal-content.admin-submodal.proyectos {
+  margin-top: 55rem;
+  margin-bottom: 10rem;
+  .admin-modal-body.proyectos{
+    height: auto;
+    .leftModal.proyectos{
+      height: auto;
+    }
+  }
+}
+
+@media (min-width: 768px) {
+  .modal-content.admin-submodal.proyectos {
+    margin-top: -0rem !important;
+    .admin-modal-body.proyectos{
+      height: auto;
+      .leftModal.proyectos{
+        height: auto;
+      }
+    }
+  }
+}
+@media (min-width: 800px) {
+  .modal-content.admin-submodal.proyectos {
+    margin-top: -0rem !important;
+    .admin-modal-body.proyectos{
+      height: auto;
+      .leftModal.proyectos{
+        height: auto;
+        img{
+          height: 1333px !important;
+        }
+      }
+    }
+  }
+}
 .modal-overlay.admin-overlay {
     position: fixed;
     top: 0;
@@ -35,6 +71,8 @@
   
   @media (min-width: 768px) {
     .modal-content.admin-submodal {
+      position: relative;
+      top: 25rem !important;
       flex-direction: row;
       max-width: 800px;
       border-radius: 20px;
@@ -300,7 +338,6 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1rem;
   
     .close-icon {
       position: absolute;

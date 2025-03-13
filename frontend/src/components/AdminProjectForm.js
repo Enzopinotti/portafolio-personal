@@ -5,32 +5,11 @@ import { useTranslation } from 'react-i18next';
 const AdminProjectForm = ({ newProject, setNewProject, handleCreate, availableSkills, availableServices }) => {
   const { t } = useTranslation();
 
-  // Manejar cambios en los checkboxes para skills
-  const handleSkillCheckboxChange = (e) => {
-    const value = parseInt(e.target.value, 10);
-    const currentSkills = newProject.skills || [];
-    if (e.target.checked) {
-      setNewProject({ ...newProject, skills: [...currentSkills, value] });
-    } else {
-      setNewProject({ ...newProject, skills: currentSkills.filter(id => id !== value) });
-    }
-  };
-
-  // Manejar cambios en los checkboxes para servicios
-  const handleServiceCheckboxChange = (e) => {
-    const value = parseInt(e.target.value, 10);
-    const currentServices = newProject.servicios || [];
-    if (e.target.checked) {
-      setNewProject({ ...newProject, servicios: [...currentServices, value] });
-    } else {
-      setNewProject({ ...newProject, servicios: currentServices.filter(id => id !== value) });
-    }
-  };
-
   return (
     <form className="new-project-form" onSubmit={handleCreate}>
       <h3 className="titulo-form">{t('adminProjectForm.formTitle')}</h3>
       
+      {/* Título */}
       <label htmlFor="titulo">{t('adminProjectForm.titleLabel')}</label>
       <input
         id="titulo"
@@ -39,7 +18,8 @@ const AdminProjectForm = ({ newProject, setNewProject, handleCreate, availableSk
         value={newProject.titulo || ''}
         onChange={(e) => setNewProject({ ...newProject, titulo: e.target.value })}
       />
-      
+
+      {/* Fecha de inicio */}
       <label htmlFor="fechaInicio">{t('adminProjectForm.startDateLabel')}</label>
       <input
         id="fechaInicio"
@@ -47,7 +27,8 @@ const AdminProjectForm = ({ newProject, setNewProject, handleCreate, availableSk
         value={newProject.fechaInicio || ''}
         onChange={(e) => setNewProject({ ...newProject, fechaInicio: e.target.value })}
       />
-      
+
+      {/* Descripción */}
       <label htmlFor="descripcion">{t('adminProjectForm.descriptionLabel')}</label>
       <textarea
         id="descripcion"
@@ -56,6 +37,50 @@ const AdminProjectForm = ({ newProject, setNewProject, handleCreate, availableSk
         onChange={(e) => setNewProject({ ...newProject, descripcion: e.target.value })}
       />
 
+      {/* Enlace de despliegue */}
+      <label htmlFor="enlace">URL Despliegue</label>
+      <input
+        id="enlace"
+        type="text"
+        placeholder="https://miaplicacion.com"
+        value={newProject.enlace || ''}
+        onChange={(e) => setNewProject({ ...newProject, enlace: e.target.value })}
+      />
+
+      {/* Enlace GitHub */}
+      <label htmlFor="enlaceGithub">URL Repositorio (GitHub)</label>
+      <input
+        id="enlaceGithub"
+        type="text"
+        placeholder="https://github.com/tuusuario/tu-repo"
+        value={newProject.enlaceGithub || ''}
+        onChange={(e) => setNewProject({ ...newProject, enlaceGithub: e.target.value })}
+      />
+
+      {/* Imagen Pastilla */}
+      <label htmlFor="imagenPastilla">Imagen Pastilla</label>
+      <input
+        id="imagenPastilla"
+        type="file"
+        accept="image/*"
+        onChange={(e) =>
+          setNewProject({ ...newProject, imagenPastilla: e.target.files[0] })
+        }
+      />
+
+      {/* Imágenes Extras */}
+      <label htmlFor="imagenesExtras">Imágenes Extras (máx 5)</label>
+      <input
+        id="imagenesExtras"
+        type="file"
+        accept="image/*"
+        multiple
+        onChange={(e) =>
+          setNewProject({ ...newProject, imagenesExtras: e.target.files })
+        }
+      />
+
+      {/* Skills */}
       {availableSkills && availableSkills.length > 0 && (
         <>
           <label>{t('adminProjectForm.linkSkills')}</label>
@@ -65,8 +90,16 @@ const AdminProjectForm = ({ newProject, setNewProject, handleCreate, availableSk
                 <input
                   type="checkbox"
                   value={skill.idSkill}
-                  checked={newProject.skills && newProject.skills.includes(skill.idSkill)}
-                  onChange={handleSkillCheckboxChange}
+                  checked={newProject.skills?.includes(skill.idSkill)}
+                  onChange={(ev) => {
+                    const val = parseInt(ev.target.value, 10);
+                    const current = newProject.skills || [];
+                    if (ev.target.checked) {
+                      setNewProject({ ...newProject, skills: [...current, val] });
+                    } else {
+                      setNewProject({ ...newProject, skills: current.filter(id => id !== val) });
+                    }
+                  }}
                 />
                 <span>{skill.nombre} ({skill.nivel}%)</span>
               </label>
@@ -75,6 +108,7 @@ const AdminProjectForm = ({ newProject, setNewProject, handleCreate, availableSk
         </>
       )}
 
+      {/* Servicios */}
       {availableServices && availableServices.length > 0 && (
         <>
           <label>{t('adminProjectForm.linkServices')}</label>
@@ -84,8 +118,16 @@ const AdminProjectForm = ({ newProject, setNewProject, handleCreate, availableSk
                 <input
                   type="checkbox"
                   value={servicio.idServicio}
-                  checked={newProject.servicios && newProject.servicios.includes(servicio.idServicio)}
-                  onChange={handleServiceCheckboxChange}
+                  checked={newProject.servicios?.includes(servicio.idServicio)}
+                  onChange={(ev) => {
+                    const val = parseInt(ev.target.value, 10);
+                    const current = newProject.servicios || [];
+                    if (ev.target.checked) {
+                      setNewProject({ ...newProject, servicios: [...current, val] });
+                    } else {
+                      setNewProject({ ...newProject, servicios: current.filter(id => id !== val) });
+                    }
+                  }}
                 />
                 <span>{servicio.nombre}</span>
               </label>

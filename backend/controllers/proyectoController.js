@@ -10,22 +10,24 @@ import Boom from '@hapi/boom';
 import ProyectoSkill from '../models/ProyectoSkill.js';
 import Servicio from '../models/Servicio.js';
 import ProyectoServicio from '../models/ProyectoServicio.js';
+import cloudinary from '../config/cloudinary.js';
+import fs from 'fs';
 
 export const crearProyecto = async (req, res, next) => {
   try {
-    const { titulo, descripcion, fechaInicio, fechaFin, enlace, skills, servicios } = req.body;
-    logger.info(`Crear Proyecto: Usuario ${req.usuario.idUsuario} crea el proyecto "${titulo}"`);
-
-    // Crear el proyecto
+    const { titulo, descripcion, fechaInicio, fechaFin, enlace, skills, servicios, enlaceGithub } = req.body;
+    console.log('enlace de github: ', enlaceGithub);
+    // Crear el proyecto en BD (sin imagenPastilla)
     const nuevoProyecto = await Proyecto.create({
       titulo,
       descripcion,
       fechaInicio,
-      fechaFin,
+      fechaFin: fechaFin || null,
       enlace,
+      enlaceGithub,
     });
 
-    // Asociar el proyecto al usuario creador
+    // Asociar con el usuario creador
     await nuevoProyecto.addUsuario(req.usuario.idUsuario);
     logger.info(`Crear Proyecto: Proyecto ID ${nuevoProyecto.idProyecto} creado y asociado al usuario ${req.usuario.idUsuario}`);
 
@@ -59,34 +61,94 @@ export const crearProyecto = async (req, res, next) => {
       details: { titulo, descripcion },
       req,
     });
+    
 
-    // Recargar el proyecto con las asociaciones de skills y servicios
-    const proyectoRecargado = await Proyecto.findByPk(nuevoProyecto.idProyecto, {
-      include: [
-        {
-          model: Skill,
-          attributes: ['idSkill', 'nombre', 'nivel'],
-          through: { attributes: [] },
-        },
-        {
-          model: Servicio,
-          attributes: ['idServicio', 'nombre', 'descripcion', 'precio'],
-          through: { attributes: [] },
-        },
-      ],
+    // Devolver el proyecto recién creado (con su idProyecto)
+    res.status(201).json({
+      mensaje: 'Proyecto creado exitosamente.',
+      proyecto: nuevoProyecto,
+    });
+  } catch (error) {
+    logger.error(`Error crearProyecto: ${error.message}`);
+    next(Boom.internal(error.message));
+  }
+};
+
+export const subirImagenPastilla = async (req, res, next) => {
+  try {
+    const { idProyecto } = req.params;
+    const proyecto = await Proyecto.findByPk(idProyecto);
+    if (!proyecto) return next(Boom.notFound('Proyecto no encontrado'));
+
+    if (!req.file) {
+      return next(Boom.badRequest('No se recibió ninguna imagen'));
+    }
+
+    // Subir a Cloudinary
+    const resultado = await cloudinary.uploader.upload(req.file.path, {
+      folder: 'proyectos/portada',
     });
 
-    res.status(201).json({ mensaje: 'Proyecto creado exitosamente.', proyecto: proyectoRecargado });
+    // Borrar archivo local
+    fs.unlinkSync(req.file.path);
+
+    // Guardar la URL en campo imagenPastilla
+    proyecto.imagenPastilla = resultado.secure_url;
+    await proyecto.save();
+
+    res.status(200).json({
+      mensaje: 'Imagen de pastilla subida correctamente.',
+      proyecto,
+    });
   } catch (error) {
-    logger.error(`Error en crearProyecto: ${error.message}`);
-    return next(Boom.internal(error.message));
+    next(Boom.internal(error.message));
+  }
+};
+
+
+export const subirImagenesProyecto = async (req, res, next) => {
+  try {
+    const { idProyecto } = req.params;
+    const proyecto = await Proyecto.findByPk(idProyecto);
+    if (!proyecto) {
+      return next(Boom.notFound('Proyecto no encontrado'));
+    }
+
+    // Validar límite
+    const imagenesActuales = await Imagen.count({ where: { idProyecto } });
+    const nuevas = req.files.length;
+    if (imagenesActuales + nuevas > proyecto.maxImagenes) {
+      return next(Boom.badRequest(`Se excede el máximo de ${proyecto.maxImagenes} imágenes.`));
+    }
+
+    // Subir cada imagen a Cloudinary, guardar en BD
+    const imagenesGuardadas = [];
+    for (const file of req.files) {
+      const resultado = await cloudinary.uploader.upload(file.path, {
+        folder: `proyectos/${idProyecto}`, 
+      });
+      fs.unlinkSync(file.path);
+
+      const nuevaImagen = await Imagen.create({
+        ruta: resultado.secure_url,
+        idProyecto,
+      });
+      imagenesGuardadas.push(nuevaImagen);
+    }
+
+    res.status(201).json({
+      mensaje: 'Imágenes subidas correctamente.',
+      imagenes: imagenesGuardadas,
+    });
+  } catch (error) {
+    next(Boom.internal(error.message));
   }
 };
 
 export const editarProyecto = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { titulo, descripcion, fechaInicio, fechaFin, enlace, skills } = req.body;
+    const { titulo, descripcion, fechaInicio, fechaFin, enlace, skills, enlaceGithub } = req.body;
     logger.info(`Editar Proyecto: Usuario ${req.usuario.idUsuario} intenta editar el proyecto ID ${id}`);
     const proyecto = await Proyecto.findByPk(id);
     if (!proyecto) {
@@ -103,6 +165,8 @@ export const editarProyecto = async (req, res, next) => {
     if (fechaInicio) proyecto.fechaInicio = fechaInicio;
     if (fechaFin) proyecto.fechaFin = fechaFin;
     if (enlace) proyecto.enlace = enlace;
+    if (enlaceGithub) proyecto.enlaceGithub = enlaceGithub;
+
     await proyecto.save();
     if (skills && skills.length > 0) {
       await proyecto.setSkills(skills);

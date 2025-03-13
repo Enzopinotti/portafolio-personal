@@ -134,7 +134,7 @@ const AdminUsersModal = ({ isOpen, onClose, direction = 'forward' }) => {
             onClick={handleOverlayClick}
           >
             <motion.div
-              className="modal-content admin-submodal"
+              className="modal-content admin-submodal usuarios"
               variants={variants}
               initial="hidden"
               animate="visible"
@@ -150,11 +150,11 @@ const AdminUsersModal = ({ isOpen, onClose, direction = 'forward' }) => {
                   <FaTimes />
                 </button>
               </div>
-              <div className="admin-modal-body">
-                <div className="leftModal">
+              <div className="admin-modal-body usuarios">
+                <div className="leftModal usuarios">
                   <img src={imageSrc} alt={t('adminUsersModal.altImage', 'Users Pattern')} />
                 </div>
-                <div className="rightModal">
+                <div className="rightModal usuarios">
                   <h2>{t('adminUsersModal.title')}</h2>
                   <div className="search-container">
                     <input

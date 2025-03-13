@@ -44,6 +44,16 @@ const Proyecto = sequelize.define(
       defaultValue: 5,
       field: 'max_imagenes',
     },
+    imagenPastilla: {
+      type: DataTypes.STRING(255),
+      allowNull: true,  
+      field: 'imagen_pastilla',
+    },
+    enlaceGithub: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      field: 'enlace_github',
+    },
   },
   {
     tableName: 'proyecto',

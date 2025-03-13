@@ -170,7 +170,7 @@ const AdminSkillsModal = ({ isOpen, onClose, direction = 'forward' }) => {
             onClick={handleOverlayClick}
           >
             <motion.div
-              className="modal-content admin-submodal"
+              className="modal-content admin-submodal skills"
               variants={variants}
               initial="hidden"
               animate="visible"
@@ -186,11 +186,11 @@ const AdminSkillsModal = ({ isOpen, onClose, direction = 'forward' }) => {
                   <FaTimes />
                 </button>
               </div>
-              <div className="admin-modal-body">
-                <div className="leftModal">
+              <div className="admin-modal-body skills">
+                <div className="leftModal skills">
                   <img src={imageSrc} alt={t('adminSkillsModal.altImage')} />
                 </div>
-                <div className="rightModal">
+                <div className="rightModal skills">
                   <h2>{t('adminSkillsModal.title')}</h2>
                   <div className="search-container">
                     <input

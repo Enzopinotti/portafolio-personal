@@ -4,11 +4,13 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { FaArrowLeft, FaTimes, FaPlus } from 'react-icons/fa';
 import AdminProjectForm from './AdminProjectForm.js';
 import { 
-  listProjects, 
-  createProject, 
-  deleteProject, 
-  assignSkillsToProject, 
-  assignServicesToProject 
+  listProjects,
+  createProject,        // <-- Importamos la nueva función
+  uploadPastilla,       // <-- Para subir la imagenPastilla
+  uploadProjectImages,  // <-- Para subir las imágenes extras
+  deleteProject,
+  assignSkillsToProject,
+  assignServicesToProject,
 } from '../services/projectService.js';
 import { listSkills } from '../services/skillService.js';
 import { listServicios } from '../services/servicioService.js';
@@ -30,38 +32,25 @@ const AdminProyectosModal = ({ isOpen, onClose, direction = 'forward' }) => {
   const { accessToken } = useContext(AuthContext);
   const variants = getModalVariants(direction);
 
-  // Estados principales
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
-  const [newProject, setNewProject] = useState({ titulo: '', descripcion: '', fechaInicio: '', skills: [], servicios: [] });
 
-  // Estados para datos disponibles
-  const [availableSkills, setAvailableSkills] = useState([]);
-  const [availableServices, setAvailableServices] = useState([]);
+  // Almacena los campos del nuevo proyecto
+  const [newProject, setNewProject] = useState({
+    titulo: '',
+    descripcion: '',
+    fechaInicio: '',
+    fechaFin: '',
+    enlace: '',
+    skills: [],
+    servicios: [],
+    imagenPastilla: null,
+    imagenesExtras: null,
+  });
 
-  // Estado para confirmación de eliminación
-  const [confirmOpen, setConfirmOpen] = useState(false);
-  const [projectToDelete, setProjectToDelete] = useState(null);
-
-  // Estados para modales de asignación
-  const [assignSkillModalOpen, setAssignSkillModalOpen] = useState(false);
-  const [projectToAssignSkills, setProjectToAssignSkills] = useState(null);
-
-  const [assignServiceModalOpen, setAssignServiceModalOpen] = useState(false);
-  const [projectToAssignServices, setProjectToAssignServices] = useState(null);
-
-  // Manejo del responsive para la imagen de fondo
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  useEffect(() => {
-    const handleResize = () => setWindowWidth(window.innerWidth);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-  const imageSrc = windowWidth < 800 ? '/images/PatronDos.png' : '/images/patronUno.png';
-
-  // Cargar datos cuando se abre el modal
+  // Cargar datos en la apertura del modal
   useEffect(() => {
     if (!isOpen) return;
     setLoading(true);
@@ -81,29 +70,49 @@ const AdminProyectosModal = ({ isOpen, onClose, direction = 'forward' }) => {
       .then((data) => {
         setAvailableSkills(data.skills || data);
       })
-      .catch((err) => {
-        console.error('Error al cargar skills:', err);
-      });
+      .catch(console.error);
 
     listServicios()
       .then((data) => {
         setAvailableServices(data.servicios || data);
       })
-      .catch((err) => {
-        console.error('Error al cargar servicios:', err);
-      });
+      .catch(console.error);
   }, [isOpen, t]);
 
+  // Listado global de Skills y Servicios
+  const [availableSkills, setAvailableSkills] = useState([]);
+  const [availableServices, setAvailableServices] = useState([]);
+
+  // Confirmación de eliminación
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [projectToDelete, setProjectToDelete] = useState(null);
+
+  // Modales para asignar skills/servicios
+  const [assignSkillModalOpen, setAssignSkillModalOpen] = useState(false);
+  const [projectToAssignSkills, setProjectToAssignSkills] = useState(null);
+  const [assignServiceModalOpen, setAssignServiceModalOpen] = useState(false);
+  const [projectToAssignServices, setProjectToAssignServices] = useState(null);
+
+  // Responsive para la imagen de fondo
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+  const imageSrc = windowWidth < 800 ? '/images/PatronDos.png' : '/images/patronUno.png';
+
+  // Filtro de proyectos
   const filteredProjects = projects.filter(project =>
     project.titulo.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // Función para eliminar un proyecto
+  // Eliminar proyecto
   const confirmDelete = () => {
     if (!projectToDelete) return;
     deleteProject(projectToDelete, accessToken)
       .then(() => {
-        setProjects(projects.filter(project => project.idProyecto !== projectToDelete));
+        setProjects(projects.filter(pro => pro.idProyecto !== projectToDelete));
         toast.success(t('adminProjectsModal.toast.deleteSuccess'));
       })
       .catch((err) => {
@@ -121,37 +130,86 @@ const AdminProyectosModal = ({ isOpen, onClose, direction = 'forward' }) => {
     setConfirmOpen(true);
   };
 
-  // Función para crear un nuevo proyecto (incluye asignación de skills y servicios desde el formulario)
-  const handleCreate = (e) => {
+  // **Nuevo**: handleCreate en 2 (o 3) pasos
+  // src/components/AdminProyectosModal.jsx (extracto)
+  const handleCreate = async (e) => {
     e.preventDefault();
     if (!newProject.titulo.trim() || !newProject.fechaInicio.trim()) {
       toast.error(t('adminProjectsModal.toast.createMissingFields'));
       return;
     }
-    createProject(newProject, accessToken)
-      .then((response) => {
-        setProjects([...projects, response.proyecto]);
-        setNewProject({ titulo: '', descripcion: '', fechaInicio: '', skills: [], servicios: [] });
-        toast.success(t('adminProjectsModal.toast.createSuccess'));
-      })
-      .catch((err) => {
-        console.error('Error al crear proyecto:', err);
-        toast.error(t('adminProjectsModal.toast.createError'));
+
+    try {
+      // 1) Crear proyecto con datos JSON
+      const projectData = {
+        titulo: newProject.titulo,
+        descripcion: newProject.descripcion || '',
+        fechaInicio: newProject.fechaInicio,
+        fechaFin: newProject.fechaFin || '',
+        enlace: newProject.enlace || '',
+        enlaceGithub: newProject.enlaceGithub || '',  // <-- Repositorio
+        skills: newProject.skills,
+        servicios: newProject.servicios,
+      };
+      const response = await createProject(projectData, accessToken);
+      const createdProject = response.proyecto; // { idProyecto, ... }
+
+      // 2) Subir imagenPastilla si existe
+      if (newProject.imagenPastilla) {
+        const respPastilla = await uploadPastilla(
+          createdProject.idProyecto,
+          newProject.imagenPastilla,
+          accessToken
+        );
+        Object.assign(createdProject, respPastilla.proyecto);
+      }
+
+      // 3) Subir imágenes extras si existen
+      if (newProject.imagenesExtras && newProject.imagenesExtras.length > 0) {
+        const respImages = await uploadProjectImages(
+          createdProject.idProyecto,
+          newProject.imagenesExtras,
+          accessToken
+        );
+        // Manejo de `respImages.imagenes` si lo deseas
+      }
+
+      // Actualiza lista local
+      setProjects([...projects, createdProject]);
+
+      // Limpia form
+      setNewProject({
+        titulo: '',
+        descripcion: '',
+        fechaInicio: '',
+        fechaFin: '',
+        enlace: '',
+        enlaceGithub: '',
+        skills: [],
+        servicios: [],
+        imagenPastilla: null,
+        imagenesExtras: null,
       });
+
+      toast.success(t('adminProjectsModal.toast.createSuccess'));
+    } catch (err) {
+      console.error('Error al crear proyecto:', err);
+      toast.error(t('adminProjectsModal.toast.createError'));
+    }
   };
 
-  // Función para abrir el modal de asignación de skills a un proyecto
+
+  // Asignar Skills
   const handleAssignSkills = (project) => {
     setProjectToAssignSkills(project);
     setAssignSkillModalOpen(true);
   };
-
-  // Función para guardar la asignación de skills a un proyecto
   const handleSaveSkillAssignment = (selectedSkillIds) => {
     assignSkillsToProject(projectToAssignSkills.idProyecto, selectedSkillIds, accessToken)
-      .then((response) => {
-        setProjects(projects.map(project =>
-          project.idProyecto === projectToAssignSkills.idProyecto ? response.proyecto : project
+      .then((res) => {
+        // Actualiza el project con las nuevas skills
+        setProjects(projects.map(pro =>
+          pro.idProyecto === projectToAssignSkills.idProyecto ? res.proyecto : pro
         ));
         toast.success(t('adminProjectsModal.toast.assignSkillsSuccess'));
       })
@@ -165,18 +223,17 @@ const AdminProyectosModal = ({ isOpen, onClose, direction = 'forward' }) => {
       });
   };
 
-  // Función para abrir el modal de asignación de servicios a un proyecto
+  // Asignar Services
   const handleAssignServicios = (project) => {
     setProjectToAssignServices(project);
     setAssignServiceModalOpen(true);
   };
-
-  // Función para guardar la asignación de servicios a un proyecto
   const handleSaveServiceAssignment = (selectedServiceIds) => {
     assignServicesToProject(projectToAssignServices.idProyecto, selectedServiceIds, accessToken)
-      .then((response) => {
-        setProjects(projects.map(project =>
-          project.idProyecto === projectToAssignServices.idProyecto ? response.proyecto : project
+      .then((res) => {
+        // Actualiza el project con los nuevos servicios
+        setProjects(projects.map(pro =>
+          pro.idProyecto === projectToAssignServices.idProyecto ? res.proyecto : pro
         ));
         toast.success(t('adminProjectsModal.toast.assignServicesSuccess'));
       })
@@ -190,6 +247,7 @@ const AdminProyectosModal = ({ isOpen, onClose, direction = 'forward' }) => {
       });
   };
 
+  // Cerrar modal con click en overlay (sin seleccionar texto)
   const handleOverlayClick = (e) => {
     const selectedText = window.getSelection().toString();
     if (selectedText.length > 0) return;
@@ -208,7 +266,7 @@ const AdminProyectosModal = ({ isOpen, onClose, direction = 'forward' }) => {
             onClick={handleOverlayClick}
           >
             <motion.div
-              className="modal-content admin-submodal"
+              className="modal-content admin-submodal proyectos"
               variants={variants}
               initial="hidden"
               animate="visible"
@@ -224,8 +282,8 @@ const AdminProyectosModal = ({ isOpen, onClose, direction = 'forward' }) => {
                   <FaTimes />
                 </button>
               </div>
-              <div className="admin-modal-body">
-                <div className="leftModal">
+              <div className="admin-modal-body proyectos">
+                <div className="leftModal proyectos">
                   <img src={imageSrc} alt={t('adminProjectsModal.altImage')} />
                 </div>
                 <div className="rightModal">
@@ -240,6 +298,8 @@ const AdminProyectosModal = ({ isOpen, onClose, direction = 'forward' }) => {
                   </div>
                   {loading && <p>{t('adminProjectsModal.loading')}</p>}
                   {error && <p className="error">{error}</p>}
+
+                  {/* Listado de proyectos ya creados */}
                   <div className="projects-list">
                     {filteredProjects.map((project) => (
                       <div key={project.idProyecto} className="project-item">
@@ -247,15 +307,15 @@ const AdminProyectosModal = ({ isOpen, onClose, direction = 'forward' }) => {
                           <h3>{project.titulo}</h3>
                           <p>{project.descripcion}</p>
                           <p>
-                            {t('adminProjectsModal.actions.skills') || 'Skills'}:{" "}
-                            {project.Skills && project.Skills.length > 0
-                              ? project.Skills.map(skill => skill.nombre).join(', ')
+                            {t('adminProjectsModal.actions.skills')}:{" "}
+                            {project.Skills?.length
+                              ? project.Skills.map(sk => sk.nombre).join(', ')
                               : t('adminProjectsModal.noSkills')}
                           </p>
                           <p>
-                            {t('adminProjectsModal.actions.services') || 'Services'}:{" "}
-                            {project.Servicios && project.Servicios.length > 0
-                              ? project.Servicios.map(servicio => servicio.nombre).join(', ')
+                            {t('adminProjectsModal.actions.services')}:{" "}
+                            {project.Servicios?.length
+                              ? project.Servicios.map(sv => sv.nombre).join(', ')
                               : t('adminProjectsModal.noServices')}
                           </p>
                         </div>
@@ -285,6 +345,8 @@ const AdminProyectosModal = ({ isOpen, onClose, direction = 'forward' }) => {
                       </div>
                     ))}
                   </div>
+
+                  {/* Form para crear nuevo proyecto */}
                   <AdminProjectForm
                     newProject={newProject}
                     setNewProject={setNewProject}
@@ -298,6 +360,8 @@ const AdminProyectosModal = ({ isOpen, onClose, direction = 'forward' }) => {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Modals confirm y asignación */}
       <ConfirmModal
         isOpen={confirmOpen}
         message={t('adminProjectsModal.confirmMessage')}
