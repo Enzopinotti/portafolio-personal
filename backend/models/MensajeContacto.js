@@ -1,8 +1,8 @@
 // models/MensajeContacto.js
-
 import { DataTypes } from 'sequelize';
 import sequelize from '../config/database.js';
 import sequelizePaginate from 'sequelize-paginate';
+
 const MensajeContacto = sequelize.define(
   'MensajeContacto',
   {
@@ -12,10 +12,11 @@ const MensajeContacto = sequelize.define(
       autoIncrement: true,
       field: 'id_mensaje_contacto',
     },
-    nombre: {
+    // Antes "nombre", ahora "nombre_completo"
+    nombreCompleto: {
       type: DataTypes.STRING(255),
       allowNull: false,
-      field: 'nombre',
+      field: 'nombre_completo',
     },
     email: {
       type: DataTypes.STRING(255),
@@ -25,11 +26,8 @@ const MensajeContacto = sequelize.define(
       },
       field: 'email',
     },
-    asunto: {
-      type: DataTypes.STRING(255),
-      allowNull: false,
-      field: 'asunto',
-    },
+    // Se eliminó "asunto"
+
     mensaje: {
       type: DataTypes.TEXT,
       allowNull: false,
@@ -46,6 +44,12 @@ const MensajeContacto = sequelize.define(
       allowNull: true,
       field: 'id_usuario',
     },
+    // Nuevo campo para el servicio de interés (texto, por ejemplo, el nombre del servicio)
+    servicioInteres: {
+      type: DataTypes.STRING(255),
+      allowNull: false, // Ajusta según lo que necesites (false si es obligatorio)
+      field: 'servicio_interes',
+    }
   },
   {
     tableName: 'mensaje_contacto',

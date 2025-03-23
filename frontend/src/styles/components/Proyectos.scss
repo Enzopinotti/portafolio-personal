@@ -149,8 +149,7 @@
   .proyecto-pill {
     background: #fff;
     border: 1px solid #ccc;
-    border-radius: 50px;
-    padding: 1rem 2rem;
+    
     min-height: 150px;
     display: flex;
     flex-direction: column;
@@ -159,8 +158,60 @@
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     cursor: pointer;
     transition: transform 0.1s ease, box-shadow 0.1s ease;
-  
-    h3 {
+    border-radius: 100%;
+    -webkit-border-radius: 100%;
+    -moz-border-radius: 100%;
+    -ms-border-radius: 100%;
+    -o-border-radius: 100%;
+    
+    position: relative;
+    &:hover .pill-overlay {
+      opacity: 1;
+    }
+    /* Overlay oscuro */
+    .pill-overlay {
+      position: absolute;
+      border-radius: 100px;
+      -webkit-border-radius: 100px;
+      -moz-border-radius: 100px;
+      -ms-border-radius: 100px;
+      -o-border-radius: 100px;
+      top: 0;
+      left: 0;
+      right: 0;
+      /*Alturavariable,subedesdeabajo*/height: 100%;
+      background: rgba(0, 0, 0, 0.65);
+      /*Semitransparenteoscuro*/color: #fff;
+      display: flex;
+      flex-direction: column;
+      padding: 0.5rem;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      /*Alineartextoabajo*/justify-content: flex-start;
+    }
+
+    .pill-overlay h3 {
+      margin: 0 0 0.25rem 0;
+      font-size: 1rem;
+      font-weight: bold;
+      color: $color-white;
+      margin-top: 1.5rem;
+    }
+
+    .pill-overlay .pill-desc {
+      margin: 0;
+      font-size: 0.85rem;
+      margin-top: 0.9rem;
+      line-height: 1.2;
+      color: $color-white;
+      /* Para truncar texto con 3 líneas y puntos suspensivos */
+      display: -webkit-box;
+      -webkit-line-clamp: 3; 
+      -webkit-box-orient: vertical; 
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    h3{
       margin: 0 0 0.5rem;
       font-size: 1.25rem;
       color: #333;

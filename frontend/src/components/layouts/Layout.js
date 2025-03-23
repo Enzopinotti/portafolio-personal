@@ -27,7 +27,7 @@ export default Layout;
 function getBackground(pathname) {
   switch (pathname) {
     case '/':
-      return { url: '/videos/videoInicio.mp4', key: 'inicio' }; // Video en la página de inicio
+      return { url: '/videos/videoInicio.mp4', key: 'inicio' };
     case '/servicios':
       return { url: '/images/background-servicios.jpg', key: 'servicios' };
     case '/proyectos':
@@ -35,7 +35,7 @@ function getBackground(pathname) {
     case '/blog':
       return { url: '/images/background-blog.jpg', key: 'blog' };
     case '/contacto':
-      return { url: '/images/background-contacto.jpg', key: 'contacto' };
+      return { url: '/images/contactoImagen.svg', key: 'contacto' };
     default:
       return { url: '/images/background-default.jpg', key: 'default' };
   }

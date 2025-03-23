@@ -9,6 +9,7 @@ import {
   editarProyecto,
   eliminarProyecto,
   listarProyectos,
+  listarProyectosPublicos,
   subirImagenesProyecto,
   subirImagenPastilla,
   verProyecto,
@@ -54,6 +55,8 @@ router.delete('/:id', verificarToken, verificarRolAdmin ,eliminarProyecto);
 // Ruta para listar todos los proyectos
 router.get('/', listarProyectos);
 
+router.get('/publicos', listarProyectosPublicos);
+
 // Ruta para ver detalles de un proyecto específico
 router.get('/:id', verProyecto);
 
@@ -62,6 +65,7 @@ router.get('/buscar', buscarProyectos);
 router.post('/:idProyecto/skills', verificarToken, verificarRolAdmin, asignarSkillsAProyecto);
 
 router.post('/:idProyecto/servicios', verificarToken, verificarRolAdmin, asignarServiciosAProyecto);
+
 
 
 export default router;

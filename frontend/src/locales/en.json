@@ -161,7 +161,10 @@
       "descriptionPlaceholder": "Description",
       "linkSkills": "Link Skills:",
       "linkServices": "Link Services:",
-      "submitButton": "Create Project"
+      "submitButton": "Create Project",
+      "page": "Page",
+      "nextPage": "Next Page",
+      "prevPage": "Previous Page"
     },
     "adminSkillsModal": {
       "altImage": "Skills Pattern",

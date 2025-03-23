@@ -165,3 +165,13 @@ export const assignSkillsToProject = async (idProyecto, skills, accessToken) => 
     }
     return response.json();
   };
+
+  export async function listProjectsPublicos() {
+    const response = await fetch(`${API_URL}/proyectos/publicos`, {
+      method: 'GET',
+    });
+    if (!response.ok) {
+      throw await response.json();
+    }
+    return response.json();
+  }

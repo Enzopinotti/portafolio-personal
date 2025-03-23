@@ -19,7 +19,7 @@ const router = Router();
 router.use('/usuarios', usuarioRoutes);
 router.use('/skills', skillRoutes);
 router.use('/proyectos', proyectoRoutes);
-router.use('/mensajes', mensajeContactoRoutes);
+router.use('/mensaje-contacto', mensajeContactoRoutes);
 router.use('/testimonios', testimonioRoutes);
 router.use('/articulos', articuloRoutes);
 router.use('/servicios', servicioRoutes);

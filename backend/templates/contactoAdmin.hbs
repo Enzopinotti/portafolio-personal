@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Nuevo Mensaje de Contacto</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      padding: 20px;
+    }
+    .container {
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    h2 {
+      color: #333333;
+    }
+    p {
+      color: #555555;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>📬 Nuevo mensaje recibido desde el formulario de contacto</h2>
+    <p><strong>Nombre:</strong> {{nombreCompleto}}</p>
+    <p><strong>Email:</strong> {{email}}</p>
+    <p><strong>Servicio de interés:</strong> {{servicioInteres}}</p>
+    <p><strong>Mensaje:</strong></p>
+    <p>{{mensaje}}</p>
+  </div>
+</body>
+</html>

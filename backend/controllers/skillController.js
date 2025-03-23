@@ -76,7 +76,7 @@ export const listarSkills = async (req, res, next) => {
     logger.info('Listar Skills: Obteniendo todas las skills paginadas.');
 
     const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 10;
+    const limit = parseInt(req.query.limit) || 12;
 
     const options = {
       page,

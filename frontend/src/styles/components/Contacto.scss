@@ -1,0 +1,224 @@
+@import '../abstracts/_variables.scss';
+
+.contacto-page {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  padding-right: 0;
+  padding-top: 10rem;
+
+  .contacto-container {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    max-width: 1200px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    margin-top: 18rem;
+    margin-bottom: 4rem;
+    @media (min-width: 768px) {
+      flex-direction: row;
+    }
+  }
+
+
+  .contacto-right {
+    flex: 1;
+    padding: 2rem !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: $color-white;
+
+    .contacto-info {
+      margin-bottom: 2rem;
+      h2 {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+      }
+        .direccion{
+        font-weight: 100;
+        font-size: 0.8rem;
+        padding-top: 0.5rem;
+        }
+        p {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            a {
+            color: #3145f9;
+            text-decoration: none;
+            &:hover {
+                text-decoration: underline;
+            }
+            }
+            .telefonoContacto{
+                color: #ff1443;
+                font-weight: 900;
+            }
+            
+        }
+    }
+
+    .contacto-form {
+      h3 {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+        color: $color-white;
+        margin-top: 1rem;
+      }
+      form {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            label {
+                margin-bottom: 0.5rem;
+                font-weight: bold;
+            }
+            select {
+                padding: 0.75rem;
+                border: none;
+                border-radius: 10px;
+                font-size: 1rem;
+                outline: none;
+                appearance: none; // Elimina flecha nativa
+                background-color: #fff;
+                transition: box-shadow 0.3s ease;
+                background-image: linear-gradient(45deg, transparent 50%, $color-primary 50%),
+                                linear-gradient(135deg, $color-primary 50%, transparent 50%);
+                background-position: calc(100% - 20px) calc(1rem + 2px), calc(100% - 15px) calc(1rem + 2px);
+                background-size: 5px 5px, 5px 5px;
+                background-repeat: no-repeat;
+            
+                &:focus {
+                box-shadow: 0 0 5px rgba($color-primary, 0.7);
+                }
+            }
+            input,
+            textarea {
+                padding: 0.75rem;
+                border: none;
+                border-radius: 10px;
+                font-size: 1rem;
+                outline: none;
+                transition: box-shadow 0.3s ease;
+            }
+            input:focus,
+            textarea:focus {
+                box-shadow: 0 0 5px rgba($color-primary, 0.7);
+            }
+        }
+
+        button {
+            padding: 0.75rem;
+            background: linear-gradient(90deg, $color-primary 0%, $color-secondary 100%);
+            border: none;
+            border-radius: 25px;
+            color: $color-white;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.3s ease;
+            margin-top: 1rem;
+            .loader {
+                width: 18px;
+                height: 18px;
+                border: 3px solid #fff;
+                border-bottom-color: transparent;
+                border-radius: 50%;
+                display: inline-block;
+                animation: spinner 1s linear infinite;
+            }
+            
+            @keyframes spinner {
+                to { transform: rotate(360deg); }
+            }
+            &:hover {
+              transform: scale(1.05);
+            }
+          }
+      }
+    }
+  }
+}
+
+@media (min-width: 1080px) {
+    .contacto-page {
+        padding-top: 0rem !important;
+        justify-content: flex-end;
+        .contacto-container {
+          display: flex;
+          flex-direction: column;
+          width: 45%;
+          max-width: 1200px;
+          border-radius: 10px;
+          overflow: hidden;
+          box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
+          margin-top: 0rem !important;
+          margin-bottom: 4rem; 
+          margin-right: 2.5rem;
+          margin-top: 1rem !important;
+          @media (min-width: 768px) {
+            flex-direction: row;
+          }
+        }
+      
+      
+        .contacto-right {
+          flex: 1;
+          padding: 2rem !important;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          color: $color-white;
+          .contacto-info {
+            margin-bottom: 2rem;
+            h2 {
+              font-size: 2rem;
+              margin-bottom: 1rem;
+            }
+              .direccion{
+              font-weight: 100;
+              font-size: 0.8rem;
+              padding-top: 0.5rem;
+              }
+              p {
+                  font-size: 1rem;
+                  margin-bottom: 0.5rem;
+                  a {
+                  color: #3145f9;
+                  text-decoration: none;
+                  &:hover {
+                      text-decoration: underline;
+                  }
+                  }
+                  .telefonoContacto{
+                      color: #ff1443;
+                      font-weight: 900;
+                  }
+                  
+              }
+          }
+      
+          .contacto-form {
+            h3 {
+
+            }
+            form {
+      
+              .form-group {
+                
+              }
+      
+              
+            }
+          }
+        }
+      }
+}

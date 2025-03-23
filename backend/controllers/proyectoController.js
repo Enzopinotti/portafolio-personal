@@ -196,11 +196,7 @@ export const eliminarProyecto = async (req, res, next) => {
       logger.info(`Eliminar Proyecto: Proyecto ID ${id} no encontrado.`);
       return next(Boom.notFound('Proyecto no encontrado.'));
     }
-    const usuarios = await proyecto.getUsuarios({ where: { idUsuario: req.usuario.idUsuario } });
-    if (usuarios.length === 0) {
-      logger.info(`Eliminar Proyecto: Usuario ${req.usuario.idUsuario} sin permisos para eliminar el proyecto ID ${id}.`);
-      return next(Boom.forbidden('No tienes permiso para eliminar este proyecto.'));
-    }
+    
     await proyecto.destroy();
     logger.info(`Eliminar Proyecto: Proyecto ID ${id} eliminado exitosamente.`);
     await registrarEvento({
@@ -230,6 +226,11 @@ export const listarProyectos = async (req, res, next) => {
         {
           model: Imagen,
           attributes: ['idImagen', 'ruta', 'descripcion'],
+        },
+        {
+          model: Servicio,
+          attributes: ['idServicio', 'nombre', 'descripcion', 'precio'],
+          through: { attributes: [] },
         },
       ],
     });
@@ -382,5 +383,22 @@ export const asignarServiciosAProyecto = async (req, res, next) => {
   } catch (error) {
     logger.error(`Error al asignar servicios al proyecto: ${error.message}`);
     return next(Boom.internal(error.message || 'Error al asignar servicios'));
+  }
+};
+
+
+export const listarProyectosPublicos = async (req, res, next) => {
+  try {
+    const proyectos = await Proyecto.findAll({
+      where: {
+        imagenPastilla: { [Op.ne]: null },
+      },
+      // Ahora devolvemos titulo, imagenPastilla y descripcion
+      attributes: ['idProyecto', 'titulo', 'imagenPastilla', 'descripcion'],
+      order: [['fechaInicio', 'DESC']],
+    });
+    res.status(200).json(proyectos);
+  } catch (error) {
+    return next(Boom.internal(error.message));
   }
 };

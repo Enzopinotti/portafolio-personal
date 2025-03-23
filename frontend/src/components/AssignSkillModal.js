@@ -5,18 +5,22 @@ import { FaTimes } from 'react-icons/fa';
 
 const AssignSkillModal = ({
   isOpen,
-  availableSkills,
+  availableSkills,   // <-- Paginado en padre
+  skillPage,
+  skillPages,
+  setSkillPage,
   onSave,
   onCancel,
   currentSkills = []
 }) => {
-  // Inicializamos selectedSkills a partir de currentSkills (usando idSkill)
-  const [selectedSkills, setSelectedSkills] = useState(() => currentSkills.map(skill => skill.idSkill));
+  const [selectedSkills, setSelectedSkills] = useState(
+    currentSkills.map(skill => skill.idSkill)
+  );
   const prevRef = useRef(currentSkills);
 
   useEffect(() => {
     const newIds = currentSkills.map(skill => skill.idSkill);
-    if (JSON.stringify(newIds) !== JSON.stringify(prevRef.current.map(skill => skill.idSkill))) {
+    if (JSON.stringify(newIds) !== JSON.stringify(prevRef.current.map(s => s.idSkill))) {
       setSelectedSkills(newIds);
       prevRef.current = currentSkills;
     }
@@ -64,9 +68,10 @@ const AssignSkillModal = ({
               <FaTimes />
             </button>
             <h3>Asignar Skills</h3>
+
             <div className="skill-list">
-              {availableSkills.map((skill) => (
-                <label key={skill.idSkill} className="skill-label">
+              {availableSkills.map(skill => (
+                <label key={skill.idSkill}>
                   <input
                     type="checkbox"
                     value={skill.idSkill}
@@ -77,13 +82,30 @@ const AssignSkillModal = ({
                 </label>
               ))}
             </div>
+
+            {/* Controles de paginación de SKILLS, 
+                si quieres “abajo de la lista” */}
+            <div className="pagination-controls">
+              <button
+                type="button"
+                disabled={skillPage <= 1}
+                onClick={() => setSkillPage(skillPage - 1)}
+              >
+                Prev
+              </button>
+              <span>{skillPage} / {skillPages}</span>
+              <button
+                type="button"
+                disabled={skillPage >= skillPages}
+                onClick={() => setSkillPage(skillPage + 1)}
+              >
+                Next
+              </button>
+            </div>
+
             <div className="assign-buttons">
-              <button className="btn-save" onClick={handleSave}>
-                Guardar
-              </button>
-              <button className="btn-cancel" onClick={onCancel}>
-                Cancelar
-              </button>
+              <button className="btn-save" onClick={handleSave}>Guardar</button>
+              <button className="btn-cancel" onClick={onCancel}>Cancelar</button>
             </div>
           </motion.div>
         </motion.div>

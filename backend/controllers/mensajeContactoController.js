@@ -5,16 +5,19 @@ import transporter from '../config/email.js';
 import logger from '../config/logger.js';
 import { registrarEvento } from '../utils/auditLogger.js';
 import Boom from '@hapi/boom';
+import path from 'path';
+import fs from 'fs';
+import hbs from 'handlebars';
+import { __dirname } from '../utils/pathUtils.js';
 
 export const enviarMensaje = async (req, res, next) => {
   try {
-    const { nombre, email, asunto, mensaje } = req.body;
-    logger.info(`Enviar Mensaje: Recibido de ${nombre} (${email}) - Asunto: ${asunto}`);
+    const { nombreCompleto, email, servicioInteres, mensaje } = req.body;
 
     const nuevoMensaje = await MensajeContacto.create({
-      nombre,
+      nombreCompleto,
       email,
-      asunto,
+      servicioInteres,
       mensaje,
       idUsuario: req.usuario ? req.usuario.idUsuario : null,
     });
@@ -23,19 +26,53 @@ export const enviarMensaje = async (req, res, next) => {
       userId: req.usuario ? req.usuario.idUsuario : null,
       action: 'SEND_MENSAJE',
       target: 'mensaje_contacto',
-      details: { asunto },
+      details: { servicioInteres },
       req,
     });
-    logger.info(`Enviar Mensaje: Mensaje guardado con ID ${nuevoMensaje.id_mensaje_contacto}.`);
 
+    logger.info(`Mensaje de contacto registrado de: ${nombreCompleto} - ${email}`);
+
+    // Template para el administrador
+    const adminTemplatePath = path.join(__dirname, '../templates/contactoAdmin.hbs');
+    const adminTemplateSource = fs.readFileSync(adminTemplatePath, 'utf8');
+    const adminTemplate = hbs.compile(adminTemplateSource);
+
+    const adminHtml = adminTemplate({
+      nombreCompleto,
+      email,
+      servicioInteres,
+      mensaje,
+    });
+
+    // Enviar correo al administrador
     await transporter.sendMail({
       from: process.env.EMAIL_FROM,
-      to: process.env.EMAIL_USER,
-      subject: `Nuevo mensaje de contacto de ${nombre}: ${asunto}`,
-      text: mensaje,
-      html: `<p>${mensaje}</p>`,
+      to: 'enzopinottii@gmail.com',
+      subject: `Nuevo mensaje de contacto de ${nombreCompleto}`,
+      html: adminHtml,
     });
-    logger.info('Enviar Mensaje: Correo de notificación enviado.');
+
+    logger.info('Correo enviado al administrador.');
+
+    // Template para el usuario
+    const userTemplatePath = path.join(__dirname, '../templates/contactoUsuario.hbs');
+    const userTemplateSource = fs.readFileSync(userTemplatePath, 'utf8');
+    const userTemplate = hbs.compile(userTemplateSource);
+
+    const userHtml = userTemplate({
+      nombreCompleto,
+      servicioInteres,
+    });
+
+    // Enviar correo de confirmación al usuario
+    await transporter.sendMail({
+      from: process.env.EMAIL_FROM,
+      to: email,
+      subject: 'Hemos recibido tu mensaje',
+      html: userHtml,
+    });
+
+    logger.info('Correo de confirmación enviado al usuario.');
 
     res.status(201).json({
       mensaje: 'Mensaje enviado exitosamente.',
