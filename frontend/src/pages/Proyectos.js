@@ -1,14 +1,15 @@
-// src/pages/Proyectos.js
 import React, { useEffect, useState, useContext } from 'react';
 import { motion } from 'framer-motion';
 import { NavigationContext } from '../context/NavigationContext.js';
 import SliderInfinito from '../components/SliderInfinito.js';
 import { listProjectsPublicos } from '../services/projectService.js';
+import { useNavigate } from 'react-router-dom';
 
 const Proyectos = () => {
   const { navigationDirection } = useContext(NavigationContext);
   const [proyectos, setProyectos] = useState([]);
-  console.log('proyectos: ', proyectos);
+  const navigate = useNavigate();
+
   useEffect(() => {
     listProjectsPublicos()
       .then(data => setProyectos(data))
@@ -27,7 +28,6 @@ const Proyectos = () => {
     },
   };
 
-  // Construir slides para el carrusel: usaremos imagenPastilla y título
   const slides = proyectos.map(p => ({
     id: p.idProyecto,
     titulo: p.titulo,
@@ -36,12 +36,7 @@ const Proyectos = () => {
   }));
 
   const handleSlideClick = (proyecto) => {
-    const esMovil = window.matchMedia('(hover: none)').matches;
-    if (esMovil) {
-      window.location.href = `/proyecto/${proyecto.id}`;
-    } else {
-      console.log('Abrir modal para proyecto:', proyecto);
-    }
+    navigate(`/proyectos/${proyecto.id}`);
   };
 
   return (

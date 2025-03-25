@@ -8,17 +8,18 @@
   justify-content: center;
   padding: 2rem;
   padding-right: 0;
-  padding-top: 10rem;
+  padding-top: 0;
 
   .contacto-container {
     display: flex;
+    backdrop-filter: blur(2.5px);
+    background-color: rgba(0, 0, 0, 0.284);
     flex-direction: column;
     width: 80%;
     max-width: 1200px;
     border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    margin-top: 18rem;
     margin-bottom: 4rem;
     @media (min-width: 768px) {
       flex-direction: row;

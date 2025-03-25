@@ -262,12 +262,19 @@ export const verProyecto = async (req, res, next) => {
           attributes: ['idUsuario', 'nombre'],
           through: { attributes: [] },
         },
+        {
+          model: Servicio, // <-- Incluye Servicios aquí
+          attributes: ['idServicio', 'nombre', 'descripcion'],
+          through: { attributes: [] },
+        },
       ],
     });
+
     if (!proyecto) {
       logger.info(`Ver Proyecto: Proyecto con ID ${id} no encontrado.`);
       return next(Boom.notFound('Proyecto no encontrado.'));
     }
+
     logger.info(`Ver Proyecto: Proyecto con ID ${id} encontrado.`);
     res.status(200).json(proyecto);
   } catch (error) {

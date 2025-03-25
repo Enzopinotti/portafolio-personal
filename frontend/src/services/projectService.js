@@ -48,6 +48,16 @@ export async function uploadPastilla(idProyecto, file, token) {
   return res.json(); // { mensaje, proyecto: {...} }
 }
 
+export const getProjectById = async (idProyecto) => {
+  const response = await fetch(`${API_URL}/proyectos/${idProyecto}`, {
+    method: 'GET',
+  });
+  if (!response.ok) {
+    throw await response.json();
+  }
+  return response.json();
+};
+
 export async function uploadProjectImages(idProyecto, files, token) {
   const formData = new FormData();
   for (let i = 0; i < files.length; i++) {

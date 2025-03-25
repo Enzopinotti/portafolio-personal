@@ -1,38 +1,38 @@
 // src/pages/Servicios.js
-
-import React, { useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { NavigationContext } from '../context/NavigationContext.js';
+import { listServicios } from '../services/servicioService.js';
+import VerticalInfiniteSlider from '../components/VerticalInfiniteSlider.js';
 
 const Servicios = () => {
-  const { navigationDirection } = useContext(NavigationContext);
+  const [servicios, setServicios] = useState([]);
 
-  const variants = {
-    initial: {
-      y: navigationDirection === 'forward' ? '100vh' : '-100vh',
-      opacity: 0,
-    },
-    animate: {
-      y: 0,
-      opacity: 1,
-    },
-    exit: {
-      y: navigationDirection === 'forward' ? '-100vh' : '100vh',
-      opacity: 0,
-    },
-  };
+  useEffect(() => {
+    listServicios()
+      .then(data => setServicios(data.servicios || data))
+      .catch(err => console.error('Error al cargar servicios:', err));
+  }, []);
+
+  const sliderItems = servicios.map(servicio => ({
+    id: servicio.idServicio,
+    titulo: servicio.nombre,
+    descripcion: servicio.descripcion,
+  }));
 
   return (
     <motion.div
       className="page servicios-page"
-      variants={variants}
-      initial="initial"
-      animate="animate"
-      exit="exit"
-      transition={{ duration: 0.5 }}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      transition={{ duration: 0.5, ease: 'easeInOut' }}
     >
-      <h1>Servicios</h1>
-      <p>Estos son los servicios que ofrezco.</p>
+      <div className="servicios-container">
+        <div className="servicios-right">
+          <h2 className="titulo-servicios">Mis Servicios</h2>
+          <VerticalInfiniteSlider items={sliderItems} />
+        </div>
+      </div>
     </motion.div>
   );
 };

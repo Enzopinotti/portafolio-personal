@@ -1,0 +1,30 @@
+.page.servicios-page{
+    .servicios-container{
+        .titulo-servicios{
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            text-align: center;
+            color: #ffffff;
+            margin-top: 14rem;
+        }
+    }
+}
+
+@media (min-width: 1080px) {
+    .page.servicios-page{
+        
+        width: 100%;
+        .servicios-container{
+            
+            width: 100%;
+            .titulo-servicios{
+
+            }
+            .servicios-right{
+                width: 100%;
+                display: flex;
+                justify-content: space-around;
+            }
+        }
+    }
+}

@@ -23,19 +23,21 @@ const Layout = () => {
 };
 
 export default Layout;
-
 function getBackground(pathname) {
+  if (pathname.startsWith('/proyectos/') && pathname.split('/')[2]) {
+    return { url: '/videos/FondoProyectos.mp4', key: 'detalleProyecto' };
+  }
   switch (pathname) {
     case '/':
       return { url: '/videos/videoInicio.mp4', key: 'inicio' };
     case '/servicios':
-      return { url: '/images/background-servicios.jpg', key: 'servicios' };
+      return { url: '/videos/fondoServicios.mp4', key: 'servicios' };
     case '/proyectos':
-      return { url: '/images/proyectos.jpg', key: 'proyectos' };
+      return { url: '/videos/FondoProyectos.mp4', key: 'proyectos' };
     case '/blog':
-      return { url: '/images/background-blog.jpg', key: 'blog' };
+      return { url: '/videos/fondoBlog.mp4', key: 'blog' };
     case '/contacto':
-      return { url: '/images/contactoImagen.svg', key: 'contacto' };
+      return { url: '/videos/fondoContacto.mp4', key: 'contacto' };
     default:
       return { url: '/images/background-default.jpg', key: 'default' };
   }
