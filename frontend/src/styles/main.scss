@@ -14,6 +14,7 @@
 @import 'layouts/header';
 @import 'layouts/footer';
 @import 'layouts/telefono';
+@import 'layouts/Background.scss';
 @import 'components/LoginModal.scss';
 @import 'components/LanguageSwitcher.scss';
 @import 'components/RegisterModal.scss';
@@ -34,4 +35,6 @@
 @import 'components/AdminServiciosModal.scss';
 @import 'components/AssignServiceModal.scss';
 @import 'components/AdminSettingsModal.scss';
+@import 'components/Contacto.scss';
+
 // Puedes importar otros estilos aquí si lo deseas

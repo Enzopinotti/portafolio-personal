@@ -16,22 +16,55 @@ const postData = async (endpoint, data) => {
   return response.json();
 };
 
-// Crear un nuevo proyecto (requiere token)
-export const createProject = async (projectData, accessToken) => {
-  const response = await fetch(`${API_URL}/proyectos/crear`, {
+export async function createProject(projectData, token) {
+  const res = await fetch(`${API_URL}/proyectos`, {
     method: 'POST',
-    headers: { 
+    headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${accessToken}` 
+      Authorization: `Bearer ${token}`,
     },
-    credentials: 'include',
+    credentials: 'include', // si es que manejas cookies
     body: JSON.stringify(projectData),
   });
-  if (!response.ok) {
-    throw await response.json();
+  if (!res.ok) {
+    throw await res.json();
   }
-  return response.json();
-};
+  return res.json(); // { mensaje, proyecto: { ... } }
+}
+
+export async function uploadPastilla(idProyecto, file, token) {
+  const formData = new FormData();
+  formData.append('pastilla', file);
+
+  const res = await fetch(`${API_URL}/proyectos/${idProyecto}/pastilla`, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${token}` },
+    credentials: 'include',
+    body: formData,
+  });
+  if (!res.ok) {
+    throw await res.json();
+  }
+  return res.json(); // { mensaje, proyecto: {...} }
+}
+
+export async function uploadProjectImages(idProyecto, files, token) {
+  const formData = new FormData();
+  for (let i = 0; i < files.length; i++) {
+    formData.append('imagenes', files[i]);
+  }
+
+  const res = await fetch(`${API_URL}/proyectos/${idProyecto}/imagenes`, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${token}` },
+    credentials: 'include',
+    body: formData,
+  });
+  if (!res.ok) {
+    throw await res.json();
+  }
+  return res.json(); // { mensaje, imagenes: [...] }
+}
 
 // Editar un proyecto (requiere token)
 export const editProject = async (projectId, projectData, accessToken) => {
@@ -132,3 +165,13 @@ export const assignSkillsToProject = async (idProyecto, skills, accessToken) => 
     }
     return response.json();
   };
+
+  export async function listProjectsPublicos() {
+    const response = await fetch(`${API_URL}/proyectos/publicos`, {
+      method: 'GET',
+    });
+    if (!response.ok) {
+      throw await response.json();
+    }
+    return response.json();
+  }

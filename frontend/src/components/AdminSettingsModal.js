@@ -138,7 +138,6 @@ const AdminSettingsModal = ({ isOpen, onClose, direction = 'forward' }) => {
     gap: '1rem',
     padding: '1rem'
   };
-
   const rightModalStyle = {
     width: '100%',
     padding: '1rem 1.5rem 2rem 1.5rem'
@@ -153,7 +152,7 @@ const AdminSettingsModal = ({ isOpen, onClose, direction = 'forward' }) => {
   };
 
   // Imagen: seleccionar patrón según window width
-  const imageSrc = window.innerWidth < 768 ? '/images/patronDos.png' : '/images/patronUno.png';
+  const imageSrc = window.innerWidth < 768 ? '/images/PatronDos.png' : '/images/patronUno.png';
 
   return (
     <AnimatePresence mode="wait">

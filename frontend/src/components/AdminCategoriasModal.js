@@ -43,7 +43,7 @@ const AdminCategoriasModal = ({ isOpen, onClose, direction = 'forward' }) => {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
-  const imageSrc = windowWidth < 800 ? '/images/patronDos.png' : '/images/patronUno.png';
+  const imageSrc = windowWidth < 800 ? '/images/PatronDos.png' : '/images/patronUno.png';
 
   // Cargar categorías al montar el modal
   useEffect(() => {
@@ -125,7 +125,7 @@ const AdminCategoriasModal = ({ isOpen, onClose, direction = 'forward' }) => {
             onClick={handleOverlayClick}
           >
             <motion.div
-              className="modal-content admin-submodal"
+              className="modal-content admin-submodal categorias"
               variants={variants}
               initial="hidden"
               animate="visible"
@@ -141,11 +141,11 @@ const AdminCategoriasModal = ({ isOpen, onClose, direction = 'forward' }) => {
                   <FaTimes />
                 </button>
               </div>
-              <div className="admin-modal-body">
-                <div className="leftModal">
+              <div className="admin-modal-body categorias">
+                <div className="leftModal categorias">
                   <img src={imageSrc} alt={t('adminCategoriasModal.altImage')} />
                 </div>
-                <div className="rightModal">
+                <div className="rightModal categorias">
                   <h2>{t('adminCategoriasModal.title')}</h2>
                   <div className="search-container">
                     <input

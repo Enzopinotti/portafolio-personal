@@ -1,4 +1,44 @@
 // src/components/AdminServiciosModal.scss
+.modal-content.admin-submodal.servicios{
+  margin-top: 24rem;
+  .admin-modal-body.servicios{
+
+  }
+}
+
+@media (min-width: 800px) {
+  .modal-content.admin-submodal.servicios{
+    margin-top: -30rem !important;
+    .admin-modal-body.servicios{
+      .leftModal.servicios{
+        img{
+          height: 810px !important;
+        }
+      }
+    }
+  }
+}
+
+
+.modal-content.admin-submodal.usuarios{
+  margin-top: 33rem;
+  .admin-modal-body.usuarios{
+
+  }
+}
+
+@media (min-width: 800px) {
+  .modal-content.admin-submodal.usuarios{
+    margin-top: -15rem !important;
+    .admin-modal-body.usuarios{
+      .leftModal.usuarios{
+        img{
+          height: 1012px !important;
+        }
+      }
+    }
+  }
+}
 
 .modal-overlay.admin-overlay {
     position: fixed;

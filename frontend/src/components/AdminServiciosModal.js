@@ -95,7 +95,7 @@ const AdminServiciosModal = ({ isOpen, onClose, direction = 'forward' }) => {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
-  const imageSrc = windowWidth < 800 ? '/images/patronDos.png' : '/images/patronUno.png';
+  const imageSrc = windowWidth < 800 ? '/images/PatronDos.png' : '/images/patronUno.png';
 
   const handleOverlayClick = (e) => {
     const selectedText = window.getSelection().toString();
@@ -115,7 +115,7 @@ const AdminServiciosModal = ({ isOpen, onClose, direction = 'forward' }) => {
             onClick={handleOverlayClick}
           >
             <motion.div
-              className="modal-content admin-submodal"
+              className="modal-content admin-submodal servicios"
               variants={variants}
               initial="hidden"
               animate="visible"
@@ -131,11 +131,11 @@ const AdminServiciosModal = ({ isOpen, onClose, direction = 'forward' }) => {
                   <FaTimes />
                 </button>
               </div>
-              <div className="admin-modal-body">
-                <div className="leftModal">
+              <div className="admin-modal-body servicios">
+                <div className="leftModal servicios">
                   <img src={imageSrc} alt={t('adminServiciosModal.altImage')} />
                 </div>
-                <div className="rightModal">
+                <div className="rightModal servicios">
                   <h2>{t('adminServiciosModal.title')}</h2>
                   <div className="search-container">
                     <input

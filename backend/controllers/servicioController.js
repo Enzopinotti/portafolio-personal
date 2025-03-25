@@ -30,7 +30,7 @@ export const listarServicios = async (req, res, next) => {
     logger.info('Listar Servicios: Obteniendo todos los servicios paginados.');
 
     const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 10;
+    const limit = parseInt(req.query.limit) || 12;
 
     const options = {
       page,

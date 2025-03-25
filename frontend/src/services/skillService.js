@@ -61,6 +61,16 @@ export const listSkills = async () => {
   return response.json();
 };
 
+export async function listSkillsPaginated(page = 1, limit = 12) {
+  const response = await fetch(`${API_URL}/skills?page=${page}&limit=${limit}`, {
+    method: 'GET',
+  });
+  if (!response.ok) {
+    throw await response.json();
+  }
+  return response.json(); // { skills, total, pages, currentPage, limit }
+}
+
 // Ver detalles de una skill (no requiere token)
 export const viewSkill = async (skillId) => {
   const response = await fetch(`${API_URL}/skills/${skillId}`, {

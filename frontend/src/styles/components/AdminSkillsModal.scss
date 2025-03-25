@@ -1,5 +1,23 @@
 // src/components/AdminSkillsModal.scss
+.modal-content.admin-submodal.skills{
+  margin-top: 17rem;
+  .admin-modal-body.skills{
 
+  }
+}
+
+@media (min-width: 800px) {
+  .modal-content.admin-submodal.skills{
+    margin-top: -30rem !important;
+    .admin-modal-body.skills{
+      .leftModal.skills{
+        img{
+          height: 776px !important;
+        }
+      }
+    }
+  }
+}
 // Estilos comunes para el overlay y contenido
 .modal-overlay.admin-overlay {
     position: fixed;
@@ -40,7 +58,6 @@
       max-width: 800px;
       border-radius: 20px;
       .leftModal{
-        height: 100%;
       }
     }
     .admin-modal-body {
@@ -50,8 +67,7 @@
   }
   .modal-content.admin-modal{
     .leftModal {
-      width: 100%;
-      height: 100% !important;
+        width: 100%;
       img {
         width: 100%;
         height: 100%;
@@ -69,7 +85,7 @@
   .modal-content.admin-submodal{
     .leftModal {
       width: 100%;
-      height: 100% !important;
+      height: auto;
       img {
         width: 100%;
         height: 100%;
@@ -293,7 +309,6 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1rem;
     
     .back-button {
       position: absolute;

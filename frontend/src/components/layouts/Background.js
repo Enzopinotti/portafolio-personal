@@ -3,9 +3,30 @@ import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const Background = ({ background }) => {
-  // Detectar si el URL es un video (por ejemplo, si termina en .mp4)
-  const isVideo = background.url.toLowerCase().endsWith('.mp4');
+  // Si es la página de contacto, renderizamos el fondo dividido
+  if (background.key === 'contacto') {
+    return (
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={background.key}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.5, ease: 'easeInOut' }}
+          className="background-split"
+        >
+          <div
+            className="background-image"
+            style={{ backgroundImage: `url(${background.url})` }}
+          />
+          <div className="background-solid" />
+        </motion.div>
+      </AnimatePresence>
+    );
+  }
 
+  // Si es un video
+  const isVideo = background.url.toLowerCase().endsWith('.mp4');
   return (
     <AnimatePresence mode="wait">
       {isVideo ? (
@@ -18,7 +39,7 @@ const Background = ({ background }) => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.5, ease: 'easeInOut' }}
           className="background"
           style={{ objectFit: 'cover', width: '100%', height: '100%' }}
         >
@@ -31,7 +52,7 @@ const Background = ({ background }) => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.5, ease: 'easeInOut' }}
           className="background"
           style={{
             backgroundImage: `url(${background.url})`,

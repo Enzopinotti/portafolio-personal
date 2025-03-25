@@ -1,0 +1,41 @@
+
+
+.background-split {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: row;
+  position: absolute;
+  top: 0rem;
+  .background-image {
+    flex: 1;
+    background-size: cover;
+    background-position: center;
+  }
+  
+  .background-solid {
+    flex: 1;
+    background-color: $color-gray-dark; // o #272727
+  }
+}
+
+/* En móviles, se apilan */
+@media (max-width: 1080px) {
+    .background-image {
+        flex: 0.70 !important;
+        background-size: cover;
+        background-position: center;
+      }
+      
+      .background-solid {
+        flex: 1.30 !important;
+        background-color: $color-gray-dark; // o #272727
+      }
+  .background-split {
+    flex-direction: column;
+  }
+  .background-split .background-image,
+  .background-split .background-solid {
+    height: 50vh;
+  }
+}

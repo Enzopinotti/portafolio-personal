@@ -38,7 +38,7 @@ const RegisterModal = ({
   }, []);
 
   // Seleccionar imagen según el ancho
-  const imageSrc = windowWidth < 800 ? '/images/patronDos.png' : '/images/patronUno.png';
+  const imageSrc = windowWidth < 800 ? '/images/PatronDos.png' : '/images/patronUno.png';
 
   // Evitar cerrar el modal si se está seleccionando texto
   const handleOverlayClick = (e) => {

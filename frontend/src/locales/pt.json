@@ -160,7 +160,10 @@
       "descriptionPlaceholder": "Descrição",
       "linkSkills": "Vincular Skills:",
       "linkServices": "Vincular Serviços:",
-      "submitButton": "Criar Projeto"
+      "submitButton": "Criar Projeto",
+      "page": "Página",
+      "nextPage": "Próxima página",
+      "prevPage": "Página anterior"
     },
     "adminSkillsModal": {
       "altImage": "Padrão de Skills",

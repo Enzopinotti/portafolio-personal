@@ -1,5 +1,65 @@
 // src/components/AdminProyectosModal.scss
 
+.modal-content.admin-submodal.proyectos {
+  margin-top: 75rem;
+  margin-bottom: 10rem;
+  .admin-modal-body.proyectos{
+    height: auto;
+    .leftModal.proyectos{
+      height: auto;
+    }
+  }
+  .pagination-controls {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    align-items: center;
+    margin: 1rem 0;
+  }
+  
+  .pagination-controls button {
+    background-color: #333;
+    color: #fff;
+    border: none;
+  }
+  
+  .pagination-controls button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  .pagination-controls span {
+    font-weight: bold;
+    position: relative;
+    top: 0.5rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .modal-content.admin-submodal.proyectos {
+    margin-top: -0rem !important;
+    .admin-modal-body.proyectos{
+      height: auto;
+      .leftModal.proyectos{
+        height: auto;
+      }
+    }
+  }
+}
+@media (min-width: 800px) {
+  .modal-content.admin-submodal.proyectos {
+    margin-top: 30rem !important;
+    .admin-modal-body.proyectos{
+      height: auto;
+      .leftModal.proyectos{
+        height: auto;
+        img{
+          height: 1674px !important;
+        }
+      }
+    }
+  }
+}
 .modal-overlay.admin-overlay {
     position: fixed;
     top: 0;
@@ -35,6 +95,8 @@
   
   @media (min-width: 768px) {
     .modal-content.admin-submodal {
+      position: relative;
+      top: 25rem !important;
       flex-direction: row;
       max-width: 800px;
       border-radius: 20px;
@@ -191,11 +253,13 @@
       }
       /* Estilos para los checkboxes de skills */
       .skills-checkboxes {
-        display: flex;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
         flex-wrap: wrap;
-        gap: 0.5rem;
+        gap: 1rem;
+        overflow-x: scroll;
   
-        .skill-checkbox-label {
+        label {
           display: flex;
           align-items: center;
           font-size: 0.9rem;
@@ -235,11 +299,12 @@
       }
       /* Estilos para los checkboxes de servicios (similares a los de skills) */
       .services-checkboxes {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.5rem;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        gap: 1rem;
+        overflow-x: scroll;
   
-        .service-checkbox-label {
+        label {
           display: flex;
           align-items: center;
           font-size: 0.9rem;
@@ -300,7 +365,6 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1rem;
   
     .close-icon {
       position: absolute;

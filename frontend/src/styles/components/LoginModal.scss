@@ -29,7 +29,6 @@
   }
   .leftModal{
     display: flex;
-    height: auto;
     img{
       height: 100%;
     }
@@ -184,7 +183,6 @@
   .modal-content {
     max-width: 450px;
     .leftModal{
-      height: auto !important;
     }
     .login-form{
       

@@ -61,6 +61,16 @@ export const listServicios = async () => {
   return response.json();
 };
 
+export async function listServiciosPaginated(page = 1, limit = 12) {
+  const response = await fetch(`${API_URL}/servicios?page=${page}&limit=${limit}`, {
+    method: 'GET',
+  });
+  if (!response.ok) {
+    throw await response.json();
+  }
+  return response.json(); // { servicios, total, pages, currentPage, limit }
+}
+
 // Ver detalles de un servicio (no requiere token)
 export const viewServicio = async (servicioId) => {
   const response = await fetch(`${API_URL}/servicios/${servicioId}`, {
