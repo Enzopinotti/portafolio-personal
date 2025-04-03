@@ -49,6 +49,11 @@ const Proyecto = sequelize.define(
       allowNull: true,  
       field: 'imagen_pastilla',
     },
+    publicIdPastilla: {
+      type: DataTypes.STRING(255),
+      allowNull: true,  // match con la migración
+      field: 'public_id_pastilla',
+    },
     enlaceGithub: {
       type: DataTypes.STRING(255),
       allowNull: true,

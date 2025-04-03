@@ -18,7 +18,6 @@ export const createServicio = async (servicioData, accessToken) => {
   return response.json();
 };
 
-// Editar un servicio (requiere token)
 export const editServicio = async (servicioId, servicioData, accessToken) => {
   const response = await fetch(`${API_URL}/servicios/${servicioId}`, {
     method: 'PUT',
@@ -82,3 +81,21 @@ export const viewServicio = async (servicioId) => {
   return response.json();
 };
 
+export const uploadPortadaServicio = async (idServicio, file, accessToken) => {
+  const formData = new FormData();
+  formData.append('portada', file);
+
+  const response = await fetch(`${API_URL}/servicios/${idServicio}/portada`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+    credentials: 'include',
+    body: formData,
+  });
+
+  if (!response.ok) {
+    throw await response.json();
+  }
+  return response.json(); // { mensaje, servicio }
+};

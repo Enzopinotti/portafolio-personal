@@ -1,32 +1,25 @@
-// src/components/GaleriaProyecto.js
+// src/components/GaleriaProyecto.jsx
 import React from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination, EffectCoverflow } from 'swiper/modules';
+import { Navigation, Pagination } from 'swiper/modules'; // sin EffectCoverflow
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-import 'swiper/css/effect-coverflow';
-import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 
 const GaleriaProyecto = ({ imagenes }) => {
+  if (!imagenes || !imagenes.length) return null;
+
   return (
     <div className="galeria-proyecto">
       <Swiper
-        modules={[Navigation, Pagination, EffectCoverflow]}
-        navigation={{
-          nextEl: '.swiper-button-next',
-          prevEl: '.swiper-button-prev',
-        }}
+        modules={[Navigation, Pagination]}
+        // Flechas next/prev nativas de Swiper
+        navigation={true}
+        // Muestra los “puntos” en la parte inferior
         pagination={{ clickable: true }}
-        effect={'coverflow'}
-        coverflowEffect={{
-          rotate: 50,
-          stretch: 0,
-          depth: 100,
-          modifier: 1,
-          slideShadows: true,
-        }}
-        loop
+        // Desactivar loop => flechas se deshabilitan al llegar a 1er o última
+        loop={false}
+        // Espacio entre slides
         spaceBetween={20}
         slidesPerView={1}
       >
@@ -39,9 +32,6 @@ const GaleriaProyecto = ({ imagenes }) => {
             />
           </SwiperSlide>
         ))}
-
-        <div className="swiper-button-prev"><FaArrowLeft /></div>
-        <div className="swiper-button-next"><FaArrowRight /></div>
       </Swiper>
     </div>
   );

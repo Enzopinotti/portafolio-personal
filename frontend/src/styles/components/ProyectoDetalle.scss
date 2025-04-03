@@ -1,38 +1,91 @@
 @import '../abstracts/_variables.scss';
 
+
+.vertical-images-container {
+  width: 540px;  /* Ajusta el ancho de la columna */
+  overflow: visible;
+  position: relative;
+  margin: 0 auto;
+
+  .vertical-images-track {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    img{
+      width: 100%;
+      margin-bottom: 4rem;
+      border-radius: 10px;
+      -webkit-border-radius: 10px;
+      -moz-border-radius: 10px;
+      -ms-border-radius: 10px;
+      -o-border-radius: 10px;
+    }
+  }
+}
+
+.detalle-proyecto-page{
+  display: flex;
+  justify-content: center;
+}
 .detalle-proyecto-container {
   display: flex;
   flex-direction: column;
+  align-items: stretch; 
   gap: 2rem;
-  .galeria-proyecto {
-    width: 100%;
-    margin-bottom: 2rem;
+  width: 85%;
+  margin-bottom: 3rem;
   
+  .galeria-proyecto {
+    position: relative;
+    width: 100%;
+    .swiper {
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+      .swiper-slide {
+        width: 100% !important;
+        flex-shrink: 0;
+      }
+    }
     .imagen-slide {
       width: 100%;
-      height: 400px;
-      object-fit: cover;
+      max-height: 400px;
+      object-fit: contain;
       border-radius: 10px;
+      -webkit-border-radius: 10px;
+      -moz-border-radius: 10px;
+      -ms-border-radius: 10px;
+      -o-border-radius: 10px;
     }
   
     .swiper-button-prev,
     .swiper-button-next {
-      color: #ffffff;
-      background-color: rgba(0,0,0,0.5);
+      color: #fff; /* color de fuente si no usas ::after */
+      background-color: rgba(0, 0, 0, 0.5);
       border-radius: 50%;
       width: 35px;
       height: 35px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
       cursor: pointer;
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      z-index: 10;
-  
+      display: flex; 
+      align-items: center; 
+      justify-content: center;
+      transition: background-color 0.3s;
       &:hover {
-        background-color: rgba(0,0,0,0.7);
+        background-color: rgba(0, 0, 0, 0.7);
+      }
+
+      /* Elimina el <svg> que pone Swiper por defecto */
+      svg {
+        display: none !important;
+      }
+
+      /* Inserta la flecha con ::after */
+      &::after {
+        font-size: 20px;
+        font-weight: bold;
       }
     }
   
@@ -43,26 +96,34 @@
     .swiper-button-next {
       right: 10px;
     }
-  
+     /* Cuando se deshabilita (no hay más fotos en ese lado) */
+    .swiper-button-disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+    /* Puntos de paginación en la parte de abajo */
+    .swiper-pagination-bullet {
+      background: #ccc;
+      opacity: 0.7;
+    }
     .swiper-pagination-bullet-active {
       background-color: #ff1443;
+      opacity: 1;
     }
   }
   
   @media (min-width: 1080px) {
     .galeria-proyecto {
       width: 45%;
-      margin-right: 2rem;
     }
   }
   
   @media (min-width: 1080px) {
     flex-direction: row;
     justify-content: flex-end;
-    align-items: flex-start;
+    align-items: stretch;  /* la clave para que ambas columnas ocupen la misma altura */
     padding-right: 3rem;
   }
-
   .carousel-container {
     width: 100%;
     max-width: 600px;
@@ -120,6 +181,15 @@
 
     @media (min-width: 1080px) {
       width: 50%;
+      .vertical-images-container {
+        width: 240px; /* Ajusta a gusto */
+        overflow: hidden;
+      }
+    
+      .detalle-proyecto-contenido {
+        flex: 1; 
+        /* el resto del contenido */
+      }
     }
 
     h1 {
@@ -178,3 +248,4 @@
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
 }
+

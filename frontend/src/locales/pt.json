@@ -163,7 +163,8 @@
       "submitButton": "Criar Projeto",
       "page": "Página",
       "nextPage": "Próxima página",
-      "prevPage": "Página anterior"
+      "prevPage": "Página anterior",
+      "editButton": "Editar Projeto"
     },
     "adminSkillsModal": {
       "altImage": "Padrão de Skills",

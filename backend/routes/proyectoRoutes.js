@@ -7,6 +7,7 @@ import {
   buscarProyectos,
   crearProyecto,
   editarProyecto,
+  eliminarPortadaProyecto,
   eliminarProyecto,
   listarProyectos,
   listarProyectosPublicos,
@@ -65,6 +66,13 @@ router.get('/buscar', buscarProyectos);
 router.post('/:idProyecto/skills', verificarToken, verificarRolAdmin, asignarSkillsAProyecto);
 
 router.post('/:idProyecto/servicios', verificarToken, verificarRolAdmin, asignarServiciosAProyecto);
+
+router.delete(
+  '/:idProyecto/pastilla',
+  verificarToken,
+  verificarRolAdmin,
+  eliminarPortadaProyecto
+);
 
 
 

@@ -5,9 +5,12 @@ import {
   verServicio,
   editarServicio,
   eliminarServicio,
+  subirImagenServicio,
+  eliminarPortadaServicio,
 } from '../controllers/servicioController.js';
 import { verificarToken } from '../middleware/authMiddleware.js';
 import { verificarRolAdmin } from '../middleware/rolMiddleware.js';
+import upload from '../config/multer.js';
 
 const router = Router();
 
@@ -19,5 +22,18 @@ router.get('/:id', verServicio);
 router.post('/', verificarToken, verificarRolAdmin, crearServicio);
 router.put('/:id', verificarToken, verificarRolAdmin, editarServicio);
 router.delete('/:id', verificarToken, verificarRolAdmin, eliminarServicio);
+router.post(
+  '/:id/portada',
+  verificarToken,
+  verificarRolAdmin,
+  upload.single('portada'),
+  subirImagenServicio
+);
+router.delete(
+  '/:id/portada',
+  verificarToken,
+  verificarRolAdmin,
+  eliminarPortadaServicio
+);
 
 export default router;

@@ -164,7 +164,8 @@
       "submitButton": "Create Project",
       "page": "Page",
       "nextPage": "Next Page",
-      "prevPage": "Previous Page"
+      "prevPage": "Previous Page",
+      "editButton": "Edit Project"
     },
     "adminSkillsModal": {
       "altImage": "Skills Pattern",

@@ -185,3 +185,34 @@ export const assignSkillsToProject = async (idProyecto, skills, accessToken) => 
     }
     return response.json();
   }
+
+  /** Eliminar una imagen (requiere token con rol admin). */
+export async function deleteImage(idImagen, token) {
+  const res = await fetch(`${API_URL}/imagenes/${idImagen}`, {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    credentials: 'include',
+  });
+  if (!res.ok) {
+    const errorData = await res.json();
+    throw new Error(errorData.error || 'Error al eliminar imagen');
+  }
+  return await res.json(); // { mensaje: 'Imagen eliminada con éxito.' }
+}
+
+export async function deletePortadaProyecto(idProyecto, token) {
+  const res = await fetch(`${API_URL}/proyectos/${idProyecto}/pastilla`, {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    credentials: 'include',
+  });
+  if (!res.ok) {
+    const errorData = await res.json();
+    throw new Error(errorData.error || 'Error al eliminar la portada');
+  }
+  return res.json(); // { mensaje: 'Portada de proyecto eliminada con éxito.' }
+}

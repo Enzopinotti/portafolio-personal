@@ -1,4 +1,3 @@
-// src/pages/Servicios.js
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { listServicios } from '../services/servicioService.js';
@@ -9,15 +8,18 @@ const Servicios = () => {
 
   useEffect(() => {
     listServicios()
-      .then(data => setServicios(data.servicios || data))
+      .then(data => {
+        const mapped = data.servicios.map(servicio => ({
+          id: servicio.idServicio,
+          titulo: servicio.nombre,
+          descripcion: servicio.descripcion,
+          // Si en el futuro deseas usar la imagen, por ejemplo:
+          imagen: servicio.Imagen ? servicio.Imagen.ruta : null,
+        }));
+        setServicios(mapped);
+      })
       .catch(err => console.error('Error al cargar servicios:', err));
   }, []);
-
-  const sliderItems = servicios.map(servicio => ({
-    id: servicio.idServicio,
-    titulo: servicio.nombre,
-    descripcion: servicio.descripcion,
-  }));
 
   return (
     <motion.div
@@ -28,9 +30,12 @@ const Servicios = () => {
       transition={{ duration: 0.5, ease: 'easeInOut' }}
     >
       <div className="servicios-container">
-        <div className="servicios-right">
+        <div className="servicios-left">
           <h2 className="titulo-servicios">Mis Servicios</h2>
-          <VerticalInfiniteSlider items={sliderItems} />
+          {/* Aquí puedes agregar otros elementos de info si lo deseas */}
+        </div>
+        <div className="servicios-right">
+          <VerticalInfiniteSlider items={servicios} />
         </div>
       </div>
     </motion.div>

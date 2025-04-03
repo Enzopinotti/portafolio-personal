@@ -1,0 +1,135 @@
+@import '../abstracts/_variables.scss';
+
+.edit-service-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2200;
+
+.edit-service-modal {
+  background: $color-white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 500px;
+  position: relative;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  margin-top: 2rem;
+  overflow-y: auto;
+    }
+
+  .close-btn,
+  .close-icon {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    background: transparent;
+    border: none;
+    font-size: 1.2rem;
+    color: $color-gray-dark;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+
+    &:hover {
+      transform: rotate(90deg);
+    }
+  }
+
+  h3, h2 {
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    color: $color-gray-dark;
+  }
+
+  .new-project-form {
+    width: 100%;
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+
+    label {
+      font-size: 0.9rem;
+      color: $color-gray-dark;
+      text-align: left;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 1rem;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    button[type='submit'] {
+      padding: 0.75rem;
+      background: linear-gradient(90deg, $color-primary 0%, $color-secondary 100%);
+      border: none;
+      border-radius: 25px;
+      color: $color-white;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.3s ease;
+      margin-top: 1rem;
+
+      &:hover {
+        transform: scale(1.05);
+      }
+    }
+  }
+
+  .preview-pastilla {
+    position: relative;
+    display: inline-block;
+    margin-top: 1rem;
+
+    .preview-img {
+      display: block;
+      border-radius: 6px;
+      max-width: 120px;
+      height: auto;
+    }
+
+    .close-button {
+      position: absolute;
+      top: 0rem;
+      right: 0.3rem;
+      background: rgba(0, 0, 0, 0.5);
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      font-size: 1rem;
+      line-height: 24px;
+      text-align: center;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+      padding: 0 !important;
+
+      &:hover {
+        background: red;
+        transform: scale(1.05);
+      }
+    }
+  }
+}
+
+@media (min-width: 1080px) {
+  .edit-service-modal {
+    margin-top: 38rem;
+  }
+}

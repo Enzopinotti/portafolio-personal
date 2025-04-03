@@ -92,8 +92,14 @@ export const subirImagenPastilla = async (req, res, next) => {
     // Borrar archivo local
     fs.unlinkSync(req.file.path);
 
-    // Guardar la URL en campo imagenPastilla
+    // OPCIONAL: Si había una imagen previa, borrarla de Cloudinary
+    if (proyecto.publicIdPastilla) {
+      await cloudinary.uploader.destroy(proyecto.publicIdPastilla);
+    }
+
+    // Guardar la URL y el publicId en la BD
     proyecto.imagenPastilla = resultado.secure_url;
+    proyecto.publicIdPastilla = resultado.public_id;
     await proyecto.save();
 
     res.status(200).json({
@@ -110,9 +116,7 @@ export const subirImagenesProyecto = async (req, res, next) => {
   try {
     const { idProyecto } = req.params;
     const proyecto = await Proyecto.findByPk(idProyecto);
-    if (!proyecto) {
-      return next(Boom.notFound('Proyecto no encontrado'));
-    }
+    if (!proyecto) return next(Boom.notFound('Proyecto no encontrado'));
 
     // Validar límite
     const imagenesActuales = await Imagen.count({ where: { idProyecto } });
@@ -121,18 +125,20 @@ export const subirImagenesProyecto = async (req, res, next) => {
       return next(Boom.badRequest(`Se excede el máximo de ${proyecto.maxImagenes} imágenes.`));
     }
 
-    // Subir cada imagen a Cloudinary, guardar en BD
     const imagenesGuardadas = [];
+
     for (const file of req.files) {
       const resultado = await cloudinary.uploader.upload(file.path, {
-        folder: `proyectos/${idProyecto}`, 
+        folder: `proyectos/${idProyecto}`,
       });
       fs.unlinkSync(file.path);
 
       const nuevaImagen = await Imagen.create({
         ruta: resultado.secure_url,
+        publicId: resultado.public_id,
         idProyecto,
       });
+
       imagenesGuardadas.push(nuevaImagen);
     }
 
@@ -409,3 +415,24 @@ export const listarProyectosPublicos = async (req, res, next) => {
     return next(Boom.internal(error.message));
   }
 };
+
+export const eliminarPortadaProyecto = async (req, res, next) => {
+  try {
+    const { idProyecto } = req.params;
+    const proyecto = await Proyecto.findByPk(idProyecto);
+    if (!proyecto) return next(Boom.notFound('Proyecto no encontrado.'));
+
+    if (proyecto.publicIdPastilla) {
+      await cloudinary.uploader.destroy(proyecto.publicIdPastilla);
+    }
+
+    proyecto.imagenPastilla = null;
+    proyecto.publicIdPastilla = null;
+    await proyecto.save();
+
+    res.json({ mensaje: 'Portada de proyecto eliminada con éxito.' });
+  } catch (error) {
+    return next(Boom.internal(error.message));
+  }
+};
+
