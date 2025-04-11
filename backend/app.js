@@ -13,8 +13,8 @@ import routes from './routes/index.js';
 
 import './models/associations.js';
 import './config/passport.js';
-import dotenvFlow from 'dotenv-flow';
-dotenvFlow.config();
+import dotenv from 'dotenv';
+dotenv.config();
 
 const app = express();
 
