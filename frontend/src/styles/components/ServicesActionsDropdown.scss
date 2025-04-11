@@ -5,7 +5,7 @@
       background: transparent;
       border: none;
       color: $color-black;
-      cursor: pointer;
+      
       font-size: 1.2rem;
       padding: 0.3rem;
       border-radius: 5px;
@@ -29,7 +29,7 @@
   
       li {
         padding: 0.7rem 1rem;
-        cursor: pointer;
+        
         transition: background 0.2s ease;
   
         &:hover {

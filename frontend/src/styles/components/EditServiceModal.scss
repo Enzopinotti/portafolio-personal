@@ -26,6 +26,8 @@
 
   .close-btn,
   .close-icon {
+    cursor: none;
+        user-select: none;
     position: absolute;
     top: 0.5rem;
     right: 0.5rem;
@@ -33,7 +35,7 @@
     border: none;
     font-size: 1.2rem;
     color: $color-gray-dark;
-    cursor: pointer;
+    
     transition: transform 0.3s ease;
 
     &:hover {
@@ -81,7 +83,7 @@
       border-radius: 25px;
       color: $color-white;
       font-size: 1rem;
-      cursor: pointer;
+      
       transition: background 0.3s ease, transform 0.3s ease;
       margin-top: 1rem;
 
@@ -116,7 +118,7 @@
       font-size: 1rem;
       line-height: 24px;
       text-align: center;
-      cursor: pointer;
+      
       transition: background 0.3s, transform 0.2s;
       padding: 0 !important;
 

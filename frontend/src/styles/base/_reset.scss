@@ -11,9 +11,12 @@
 html,
 body {
   height: 100%;
+  
 }
 
 body {
   font-family: $font-family-base;
   font-size: $font-size-base;
+  cursor: none;
+  user-select: none;
 }

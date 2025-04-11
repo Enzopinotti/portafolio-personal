@@ -170,7 +170,7 @@
         .add-category-button {
           background: transparent;
           border: none;
-          cursor: pointer;
+          
           color: $color-primary;
           font-size: 1.2rem;
           padding-right: 0.5rem;
@@ -185,7 +185,7 @@
           border: none;
           color: red;
           font-size: 1.2rem;
-          cursor: pointer;
+          
           transition: transform 0.3s ease;
           
           &:hover {
@@ -237,7 +237,7 @@
             background: $color-gray-light;
             border: 1px solid $color-gray-medium;
             border-radius: 4px;
-            cursor: pointer;
+            
         }
         input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none;
@@ -245,7 +245,7 @@
             width: 20px;
             border-radius: 50%;
             background: $color-primary;
-            cursor: pointer;
+            
             margin-top: -6px; // centra el thumb en la pista
         }
         input[type="range"]::-moz-range-track {
@@ -254,14 +254,14 @@
             background: $color-gray-light;
             border: 1px solid $color-gray-medium;
             border-radius: 4px;
-            cursor: pointer;
+            
         }
         input[type="range"]::-moz-range-thumb {
             height: 20px;
             width: 20px;
             border-radius: 50%;
             background: $color-primary;
-            cursor: pointer;
+            
         }
 
         textarea {
@@ -285,7 +285,7 @@
             border-radius: 25px;
             font-size: 1rem;
             user-select: none;
-            cursor: pointer;
+            
             transition: background 0.3s ease, transform 0.3s ease;
             -webkit-border-radius: 25px;
             -moz-border-radius: 25px;
@@ -318,7 +318,7 @@
       border: none;
       font-size: 1.5rem;
       color: $color-gray-dark;
-      cursor: pointer;
+      
       transition: transform 0.3s ease;
       
       &:hover {
@@ -328,6 +328,8 @@
     }
     
     .close-icon {
+      cursor: none;
+        user-select: none;
       position: absolute;
       top: 2rem;
       right: 1rem;
@@ -335,7 +337,7 @@
       border: none;
       font-size: 1.5rem;
       color: $color-gray-dark;
-      cursor: pointer;
+      
       transition: transform 0.3s ease;
       
       &:hover {

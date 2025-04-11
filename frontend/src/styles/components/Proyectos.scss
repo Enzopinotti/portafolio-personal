@@ -2,17 +2,56 @@
 
 @import '../abstracts/_variables.scss';
 
+
+
+
+.proyecto-pill:hover .light-ray {
+  opacity: 1;
+  animation: rotate-ray 2s ease-in-out infinite;
+}
+
+
 .proyectos-page {
   width: 100%;
   margin: 0 auto;
-
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  justify-content: center;
   .proyectos-title {
-    font-size: 2rem;
-    margin-bottom: 1rem;
-    text-align: center;
-    color: $color-white;
-    margin-top: 2rem;
-    margin-bottom: 2rem;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    bottom: 2rem;
+    font-size: 5.3rem;
+    color: transparent;
+    -webkit-text-stroke: 1.5px #fff;
+    margin: -2.2rem 0;
+    transition: opacity 0.4s ease, text-shadow 0.4s ease, transform 0.3s ease;
+    user-select: none;
+    z-index: 1;
+    cursor: none;
+    -webkit-transition: opacity 0.4s ease, text-shadow 0.4s ease, transform 0.3s ease;
+    -moz-transition: opacity 0.4s ease, text-shadow 0.4s ease, transform 0.3s ease;
+    -ms-transition: opacity 0.4s ease, text-shadow 0.4s ease, transform 0.3s ease;
+    -o-transition: opacity 0.4s ease, text-shadow 0.4s ease, transform 0.3s ease;
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center, rgba(255,255,255,0.1), transparent 10%);
+      pointer-events: none;
+      z-index: -1;
+    }
+    // Glow y opacidad en hover
+    &:hover {
+      opacity: 1;
+      text-shadow:
+        0 0 8px rgba(255, 255, 255, 0.1),
+        0 0 12px rgba(255, 255, 255, 0.1),
+        0 0 20px rgba(255, 255, 255, 0.1);
+      transform: scale(1.02);
+    }
   }
 
   .proyectos-description {
@@ -27,7 +66,7 @@
 
   .proyectos-slider {
     width: 100%;
-    overflow: hidden; // Oculta el contenido que se sale del viewport
+    overflow:  visible !important; // Oculta el contenido que se sale del viewport
 
     .slider-track {
       display: flex;
@@ -57,11 +96,15 @@
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     margin: 0.5rem;
     transition: transform 0.1s ease, box-shadow 0.1s ease;
-    cursor: pointer;
+    
     -webkit-border-radius: 150px;
     -moz-border-radius: 150px;
     -ms-border-radius: 150px;
     -o-border-radius: 150px;
+    &:hover .light-ray {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1.3) rotate(25deg);
+    }
     h3 {
       margin: 0 0 0.5rem;
       font-size: 1.25rem;
@@ -84,7 +127,7 @@
 // src/components/SliderInfinito.scss
 
 .slider-container {
-    overflow: hidden;
+    overflow: visible;
     position: relative;
     --slides-por-pantalla: 1;
   }
@@ -156,7 +199,7 @@
     align-items: center;
     text-align: center;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    cursor: pointer;
+    
     transition: transform 0.1s ease, box-shadow 0.1s ease;
     border-radius: 100%;
     -webkit-border-radius: 100%;
@@ -225,5 +268,63 @@
     &:hover {
       transform: translateY(-5px);
       box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    }
+    &:hover::before {
+      opacity: 1;
+      animation: glowExpand 1.2s ease-out forwards;
+    }
+  
+    &:hover .rayo {
+      opacity: 1;
+      animation: rayoParpadeo 0.15s ease-in-out infinite, rayoExplota 0.7s ease-out forwards;
+    }
+  
+    &::before {
+      content: '';
+      position: absolute;
+      top: -20%;
+      left: -20%;
+      width: 140%;
+      height: 140%;
+      background: radial-gradient(circle, rgba(0, 255, 255, 0.516) 0%, transparent 80%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: 0;
+    }
+  
+    &:hover::before {
+      opacity: 1;
+      animation: glowExpand 1.2s ease-out forwards;
+    }
+  }
+
+  @keyframes rayoParpadeo {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.2; }
+  }
+  
+  @keyframes rayoExplota {
+    0% {
+      transform: translate(-50%, -50%) scale(0.5) rotate(0deg);
+      opacity: 0;
+    }
+    50% {
+      transform: translate(-50%, -50%) scale(1.1) rotate(15deg);
+      opacity: 1;
+    }
+    100% {
+      transform: translate(-50%, -50%) scale(1.4) rotate(-10deg);
+      opacity: 0;
+    }
+  }
+  
+  @keyframes glowExpand {
+    0% {
+      transform: scale(1);
+      opacity: 0.4;
+    }
+    100% {
+      transform: scale(1.5);
+      opacity: 0;
     }
   }

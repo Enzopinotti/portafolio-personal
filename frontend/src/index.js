@@ -4,6 +4,7 @@ import './styles/main.scss';
 import App from './App.js';
 import reportWebVitals from './reportWebVitals.js';
 import './i18n.js';
+import 'html5-device-mockups/dist/device-mockups.min.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

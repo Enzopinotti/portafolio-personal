@@ -13,6 +13,7 @@
   opacity: 0.8;
   padding-bottom: 0.5rem;
   animation: pulse 2s infinite ease-in-out;
+  user-select: text;
 
   @keyframes pulse {
     0%, 100% {

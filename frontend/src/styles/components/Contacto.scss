@@ -42,16 +42,18 @@
         margin-bottom: 1rem;
       }
         .direccion{
-        font-weight: 100;
-        font-size: 0.8rem;
-        padding-top: 0.5rem;
+          font-weight: 100;
+          font-size: 0.8rem;
+          padding-top: 0.5rem;
         }
         p {
             font-size: 1rem;
             margin-bottom: 0.5rem;
             a {
-            color: #3145f9;
-            text-decoration: none;
+              color: #3145f9;
+              text-decoration: none;
+              user-select: none;
+              cursor: none;
             &:hover {
                 text-decoration: underline;
             }
@@ -59,6 +61,8 @@
             .telefonoContacto{
                 color: #ff1443;
                 font-weight: 900;
+                user-select: none;
+                cursor: none;
             }
             
         }
@@ -124,7 +128,8 @@
             border-radius: 25px;
             color: $color-white;
             font-size: 1rem;
-            cursor: pointer;
+            user-select: none;
+            cursor: none;
             transition: background 0.3s ease, transform 0.3s ease;
             margin-top: 1rem;
             .loader {

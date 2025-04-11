@@ -14,6 +14,8 @@
     user-select: none;
     .link_logo {
       img {
+        user-select: none;
+        cursor: none;
         width: 70px;
       }
     }
@@ -22,7 +24,7 @@
   // Botón de menú para mobile
   .menu-icon {
     display: block;
-    cursor: pointer;
+    
     color: white;
     width: 30px;
     height: 25px;
@@ -61,7 +63,7 @@
       border: none;
       font-size: 2rem;
       color: $color-white;
-      cursor: pointer;
+      
       transition: transform 0.3s ease;
       &:hover {
         transform: rotate(90deg);
@@ -78,7 +80,7 @@
         list-style: none;
         padding: 0;
         text-align: center;
-
+        
         li {
           margin: 1.5rem 0;
 
@@ -87,6 +89,8 @@
             color: $color-white;
             text-decoration: none;
             transition: color 0.3s ease;
+            cursor: none;
+            user-select: none;
             &:hover {
               color: $color-primary;
             }
@@ -101,6 +105,8 @@
         user-select: none;
         button,
         .download-button {
+          cursor: none;
+          user-select: none;
           width: 160px;
           margin: 0.5rem 0;
           padding: 0.75rem 1.25rem;
@@ -109,7 +115,7 @@
           background-color: transparent;
           border: 1px solid $color-white;
           border-radius: 4px;
-          cursor: pointer;
+          
           transition: background-color 0.3s ease, color 0.3s ease;
           &:hover {
             background-color: $color-secondary;
@@ -131,6 +137,7 @@
     .login_button{
       margin-right: 1rem;
       user-select: none;
+      
       button {
         width: 120px;
         margin: 0.5rem 0;
@@ -140,7 +147,8 @@
         background-color: transparent;
         border: 1px solid $color-white;
         border-radius: 4px;
-        cursor: pointer;
+        cursor: none;
+      user-select: none;
         transition: background-color 0.3s ease, color 0.3s ease;
         &:hover {
           background-color: $color-secondary;
@@ -154,6 +162,8 @@
       position: relative;
       display: inline-block;
       margin-right: 1rem;
+      user-select: none;
+      cursor: none;
       user-select: none;
       .user-info{
         color: $color-white;
@@ -178,7 +188,7 @@
           padding-bottom: 0.6rem;
           padding-top: 0.6rem;
           text-align: left;
-          cursor: pointer;
+          
           &:hover {
             background-color: rgb(244, 242, 242);
           }

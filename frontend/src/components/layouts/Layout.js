@@ -35,7 +35,7 @@ function getBackground(pathname) {
     case '/proyectos':
       return { url: '/videos/FondoProyectos.mp4', key: 'proyectos' };
     case '/blog':
-      return { url: '/videos/fondoBlog.mp4', key: 'blog' };
+      return { url: '/images/fondoBlog.jpg', key: 'blog' };
     case '/contacto':
       return { url: '/videos/fondoContacto.mp4', key: 'contacto' };
     default:

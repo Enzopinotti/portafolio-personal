@@ -58,6 +58,12 @@ const Proyectos = () => {
         direccion="izq"
         onSlideClick={handleSlideClick}
       />
+      <SliderInfinito
+        slides={slides}
+        velocidad="30s"
+        direccion="der"
+        onSlideClick={handleSlideClick}
+      />
     </motion.div>
   );
 };

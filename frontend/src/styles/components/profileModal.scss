@@ -32,6 +32,8 @@
     margin-bottom: 1rem;
   }
   .close-icon {
+    cursor: none;
+        user-select: none;
     position: absolute;
     top: 1rem;
     right: 1rem;
@@ -39,7 +41,7 @@
     border: none;
     font-size: 1.5rem;
     color: $color-gray-dark;
-    cursor: pointer;
+    
     transition: transform 0.3s ease, color 0.3s ease;
     &:hover {
       transform: rotate(90deg);
@@ -99,7 +101,7 @@
     border-radius: 25px;
     font-size: 1rem;
     padding: 0.75rem;
-    cursor: pointer;
+    
     transition: background 0.3s ease, transform 0.3s ease;
     &:hover {
       transform: scale(1.05);
@@ -136,7 +138,7 @@
     font-size: 1.2rem;
     opacity: 0;
     transition: opacity 0.3s ease;
-    cursor: pointer;
+    
 
     &:hover {
       opacity: 1;
@@ -162,7 +164,7 @@
       color: $color-gray-dark;
       .edit-icon {
         margin-left: 0.5rem;
-        cursor: pointer;
+        
         color: $color-blue; // Por defecto, el lápiz es azul
         transition: color 0.3s ease;
         &:hover {
@@ -204,6 +206,8 @@
   }
   
   .submit-button {
+    user-select: none;
+          cursor: none;
     background: linear-gradient(90deg, $color-primary 0%, $color-secondary 100%);
     background-size: 200% auto;
     background-position: left center;
@@ -213,7 +217,7 @@
     border: none;
     border-radius: 25px;
     font-size: 1rem;
-    cursor: pointer;
+    
     user-select: none;
     &:hover {
       background-position: right center;

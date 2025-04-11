@@ -23,6 +23,8 @@
       color: $color-text-light;
       transition: transform 0.3s ease, color 0.3s ease, text-shadow 0.3s ease;
       width: 20px;
+      cursor: none;
+      user-select: none;
       &:hover {
         transform: scale(1.1);
         text-shadow: 0 0 4px rgba(255,255,255,0.5);

@@ -9,7 +9,7 @@ const SliderInfinito = ({
 }) => {
   const slidesDuplicados = [...slides, ...slides];
   const claseDireccion = direccion === 'der' ? 'sliderB' : 'sliderA';
-  console.log("slidesDuplicados:", slidesDuplicados);
+
   return (
     <div
       className={`slider-container ${claseDireccion}`}
@@ -19,7 +19,6 @@ const SliderInfinito = ({
     >
       <div className="slider-track" style={{ animationDuration: velocidad }}>
         {slidesDuplicados.map((item, idx) => (
-          
           <div
             key={`${item.id}-${idx}`}
             className="slide"
@@ -29,11 +28,11 @@ const SliderInfinito = ({
               className="proyecto-pill"
               style={{
                 backgroundImage: `url(${item.imagen})`,
-                backgroundSize: '110%', // modificado para extender el fondo
+                backgroundSize: '110%',
                 backgroundPosition: 'center',
               }}
             >
-              {/* Overlay que aparece al hover */}
+              <div className="rayo" />
               <div className="pill-overlay">
                 <h3>{item.titulo}</h3>
                 <p className="pill-desc">{item.descripcion}</p>

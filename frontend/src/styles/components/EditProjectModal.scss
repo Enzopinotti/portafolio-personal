@@ -33,7 +33,7 @@
       border: none;
       font-size: 1.2rem;
       color: $color-gray-dark;
-      cursor: pointer;
+      
       transition: transform 0.3s ease;
       &:hover {
         transform: rotate(90deg);
@@ -87,7 +87,7 @@
             display: flex;
             align-items: center;
             font-size: 0.9rem;
-            cursor: pointer;
+            
     
             input[type="checkbox"] {
               -webkit-appearance: none;
@@ -99,7 +99,7 @@
               border-radius: 50%;
               margin-right: 0.5rem;
               position: relative;
-              cursor: pointer;
+              
               outline: none;
               transition: background-color 0.3s ease, border-color 0.3s ease;
     
@@ -132,7 +132,7 @@
             display: flex;
             align-items: center;
             font-size: 0.9rem;
-            cursor: pointer;
+            
     
             input[type="checkbox"] {
               -webkit-appearance: none;
@@ -144,7 +144,7 @@
               border-radius: 50%;
               margin-right: 0.5rem;
               position: relative;
-              cursor: pointer;
+              
               outline: none;
               transition: background-color 0.3s ease, border-color 0.3s ease;
     
@@ -173,7 +173,7 @@
           border-radius: 25px;
           color: $color-white;
           font-size: 1rem;
-          cursor: pointer;
+          
           transition: background 0.3s ease, transform 0.3s ease;
           margin-top: 1rem;
     

@@ -208,7 +208,7 @@
         border: none;
         color: red;
         font-size: 1.2rem;
-        cursor: pointer;
+        
         transition: transform 0.3s ease;
         &:hover {
           transform: scale(1.2);
@@ -248,7 +248,7 @@
       border-radius: 25px;
       color: $color-white;
       font-size: 1rem;
-      cursor: pointer;
+      
       transition: background 0.3s ease, transform 0.3s ease;
       margin-top: 1rem;
       &:hover {
@@ -265,6 +265,8 @@
   align-items: center;
 
   .close-icon {
+    cursor: none;
+        user-select: none;
     position: absolute;
     top: 2rem;
     right: 1rem;
@@ -272,7 +274,7 @@
     border: none;
     font-size: 1.5rem;
     color: $color-gray-dark;
-    cursor: pointer;
+    
     transition: transform 0.3s ease, color 0.3s ease;
     &:hover {
       transform: rotate(90deg);
@@ -288,7 +290,7 @@
     border: none;
     font-size: 1.5rem;
     color: $color-gray-dark;
-    cursor: pointer;
+    
     transition: transform 0.3s ease, color 0.3s ease;
     &:hover {
       transform: rotate(90deg);

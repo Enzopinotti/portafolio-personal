@@ -15,6 +15,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { AuthProvider, AuthContext } from './context/AuthContext.js';
 import { SettingsProvider } from './context/SettingsContext.js';
+import GlobalLightTrail from './components/GlobalLightTrail.js';
 
 const AppContent = () => {
   const location = useLocation();
@@ -71,6 +72,7 @@ const AppContent = () => {
   return (
     <>
       <Layout />
+      <GlobalLightTrail /> {/* Estela visible en toda la app */}
       <ToastContainer position="top-right" autoClose={3000} />
       
       {showEmailConfirmation && (

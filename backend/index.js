@@ -3,6 +3,8 @@ import http from 'http';
 import { Server } from 'socket.io';
 import app from './app.js';
 import logger from './config/logger.js';
+import dotenvFlow from 'dotenv-flow';
+dotenvFlow.config();
 
 const server = http.createServer(app);
 
