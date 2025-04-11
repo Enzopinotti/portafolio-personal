@@ -8,8 +8,8 @@ import dotenv from 'dotenv';
 import { generarAccessToken, generarRefreshToken } from '../utils/tokenUtils.js';
 import logger from '../config/logger.js';
 
-import dotenvFlow from 'dotenv-flow';
-dotenvFlow.config();
+import dotenv from 'dotenv';
+dotenv.config();
 
 /* ----- Local Strategy ----- */
 passport.use(new LocalStrategy({
