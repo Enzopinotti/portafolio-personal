@@ -4,10 +4,8 @@ import { Strategy as LocalStrategy } from 'passport-local';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import bcrypt from 'bcrypt';
 import Usuario from '../models/Usuario.js';
-import dotenv from 'dotenv';
 import { generarAccessToken, generarRefreshToken } from '../utils/tokenUtils.js';
 import logger from '../config/logger.js';
-
 import dotenv from 'dotenv';
 dotenv.config();
 
