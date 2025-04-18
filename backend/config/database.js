@@ -2,9 +2,10 @@
 
 import { Sequelize } from 'sequelize';
 
-import dotenvFlow from 'dotenv-flow';
+import dotenv from 'dotenv';
+dotenv.config({ path: '.env.production' });
 
-dotenvFlow.config();
+
 const sequelize = new Sequelize(
   process.env.DB_NAME,
   process.env.DB_USER,

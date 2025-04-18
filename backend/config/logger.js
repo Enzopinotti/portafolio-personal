@@ -1,9 +1,9 @@
 // config/logger.js
 import fs from 'fs';
-import dotenvFlow from 'dotenv-flow';
 import winston from 'winston';
 
-dotenvFlow.config();
+import dotenv from 'dotenv';
+dotenv.config({ path: '.env.production' });
 
 // Asegurarse de que la carpeta "logs" exista
 if (!fs.existsSync('logs')) {
