@@ -1,4 +1,13 @@
 // app.js
+import dotenv from 'dotenv';
+import { fileURLToPath } from 'url';
+import { dirname, resolve } from 'path';
+
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+dotenv.config({ path: resolve(__dirname, '.env.production') });
+
+
 import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
@@ -10,11 +19,9 @@ import logger from './config/logger.js';
 import sequelize from './config/database.js';
 import i18n from './config/i18n.js';
 import routes from './routes/index.js';
-
 import './models/associations.js';
 import './config/passport.js';
-import dotenv from 'dotenv';
-dotenv.config();
+
 
 const app = express();
 

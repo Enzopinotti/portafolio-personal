@@ -1,10 +1,16 @@
 // index.js
+import dotenv from 'dotenv';
+import { fileURLToPath } from 'url';
+import { dirname, resolve } from 'path';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+dotenv.config({ path: resolve(__dirname, '.env.production') });
+
+
 import http from 'http';
 import { Server } from 'socket.io';
 import app from './app.js';
 import logger from './config/logger.js';
-import dotenv from 'dotenv';
-dotenv.config();
 
 const server = http.createServer(app);
 
