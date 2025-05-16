@@ -1,4 +1,10 @@
 // config/passport.js
+import dotenv from 'dotenv';
+import { fileURLToPath } from 'url';
+import { dirname, resolve } from 'path';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+dotenv.config({ path: resolve(__dirname, '../.env.production') });
 import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
@@ -6,8 +12,6 @@ import bcrypt from 'bcrypt';
 import Usuario from '../models/Usuario.js';
 import { generarAccessToken, generarRefreshToken } from '../utils/tokenUtils.js';
 import logger from '../config/logger.js';
-import dotenv from 'dotenv';
-dotenv.config();
 
 /* ----- Local Strategy ----- */
 passport.use(new LocalStrategy({
