@@ -113,11 +113,17 @@ export const actualizarAvatar = async (file, accessToken) => {
     credentials: 'include',
     body: formData,
   });
+
   if (!response.ok) {
-    const errorData = await response.json();
-    throw errorData;
+    try {
+      const errorData = await response.json();
+      throw errorData;
+    } catch {
+      throw { error: 'Error inesperado. El archivo puede ser demasiado grande.' };
+    }
   }
-  return response.json(); 
+
+  return response.json();
 };
 
 export const eliminarAvatar = async (accessToken) => {

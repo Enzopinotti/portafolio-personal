@@ -78,6 +78,12 @@ const ProfileForm = ({ user }) => {
   // Guardar la nueva imagen en Cloudinary
   const handleAvatarSave = async () => {
     if (!avatarFile) return;
+
+    if (avatarFile.size > 10 * 1024 * 1024) {
+      toast.error('La imagen es demasiado grande. El tamaño máximo es de 10MB.');
+      return;
+    }
+
     try {
       setAvatarLoading(true);
       await actualizarAvatar(avatarFile, accessToken);
@@ -86,10 +92,14 @@ const ProfileForm = ({ user }) => {
 
       toast.success(t('profile.avatarUpdated') || 'Avatar actualizado correctamente');
       setAvatarFile(null);
-      setAvatarLoading(false);
     } catch (error) {
       console.error(error);
-      toast.error(error.error || 'Error al actualizar avatar');
+      if (error?.message?.includes('413') || error?.status === 413) {
+        toast.error('La imagen es demasiado grande. El tamaño máximo es de 10MB.');
+      } else {
+        toast.error(error?.error || 'Error al actualizar avatar');
+      }
+    } finally {
       setAvatarLoading(false);
     }
   };
