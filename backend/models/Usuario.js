@@ -1,45 +1,96 @@
-'use strict';
+import { DataTypes } from 'sequelize';
+import sequelize from '../config/database.js';
+import sequelizePaginate from 'sequelize-paginate';
 
-module.exports = {
-  up: async (queryInterface, Sequelize) => {
-    await queryInterface.addColumn('usuario', 'refresh_token', {
-      type: Sequelize.STRING(512),
+const Usuario = sequelize.define(
+  'Usuario',
+  {
+    idUsuario: {
+      type: DataTypes.INTEGER.UNSIGNED,
+      primaryKey: true,
+      autoIncrement: true,
+      field: 'id_usuario',
+    },
+    nombre: {
+      type: DataTypes.STRING(255),
+      allowNull: false,
+      field: 'nombre',
+    },
+    apellido: {
+      type: DataTypes.STRING(255),
+      allowNull: true,                
+      field: 'apellido',
+    },
+    email: {
+      type: DataTypes.STRING(255),
+      allowNull: false,
+      unique: true,
+      field: 'email',
+    },
+    password: {
+      type: DataTypes.STRING(255),
+      allowNull: false,
+      field: 'password',             
+    },
+    avatar: {
+      type: DataTypes.STRING(512),
       allowNull: true,
-    });
-
-    await queryInterface.addColumn('usuario', 'emailToken', {
-      type: Sequelize.STRING,
+      field: 'avatar',
+    },
+    avatarPublicId: {
+      type: DataTypes.STRING(255),
       allowNull: true,
-    });
-
-    await queryInterface.addColumn('usuario', 'emailTokenExpires', {
-      type: Sequelize.DATE,
+      field: 'avatar_public_id',
+    },
+    idRol: {
+      type: DataTypes.INTEGER.UNSIGNED,
+      allowNull: false,
+      field: 'id_rol',
+    },
+    fechaRegistro: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW,
+      field: 'fecha_registro',
+    },
+    refreshToken: {
+      type: DataTypes.STRING(512),
       allowNull: true,
-    });
-
-    await queryInterface.addColumn('usuario', 'emailConfirmed', {
-      type: Sequelize.BOOLEAN,
+      field: 'refresh_token',
+    },
+    emailToken: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      field: 'emailToken', // Asegura que se use exactamente este nombre
+    },
+    emailTokenExpires: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      field: 'emailTokenExpires',
+    },
+    emailConfirmed: {
+      type: DataTypes.BOOLEAN,
       allowNull: false,
       defaultValue: false,
-    });
-
-    await queryInterface.addColumn('usuario', 'resetToken', {
-      type: Sequelize.STRING,
+      field: 'emailConfirmed',
+    },
+    resetToken: {
+      type: DataTypes.STRING,
       allowNull: true,
-    });
-
-    await queryInterface.addColumn('usuario', 'resetTokenExpires', {
-      type: Sequelize.DATE,
+      field: 'resetToken',
+    },
+    resetTokenExpires: {
+      type: DataTypes.DATE,
       allowNull: true,
-    });
+      field: 'resetTokenExpires',
+    },
   },
-
-  down: async (queryInterface, Sequelize) => {
-    await queryInterface.removeColumn('usuario', 'refresh_token');
-    await queryInterface.removeColumn('usuario', 'emailToken');
-    await queryInterface.removeColumn('usuario', 'emailTokenExpires');
-    await queryInterface.removeColumn('usuario', 'emailConfirmed');
-    await queryInterface.removeColumn('usuario', 'resetToken');
-    await queryInterface.removeColumn('usuario', 'resetTokenExpires');
+  {
+    tableName: 'usuario',
+    timestamps: false,
   }
-};
+);
+
+sequelizePaginate.paginate(Usuario);
+
+export default Usuario;
