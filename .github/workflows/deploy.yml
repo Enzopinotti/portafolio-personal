@@ -1,0 +1,82 @@
+name: CI/CD – Portafolio Personal
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:    # disparo manual opcional
+
+jobs:
+  build_and_test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🛎️ Checkout
+        uses: actions/checkout@v4
+
+      - name: ⚙️ Setup Node 20 + cache
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      # ---------- BACKEND ----------
+      - name: 📥 Backend deps
+        run: cd backend && npm ci
+
+      - name: 🧪 Backend tests (opcional)
+        run: cd backend && npm test --if-present
+
+      # ---------- FRONTEND ----------
+      - name: 📥 Frontend deps
+        run: cd frontend && npm ci --legacy-peer-deps
+
+      - name: 🧪 Front-tests (opcional)
+        run: cd frontend && npm test --if-present
+
+      - name: 🛠️ Build frontend
+        run: cd frontend && npm run build
+
+      - name: 📦 Subir artefacto build
+        uses: actions/upload-artifact@v4
+        with:
+          name: build
+          path: frontend/build
+
+  deploy:
+    needs: build_and_test
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: ⬇️ Bajar artefacto build
+        uses: actions/download-artifact@v4
+        with:
+          name: build
+          path: ./build
+
+      # ---------- SSH ----------
+      - name: 🔑 Agregar clave SSH
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.PROD_SSH_KEY }}
+
+      # ---------- Enviar archivos ----------
+      - name: 🚚 Copiar script & estáticos
+        run: |
+          scp -o StrictHostKeyChecking=no scripts/deploy_todo.sh  ${{ secrets.PROD_USER }}@${{ secrets.PROD_HOST }}:/tmp/deploy_portfolio.sh
+          rsync -avz --delete ./build/                         ${{ secrets.PROD_USER }}@${{ secrets.PROD_HOST }}:${{ secrets.PROD_FRONTEND_HTML_DIR }}
+
+      # ---------- Enviar .env.production ----------
+      - name: 🔐 Crear .env.production remoto
+        run: |
+          echo "${{ secrets.ENV_PROD_BASE64 }}" | base64 -d > /tmp/.env.production
+          scp -o StrictHostKeyChecking=no /tmp/.env.production   ${{ secrets.PROD_USER }}@${{ secrets.PROD_HOST }}:/tmp/.env.production
+          rm /tmp/.env.production
+
+      # ---------- Ejecutar script remoto ----------
+      - name: 🚀 Ejecutar script remoto
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.PROD_USER }}@${{ secrets.PROD_HOST }} \
+          "chmod +x /tmp/deploy_portfolio.sh && sudo /tmp/deploy_portfolio.sh"

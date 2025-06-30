@@ -77,38 +77,6 @@ portafolio-personal/
 
 ---
 
-## Variables de entorno
-
-Crea dos archivos en la raíz del **backend**:
-
-### `.env.development`
-```env
-NODE_ENV=development
-PORT=3001
-CORS_ORIGIN=http://localhost:3000
-DB_HOST=localhost
-DB_PORT=3306
-DB_NAME=portafolio_dev
-DB_USER=root
-DB_PASSWORD=changeme
-JWT_SECRET=loquesea
-JWT_REFRESH_SECRET=otrosecreto
-RATE_LIMIT_WINDOW_MS=900000
-RATE_LIMIT_MAX_REQUESTS=100
-CLOUDINARY_CLOUD_NAME=
-CLOUDINARY_API_KEY=
-CLOUDINARY_API_SECRET=
-GOOGLE_CLIENT_ID=
-GOOGLE_CLIENT_SECRET=
-```
-
-### `.env.production`
-> **¡Nunca subas este archivo al repo!** Incluye los mismos campos con valores productivos.
-
-Para el **frontend**, las variables comienzan con `REACT_APP_` y viven en `/frontend/.env`.
-
----
-
 ## Instalación local (desarrollo)
 
 ```bash
@@ -189,43 +157,6 @@ npm start              # http://localhost:3000
 5. **Backups MySQL** – dump nightly y subir a S3 / Backblaze.
 
 ---
-
-## Docker (opcional)
-
-`docker-compose.yml` mínimo:
-```yaml
-version: "3.9"
-services:
-  db:
-    image: mysql:8.3
-    restart: always
-    env_file: .env.production
-    environment:
-      MYSQL_DATABASE: ${DB_NAME}
-      MYSQL_USER: ${DB_USER}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
-    volumes:
-      - db_data:/var/lib/mysql
-
-  backend:
-    build: ./backend
-    env_file: .env.production
-    depends_on:
-      - db
-    ports:
-      - "3001:3001"
-
-  frontend:
-    build: ./frontend
-    environment:
-      - REACT_APP_API_URL=/api
-    ports:
-      - "80:80"
-volumes:
-  db_data:
-```
-> Te evita instalar dependencias en el host y facilita CI/CD con ambientes idénticos.
 
 ---
 
