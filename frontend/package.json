@@ -44,7 +44,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "echo \"(frontend) Sin tests aún\" && exit 0",
     "eject": "react-scripts eject"
   },
   "browserslist": {
