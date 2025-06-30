@@ -64,7 +64,7 @@ jobs:
       # ---------- Enviar archivos ----------
       - name: 🚚 Copiar script & estáticos
         run: |
-          scp -o StrictHostKeyChecking=no scripts/deploy_todo.sh  ${{ secrets.PROD_USER }}@${{ secrets.PROD_HOST }}:/tmp/deploy_portfolio.sh
+          scp -o StrictHostKeyChecking=no scripts/deploy_todo.sh ${{ secrets.PROD_USER }}@${{ secrets.PROD_HOST }}:/tmp/deploy_portfolio.sh
           rsync -avz --delete ./build/                         ${{ secrets.PROD_USER }}@${{ secrets.PROD_HOST }}:${{ secrets.PROD_FRONTEND_HTML_DIR }}
 
       # ---------- Enviar .env.production ----------
