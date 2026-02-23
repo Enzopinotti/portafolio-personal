@@ -1,7 +1,7 @@
 "use strict";
 
 module.exports = {
-  async up (queryInterface, Sequelize) {
+  async up(queryInterface, Sequelize) {
     return queryInterface.bulkInsert("articulo", [
       {
         id_articulo: 1,
@@ -21,10 +21,10 @@ module.exports = {
         categoria: "Frontend",
         id_usuario: 2 // Relacionado al usuario con id 2 (usuario normal)
       }
-    ], {});
+    ], { ignoreDuplicates: true });
   },
 
-  async down (queryInterface, Sequelize) {
+  async down(queryInterface, Sequelize) {
     return queryInterface.bulkDelete("articulo", null, {});
   }
 };

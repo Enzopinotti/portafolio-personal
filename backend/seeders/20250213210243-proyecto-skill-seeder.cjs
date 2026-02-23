@@ -1,7 +1,7 @@
 "use strict";
 
 module.exports = {
-  async up (queryInterface, Sequelize) {
+  async up(queryInterface, Sequelize) {
     // Proyecto #1 usa Skill #1 (JavaScript) y Skill #2 (Node.js)
     return queryInterface.bulkInsert("proyecto_skill", [
       {
@@ -12,10 +12,10 @@ module.exports = {
         id_proyecto: 1,
         id_skill: 2
       }
-    ], {});
+    ], { ignoreDuplicates: true });
   },
 
-  async down (queryInterface, Sequelize) {
+  async down(queryInterface, Sequelize) {
     return queryInterface.bulkDelete("proyecto_skill", null, {});
   }
 };

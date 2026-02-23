@@ -2,7 +2,7 @@
 const bcrypt = require("bcrypt");
 
 module.exports = {
-  async up (queryInterface, Sequelize) {
+  async up(queryInterface, Sequelize) {
     // Hashear contraseñas de ejemplo
     const passwordAdmin = bcrypt.hashSync("Admin123!", 10);
     const passwordUser = bcrypt.hashSync("User123!", 10);
@@ -14,8 +14,9 @@ module.exports = {
         apellido: "Pinotti",
         email: "enzopinottii@gmail.com",
         password: passwordAdmin,
-        id_rol: 1, 
-        fecha_registro: new Date()
+        id_rol: 1,
+        fecha_registro: new Date(),
+        emailConfirmed: true
       },
       {
         id_usuario: 2,
@@ -23,14 +24,15 @@ module.exports = {
         apellido: "User",
         email: "user@gmail.com",
         password: passwordUser,
-        id_rol: 2,             
-        fecha_registro: new Date()
+        id_rol: 2,
+        fecha_registro: new Date(),
+        emailConfirmed: true
       }
       // Podrías insertar más si lo deseas
-    ], {});
+    ], { ignoreDuplicates: true });
   },
 
-  async down (queryInterface, Sequelize) {
+  async down(queryInterface, Sequelize) {
     return queryInterface.bulkDelete("usuario", null, {});
   }
 };

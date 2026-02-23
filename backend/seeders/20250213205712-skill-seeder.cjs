@@ -1,13 +1,13 @@
 "use strict";
 
 module.exports = {
-  async up (queryInterface, Sequelize) {
+  async up(queryInterface, Sequelize) {
     // Insertamos 2 skills. id_categoria_skill=1 => Frontend, id_categoria_skill=2 => Backend
     return queryInterface.bulkInsert("skill", [
       {
         id_skill: 1,
         nombre: "JavaScript",
-        nivel: 80,   
+        nivel: 80,
         id_imagen: null
       },
       {
@@ -16,10 +16,10 @@ module.exports = {
         nivel: 75,
         id_imagen: null
       }
-    ], {});
+    ], { ignoreDuplicates: true });
   },
 
-  async down (queryInterface, Sequelize) {
+  async down(queryInterface, Sequelize) {
     return queryInterface.bulkDelete("skill", null, {});
   }
 };

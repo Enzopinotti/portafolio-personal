@@ -1,7 +1,7 @@
 "use strict";
 
 module.exports = {
-  async up (queryInterface, Sequelize) {
+  async up(queryInterface, Sequelize) {
     return queryInterface.bulkInsert("servicio", [
       {
         id_servicio: 1,
@@ -17,10 +17,10 @@ module.exports = {
         precio: 300.00,
         id_imagen: null
       }
-    ], {});
+    ], { ignoreDuplicates: true });
   },
 
-  async down (queryInterface, Sequelize) {
+  async down(queryInterface, Sequelize) {
     return queryInterface.bulkDelete("servicio", null, {});
   }
 };

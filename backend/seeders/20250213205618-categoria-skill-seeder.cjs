@@ -1,7 +1,7 @@
 "use strict";
 
 module.exports = {
-  async up (queryInterface, Sequelize) {
+  async up(queryInterface, Sequelize) {
     // Insertamos 2 categorías de ejemplo
     return queryInterface.bulkInsert("categoria_skill", [
       {
@@ -12,10 +12,10 @@ module.exports = {
         id_categoria_skill: 2,
         nombre: "Backend"
       }
-    ], {});
+    ], { ignoreDuplicates: true });
   },
 
-  async down (queryInterface, Sequelize) {
+  async down(queryInterface, Sequelize) {
     // Borramos todo de la tabla o solo estos IDs
     return queryInterface.bulkDelete("categoria_skill", null, {});
   }

@@ -1,7 +1,7 @@
 "use strict";
 
 module.exports = {
-  async up (queryInterface, Sequelize) {
+  async up(queryInterface, Sequelize) {
     return queryInterface.bulkInsert("testimonio", [
       {
         id_testimonio: 1,
@@ -17,10 +17,10 @@ module.exports = {
         fecha: new Date(),
         id_usuario: 2 // Asocia al usuario con id_usuario=2 (JohnUser)
       }
-    ], {});
+    ], { ignoreDuplicates: true });
   },
 
-  async down (queryInterface, Sequelize) {
+  async down(queryInterface, Sequelize) {
     return queryInterface.bulkDelete("testimonio", null, {});
   }
 };

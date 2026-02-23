@@ -1,7 +1,7 @@
 "use strict";
 
 module.exports = {
-  async up (queryInterface, Sequelize) {
+  async up(queryInterface, Sequelize) {
     // Vinculamos el proyecto #1 con el servicio #1, y el proyecto #2 con el servicio #2
     return queryInterface.bulkInsert("proyecto_servicio", [
       {
@@ -12,10 +12,10 @@ module.exports = {
         id_proyecto: 2,
         id_servicio: 2
       }
-    ], {});
+    ], { ignoreDuplicates: true });
   },
 
-  async down (queryInterface, Sequelize) {
+  async down(queryInterface, Sequelize) {
     return queryInterface.bulkDelete("proyecto_servicio", null, {});
   }
 };
