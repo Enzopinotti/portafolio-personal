@@ -4,6 +4,8 @@
 .page.servicios-page {
   padding: 1rem;
   width: 100%;
+  height: calc(100vh - 112px);
+  overflow: hidden;
 
   .servicios-container {
     display: flex;

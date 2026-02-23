@@ -8,9 +8,9 @@ const MockupReel = ({ videoSrc, device, color, landscape = false, zoom = 1 }) =>
   const videoRef = useRef(null);
   const [muted, setMuted] = useState(true);
   const [playing, setPlaying] = useState(false);
-  console.log('videoSrc', videoSrc); 
+  console.log('videoSrc', videoSrc);
   console.log('device', device);
-  console.log('color', color);  
+  console.log('color', color);
   const toggleMute = () => {
     if (videoRef.current) {
       videoRef.current.muted = !videoRef.current.muted;
@@ -32,7 +32,7 @@ const MockupReel = ({ videoSrc, device, color, landscape = false, zoom = 1 }) =>
 
   return (
     <div className="mockup-reel">
-      <DeviceFrameset device={device}  color={color} landscape={landscape} zoom={zoom} width={410}>
+      <DeviceFrameset device={device} color={color} landscape={landscape} zoom={zoom} width={410}>
         <div className="reel-video-wrapper">
           <video
             ref={videoRef}
@@ -40,7 +40,9 @@ const MockupReel = ({ videoSrc, device, color, landscape = false, zoom = 1 }) =>
             muted={muted}
             playsInline
             loop
-            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            poster={videoSrc.replace('.mp4', '.webp')}
+            preload="none"
+            style={{ width: '100%', height: '100%', objectFit: 'cover', backgroundColor: '#111' }}
           />
           <div className="reel-controls">
             <button className='pausa' onClick={togglePlay}>

@@ -3,8 +3,7 @@ import dotenv from 'dotenv';
 import { fileURLToPath } from 'url';
 import { dirname, resolve } from 'path';
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-dotenv.config({ path: resolve(__dirname, '../.env.production') });
+dotenv.config();
 import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
@@ -43,6 +42,7 @@ passport.use(new GoogleStrategy({
   clientID: process.env.GOOGLE_CLIENT_ID,
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
   callbackURL: '/api/usuarios/auth/google/callback',
+  proxy: true, // Esto es clave para que reemplace HTTP por HTTPS en producción (detrás de nginx/docker)
   passReqToCallback: true, // para pasar req al callback y, opcionalmente, registrar eventos
 }, async (req, accessToken, refreshToken, profile, done) => {
   try {
@@ -63,11 +63,11 @@ passport.use(new GoogleStrategy({
     // Generar tokens sin usar sesiones.
     const accessJwt = generarAccessToken({ idUsuario: usuario.idUsuario, idRol: usuario.idRol });
     const refreshJwt = generarRefreshToken({ idUsuario: usuario.idUsuario });
-    
+
     // Guarda el refresh token en la BD
     usuario.refreshToken = refreshJwt;
     await usuario.save();
-    
+
     logger.info(`GoogleStrategy: Autenticación exitosa para email: ${emails[0].value}`);
     // Pasa al callback la información del usuario y los tokens generados
     return done(null, { usuario, accessJwt, refreshJwt });

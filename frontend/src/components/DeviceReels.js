@@ -8,7 +8,7 @@ import { FaPlay, FaPause, FaVolumeMute, FaVolumeUp } from 'react-icons/fa';
 const DeviceReels = ({ device, color, landscape = false, zoom, videos, className }) => {
   // Convertimos el nombre del dispositivo en una clase: "iPhone X" => "device-iphone-x"
   const deviceClass = device.toLowerCase().replace(/\s/g, '-');
-  
+
   return (
     <div className={`device-reels ${deviceClass} ${className || ''}`}>
       <DeviceFrameset device={device} color={color} landscape={landscape} zoom={zoom}>
@@ -58,7 +58,9 @@ const VideoSlide = ({ videoSrc }) => {
         muted={muted}
         playsInline
         loop
-        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+        poster={videoSrc.replace('.mp4', '.webp')}
+        preload="none"
+        style={{ width: '100%', height: '100%', objectFit: 'cover', backgroundColor: '#111' }}
       />
       <div className="video-controls">
         <button className="play-pause" onClick={togglePlay}>

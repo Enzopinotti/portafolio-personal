@@ -1,9 +1,9 @@
-// config/database.js
-
 import { Sequelize } from 'sequelize';
-
 import dotenv from 'dotenv';
+
+// Prefer .env.production if explicitly needed, then fallback to .env
 dotenv.config({ path: '.env.production' });
+dotenv.config();
 
 
 const sequelize = new Sequelize(
