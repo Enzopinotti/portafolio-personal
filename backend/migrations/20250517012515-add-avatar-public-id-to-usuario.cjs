@@ -2,10 +2,12 @@
 
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.addColumn('usuario', 'avatar_public_id', {
-      type: Sequelize.STRING,
-      allowNull: true,
-    });
+    try {
+      await queryInterface.addColumn('usuario', 'avatar_public_id', {
+        type: Sequelize.STRING,
+        allowNull: true,
+      });
+    } catch (e) { console.log(e.message) }
   },
 
   async down(queryInterface, Sequelize) {

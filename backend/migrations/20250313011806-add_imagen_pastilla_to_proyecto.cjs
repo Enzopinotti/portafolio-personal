@@ -2,11 +2,13 @@
 
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.addColumn('proyecto', 'imagen_pastilla', {
-      type: Sequelize.STRING(255),
-      allowNull: true,
-      after: 'max_imagenes' // posición lógica después del campo especificado
-    });
+    try {
+      await queryInterface.addColumn('proyecto', 'imagen_pastilla', {
+        type: Sequelize.STRING(255),
+        allowNull: true,
+        after: 'max_imagenes' 
+      });
+    } catch (e) { console.log(e.message) }
   },
 
   async down(queryInterface, Sequelize) {

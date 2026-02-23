@@ -2,36 +2,38 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.addColumn('usuario', 'refresh_token', {
-      type: Sequelize.STRING(512),
-      allowNull: true,
-    });
+    try {
+      await queryInterface.addColumn('usuario', 'refresh_token', {
+        type: Sequelize.STRING(512),
+        allowNull: true,
+      });
 
-    await queryInterface.addColumn('usuario', 'emailToken', {
-      type: Sequelize.STRING,
-      allowNull: true,
-    });
+      await queryInterface.addColumn('usuario', 'emailToken', {
+        type: Sequelize.STRING,
+        allowNull: true,
+      });
 
-    await queryInterface.addColumn('usuario', 'emailTokenExpires', {
-      type: Sequelize.DATE,
-      allowNull: true,
-    });
+      await queryInterface.addColumn('usuario', 'emailTokenExpires', {
+        type: Sequelize.DATE,
+        allowNull: true,
+      });
 
-    await queryInterface.addColumn('usuario', 'emailConfirmed', {
-      type: Sequelize.BOOLEAN,
-      allowNull: false,
-      defaultValue: false,
-    });
+      await queryInterface.addColumn('usuario', 'emailConfirmed', {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+      });
 
-    await queryInterface.addColumn('usuario', 'resetToken', {
-      type: Sequelize.STRING,
-      allowNull: true,
-    });
+      await queryInterface.addColumn('usuario', 'resetToken', {
+        type: Sequelize.STRING,
+        allowNull: true,
+      });
 
-    await queryInterface.addColumn('usuario', 'resetTokenExpires', {
-      type: Sequelize.DATE,
-      allowNull: true,
-    });
+      await queryInterface.addColumn('usuario', 'resetTokenExpires', {
+        type: Sequelize.DATE,
+        allowNull: true,
+      });
+    } catch (e) { console.log(e.message) }
   },
 
   down: async (queryInterface, Sequelize) => {
