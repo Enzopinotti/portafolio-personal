@@ -13,106 +13,106 @@
       "contact": "Contato"
     }
   },
-   "loginModal": {
-      "title": "Entrar",
-      "welcome": "Bem-vindo de volta!",
-      "email": "Email",
-      "password": "Senha",
-      "loading": "Carregando...",
-      "submit": "Entrar",
-      "google": "Entrar com Google",
-      "forgotPassword": "Esqueceu sua senha?",
-      "register": "Não tem conta? Registre-se",
-      "success": "Login bem-sucedido."
-    },
-    "registerModal": {
-      "title": "Registrar",
-      "welcome": "Trabalhamos juntos!",
-      "name": "Nome",
-      "surname": "Sobrenome",
-      "email": "Email",
-      "password": "Senha",
-      "confirmPassword": "Confirmar Senha",
-      "loading": "Registrando...",
-      "submit": "Registrar",
-      "alreadyHaveAccount": "Já tem conta? Entrar",
-      "passwordMismatch": "As senhas não coincidem.",
-      "success": "Registro bem-sucedido. Agora confirme seu e-mail"
-    },
-    "emailConfirmation": {
-      "successTitle": "Email Confirmado",
-      "successMessage": "Seu email foi confirmado com sucesso. Agora você pode fazer login.",
-      "errorTitle": "Erro na Confirmação",
-      "errorMessage": "Houve um problema ao confirmar seu email. Por favor, tente novamente ou solicite um novo email de confirmação.",
-      "expiredTitle": "Token Expirado",
-      "expiredMessage": "Seu token de confirmação expirou. Por favor, solicite um novo email de confirmação.",
-      "goToHome": "Ir para Home",
-      "resend": "Reenviar Confirmação",
-      "resendSuccess": "Email de confirmação reenviado. Verifique sua caixa de entrada.",
-      "resendError": "Erro ao reenviar o email de confirmação.",
-      "loading": "Carregando..."
-    },
-    "profile": {
-      "title": "Meu Perfil",
-      "name": "Nome",
-      "lastName": "Sobrenome",
-      "email": "Email",
-      "password": "Senha",
-      "save": "Salvar",
-      "welcome": "Olá, ",
-      "logout": "Sair",
-      "deleteAccount": "Excluir Conta",
-      "deleteAccountConfirmation": "Tem certeza de que deseja excluir sua conta? Esta ação não pode ser desfeita.",
-      "deleteAccountSuccess": "Conta excluída com sucesso.",
-      "loading": "Carregando...",
-      "deleteAccountError": "Erro ao excluir a conta. Por favor, tente novamente.",
-      "success": "Perfil atualizado com sucesso.",
-      "error": "Erro ao atualizar o perfil. Por favor, tente novamente.",
-      "updated": "Perfil atualizado com sucesso.",
-      "editAvatar": "Editar Avatar",
-      "avatarUpdated": "Avatar atualizado com sucesso.",
-      "saveAvatar": "Salvar Avatar",
-      "deleteAvatar": "Excluir Avatar",
-      "avatarDeleted": "Avatar excluído com sucesso."
-    },
-    "forgotModal": {
-      "title": "Redefinir Senha",
-      "welcome": "Digite seu email para redefinir sua senha.",
-      "email": "Endereço de Email",
-      "submit": "Redefinir Senha",
-      "loading": "Enviando...",
-      "switchToLogin": "Voltar para Login",
-      "success": "Um email para redefinir sua senha foi enviado.",
-      "error": "Ocorreu um problema ao enviar o email. Por favor, tente novamente."
-    },
-    "resetPassword": {
-      "title": "Redefinir Senha",
-      "welcome": "Digite sua nova senha.",
-      "newPassword": "Nova Senha",
-      "confirmPassword": "Confirmar Senha",
-      "loading": "Atualizando...",
-      "submit": "Atualizar Senha",
-      "passwordMismatch": "As senhas não coincidem.",
-      "success": "Senha atualizada com sucesso."
-    },
-    "home": {
-      "welcome": "Olá, bem-vindo ao meu site pessoal.",
-      "intro": "Meu nome é Enzo Pinotti, um "
-    },
-    "error": {
-      "internal": "Erro interno do servidor",
-      "notFound": "Não encontrado",
-      "unauthorized": "Não autorizado",
-      "forbidden": "Proibido",
-      "badRequest": "Requisição incorreta",
-      "emailExists": "O e-mail já está registrado.",
-      "loginFailed": "Falha no login.",
-      "googleLoginFailed": "Falha na autenticação com o Google.",
-      "noRefreshToken": "Nenhum token de atualização fornecido.",
-      "invalidRefreshToken": "Token de atualização inválido (não corresponde ao BD).",
-      "expiredRefreshToken": "Token de atualização expirado ou inválido."
-    },
-    "adminModal": {
+  "loginModal": {
+    "title": "Entrar",
+    "welcome": "Bem-vindo de volta!",
+    "email": "Email",
+    "password": "Senha",
+    "loading": "Carregando...",
+    "submit": "Entrar",
+    "google": "Entrar com Google",
+    "forgotPassword": "Esqueceu sua senha?",
+    "register": "Não tem conta? Registre-se",
+    "success": "Login bem-sucedido."
+  },
+  "registerModal": {
+    "title": "Registrar",
+    "welcome": "Trabalhamos juntos!",
+    "name": "Nome",
+    "surname": "Sobrenome",
+    "email": "Email",
+    "password": "Senha",
+    "confirmPassword": "Confirmar Senha",
+    "loading": "Registrando...",
+    "submit": "Registrar",
+    "alreadyHaveAccount": "Já tem conta? Entrar",
+    "passwordMismatch": "As senhas não coincidem.",
+    "success": "Registro bem-sucedido. Agora confirme seu e-mail"
+  },
+  "emailConfirmation": {
+    "successTitle": "Email Confirmado",
+    "successMessage": "Seu email foi confirmado com sucesso. Agora você pode fazer login.",
+    "errorTitle": "Erro na Confirmação",
+    "errorMessage": "Houve um problema ao confirmar seu email. Por favor, tente novamente ou solicite um novo email de confirmação.",
+    "expiredTitle": "Token Expirado",
+    "expiredMessage": "Seu token de confirmação expirou. Por favor, solicite um novo email de confirmação.",
+    "goToHome": "Ir para Home",
+    "resend": "Reenviar Confirmação",
+    "resendSuccess": "Email de confirmação reenviado. Verifique sua caixa de entrada.",
+    "resendError": "Erro ao reenviar o email de confirmação.",
+    "loading": "Carregando..."
+  },
+  "profile": {
+    "title": "Meu Perfil",
+    "name": "Nome",
+    "lastName": "Sobrenome",
+    "email": "Email",
+    "password": "Senha",
+    "save": "Salvar",
+    "welcome": "Olá, ",
+    "logout": "Sair",
+    "deleteAccount": "Excluir Conta",
+    "deleteAccountConfirmation": "Tem certeza de que deseja excluir sua conta? Esta ação não pode ser desfeita.",
+    "deleteAccountSuccess": "Conta excluída com sucesso.",
+    "loading": "Carregando...",
+    "deleteAccountError": "Erro ao excluir a conta. Por favor, tente novamente.",
+    "success": "Perfil atualizado com sucesso.",
+    "error": "Erro ao atualizar o perfil. Por favor, tente novamente.",
+    "updated": "Perfil atualizado com sucesso.",
+    "editAvatar": "Editar Avatar",
+    "avatarUpdated": "Avatar atualizado com sucesso.",
+    "saveAvatar": "Salvar Avatar",
+    "deleteAvatar": "Excluir Avatar",
+    "avatarDeleted": "Avatar excluído com sucesso."
+  },
+  "forgotModal": {
+    "title": "Redefinir Senha",
+    "welcome": "Digite seu email para redefinir sua senha.",
+    "email": "Endereço de Email",
+    "submit": "Redefinir Senha",
+    "loading": "Enviando...",
+    "switchToLogin": "Voltar para Login",
+    "success": "Um email para redefinir sua senha foi enviado.",
+    "error": "Ocorreu um problema ao enviar o email. Por favor, tente novamente."
+  },
+  "resetPassword": {
+    "title": "Redefinir Senha",
+    "welcome": "Digite sua nova senha.",
+    "newPassword": "Nova Senha",
+    "confirmPassword": "Confirmar Senha",
+    "loading": "Atualizando...",
+    "submit": "Atualizar Senha",
+    "passwordMismatch": "As senhas não coincidem.",
+    "success": "Senha atualizada com sucesso."
+  },
+  "home": {
+    "welcome": "Olá, bem-vindo ao meu portfólio web.",
+    "intro": "Meu nome é Enzo Pinotti, um "
+  },
+  "error": {
+    "internal": "Erro interno do servidor",
+    "notFound": "Não encontrado",
+    "unauthorized": "Não autorizado",
+    "forbidden": "Proibido",
+    "badRequest": "Requisição incorreta",
+    "emailExists": "O e-mail já está registrado.",
+    "loginFailed": "Falha no login.",
+    "googleLoginFailed": "Falha na autenticação com o Google.",
+    "noRefreshToken": "Nenhum token de atualização fornecido.",
+    "invalidRefreshToken": "Token de atualização inválido (não corresponde ao BD).",
+    "expiredRefreshToken": "Token de atualização expirado ou inválido."
+  },
+  "adminModal": {
     "title": "Painel de Admin",
     "buttons": {
       "projects": "Projetos",
@@ -123,195 +123,194 @@
       "services": "Serviços"
     }
   },
-    "adminProjectsModal": {
-      "altImage": "Padrão de Admin",
-      "title": "Gestão de Projetos",
-      "searchPlaceholder": "Pesquisar projetos...",
-      "loading": "Carregando projetos...",
-      "errorLoad": "Erro ao carregar projetos",
-      "noSkills": "Sem skills",
-      "noServices": "Sem serviços",
-      "actions": {
-        "skills": "Skills",
-        "services": "Serviços",
-        "assignSkills": "Atribuir skills",
-        "assignServices": "Atribuir serviços",
-        "deleteProject": "Excluir projeto"
-      },
-      "toast": {
-        "deleteSuccess": "Projeto excluído com sucesso.",
-        "deleteError": "Erro ao excluir projeto.",
-        "createMissingFields": "Por favor, insira o título e a data de início.",
-        "createSuccess": "Projeto criado com sucesso.",
-        "createError": "Erro ao criar projeto.",
-        "assignSkillsSuccess": "Skills atribuídas com sucesso.",
-        "assignSkillsError": "Erro ao atribuir skills.",
-        "assignServicesSuccess": "Serviços atribuídos com sucesso.",
-        "assignServicesError": "Erro ao atribuir serviços."
-      },
-      "confirmMessage": "Tem certeza de que deseja excluir este projeto?"
+  "adminProjectsModal": {
+    "altImage": "Padrão de Admin",
+    "title": "Gestão de Projetos",
+    "searchPlaceholder": "Pesquisar projetos...",
+    "loading": "Carregando projetos...",
+    "errorLoad": "Erro ao carregar projetos",
+    "noSkills": "Sem skills",
+    "noServices": "Sem serviços",
+    "actions": {
+      "skills": "Skills",
+      "services": "Serviços",
+      "assignSkills": "Atribuir skills",
+      "assignServices": "Atribuir serviços",
+      "deleteProject": "Excluir projeto"
     },
-    "adminProjectForm": {
-      "formTitle": "Criar novo projeto",
-      "titleLabel": "Título",
-      "titlePlaceholder": "Título",
-      "startDateLabel": "Data de início",
-      "descriptionLabel": "Descrição",
-      "descriptionPlaceholder": "Descrição",
-      "linkSkills": "Vincular Skills:",
-      "linkServices": "Vincular Serviços:",
-      "submitButton": "Criar Projeto",
-      "page": "Página",
-      "nextPage": "Próxima página",
-      "prevPage": "Página anterior",
-      "editButton": "Editar Projeto"
+    "toast": {
+      "deleteSuccess": "Projeto excluído com sucesso.",
+      "deleteError": "Erro ao excluir projeto.",
+      "createMissingFields": "Por favor, insira o título e a data de início.",
+      "createSuccess": "Projeto criado com sucesso.",
+      "createError": "Erro ao criar projeto.",
+      "assignSkillsSuccess": "Skills atribuídas com sucesso.",
+      "assignSkillsError": "Erro ao atribuir skills.",
+      "assignServicesSuccess": "Serviços atribuídos com sucesso.",
+      "assignServicesError": "Erro ao atribuir serviços."
     },
-    "adminSkillsModal": {
-      "altImage": "Padrão de Skills",
-      "title": "Gestão de Skills",
-      "searchPlaceholder": "Pesquisar skills...",
-      "loading": "Carregando skills...",
-      "errorLoad": "Erro ao carregar skills",
-      "noCategory": "Sem categoria",
-      "actions": {
-        "categories": "Categorias",
-        "level": "Nível",
-        "assignCategory": "Atribuir categoria",
-        "deleteSkill": "Excluir skill",
-        "addCategory": "Adicionar categoria"
-      },
-      "toast": {
-        "deleteSuccess": "Skill excluída com sucesso.",
-        "deleteError": "Erro ao excluir skill.",
-        "createMissingFields": "Por favor, insira o nome e selecione uma categoria.",
-        "createSuccess": "Skill criada com sucesso.",
-        "createError": "Erro ao criar skill.",
-        "assignCategorySuccess": "Categorias atribuídas com sucesso.",
-        "assignCategoryError": "Erro ao atribuir categorias."
-      },
-      "confirmMessage": "Tem certeza de que deseja excluir esta skill?"
+    "confirmMessage": "Tem certeza de que deseja excluir este projeto?"
+  },
+  "adminProjectForm": {
+    "formTitle": "Criar novo projeto",
+    "titleLabel": "Título",
+    "titlePlaceholder": "Título",
+    "startDateLabel": "Data de início",
+    "descriptionLabel": "Descrição",
+    "descriptionPlaceholder": "Descrição",
+    "linkSkills": "Vincular Skills:",
+    "linkServices": "Vincular Serviços:",
+    "submitButton": "Criar Projeto",
+    "page": "Página",
+    "nextPage": "Próxima página",
+    "prevPage": "Página anterior",
+    "editButton": "Editar Projeto"
+  },
+  "adminSkillsModal": {
+    "altImage": "Padrão de Skills",
+    "title": "Gestão de Skills",
+    "searchPlaceholder": "Pesquisar skills...",
+    "loading": "Carregando skills...",
+    "errorLoad": "Erro ao carregar skills",
+    "noCategory": "Sem categoria",
+    "actions": {
+      "categories": "Categorias",
+      "level": "Nível",
+      "assignCategory": "Atribuir categoria",
+      "deleteSkill": "Excluir skill",
+      "addCategory": "Adicionar categoria"
     },
-    "adminSkillForm": {
-      "formTitle": "Criar nova Skill",
-      "nameLabel": "Nome",
-      "namePlaceholder": "Nome da skill",
-      "levelLabel": "Nível: {{level}}%",
-      "categoryLabel": "Categoria",
-      "submitButton": "Criar Skill"
+    "toast": {
+      "deleteSuccess": "Skill excluída com sucesso.",
+      "deleteError": "Erro ao excluir skill.",
+      "createMissingFields": "Por favor, insira o nome e selecione uma categoria.",
+      "createSuccess": "Skill criada com sucesso.",
+      "createError": "Erro ao criar skill.",
+      "assignCategorySuccess": "Categorias atribuídas com sucesso.",
+      "assignCategoryError": "Erro ao atribuir categorias."
     },
-    "adminCategoriasModal": {
-      "altImage": "Padrão de Categorias",
-      "title": "Gestão de Categorias",
-      "searchPlaceholder": "Pesquisar categorias...",
-      "loading": "Carregando categorias...",
-      "errorLoad": "Erro ao carregar categorias",
-      "toast": {
-        "deleteSuccess": "Categoria excluída com sucesso.",
-        "deleteError": "Erro ao excluir categoria.",
-        "createMissingFields": "Por favor, insira o nome da categoria.",
-        "createSuccess": "Categoria criada com sucesso.",
-        "createError": "Erro ao criar categoria."
-      },
-      "confirmMessage": "Tem certeza de que deseja excluir esta categoria?"
+    "confirmMessage": "Tem certeza de que deseja excluir esta skill?"
+  },
+  "adminSkillForm": {
+    "formTitle": "Criar nova Skill",
+    "nameLabel": "Nome",
+    "namePlaceholder": "Nome da skill",
+    "levelLabel": "Nível: {{level}}%",
+    "categoryLabel": "Categoria",
+    "submitButton": "Criar Skill"
+  },
+  "adminCategoriasModal": {
+    "altImage": "Padrão de Categorias",
+    "title": "Gestão de Categorias",
+    "searchPlaceholder": "Pesquisar categorias...",
+    "loading": "Carregando categorias...",
+    "errorLoad": "Erro ao carregar categorias",
+    "toast": {
+      "deleteSuccess": "Categoria excluída com sucesso.",
+      "deleteError": "Erro ao excluir categoria.",
+      "createMissingFields": "Por favor, insira o nome da categoria.",
+      "createSuccess": "Categoria criada com sucesso.",
+      "createError": "Erro ao criar categoria."
     },
-    "adminCategoriaForm": {
-      "formTitle": "Criar nova Categoria",
-      "nameLabel": "Nome",
-      "namePlaceholder": "Nome da categoria",
-      "submitButton": "Criar Categoria"
+    "confirmMessage": "Tem certeza de que deseja excluir esta categoria?"
+  },
+  "adminCategoriaForm": {
+    "formTitle": "Criar nova Categoria",
+    "nameLabel": "Nome",
+    "namePlaceholder": "Nome da categoria",
+    "submitButton": "Criar Categoria"
+  },
+  "adminServiciosModal": {
+    "altImage": "Padrão de Serviços",
+    "title": "Gestão de Serviços",
+    "searchPlaceholder": "Pesquisar serviços...",
+    "loading": "Carregando serviços...",
+    "errorLoad": "Erro ao carregar serviços",
+    "toast": {
+      "deleteSuccess": "Serviço excluído com sucesso.",
+      "deleteError": "Erro ao excluir serviço.",
+      "createMissingFields": "Por favor, insira o nome do serviço.",
+      "createSuccess": "Serviço criado com sucesso.",
+      "createError": "Erro ao criar serviço."
     },
-    "adminServiciosModal": {
-      "altImage": "Padrão de Serviços",
-      "title": "Gestão de Serviços",
-      "searchPlaceholder": "Pesquisar serviços...",
-      "loading": "Carregando serviços...",
-      "errorLoad": "Erro ao carregar serviços",
-      "toast": {
-        "deleteSuccess": "Serviço excluído com sucesso.",
-        "deleteError": "Erro ao excluir serviço.",
-        "createMissingFields": "Por favor, insira o nome do serviço.",
-        "createSuccess": "Serviço criado com sucesso.",
-        "createError": "Erro ao criar serviço."
-      },
-      "confirmMessage": "Tem certeza de que deseja excluir este serviço?"
+    "confirmMessage": "Tem certeza de que deseja excluir este serviço?"
+  },
+  "adminServicioForm": {
+    "formTitle": "Criar novo Serviço",
+    "nameLabel": "Nome",
+    "namePlaceholder": "Nome do serviço",
+    "descriptionLabel": "Descrição",
+    "descriptionPlaceholder": "Descrição do serviço",
+    "priceLabel": "Preço",
+    "pricePlaceholder": "Preço",
+    "submitButton": "Criar Serviço"
+  },
+  "adminUsersModal": {
+    "altImage": "Padrão de Usuários",
+    "title": "Gestão de Usuários",
+    "searchPlaceholder": "Pesquisar usuários...",
+    "loading": "Carregando usuários...",
+    "errorLoad": "Erro ao carregar usuários",
+    "noUsers": "Nenhum usuário encontrado",
+    "actions": {
+      "deleteUser": "Excluir usuário",
+      "editUser": "Editar usuário"
     },
-    "adminServicioForm": {
-      "formTitle": "Criar novo Serviço",
-      "nameLabel": "Nome",
-      "namePlaceholder": "Nome do serviço",
-      "descriptionLabel": "Descrição",
-      "descriptionPlaceholder": "Descrição do serviço",
-      "priceLabel": "Preço",
-      "pricePlaceholder": "Preço",
-      "submitButton": "Criar Serviço"
+    "toast": {
+      "deleteSuccess": "Usuário excluído com sucesso.",
+      "deleteError": "Erro ao excluir usuário.",
+      "createMissingFields": "Por favor, insira o nome e o email.",
+      "createSuccess": "Usuário criado com sucesso.",
+      "createError": "Erro ao criar usuário."
     },
-    "adminUsersModal": {
-      "altImage": "Padrão de Usuários",
-      "title": "Gestão de Usuários",
-      "searchPlaceholder": "Pesquisar usuários...",
-      "loading": "Carregando usuários...",
-      "errorLoad": "Erro ao carregar usuários",
-      "noUsers": "Nenhum usuário encontrado",
-      "actions": {
-        "deleteUser": "Excluir usuário",
-        "editUser": "Editar usuário"
-      },
-      "toast": {
-        "deleteSuccess": "Usuário excluído com sucesso.",
-        "deleteError": "Erro ao excluir usuário.",
-        "createMissingFields": "Por favor, insira o nome e o email.",
-        "createSuccess": "Usuário criado com sucesso.",
-        "createError": "Erro ao criar usuário."
-      },
-      "confirmMessage": "Tem certeza de que deseja excluir este usuário?"
+    "confirmMessage": "Tem certeza de que deseja excluir este usuário?"
+  },
+  "adminUserForm": {
+    "formTitle": "Criar Novo Usuário",
+    "nameLabel": "Nome",
+    "namePlaceholder": "Nome do usuário",
+    "lastNameLabel": "Sobrenome",
+    "lastNamePlaceholder": "Sobrenome do usuário",
+    "emailLabel": "Email",
+    "emailPlaceholder": "Email do usuário",
+    "passwordLabel": "Senha",
+    "passwordPlaceholder": "Digite a senha",
+    "roleLabel": "Função",
+    "rolePlaceholder": "Selecione uma função",
+    "sendEmailLabel": "Notificar por email",
+    "submitButton": "Criar Usuário"
+  },
+  "adminSettingsModal": {
+    "title": "Configurações",
+    "loading": "Carregando configurações...",
+    "formTitle": "Atualizar Configurações do Site",
+    "siteTitleLabel": "Título do Site",
+    "siteTitlePlaceholder": "Insira o título do site",
+    "siteDescriptionLabel": "Descrição do Site",
+    "siteDescriptionPlaceholder": "Insira a descrição do site",
+    "supportEmailLabel": "Email de Suporte",
+    "supportEmailPlaceholder": "Insira o email de suporte",
+    "facebookUrlLabel": "URL do Facebook",
+    "facebookUrlPlaceholder": "Insira a URL do Facebook",
+    "twitterUrlLabel": "URL do Twitter",
+    "twitterUrlPlaceholder": "Insira a URL do Twitter",
+    "instagramUrlLabel": "URL do Instagram",
+    "instagramUrlPlaceholder": "Insira a URL do Instagram",
+    "linkedinUrlLabel": "URL do LinkedIn",
+    "linkedinUrlPlaceholder": "Insira a URL do LinkedIn",
+    "primaryColorLabel": "Cor Primária",
+    "primaryColorPlaceholder": "Insira a cor primária (hex)",
+    "secondaryColorLabel": "Cor Secundária",
+    "secondaryColorPlaceholder": "Insira a cor secundária (hex)",
+    "backgroundColorLabel": "Cor de Fundo",
+    "backgroundColorPlaceholder": "Insira a cor de fundo (hex)",
+    "textColorLabel": "Cor do Texto",
+    "textColorPlaceholder": "Insira a cor do texto (hex)",
+    "submitButton": "Salvar Configurações",
+    "toast": {
+      "updateSuccess": "Configurações atualizadas com sucesso.",
+      "updateError": "Erro ao atualizar as configurações."
     },
-    "adminUserForm": {
-      "formTitle": "Criar Novo Usuário",
-      "nameLabel": "Nome",
-      "namePlaceholder": "Nome do usuário",
-      "lastNameLabel": "Sobrenome",
-      "lastNamePlaceholder": "Sobrenome do usuário",
-      "emailLabel": "Email",
-      "emailPlaceholder": "Email do usuário",
-      "passwordLabel": "Senha",
-      "passwordPlaceholder": "Digite a senha",
-      "roleLabel": "Função",
-      "rolePlaceholder": "Selecione uma função",
-      "sendEmailLabel": "Notificar por email",
-      "submitButton": "Criar Usuário"
-    },
-    "adminSettingsModal": {
-      "title": "Configurações",
-      "loading": "Carregando configurações...",
-      "formTitle": "Atualizar Configurações do Site",
-      "siteTitleLabel": "Título do Site",
-      "siteTitlePlaceholder": "Insira o título do site",
-      "siteDescriptionLabel": "Descrição do Site",
-      "siteDescriptionPlaceholder": "Insira a descrição do site",
-      "supportEmailLabel": "Email de Suporte",
-      "supportEmailPlaceholder": "Insira o email de suporte",
-      "facebookUrlLabel": "URL do Facebook",
-      "facebookUrlPlaceholder": "Insira a URL do Facebook",
-      "twitterUrlLabel": "URL do Twitter",
-      "twitterUrlPlaceholder": "Insira a URL do Twitter",
-      "instagramUrlLabel": "URL do Instagram",
-      "instagramUrlPlaceholder": "Insira a URL do Instagram",
-      "linkedinUrlLabel": "URL do LinkedIn",
-      "linkedinUrlPlaceholder": "Insira a URL do LinkedIn",
-      "primaryColorLabel": "Cor Primária",
-      "primaryColorPlaceholder": "Insira a cor primária (hex)",
-      "secondaryColorLabel": "Cor Secundária",
-      "secondaryColorPlaceholder": "Insira a cor secundária (hex)",
-      "backgroundColorLabel": "Cor de Fundo",
-      "backgroundColorPlaceholder": "Insira a cor de fundo (hex)",
-      "textColorLabel": "Cor do Texto",
-      "textColorPlaceholder": "Insira a cor do texto (hex)",
-      "submitButton": "Salvar Configurações",
-      "toast": {
-        "updateSuccess": "Configurações atualizadas com sucesso.",
-        "updateError": "Erro ao atualizar as configurações."
-      },
-      "errorLoad": "Erro ao carregar as configurações"
-    }
+    "errorLoad": "Erro ao carregar as configurações"
   }
-  
+}

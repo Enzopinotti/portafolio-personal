@@ -78,10 +78,7 @@
     margin-bottom: 3rem;
   }
 
-  // Slider B sin invertir con CSS, ya se controla la dirección desde el JS
-  .slider-b {
-    // Puedes aplicar ajustes de margen u otros estilos propios
-  }
+
 
   .proyecto-pill {
     background: $color-white;
@@ -270,6 +267,7 @@
     /* Para truncar texto con 3 líneas y puntos suspensivos */
     display: -webkit-box;
     -webkit-line-clamp: 3;
+    line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
