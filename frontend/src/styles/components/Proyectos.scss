@@ -18,15 +18,14 @@
   flex-direction: column;
   align-self: center;
   justify-content: center;
+
   .proyectos-title {
     display: flex;
     justify-content: center;
-    position: relative;
-    bottom: 2rem;
     font-size: 5.3rem;
     color: transparent;
     -webkit-text-stroke: 1.5px #fff;
-    margin: -2.2rem 0;
+    margin: 1rem 0 2rem;
     transition: opacity 0.4s ease, text-shadow 0.4s ease, transform 0.3s ease;
     user-select: none;
     z-index: 1;
@@ -35,14 +34,16 @@
     -moz-transition: opacity 0.4s ease, text-shadow 0.4s ease, transform 0.3s ease;
     -ms-transition: opacity 0.4s ease, text-shadow 0.4s ease, transform 0.3s ease;
     -o-transition: opacity 0.4s ease, text-shadow 0.4s ease, transform 0.3s ease;
+
     &::before {
       content: '';
       position: absolute;
       inset: 0;
-      background: radial-gradient(ellipse at center, rgba(255,255,255,0.1), transparent 10%);
+      background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.1), transparent 10%);
       pointer-events: none;
       z-index: -1;
     }
+
     // Glow y opacidad en hover
     &:hover {
       opacity: 1;
@@ -66,7 +67,7 @@
 
   .proyectos-slider {
     width: 100%;
-    overflow:  visible !important; // Oculta el contenido que se sale del viewport
+    overflow: visible !important; // Oculta el contenido que se sale del viewport
 
     .slider-track {
       display: flex;
@@ -96,20 +97,23 @@
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     margin: 0.5rem;
     transition: transform 0.1s ease, box-shadow 0.1s ease;
-    
+
     -webkit-border-radius: 150px;
     -moz-border-radius: 150px;
     -ms-border-radius: 150px;
     -o-border-radius: 150px;
+
     &:hover .light-ray {
       opacity: 1;
       transform: translate(-50%, -50%) scale(1.3) rotate(25deg);
     }
+
     h3 {
       margin: 0 0 0.5rem;
       font-size: 1.25rem;
       color: $color-gray-dark;
     }
+
     p {
       margin: 0;
       font-size: 0.95rem;
@@ -122,209 +126,238 @@
     }
   }
 }
+
 // src/components/SliderInfinito.scss
 
 // src/components/SliderInfinito.scss
 
 .slider-container {
-    overflow: visible;
-    position: relative;
-    --slides-por-pantalla: 1;
+  overflow: visible;
+  position: relative;
+  --slides-por-pantalla: 1;
+}
+
+/* A partir de 600px: 2 slides por pantalla */
+@media (min-width: 600px) {
+  .slider-container {
+    --slides-por-pantalla: 2;
   }
-  
-  /* A partir de 600px: 2 slides por pantalla */
-  @media (min-width: 600px) {
-    .slider-container {
-      --slides-por-pantalla: 2;
+}
+
+/* A partir de 1200px: 3 slides por pantalla */
+@media (min-width: 1200px) {
+  .slider-container {
+    --slides-por-pantalla: 3;
+  }
+}
+
+/* A partir de 1800px: 4 slides por pantalla */
+@media (min-width: 1800px) {
+  .slider-container {
+    --slides-por-pantalla: 4;
+  }
+}
+
+.slider-track {
+  display: flex;
+  animation: scroll linear infinite;
+  /* La duración se establece en línea desde React (prop velocidad) */
+
+  @media (hover: hover) {
+    &:hover {
+      animation-play-state: paused;
     }
   }
-  
-  /* A partir de 1200px: 3 slides por pantalla */
-  @media (min-width: 1200px) {
-    .slider-container {
-      --slides-por-pantalla: 3;
-    }
+}
+
+.slide {
+  /* Cada slide ocupa el 1/(--slides-por-pantalla) del contenedor */
+  flex: 0 0 calc(100% / var(--slides-por-pantalla));
+  padding: 0.5rem;
+}
+
+/* Animación base para sliderA: recorre la longitud de la lista original */
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
   }
-  
-  /* A partir de 1800px: 4 slides por pantalla */
-  @media (min-width: 1800px) {
-    .slider-container {
-      --slides-por-pantalla: 4;
-    }
+
+  100% {
+    transform: translateX(calc(-1 * var(--scroll-distance)));
   }
-  
-  .slider-track {
-    display: flex;
-    animation: scroll linear infinite;
-    /* La duración se establece en línea desde React (prop velocidad) */
-  
-    @media (hover: hover) {
-      &:hover {
-        animation-play-state: paused;
-      }
-    }
+}
+
+/* Animación para sliderB (inversa): parte de -scroll-distance y llega a 0 */
+@keyframes scroll-reverse {
+  0% {
+    transform: translateX(calc(-1 * var(--scroll-distance)));
   }
-  
-  .slide {
-    /* Cada slide ocupa el 1/(--slides-por-pantalla) del contenedor */
-    flex: 0 0 calc(100% / var(--slides-por-pantalla));
-    padding: 0.5rem;
+
+  100% {
+    transform: translateX(0);
   }
-  
-  /* Animación base para sliderA: recorre la longitud de la lista original */
-  @keyframes scroll {
-    0%   { transform: translateX(0); }
-    100% { transform: translateX(calc(-1 * var(--scroll-distance))); }
+}
+
+/* Asigna la animación inversa a sliderB */
+.sliderB .slider-track {
+  animation-name: scroll-reverse;
+}
+
+/* Estilos para la "pastilla" del proyecto */
+.proyecto-pill {
+  background: #fff;
+  border: 1px solid #ccc;
+
+  min-height: 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+  border-radius: 100%;
+  -webkit-border-radius: 100%;
+  -moz-border-radius: 100%;
+  -ms-border-radius: 100%;
+  -o-border-radius: 100%;
+
+  position: relative;
+
+  &:hover .pill-overlay {
+    opacity: 1;
   }
-  
-  /* Animación para sliderB (inversa): parte de -scroll-distance y llega a 0 */
-  @keyframes scroll-reverse {
-    0%   { transform: translateX(calc(-1 * var(--scroll-distance))); }
-    100% { transform: translateX(0); }
-  }
-  
-  /* Asigna la animación inversa a sliderB */
-  .sliderB .slider-track {
-    animation-name: scroll-reverse;
-  }
-  
-  /* Estilos para la "pastilla" del proyecto */
-  .proyecto-pill {
-    background: #fff;
-    border: 1px solid #ccc;
-    
-    min-height: 150px;
+
+  /* Overlay oscuro */
+  .pill-overlay {
+    position: absolute;
+    border-radius: 100px;
+    -webkit-border-radius: 100px;
+    -moz-border-radius: 100px;
+    -ms-border-radius: 100px;
+    -o-border-radius: 100px;
+    top: 0;
+    left: 0;
+    right: 0;
+    /*Alturavariable,subedesdeabajo*/
+    height: 100%;
+    background: rgba(0, 0, 0, 0.65);
+    /*Semitransparenteoscuro*/
+    color: #fff;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    text-align: center;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    
-    transition: transform 0.1s ease, box-shadow 0.1s ease;
-    border-radius: 100%;
-    -webkit-border-radius: 100%;
-    -moz-border-radius: 100%;
-    -ms-border-radius: 100%;
-    -o-border-radius: 100%;
-    
-    position: relative;
-    &:hover .pill-overlay {
-      opacity: 1;
-    }
-    /* Overlay oscuro */
-    .pill-overlay {
-      position: absolute;
-      border-radius: 100px;
-      -webkit-border-radius: 100px;
-      -moz-border-radius: 100px;
-      -ms-border-radius: 100px;
-      -o-border-radius: 100px;
-      top: 0;
-      left: 0;
-      right: 0;
-      /*Alturavariable,subedesdeabajo*/height: 100%;
-      background: rgba(0, 0, 0, 0.65);
-      /*Semitransparenteoscuro*/color: #fff;
-      display: flex;
-      flex-direction: column;
-      padding: 0.5rem;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      /*Alineartextoabajo*/justify-content: flex-start;
-    }
-
-    .pill-overlay h3 {
-      margin: 0 0 0.25rem 0;
-      font-size: 1rem;
-      font-weight: bold;
-      color: $color-white;
-      margin-top: 1.5rem;
-    }
-
-    .pill-overlay .pill-desc {
-      margin: 0;
-      font-size: 0.85rem;
-      margin-top: 0.9rem;
-      line-height: 1.2;
-      color: $color-white;
-      /* Para truncar texto con 3 líneas y puntos suspensivos */
-      display: -webkit-box;
-      -webkit-line-clamp: 3; 
-      -webkit-box-orient: vertical; 
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    h3{
-      margin: 0 0 0.5rem;
-      font-size: 1.25rem;
-      color: #333;
-    }
-    p {
-      margin: 0;
-      font-size: 0.95rem;
-      color: #333;
-    }
-  
-    &:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
-    }
-    &:hover::before {
-      opacity: 1;
-      animation: glowExpand 1.2s ease-out forwards;
-    }
-  
-    &:hover .rayo {
-      opacity: 1;
-      animation: rayoParpadeo 0.15s ease-in-out infinite, rayoExplota 0.7s ease-out forwards;
-    }
-  
-    &::before {
-      content: '';
-      position: absolute;
-      top: -20%;
-      left: -20%;
-      width: 140%;
-      height: 140%;
-      background: radial-gradient(circle, rgba(0, 255, 255, 0.516) 0%, transparent 80%);
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      z-index: 0;
-    }
-  
-    &:hover::before {
-      opacity: 1;
-      animation: glowExpand 1.2s ease-out forwards;
-    }
+    padding: 0.5rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    /*Alineartextoabajo*/
+    justify-content: flex-start;
   }
 
-  @keyframes rayoParpadeo {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.2; }
+  .pill-overlay h3 {
+    margin: 0 0 0.25rem 0;
+    font-size: 1rem;
+    font-weight: bold;
+    color: $color-white;
+    margin-top: 1.5rem;
   }
-  
-  @keyframes rayoExplota {
-    0% {
-      transform: translate(-50%, -50%) scale(0.5) rotate(0deg);
-      opacity: 0;
-    }
-    50% {
-      transform: translate(-50%, -50%) scale(1.1) rotate(15deg);
-      opacity: 1;
-    }
-    100% {
-      transform: translate(-50%, -50%) scale(1.4) rotate(-10deg);
-      opacity: 0;
-    }
+
+  .pill-overlay .pill-desc {
+    margin: 0;
+    font-size: 0.85rem;
+    margin-top: 0.9rem;
+    line-height: 1.2;
+    color: $color-white;
+    /* Para truncar texto con 3 líneas y puntos suspensivos */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
-  
-  @keyframes glowExpand {
-    0% {
-      transform: scale(1);
-      opacity: 0.4;
-    }
-    100% {
-      transform: scale(1.5);
-      opacity: 0;
-    }
+
+  h3 {
+    margin: 0 0 0.5rem;
+    font-size: 1.25rem;
+    color: #333;
   }
+
+  p {
+    margin: 0;
+    font-size: 0.95rem;
+    color: #333;
+  }
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  }
+
+  &:hover::before {
+    opacity: 1;
+    animation: glowExpand 1.2s ease-out forwards;
+  }
+
+  &:hover .rayo {
+    opacity: 1;
+    animation: rayoParpadeo 0.15s ease-in-out infinite, rayoExplota 0.7s ease-out forwards;
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -20%;
+    left: -20%;
+    width: 140%;
+    height: 140%;
+    background: radial-gradient(circle, rgba(0, 255, 255, 0.516) 0%, transparent 80%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 0;
+  }
+
+  &:hover::before {
+    opacity: 1;
+    animation: glowExpand 1.2s ease-out forwards;
+  }
+}
+
+@keyframes rayoParpadeo {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.2;
+  }
+}
+
+@keyframes rayoExplota {
+  0% {
+    transform: translate(-50%, -50%) scale(0.5) rotate(0deg);
+    opacity: 0;
+  }
+
+  50% {
+    transform: translate(-50%, -50%) scale(1.1) rotate(15deg);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translate(-50%, -50%) scale(1.4) rotate(-10deg);
+    opacity: 0;
+  }
+}
+
+@keyframes glowExpand {
+  0% {
+    transform: scale(1);
+    opacity: 0.4;
+  }
+
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
