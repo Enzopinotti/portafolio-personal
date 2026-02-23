@@ -12,8 +12,15 @@ fi
 echo "🚀 Starting deployment with Docker..."
 
 # 2. Build and start containers
-# We use --build to ensure all changes are captured
-docker-compose up -d --build
+# Determine if we should use 'docker-compose' or 'docker compose'
+if command -v docker-compose &> /dev/null; then
+    DOCKER_COMPOSE_CMD="docker-compose"
+else
+    DOCKER_COMPOSE_CMD="docker compose"
+fi
+
+echo "📦 Using $DOCKER_COMPOSE_CMD..."
+$DOCKER_COMPOSE_CMD up -d --build
 
 echo "⏳ Waiting for database to be ready..."
 # Wait for the database container to be healthy
