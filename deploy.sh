@@ -22,10 +22,11 @@ fi
 echo "📦 Using $DOCKER_COMPOSE_CMD..."
 $DOCKER_COMPOSE_CMD up -d --build
 
-echo "⏳ Waiting for database to be ready..."
+echo "⏳ Waiting for database to be ready (this may take a minute on first run)..."
 # Wait for the database container to be healthy
-until [ "`docker inspect -f {{.State.Health.Status}} portafolio-db`"=="healthy" ]; do
-    sleep 2
+until [ "$(docker inspect -f '{{.State.Health.Status}}' portafolio-db 2>/dev/null)" = "healthy" ]; do
+    echo "..."
+    sleep 5
 done
 
 echo "⚙️ Running Database Migrations..."
