@@ -11,6 +11,9 @@ fi
 
 echo "🚀 Starting deployment with Docker..."
 
+echo "📥 Pulling latest changes from Git..."
+git pull origin main || echo "⚠️ Warning: git pull failed or is not a git repository. Continuing deployment..."
+
 # 2. Build and start containers
 # Determine if we should use 'docker-compose' or 'docker compose'
 if command -v docker-compose &> /dev/null; then
@@ -39,5 +42,12 @@ if [[ $run_seeders =~ ^[Yy]$ ]]; then
 fi
 
 echo "✅ Deployment completed successfully!"
-echo "Frontend: http://localhost"
-echo "Backend API: http://localhost/api"
+
+# Extract FRONTEND_URL from .env file if it exists, otherwise use localhost
+DISPLAY_URL=$(grep '^FRONTEND_URL=' .env | cut -d '=' -f2)
+if [ -z "$DISPLAY_URL" ]; then
+    DISPLAY_URL="http://localhost"
+fi
+
+echo "Frontend: $DISPLAY_URL"
+echo "Backend API: $DISPLAY_URL/api"
