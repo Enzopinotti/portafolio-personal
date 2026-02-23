@@ -41,7 +41,7 @@ passport.use(new LocalStrategy({
 passport.use(new GoogleStrategy({
   clientID: process.env.GOOGLE_CLIENT_ID,
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-  callbackURL: '/api/usuarios/auth/google/callback',
+  callbackURL: process.env.GOOGLE_CALLBACK_URL || '/api/usuarios/auth/google/callback',
   proxy: true, // Esto es clave para que reemplace HTTP por HTTPS en producción (detrás de nginx/docker)
   passReqToCallback: true, // para pasar req al callback y, opcionalmente, registrar eventos
 }, async (req, accessToken, refreshToken, profile, done) => {
