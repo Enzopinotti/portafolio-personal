@@ -50,8 +50,8 @@ const Header = () => {
           <Nav handleMenuToggle={toggleMenu} />
           <div className="menu-buttons">
             <a
-              href="URL_DEL_CV"
-              download="Mi_CV.pdf"
+              href="/CV_Enzo_Pinotti.pdf"
+              download="CV_Enzo_Pinotti.pdf"
               className="download-button"
             >
               {t('header.downloadCV')}
@@ -85,7 +85,7 @@ const Header = () => {
                   <FaUser style={{ marginRight: '0.5rem' }} />
                   {t('header.myProfile') || 'Mi Perfil'}
                 </button>
-                
+
                 {user.Rol.nombre === "admin" && (
                   <button
                     type="button"
@@ -98,7 +98,7 @@ const Header = () => {
                     {t('header.adminPanel') || 'Admin Panel'}
                   </button>
                 )}
-                
+
                 <button onClick={handleLogout}>
                   <FaSignOutAlt style={{ marginRight: '0.5rem' }} />
                   {t('header.logout') || 'Cerrar Sesión'}

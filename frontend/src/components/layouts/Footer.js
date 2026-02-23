@@ -10,10 +10,10 @@ const Footer = () => {
         <p>© Enzo Pinotti - Todos los derechos reservados</p>
       </div>
       <div className="social-icons">
-        <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
+        <a href="https://www.instagram.com/enzoopinotti/" target="_blank" rel="noopener noreferrer">
           <FaInstagram size={24} />
         </a>
-        <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">
+        <a href="https://www.linkedin.com/in/enzo-daniel-pinotti-667270179/" target="_blank" rel="noopener noreferrer">
           <FaLinkedinIn size={24} />
         </a>
         <a href="https://wa.me/2346304036" target="_blank" rel="noopener noreferrer">
