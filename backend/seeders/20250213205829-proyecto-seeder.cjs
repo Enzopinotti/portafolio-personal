@@ -23,7 +23,9 @@ module.exports = {
         imagen_pastilla: "pastilla2.png",
         max_imagenes: 5
       }
-    ], { ignoreDuplicates: true });
+    ], {
+      updateOnDuplicate: ["titulo", "descripcion", "fecha_inicio", "fecha_fin", "enlace", "imagen_pastilla", "max_imagenes"]
+    });
   },
 
   async down(queryInterface, Sequelize) {
