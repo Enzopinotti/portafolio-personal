@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { FaEllipsisV } from 'react-icons/fa';
+import { useTranslation } from 'react-i18next';
 
 const ProjectActionsDropdown = ({
   onAssignSkills,
@@ -7,6 +8,7 @@ const ProjectActionsDropdown = ({
   onEdit,
   onDelete
 }) => {
+  const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -31,10 +33,10 @@ const ProjectActionsDropdown = ({
 
       {isOpen && (
         <ul className="dropdown-menu">
-          <li onClick={() => { onAssignSkills(); setIsOpen(false); }}>Asignar Skill</li>
-          <li onClick={() => { onAssignServices(); setIsOpen(false); }}>Asignar Servicios</li>
-          <li onClick={() => { onEdit(); setIsOpen(false); }}>Editar Proyecto</li>
-          <li className="danger" onClick={() => { onDelete(); setIsOpen(false); }}>Eliminar Proyecto</li>
+          <li onClick={() => { onAssignSkills(); setIsOpen(false); }}>{t('dropdownActions.assignSkill')}</li>
+          <li onClick={() => { onAssignServices(); setIsOpen(false); }}>{t('dropdownActions.assignServices')}</li>
+          <li onClick={() => { onEdit(); setIsOpen(false); }}>{t('dropdownActions.editProject')}</li>
+          <li className="danger" onClick={() => { onDelete(); setIsOpen(false); }}>{t('dropdownActions.deleteProject')}</li>
         </ul>
       )}
     </div>

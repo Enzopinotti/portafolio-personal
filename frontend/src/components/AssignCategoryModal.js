@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaTimes } from 'react-icons/fa';
+import { useTranslation } from 'react-i18next';
 
 const AssignCategoryModal = ({
   isOpen,
@@ -10,6 +11,7 @@ const AssignCategoryModal = ({
   onCancel,
   currentCategories = []
 }) => {
+  const { t } = useTranslation();
   // Inicializamos el estado a partir de currentCategories (convertido a array de números)
   const [selectedCategories, setSelectedCategories] = useState(
     () => currentCategories.map(cat => cat.idCategoriaSkill)
@@ -68,7 +70,7 @@ const AssignCategoryModal = ({
             <button className="assign-close" onClick={onCancel}>
               <FaTimes />
             </button>
-            <h3>Asignar Categorías</h3>
+            <h3>{t('assignCategoryModal.title')}</h3>
             <div className="category-list">
               {availableCategories.map((cat) => (
                 <label key={cat.idCategoriaSkill} className="category-label">
@@ -84,10 +86,10 @@ const AssignCategoryModal = ({
             </div>
             <div className="assign-buttons">
               <button className="btn-save" onClick={handleSave}>
-                Guardar
+                {t('assignSkillModal.save')}
               </button>
               <button className="btn-cancel" onClick={onCancel}>
-                Cancelar
+                {t('assignSkillModal.cancel')}
               </button>
             </div>
           </motion.div>

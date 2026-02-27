@@ -8,22 +8,22 @@ import RegisterForm from './RegisterForm.js';
 const getModalVariants = (direction = 'forward') => {
   return direction === 'forward'
     ? {
-        hidden: { opacity: 0, y: '-100vh' },
-        visible: { opacity: 1, y: '0' },
-        exit: { opacity: 0, y: '100vh' }
-      }
+      hidden: { opacity: 0, y: '-100vh' },
+      visible: { opacity: 1, y: '0' },
+      exit: { opacity: 0, y: '100vh' }
+    }
     : {
-        hidden: { opacity: 0, y: '100vh' },
-        visible: { opacity: 1, y: '0' },
-        exit: { opacity: 0, y: '-100vh' }
-      };
+      hidden: { opacity: 0, y: '100vh' },
+      visible: { opacity: 1, y: '0' },
+      exit: { opacity: 0, y: '-100vh' }
+    };
 };
 
 const RegisterModal = ({
   isOpen,
   onClose,
   onRegister,
-  onSwitchToLogin = () => {},
+  onSwitchToLogin = () => { },
   direction = 'forward'
 }) => {
   const { t } = useTranslation();
@@ -67,7 +67,7 @@ const RegisterModal = ({
             onClick={(e) => e.stopPropagation()}
           >
             <div className="leftModal">
-              <img src={imageSrc} alt="register" />
+              <img src={imageSrc} alt={t('imgAlt.register')} />
             </div>
             <div className="rightModal">
               <button className="close-icon" onClick={onClose}>

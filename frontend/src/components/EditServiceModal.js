@@ -3,8 +3,10 @@ import React, { useState, useEffect } from 'react';
 import { FaTimes } from 'react-icons/fa';
 import { editServicio, uploadPortadaServicio, viewServicio } from '../services/servicioService.js';
 import { toast } from 'react-toastify';
+import { useTranslation } from 'react-i18next';
 
 const EditServiceModal = ({ isOpen, service, onClose, onSave, accessToken }) => {
+  const { t } = useTranslation();
   const [formValues, setFormValues] = useState({
     nombre: '',
     descripcion: '',
@@ -92,10 +94,10 @@ const EditServiceModal = ({ isOpen, service, onClose, onSave, accessToken }) => 
         <button className="close-btn" onClick={onClose}>
           <FaTimes />
         </button>
-        <h3>Editar Servicio</h3>
+        <h3>{t('editServiceModal.title')}</h3>
 
         <form className="new-project-form" onSubmit={handleSubmit}>
-          <label htmlFor="nombre">Nombre del servicio</label>
+          <label htmlFor="nombre">{t('editServiceModal.serviceName')}</label>
           <input
             id="nombre"
             type="text"
@@ -104,7 +106,7 @@ const EditServiceModal = ({ isOpen, service, onClose, onSave, accessToken }) => 
             onChange={handleChange}
           />
 
-          <label htmlFor="descripcion">Descripción</label>
+          <label htmlFor="descripcion">{t('editServiceModal.description')}</label>
           <textarea
             id="descripcion"
             name="descripcion"
@@ -112,7 +114,7 @@ const EditServiceModal = ({ isOpen, service, onClose, onSave, accessToken }) => 
             onChange={handleChange}
           />
 
-          <label htmlFor="precio">Precio</label>
+          <label htmlFor="precio">{t('editServiceModal.price')}</label>
           <input
             id="precio"
             type="number"
@@ -121,7 +123,7 @@ const EditServiceModal = ({ isOpen, service, onClose, onSave, accessToken }) => 
             onChange={handleChange}
           />
 
-          <label htmlFor="portada">Imagen del servicio (portada)</label>
+          <label htmlFor="portada">{t('editServiceModal.coverImage')}</label>
           <input
             id="portada"
             type="file"
@@ -131,12 +133,12 @@ const EditServiceModal = ({ isOpen, service, onClose, onSave, accessToken }) => 
 
           {previewUrl && (
             <div className="preview-pastilla">
-              <img src={previewUrl} alt="Portada" className="preview-img" />
+              <img src={previewUrl} alt={t('editServiceModal.currentCover')} className="preview-img" />
               <button type="button" className="close-button" onClick={handleRemovePreview}>✕</button>
             </div>
           )}
 
-          <button type="submit">Guardar</button>
+          <button type="submit">{t('editServiceModal.save')}</button>
         </form>
       </div>
     </div>

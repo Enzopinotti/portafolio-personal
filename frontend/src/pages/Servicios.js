@@ -1,9 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { motion } from 'framer-motion';
 import { listServicios } from '../services/servicioService.js';
 import VerticalInfiniteSlider from '../components/VerticalInfiniteSlider.js';
+import ServicioCard from '../components/ServicioCard.js'; // Added as per instruction
+import { useTranslation } from 'react-i18next';
+import { NavigationContext } from '../context/NavigationContext.js';
 
 const Servicios = () => {
+  const { t } = useTranslation();
+  const { navigationDirection } = useContext(NavigationContext); // Added as per instruction
   const [servicios, setServicios] = useState([]);
   const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 1080);
 
@@ -27,48 +32,23 @@ const Servicios = () => {
       .catch(err => console.error('Error al cargar servicios:', err));
   }, []);
 
-  const renderDesktopTitles = () => {
-    const titles = [];
-    for (let i = 0; i < 10; i++) {
-      const opacity = (1 - i * 0.1).toFixed(1);
-      const className = `titulo-servicios op${opacity.replace('.', '_')}`;
-      titles.push(
-        <h2
-          key={i}
-          className={className}
-          data-opacity={opacity} // Guardamos la opacidad base
-        >
-          Mis Servicios
-        </h2>
-      );
-    }
-    return titles;
-  };
-
-  const renderMobileTitles = () => (
-    <>
-      <h2 className="titulo-servicios mobile op1">Mis Servicios</h2>
-      <h2 className="titulo-servicios mobile op0_8">Mis Servicios</h2>
-      <h2 className="titulo-servicios mobile op0_4">Mis Servicios</h2>
-      <h2 className="titulo-servicios mobile op0_2">Mis Servicios</h2>
-    </>
-  );
+  // renderDesktopTitles and renderMobileTitles functions are removed as they are no longer used.
 
   return (
     <motion.div
       className="page servicios-page"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -20 }}
-      transition={{ duration: 0.5, ease: 'easeInOut' }}
+      exit={{ opacity: 0, y: -20 }} // Kept original exit prop, as instruction was malformed
+      transition={{ duration: 0.5, ease: 'easeInOut' }} // Kept original ease, as instruction omitted it
     >
-      <div className="servicios-container">
-        <div className="servicios-left">
-        {isDesktop ? renderDesktopTitles() : renderMobileTitles()}
-        </div>
-        <div className="servicios-right">
-          <VerticalInfiniteSlider items={servicios} />
-        </div>
+      <h1 className="servicios-title">{t('services.title')}</h1>
+      <p className="servicios-description">
+        {t('home.intro').includes('en') ? 'Discover the different ways I can help you boost your business or digital project.' : t('home.intro').includes('pt') ? 'Descubra as diferentes maneiras de ajudá-lo a impulsionar o seu negócio ou projeto digital.' : 'Descubre las diferentes formas en las que puedo ayudarte a potenciar tu negocio o proyecto digital.'}
+      </p>
+
+      <div className="servicios-list-container">
+        <VerticalInfiniteSlider items={servicios} />
       </div>
     </motion.div>
   );

@@ -4,8 +4,10 @@ import { NavigationContext } from '../context/NavigationContext.js';
 import { getArticles } from '../services/articleService.js';
 import DeviceReels from '../components/DeviceReels.js';
 import useWindowWidth from '../hooks/useWindowWidth.js';
+import { useTranslation } from 'react-i18next';
 
 const Blog = () => {
+  const { t } = useTranslation();
   const { navigationDirection } = useContext(NavigationContext);
   const [articulos, setArticulos] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -68,16 +70,15 @@ const Blog = () => {
       exit="exit"
       transition={{ duration: 0.5 }}
     >
-      <h1 className="blog-title">Blog</h1>
-      <p className="blog-subtitle">
-        Artículos sobre <span className="highlight">tecnología</span> y <strong>experiencias reales</strong>
+      <h1 className="blog-title">{t('blog.title')}</h1>
+      <p className="blog-subtitle" dangerouslySetInnerHTML={{ __html: t('blog.subtitle').replace('tecnología', '<span class="highlight">tecnología</span>').replace('technology', '<span class="highlight">technology</span>').replace('tecnologia', '<span class="highlight">tecnologia</span>').replace('experiencias reales', '<strong>experiencias reales</strong>').replace('real experiences', '<strong>real experiences</strong>').replace('experiências reais', '<strong>experiências reais</strong>') }}>
       </p>
-      <input type="text" className="blog-search" placeholder="Buscar artículo..." />
+      <input type="text" className="blog-search" placeholder={t('blog.searchPlaceholder')} />
       <div className="blog-tags">
-        <span className="tag">Desarrollo</span>
-        <span className="tag">Diseño</span>
-        <span className="tag">Experiencia</span>
-        <span className="tag">Tips</span>
+        <span className="tag">{t('blog.categoryDevelopment')}</span>
+        <span className="tag">{t('blog.categoryDesign')}</span>
+        <span className="tag">{t('blog.categoryExperience')}</span>
+        <span className="tag">{t('blog.categoryTips')}</span>
       </div>
 
       <div className="blog-cards">
@@ -85,7 +86,7 @@ const Blog = () => {
           <div key={articulo.idArticulo} className="blog-card">
             <div className="card-img" />
             <div className="card-author">
-              <img src="/img/avatar-default.jpg" alt="Avatar" />
+              <img src="/img/avatar-default.jpg" alt={t('altTexts.avatar')} />
               <span>{articulo.autor}</span>
               <span className="arrow">→</span>
             </div>
@@ -98,16 +99,16 @@ const Blog = () => {
       </div>
 
       <div className="pagination">
-        <button onClick={handlePrev} disabled={currentPage === 1}>Anterior</button>
+        <button onClick={handlePrev} disabled={currentPage === 1}>{t('blog.prev')}</button>
         <span>
-          Página {currentPage} de {totalPages}
+          {t('adminProjectForm.page')} {currentPage} / {totalPages}
         </span>
-        <button onClick={handleNext} disabled={currentPage === totalPages}>Siguiente</button>
+        <button onClick={handleNext} disabled={currentPage === totalPages}>{t('blog.next')}</button>
       </div>
 
       {/* Galería de reels */}
       <div className="reels-section">
-        <h2>Reels</h2>
+        <h2>{t('blog.reelsTitle')}</h2>
         <div className="devices-container">
           {isMobile ? (
             <div className="mobiles-container">
@@ -119,8 +120,7 @@ const Blog = () => {
                   className="mobile-tall"
                   zoom={iphoneZoom}
                 />
-                <h3 className="apariciones-title">
-                  Apariciones en la web – <span className="text-white">Son reels donde aparezco</span> y <span className="text-medium">subo novedades</span>
+                <h3 className="apariciones-title" dangerouslySetInnerHTML={{ __html: 'Apariciones en la web – ' + t('blog.reelsSubtitle').split('|')[0] + ' <span class="text-medium">' + (t('blog.reelsSubtitle').split('|')[1] || '') + '</span>' }}>
                 </h3>
               </div>
             </div>
@@ -134,8 +134,7 @@ const Blog = () => {
                   className="mobile-tall"
                   zoom={iphoneZoom}
                 />
-                <h3 className="apariciones-title">
-                  Apariciones en la web – <span className="text-white">Son reels donde aparezco</span> y <span className="text-medium">subo novedades</span>
+                <h3 className="apariciones-title" dangerouslySetInnerHTML={{ __html: 'Apariciones en la web – ' + t('blog.reelsSubtitle').split('|')[0] + ' <span class="text-medium">' + (t('blog.reelsSubtitle').split('|')[1] || '') + '</span>' }}>
                 </h3>
               </div>
               <div className="mobile-title-celDos">
@@ -146,8 +145,7 @@ const Blog = () => {
                   className="mobile-short"
                   zoom={samsungZoom}
                 />
-                <h3 className="apariciones-title">
-                  Celular <span className="text-white">Corto</span> – <span className="text-medium">Reels de Proyectos Innovadores</span>
+                <h3 className="apariciones-title" dangerouslySetInnerHTML={{ __html: 'Celular <span class="text-white">' + t('blog.reelsAltSubtitle').split('|')[0] + '</span> – <span class="text-medium">' + (t('blog.reelsAltSubtitle').split('|')[1] || '') + '</span>' }}>
                 </h3>
               </div>
             </div>

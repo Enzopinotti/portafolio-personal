@@ -20,8 +20,10 @@ import { toast } from 'react-toastify';
 // Ejemplo para cargar skills y servicios con paginación
 import { listSkillsPaginated } from '../services/skillService.js';
 import { listServiciosPaginated } from '../services/servicioService.js';
+import { useTranslation } from 'react-i18next';
 
 const EditProjectModal = ({ isOpen, project, onClose, onSave }) => {
+  const { t } = useTranslation();
   const { accessToken } = useContext(AuthContext);
 
   // Estado interno de "editedProject"
@@ -165,7 +167,7 @@ const EditProjectModal = ({ isOpen, project, onClose, onSave }) => {
             <button className="close-btn" onClick={onClose}>
               <FaTimes />
             </button>
-            <h3>Editar Proyecto</h3>
+            <h3>{t('editProjectModal.title')}</h3>
 
             <AdminProjectForm
               newProject={editedProject}

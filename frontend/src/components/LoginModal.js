@@ -9,24 +9,24 @@ import LoginForm from './LoginForm.js';
 const getModalVariants = (direction = 'forward') => {
   return direction === 'forward'
     ? {
-        hidden: { opacity: 0, y: '-100vh' },
-        visible: { opacity: 1, y: '0' },
-        exit: { opacity: 0, y: '100vh' }
-      }
+      hidden: { opacity: 0, y: '-100vh' },
+      visible: { opacity: 1, y: '0' },
+      exit: { opacity: 0, y: '100vh' }
+    }
     : {
-        hidden: { opacity: 0, y: '100vh' },
-        visible: { opacity: 1, y: '0' },
-        exit: { opacity: 0, y: '-100vh' }
-      };
+      hidden: { opacity: 0, y: '100vh' },
+      visible: { opacity: 1, y: '0' },
+      exit: { opacity: 0, y: '-100vh' }
+    };
 };
 
 const LoginModal = ({
   isOpen,
   onClose,
   onLogin,
-  onForgotPassword = () => {},
-  onRegister = () => {},
-  onGoogleLogin = () => {},
+  onForgotPassword = () => { },
+  onRegister = () => { },
+  onGoogleLogin = () => { },
   direction = 'forward'
 }) => {
   const { t } = useTranslation();
@@ -75,7 +75,7 @@ const LoginModal = ({
             onClick={(e) => e.stopPropagation()}
           >
             <div className="leftModal">
-              <img src={imageSrc} alt="login" />
+              <img src={imageSrc} alt={t('imgAlt.login')} />
             </div>
             <div className="rightModal">
               <button className="close-icon" onClick={onClose}>

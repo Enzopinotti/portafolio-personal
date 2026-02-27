@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { toast } from 'react-toastify';
 import { enviarMensajeContacto } from '../services/contactoService.js';
 import { listServicios } from '../services/servicioService.js';
+import { useTranslation } from 'react-i18next';
 
 const formVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -25,6 +26,7 @@ const buttonVariants = {
 };
 
 const Contacto = () => {
+  const { t } = useTranslation();
   const [nombreCompleto, setNombreCompleto] = useState('');
   const [email, setEmail] = useState('');
   const [mensaje, setMensaje] = useState('');
@@ -56,7 +58,7 @@ const Contacto = () => {
   };
 
   return (
-    <motion.div 
+    <motion.div
       className="page contacto-page"
       initial="hidden"
       animate="visible"
@@ -66,17 +68,17 @@ const Contacto = () => {
       <div className="contacto-container">
         <div className="contacto-right">
           <div className="contacto-info">
-            <h2>Contacto</h2>
-            <p>Email: <a href="mailto:enzopinottii@gmail.com">enzopinottii@gmail.com</a></p>
-            <p>Teléfono: <a className='telefonoContacto' href="tel:+542346304036">+54 2346 304036</a></p>
-            <p className='direccion'>Argentina, Buenos Aires, La Plata</p>
+            <h2>{t('contacto.title')}</h2>
+            <p>{t('contacto.email')} <a href="mailto:enzopinottii@gmail.com">enzopinottii@gmail.com</a></p>
+            <p>{t('contacto.phone')} <a className='telefonoContacto' href="tel:+542346304036">+54 2346 304036</a></p>
+            <p className='direccion'>{t('contacto.address')}</p>
           </div>
 
           <div className="contacto-form">
-            <h3>Envíame un mensaje</h3>
+            <h3>{t('contacto.sendMessage')}</h3>
             <motion.form onSubmit={handleSubmit} variants={formVariants}>
               <motion.div className="form-group" variants={inputVariants}>
-                <label htmlFor="nombre">Nombre completo</label>
+                <label htmlFor="nombre">{t('contacto.fullName')}</label>
                 <input
                   type="text"
                   id="nombre"
@@ -89,7 +91,7 @@ const Contacto = () => {
               </motion.div>
 
               <motion.div className="form-group" variants={inputVariants}>
-                <label htmlFor="email">Email</label>
+                <label htmlFor="email">{t('contacto.emailLabel')}</label>
                 <input
                   type="email"
                   id="email"
@@ -102,14 +104,14 @@ const Contacto = () => {
               </motion.div>
 
               <motion.div className="form-group" variants={inputVariants}>
-                <label htmlFor="servicio">Servicio de interés</label>
+                <label htmlFor="servicio">{t('contacto.interestedService')}</label>
                 <select
                   id="servicio"
                   required
                   value={servicioInteres}
                   onChange={(e) => setServicioInteres(e.target.value)}
                 >
-                  <option value="">Selecciona un servicio</option>
+                  <option value="">{t('contacto.selectService')}</option>
                   {servicios.map(servicio => (
                     <option key={servicio.idServicio} value={servicio.nombre}>{servicio.nombre}</option>
                   ))}
@@ -117,7 +119,7 @@ const Contacto = () => {
               </motion.div>
 
               <motion.div className="form-group" variants={inputVariants}>
-                <label htmlFor="mensaje">Mensaje</label>
+                <label htmlFor="mensaje">{t('contacto.message')}</label>
                 <textarea
                   id="mensaje"
                   name="mensaje"
@@ -129,7 +131,7 @@ const Contacto = () => {
               </motion.div>
 
               <motion.button type="submit" variants={buttonVariants} disabled={isLoading}>
-                {isLoading ? <span className="loader"></span> : 'Enviar'}
+                {isLoading ? <span className="loader"></span> : t('contacto.send')}
               </motion.button>
             </motion.form>
           </div>

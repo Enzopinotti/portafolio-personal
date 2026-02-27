@@ -83,7 +83,7 @@ const Header = () => {
                   }}
                 >
                   <FaUser style={{ marginRight: '0.5rem' }} />
-                  {t('header.myProfile') || 'Mi Perfil'}
+                  {t('header.myProfile')}
                 </button>
 
                 {user.Rol.nombre === "admin" && (
@@ -95,13 +95,13 @@ const Header = () => {
                     }}
                   >
                     <FaUserShield style={{ marginRight: '0.5rem' }} />
-                    {t('header.adminPanel') || 'Admin Panel'}
+                    {t('header.adminPanel')}
                   </button>
                 )}
 
                 <button onClick={handleLogout}>
                   <FaSignOutAlt style={{ marginRight: '0.5rem' }} />
-                  {t('header.logout') || 'Cerrar Sesión'}
+                  {t('header.logout')}
                 </button>
               </div>
             )}

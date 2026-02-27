@@ -4,8 +4,10 @@ import { NavigationContext } from '../context/NavigationContext.js';
 import SliderInfinito from '../components/SliderInfinito.js';
 import { listProjectsPublicos } from '../services/projectService.js';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const Proyectos = () => {
+  const { t } = useTranslation();
   const { navigationDirection } = useContext(NavigationContext);
   const [proyectos, setProyectos] = useState([]);
   const navigate = useNavigate();
@@ -48,9 +50,9 @@ const Proyectos = () => {
       exit="exit"
       transition={{ duration: 0.5 }}
     >
-      <h1 className="proyectos-title">Mis Proyectos</h1>
+      <h1 className="proyectos-title">{t('projects.title')}</h1>
       <p className="proyectos-description">
-        Aquí presento algunos ejemplos de proyectos que he desarrollado.
+        {t('home.intro').includes('en') ? 'Here I present some examples of projects I have developed.' : t('home.intro').includes('pt') ? 'Aqui apresento alguns exemplos de projetos que desenvolvi.' : 'Aquí presento algunos ejemplos de proyectos que he desarrollado.'}
       </p>
       <SliderInfinito
         slides={slides}

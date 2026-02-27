@@ -8,23 +8,23 @@ import ForgotPasswordForm from './ForgotPasswordForm.js';
 const getModalVariants = (direction = 'forward') => {
   return direction === 'forward'
     ? {
-        hidden: { opacity: 0, y: '-100vh' },
-        visible: { opacity: 1, y: '0' },
-        exit: { opacity: 0, y: '100vh' },
-      }
+      hidden: { opacity: 0, y: '-100vh' },
+      visible: { opacity: 1, y: '0' },
+      exit: { opacity: 0, y: '100vh' },
+    }
     : {
-        hidden: { opacity: 0, y: '100vh' },
-        visible: { opacity: 1, y: '0' },
-        exit: { opacity: 0, y: '-100vh' },
-      };
+      hidden: { opacity: 0, y: '100vh' },
+      visible: { opacity: 1, y: '0' },
+      exit: { opacity: 0, y: '-100vh' },
+    };
 };
 
 const ForgotPasswordModal = ({
   isOpen,
   onClose,
   onForgotPasswordSubmit, // callback opcional para enviar formulario
-  onSwitchToLogin = () => {},
-  onForgotSuccess = () => {},
+  onSwitchToLogin = () => { },
+  onForgotSuccess = () => { },
   direction = 'forward',
 }) => {
   const { t } = useTranslation();
@@ -37,7 +37,7 @@ const ForgotPasswordModal = ({
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
-  
+
   // Seleccionar imagen según el ancho
   const imageSrc = windowWidth < 800 ? '/images/PatronDos.png' : '/images/patronUno.png';
 
@@ -70,7 +70,7 @@ const ForgotPasswordModal = ({
             onClick={(e) => e.stopPropagation()}
           >
             <div className="leftModal">
-              <img src={imageSrc} alt="Forgot Password" />
+              <img src={imageSrc} alt={t('imgAlt.forgotPassword')} />
             </div>
             <div className="rightModal">
               <button className="close-icon" onClick={onClose}>

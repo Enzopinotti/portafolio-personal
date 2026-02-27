@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaTimes } from 'react-icons/fa';
+import { useTranslation } from 'react-i18next';
 
 const AssignSkillModal = ({
   isOpen,
@@ -13,6 +14,7 @@ const AssignSkillModal = ({
   onCancel,
   currentSkills = []
 }) => {
+  const { t } = useTranslation();
   const [selectedSkills, setSelectedSkills] = useState(
     currentSkills.map(skill => skill.idSkill)
   );
@@ -67,7 +69,7 @@ const AssignSkillModal = ({
             <button className="assign-close" onClick={onCancel}>
               <FaTimes />
             </button>
-            <h3>Asignar Skills</h3>
+            <h3>{t('assignSkillModal.title')}</h3>
 
             <div className="skill-list">
               {availableSkills.map(skill => (
@@ -91,7 +93,7 @@ const AssignSkillModal = ({
                 disabled={skillPage <= 1}
                 onClick={() => setSkillPage(skillPage - 1)}
               >
-                Prev
+                {t('adminProjectForm.prevPage')}
               </button>
               <span>{skillPage} / {skillPages}</span>
               <button
@@ -99,13 +101,13 @@ const AssignSkillModal = ({
                 disabled={skillPage >= skillPages}
                 onClick={() => setSkillPage(skillPage + 1)}
               >
-                Next
+                {t('adminProjectForm.nextPage')}
               </button>
             </div>
 
             <div className="assign-buttons">
-              <button className="btn-save" onClick={handleSave}>Guardar</button>
-              <button className="btn-cancel" onClick={onCancel}>Cancelar</button>
+              <button className="btn-save" onClick={handleSave}>{t('assignSkillModal.save')}</button>
+              <button className="btn-cancel" onClick={onCancel}>{t('assignSkillModal.cancel')}</button>
             </div>
           </motion.div>
         </motion.div>

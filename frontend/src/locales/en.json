@@ -3,7 +3,7 @@
     "login": "Log In",
     "downloadCV": "Download CV",
     "myProfile": "My Profile",
-    "logout": "Log Out",
+    "logout": "Log out",
     "adminPanel": "Admin Panel",
     "nav": {
       "home": "Home",
@@ -58,22 +58,25 @@
     "lastName": "Surname",
     "email": "Email",
     "password": "Password",
-    "save": "Save",
+    "save": "Save changes",
     "welcome": "Welcome to your profile.",
     "logout": "Log Out",
     "deleteAccount": "Delete Account",
     "deleteAccountConfirmation": "Are you sure you want to delete your account? This action cannot be undone.",
     "deleteAccountSuccess": "Account deleted successfully.",
     "deleteAccountError": "There was a problem deleting your account. Please try again.",
-    "loading": "Loading...",
+    "loading": "Uploading...",
     "success": "Profile updated successfully.",
     "error": "There was a problem updating your profile. Please try again.",
-    "updated": "Profile updated successfully.",
-    "editAvatar": "Edit Avatar",
-    "avatarUpdated": "Avatar updated successfully.",
+    "updated": "Profile updated successfully",
+    "editAvatar": "Edit",
+    "avatarUpdated": "Avatar updated successfully",
     "saveAvatar": "Save Avatar",
-    "deleteAvatar": "Delete Avatar",
-    "avatarDeleted": "Avatar deleted successfully."
+    "deleteAvatar": "Delete photo",
+    "avatarDeleted": "Profile picture deleted",
+    "imageTooLarge": "The image is too large. Maximum size is 10MB.",
+    "avatarUpdateError": "Error updating avatar",
+    "avatarDeleteError": "Error deleting avatar"
   },
   "forgotModal": {
     "title": "Reset Password",
@@ -164,7 +167,12 @@
     "page": "Page",
     "nextPage": "Next Page",
     "prevPage": "Previous Page",
-    "editButton": "Edit Project"
+    "editButton": "Edit Project",
+    "coverImage": "Cover Image",
+    "newCover": "New Cover",
+    "currentCover": "Current Cover",
+    "extraImages": "Extra Images (max 5)",
+    "dbImage": "DB Image"
   },
   "adminSkillsModal": {
     "altImage": "Skills Pattern",
@@ -312,5 +320,94 @@
       "updateError": "Error updating settings."
     },
     "errorLoad": "Error loading settings"
+  },
+  "blog": {
+    "title": "Blog",
+    "subtitle": "technology | real experiences",
+    "searchPlaceholder": "Search article...",
+    "categoryDevelopment": "Development",
+    "categoryDesign": "Design",
+    "categoryExperience": "Experience",
+    "categoryTips": "Tips",
+    "prev": "Previous",
+    "next": "Next",
+    "reelsTitle": "Reels",
+    "reelsSubtitle": "Reels where I appear | upload news",
+    "reelsAltSubtitle": "Short | Innovative Projects Reels"
+  },
+  "contacto": {
+    "title": "Contact",
+    "email": "Email:",
+    "phone": "Phone:",
+    "address": "Argentina, Buenos Aires, La Plata",
+    "sendMessage": "Send me a message",
+    "fullName": "Full Name",
+    "emailLabel": "Email",
+    "interestedService": "Service of interest",
+    "selectService": "Select a service",
+    "message": "Message",
+    "send": "Send"
+  },
+  "proyectoDetalle": {
+    "loading": "Loading...",
+    "skillsUsed": "Used Skills",
+    "noSkills": "No skills specified for this project.",
+    "servicesOffered": "Offered Services",
+    "noServices": "No services specified for this project."
+  },
+  "projects": {
+    "title": "My Projects"
+  },
+  "services": {
+    "title": "My Services"
+  },
+  "footer": {
+    "copyright": "© Enzo Pinotti - All rights reserved"
+  },
+  "dropdownActions": {
+    "assignSkill": "Assign Skill",
+    "assignServices": "Assign Services",
+    "editProject": "Edit Project",
+    "deleteProject": "Delete Project"
+  },
+  "assignSkillModal": {
+    "title": "Assign Skills",
+    "save": "Save",
+    "cancel": "Cancel"
+  },
+  "assignCategoryModal": {
+    "title": "Assign Categories"
+  },
+  "assignServiceModal": {
+    "title": "Assign Services"
+  },
+  "editProjectModal": {
+    "title": "Edit Project"
+  },
+  "editServiceModal": {
+    "title": "Edit Service",
+    "serviceName": "Service Name",
+    "description": "Description",
+    "price": "Price",
+    "coverImage": "Service Image (Cover)",
+    "currentCover": "Cover",
+    "save": "Save"
+  },
+  "altTexts": {
+    "emailConfirmation": "Email Confirmation",
+    "forgotPassword": "Forgot Password",
+    "login": "login",
+    "avatar": "Avatar",
+    "register": "register",
+    "resetPassword": "Reset Password",
+    "logo": "Logo"
+  },
+  "imgAlt": {
+    "emailConfirmation": "Email Confirmation",
+    "forgotPassword": "Forgot Password",
+    "login": "Login",
+    "register": "Register",
+    "resetPassword": "Reset Password",
+    "profile": "Profile Default"
   }
 }

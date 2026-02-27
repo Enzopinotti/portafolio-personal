@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaTimes } from 'react-icons/fa';
+import { useTranslation } from 'react-i18next';
 
 /**
  * Props:
@@ -22,6 +23,7 @@ const AssignServiceModal = ({
   onCancel,
   currentServices = [],
 }) => {
+  const { t } = useTranslation();
   // Inicializamos selectedServices a partir de currentServices (usando idServicio)
   const [selectedServices, setSelectedServices] = useState(() =>
     currentServices.map(s => s.idServicio)
@@ -80,7 +82,7 @@ const AssignServiceModal = ({
             <button className="assign-close" onClick={onCancel}>
               <FaTimes />
             </button>
-            <h3>Asignar Servicios</h3>
+            <h3>{t('assignServiceModal.title')}</h3>
 
             <div className="service-list">
               {availableServices.map((serv) => (
@@ -103,7 +105,7 @@ const AssignServiceModal = ({
                 disabled={servicePage <= 1}
                 onClick={() => setServicePage(servicePage - 1)}
               >
-                Prev
+                {t('adminProjectForm.prevPage')}
               </button>
               <span>{servicePage} / {servicePages}</span>
               <button
@@ -111,16 +113,16 @@ const AssignServiceModal = ({
                 disabled={servicePage >= servicePages}
                 onClick={() => setServicePage(servicePage + 1)}
               >
-                Next
+                {t('adminProjectForm.nextPage')}
               </button>
             </div>
 
             <div className="assign-buttons">
               <button className="btn-save" onClick={handleSave}>
-                Guardar
+                {t('assignSkillModal.save')}
               </button>
               <button className="btn-cancel" onClick={onCancel}>
-                Cancelar
+                {t('assignSkillModal.cancel')}
               </button>
             </div>
           </motion.div>

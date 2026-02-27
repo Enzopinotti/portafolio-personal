@@ -257,7 +257,7 @@ const AdminProjectForm = ({
       />
 
       {/* ========== Portada ========== */}
-      <label htmlFor="imagenPastilla">Imagen Pastilla (portada)</label>
+      <label htmlFor="imagenPastilla">{t('adminProjectForm.coverImage')}</label>
       <input
         id="imagenPastilla"
         type="file"
@@ -270,7 +270,7 @@ const AdminProjectForm = ({
         <div className="preview-pastilla">
           <img
             src={pendingPastilla.localUrl}
-            alt="Nueva Portada"
+            alt={t('adminProjectForm.newCover')}
             className="preview-img"
           />
           <button
@@ -291,7 +291,7 @@ const AdminProjectForm = ({
           <div className="preview-pastilla">
             <img
               src={newProject.imagenPastilla}
-              alt="Portada Actual BD"
+              alt={t('adminProjectForm.currentCover')}
               className="preview-img"
             />
             <button
@@ -305,7 +305,7 @@ const AdminProjectForm = ({
         )}
 
       {/* ========== Imágenes extras ========== */}
-      <label htmlFor="imagenesExtras">Imágenes Extras (máx 5)</label>
+      <label htmlFor="imagenesExtras">{t('adminProjectForm.extraImages')}</label>
       <input
         id="imagenesExtras"
         type="file"
@@ -321,7 +321,7 @@ const AdminProjectForm = ({
             <div key={img.idImagen} className="preview-item">
               <img
                 src={img.ruta}
-                alt="Imagen BD"
+                alt={t('adminProjectForm.dbImage')}
                 className="preview-img"
               />
               <button

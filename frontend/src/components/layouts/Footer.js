@@ -2,12 +2,14 @@
 import React from 'react';
 import { FaInstagram, FaLinkedinIn, FaWhatsapp } from 'react-icons/fa';
 import '../../styles/layouts/_footer.scss';
+import { useTranslation } from 'react-i18next';
 
 const Footer = () => {
+  const { t } = useTranslation();
   return (
     <div className="footer">
       <div className="copyright">
-        <p>© Enzo Pinotti - Todos los derechos reservados</p>
+        <p>{t('footer.copyright')}</p>
       </div>
       <div className="social-icons">
         <a href="https://www.instagram.com/enzoopinotti/" target="_blank" rel="noopener noreferrer">

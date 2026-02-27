@@ -8,15 +8,15 @@ import ResetPasswordForm from './ResetPasswordForm.js';
 const getModalVariants = (direction = 'forward') => {
   return direction === 'forward'
     ? {
-        hidden: { opacity: 0, y: '-100vh' },
-        visible: { opacity: 1, y: '0' },
-        exit: { opacity: 0, y: '100vh' }
-      }
+      hidden: { opacity: 0, y: '-100vh' },
+      visible: { opacity: 1, y: '0' },
+      exit: { opacity: 0, y: '100vh' }
+    }
     : {
-        hidden: { opacity: 0, y: '100vh' },
-        visible: { opacity: 1, y: '0' },
-        exit: { opacity: 0, y: '-100vh' }
-      };
+      hidden: { opacity: 0, y: '100vh' },
+      visible: { opacity: 1, y: '0' },
+      exit: { opacity: 0, y: '-100vh' }
+    };
 };
 
 const ResetPasswordModal = ({
@@ -67,7 +67,7 @@ const ResetPasswordModal = ({
             onClick={(e) => e.stopPropagation()}
           >
             <div className="leftModal">
-              <img src={imageSrc} alt="Reset Password" />
+              <img src={imageSrc} alt={t('imgAlt.resetPassword')} />
             </div>
             <div className="rightModal">
               <button className="close-icon" onClick={onClose}>

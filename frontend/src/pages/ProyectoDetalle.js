@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 import { getProjectById } from '../services/projectService.js';
 import { getImagenesByProyecto } from '../services/imageService.js';
@@ -20,6 +21,7 @@ const variantsContainer = {
 };
 
 const DetalleProyecto = () => {
+  const { t } = useTranslation();
   const { idProyecto } = useParams();
   const [proyecto, setProyecto] = useState(null);
   const [imagenes, setImagenes] = useState([]);
@@ -44,7 +46,7 @@ const DetalleProyecto = () => {
       .catch(err => console.error('Error cargando imágenes:', err));
   }, [idProyecto]);
 
-  if (!proyecto) return <div className="loading">Cargando...</div>;
+  if (!proyecto) return <div className="loading">{t('proyectoDetalle.loading')}</div>;
 
   // Por si usas Recharts en skills
   const skillData = proyecto.Skills?.map(skill => ({
@@ -60,12 +62,12 @@ const DetalleProyecto = () => {
       variants={variantsContainer}
     >
       <div className="detalle-proyecto-container">
-        
+
         {/* Sección de imágenes */}
         {imagenes.length > 0 && (
           isDesktop ? (
             // Desktop → slider vertical infinito
-            <VerticalInfiniteSliderImages 
+            <VerticalInfiniteSliderImages
               imagenes={imagenes}
               velocidad={40}
             />
@@ -81,18 +83,18 @@ const DetalleProyecto = () => {
           <p>{proyecto.descripcion}</p>
 
           {proyecto.enlace && (
-            <a 
-              href={proyecto.enlace} 
-              target="_blank" 
+            <a
+              href={proyecto.enlace}
+              target="_blank"
               rel="noopener noreferrer"
             >
               Ver Proyecto
             </a>
           )}
           {proyecto.enlaceGithub && (
-            <a 
-              href={proyecto.enlaceGithub} 
-              target="_blank" 
+            <a
+              href={proyecto.enlaceGithub}
+              target="_blank"
               rel="noopener noreferrer"
             >
               Ver Código en GitHub
@@ -101,7 +103,7 @@ const DetalleProyecto = () => {
 
           {/* Skills section con RadarChart (opcional) */}
           <motion.div className="skills-section">
-            <h3>Skills utilizadas</h3>
+            <h3>{t('proyectoDetalle.skillsUsed')}</h3>
             {skillData.length > 0 ? (
               <RadarChart outerRadius={90} width={400} height={300} data={skillData}>
                 <PolarGrid />
@@ -117,13 +119,13 @@ const DetalleProyecto = () => {
                 <Legend />
               </RadarChart>
             ) : (
-              <p>No se especificaron skills para este proyecto.</p>
+              <p>{t('proyectoDetalle.noSkills')}</p>
             )}
           </motion.div>
 
           {/* Servicios, etc. */}
           <motion.div className="servicios-section">
-            <h3>Servicios ofrecidos</h3>
+            <h3>{t('proyectoDetalle.servicesOffered')}</h3>
             {proyecto.Servicios?.length ? (
               <ul>
                 {proyecto.Servicios.map(servicio => (
@@ -131,7 +133,7 @@ const DetalleProyecto = () => {
                 ))}
               </ul>
             ) : (
-              <p>No se especificaron servicios para este proyecto.</p>
+              <p>{t('proyectoDetalle.noServices')}</p>
             )}
           </motion.div>
         </div>

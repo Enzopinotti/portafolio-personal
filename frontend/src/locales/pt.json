@@ -4,7 +4,7 @@
     "downloadCV": "Baixar CV",
     "myProfile": "Meu Perfil",
     "logout": "Sair",
-    "adminPanel": "Painel de Admin",
+    "adminPanel": "Painel Administrador",
     "nav": {
       "home": "Início",
       "services": "Serviços",
@@ -58,22 +58,25 @@
     "lastName": "Sobrenome",
     "email": "Email",
     "password": "Senha",
-    "save": "Salvar",
+    "save": "Salvar as alterações",
     "welcome": "Olá, ",
     "logout": "Sair",
     "deleteAccount": "Excluir Conta",
     "deleteAccountConfirmation": "Tem certeza de que deseja excluir sua conta? Esta ação não pode ser desfeita.",
     "deleteAccountSuccess": "Conta excluída com sucesso.",
-    "loading": "Carregando...",
+    "loading": "Completando...",
     "deleteAccountError": "Erro ao excluir a conta. Por favor, tente novamente.",
     "success": "Perfil atualizado com sucesso.",
     "error": "Erro ao atualizar o perfil. Por favor, tente novamente.",
-    "updated": "Perfil atualizado com sucesso.",
-    "editAvatar": "Editar Avatar",
-    "avatarUpdated": "Avatar atualizado com sucesso.",
+    "updated": "Perfil atualizado com sucesso",
+    "editAvatar": "Editar",
+    "avatarUpdated": "Avatar atualizado com sucesso",
     "saveAvatar": "Salvar Avatar",
-    "deleteAvatar": "Excluir Avatar",
-    "avatarDeleted": "Avatar excluído com sucesso."
+    "deleteAvatar": "Excluir foto",
+    "avatarDeleted": "Foto de perfil excluída",
+    "imageTooLarge": "A imagem é muito grande. O tamanho máximo é de 10 MB.",
+    "avatarUpdateError": "Erro ao atualizar avatar",
+    "avatarDeleteError": "Erro ao excluir avatar"
   },
   "forgotModal": {
     "title": "Redefinir Senha",
@@ -164,7 +167,12 @@
     "page": "Página",
     "nextPage": "Próxima página",
     "prevPage": "Página anterior",
-    "editButton": "Editar Projeto"
+    "editButton": "Editar Projeto",
+    "coverImage": "Imagem de Capa",
+    "newCover": "Nova Capa",
+    "currentCover": "Capa Atual",
+    "extraImages": "Imagens Extras (máx. 5)",
+    "dbImage": "Imagem BD"
   },
   "adminSkillsModal": {
     "altImage": "Padrão de Skills",
@@ -312,5 +320,94 @@
       "updateError": "Erro ao atualizar as configurações."
     },
     "errorLoad": "Erro ao carregar as configurações"
+  },
+  "blog": {
+    "title": "Blog",
+    "subtitle": "tecnologia | experiências reais",
+    "searchPlaceholder": "Pesquisar artigo...",
+    "categoryDevelopment": "Desenvolvimento",
+    "categoryDesign": "Design",
+    "categoryExperience": "Experiência",
+    "categoryTips": "Dicas",
+    "prev": "Anterior",
+    "next": "Próximo",
+    "reelsTitle": "Reels",
+    "reelsSubtitle": "Reels onde apareço | posto novidades",
+    "reelsAltSubtitle": "Curto | Reels de Projetos Inovadores"
+  },
+  "contacto": {
+    "title": "Contato",
+    "email": "Email:",
+    "phone": "Telefone:",
+    "address": "Argentina, Buenos Aires, La Plata",
+    "sendMessage": "Envie-me uma mensagem",
+    "fullName": "Nome completo",
+    "emailLabel": "Email",
+    "interestedService": "Serviço de interesse",
+    "selectService": "Selecione um serviço",
+    "message": "Mensagem",
+    "send": "Enviar"
+  },
+  "proyectoDetalle": {
+    "loading": "Carregando...",
+    "skillsUsed": "Skills utilizadas",
+    "noSkills": "Nenhuma skill especificada para este projeto.",
+    "servicesOffered": "Serviços oferecidos",
+    "noServices": "Nenhum serviço especificado para este projeto."
+  },
+  "projects": {
+    "title": "Meus Projetos"
+  },
+  "services": {
+    "title": "Meus Serviços"
+  },
+  "footer": {
+    "copyright": "© Enzo Pinotti - Todos os direitos reservados"
+  },
+  "dropdownActions": {
+    "assignSkill": "Atribuir Skill",
+    "assignServices": "Atribuir Serviços",
+    "editProject": "Editar Projeto",
+    "deleteProject": "Excluir Projeto"
+  },
+  "assignSkillModal": {
+    "title": "Atribuir Skills",
+    "save": "Salvar",
+    "cancel": "Cancelar"
+  },
+  "assignCategoryModal": {
+    "title": "Atribuir Categorias"
+  },
+  "assignServiceModal": {
+    "title": "Atribuir Serviços"
+  },
+  "editProjectModal": {
+    "title": "Editar Projeto"
+  },
+  "editServiceModal": {
+    "title": "Editar Serviço",
+    "serviceName": "Nome do Serviço",
+    "description": "Descrição",
+    "price": "Preço",
+    "coverImage": "Imagem do Serviço (Capa)",
+    "currentCover": "Capa",
+    "save": "Salvar"
+  },
+  "altTexts": {
+    "emailConfirmation": "Confirmação de Email",
+    "forgotPassword": "Esqueci a Senha",
+    "login": "login",
+    "avatar": "Avatar",
+    "register": "registrar",
+    "resetPassword": "Redefinir Senha",
+    "logo": "Logo"
+  },
+  "imgAlt": {
+    "emailConfirmation": "Confirmação de e-mail",
+    "forgotPassword": "Esqueceu a senha",
+    "login": "Entrar",
+    "register": "Registrar",
+    "resetPassword": "Redefinir Senha",
+    "profile": "Perfil"
   }
 }

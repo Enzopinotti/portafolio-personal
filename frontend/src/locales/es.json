@@ -4,7 +4,7 @@
     "downloadCV": "Descargar CV",
     "myProfile": "Mi Perfil",
     "logout": "Cerrar Sesión",
-    "adminPanel": "Panel de Admin",
+    "adminPanel": "Admin Panel",
     "nav": {
       "home": "Inicio",
       "services": "Servicios",
@@ -58,22 +58,25 @@
     "lastName": "Apellido",
     "email": "Correo electrónico",
     "password": "Contraseña",
-    "save": "Guardar",
+    "save": "Guardar cambios",
     "welcome": "¡Hola, ",
     "logout": "Cerrar Sesión",
     "deleteAccount": "Eliminar Cuenta",
     "deleteAccountConfirmation": "¿Estás seguro de que deseas eliminar tu cuenta? Esta acción no se puede deshacer.",
     "deleteAccountSuccess": "Cuenta eliminada exitosamente.",
     "deleteAccountError": "Hubo un problema al eliminar tu cuenta. Por favor, intenta nuevamente.",
-    "loading": "Cargando...",
+    "loading": "Subiendo...",
     "success": "Perfil actualizado exitosamente.",
     "error": "Hubo un problema al actualizar tu perfil. Por favor, intenta nuevamente.",
-    "updated": "Perfil actualizado exitosamente.",
-    "editAvatar": "Editar Avatar",
-    "avatarUpdated": "Avatar actualizado exitosamente.",
+    "updated": "Perfil actualizado correctamente",
+    "editAvatar": "Editar",
+    "avatarUpdated": "Avatar actualizado correctamente",
     "saveAvatar": "Guardar Avatar",
-    "deleteAvatar": "Eliminar Avatar",
-    "avatarDeleted": "Avatar eliminado exitosamente."
+    "deleteAvatar": "Eliminar foto",
+    "avatarDeleted": "Se eliminó la foto de perfil",
+    "imageTooLarge": "La imagen es demasiado grande. El tamaño máximo es de 10MB.",
+    "avatarUpdateError": "Error al actualizar avatar",
+    "avatarDeleteError": "Error al eliminar avatar"
   },
   "forgotModal": {
     "title": "Restablecer Contraseña",
@@ -164,7 +167,12 @@
     "page": "Página",
     "nextPage": "Siguiente",
     "prevPage": "Anterior",
-    "editButton": "Editar Proyecto"
+    "editButton": "Editar Proyecto",
+    "coverImage": "Imagen Pastilla (portada)",
+    "newCover": "Nueva Portada",
+    "currentCover": "Portada Actual BD",
+    "extraImages": "Imágenes Extras (máx 5)",
+    "dbImage": "Imagen BD"
   },
   "adminSkillsModal": {
     "altImage": "Patrón de Skills",
@@ -312,5 +320,94 @@
       "updateError": "Error al actualizar la configuración."
     },
     "errorLoad": "Error al cargar la configuración"
+  },
+  "blog": {
+    "title": "Blog",
+    "subtitle": "tecnología | experiencias reales",
+    "searchPlaceholder": "Buscar artículo...",
+    "categoryDevelopment": "Desarrollo",
+    "categoryDesign": "Diseño",
+    "categoryExperience": "Experiencia",
+    "categoryTips": "Tips",
+    "prev": "Anterior",
+    "next": "Siguiente",
+    "reelsTitle": "Reels",
+    "reelsSubtitle": "Son reels donde aparezco | subo novedades",
+    "reelsAltSubtitle": "Corto | Reels de Proyectos Innovadores"
+  },
+  "contacto": {
+    "title": "Contacto",
+    "email": "Email:",
+    "phone": "Teléfono:",
+    "address": "Argentina, Buenos Aires, La Plata",
+    "sendMessage": "Envíame un mensaje",
+    "fullName": "Nombre completo",
+    "emailLabel": "Email",
+    "interestedService": "Servicio de interés",
+    "selectService": "Selecciona un servicio",
+    "message": "Mensaje",
+    "send": "Enviar"
+  },
+  "proyectoDetalle": {
+    "loading": "Cargando...",
+    "skillsUsed": "Skills utilizadas",
+    "noSkills": "No se especificaron skills para este proyecto.",
+    "servicesOffered": "Servicios ofrecidos",
+    "noServices": "No se especificaron servicios para este proyecto."
+  },
+  "projects": {
+    "title": "Mis Proyectos"
+  },
+  "services": {
+    "title": "Mis Servicios"
+  },
+  "footer": {
+    "copyright": "© Enzo Pinotti - Todos los derechos reservados"
+  },
+  "dropdownActions": {
+    "assignSkill": "Asignar Skill",
+    "assignServices": "Asignar Servicios",
+    "editProject": "Editar Proyecto",
+    "deleteProject": "Eliminar Proyecto"
+  },
+  "assignSkillModal": {
+    "title": "Asignar Skills",
+    "save": "Guardar",
+    "cancel": "Cancelar"
+  },
+  "assignCategoryModal": {
+    "title": "Asignar Categorías"
+  },
+  "assignServiceModal": {
+    "title": "Asignar Servicios"
+  },
+  "editProjectModal": {
+    "title": "Editar Proyecto"
+  },
+  "editServiceModal": {
+    "title": "Editar Servicio",
+    "serviceName": "Nombre del servicio",
+    "description": "Descripción",
+    "price": "Precio",
+    "coverImage": "Imagen del servicio (portada)",
+    "currentCover": "Portada",
+    "save": "Guardar"
+  },
+  "altTexts": {
+    "emailConfirmation": "Email Confirmation",
+    "forgotPassword": "Forgot Password",
+    "login": "login",
+    "avatar": "Avatar",
+    "register": "register",
+    "resetPassword": "Reset Password",
+    "logo": "Logo"
+  },
+  "imgAlt": {
+    "emailConfirmation": "Confirmación de Email",
+    "forgotPassword": "Contraseña Olvidada",
+    "login": "Iniciar Sesión",
+    "register": "Registrarse",
+    "resetPassword": "Restablecer Contraseña",
+    "profile": "Perfil"
   }
 }

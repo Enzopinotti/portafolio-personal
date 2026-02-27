@@ -9,15 +9,15 @@ import { toast } from 'react-toastify';
 const getModalVariants = (direction = 'forward') => {
   return direction === 'forward'
     ? {
-        hidden: { opacity: 0, y: '-100vh' },
-        visible: { opacity: 1, y: '0' },
-        exit: { opacity: 0, y: '100vh' }
-      }
+      hidden: { opacity: 0, y: '-100vh' },
+      visible: { opacity: 1, y: '0' },
+      exit: { opacity: 0, y: '100vh' }
+    }
     : {
-        hidden: { opacity: 0, y: '100vh' },
-        visible: { opacity: 1, y: '0' },
-        exit: { opacity: 0, y: '-100vh' }
-      };
+      hidden: { opacity: 0, y: '100vh' },
+      visible: { opacity: 1, y: '0' },
+      exit: { opacity: 0, y: '-100vh' }
+    };
 };
 
 const EmailConfirmationModal = ({
@@ -97,7 +97,7 @@ const EmailConfirmationModal = ({
           >
             {/* Sección izquierda con la imagen dinámica */}
             <div className="leftModal">
-              <img src={imageSrc} alt="Email Confirmation" />
+              <img src={imageSrc} alt={t('imgAlt.emailConfirmation')} />
             </div>
             <div className="rightModal">
               <button className="close-icon" onClick={onClose}>

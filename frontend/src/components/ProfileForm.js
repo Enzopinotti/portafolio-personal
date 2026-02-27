@@ -80,7 +80,7 @@ const ProfileForm = ({ user }) => {
     if (!avatarFile) return;
 
     if (avatarFile.size > 10 * 1024 * 1024) {
-      toast.error('La imagen es demasiado grande. El tamaño máximo es de 10MB.');
+      toast.error(t('profile.imageTooLarge'));
       return;
     }
 
@@ -90,14 +90,14 @@ const ProfileForm = ({ user }) => {
       const updatedUser = await getProfile(accessToken);
       setUser(updatedUser);
 
-      toast.success(t('profile.avatarUpdated') || 'Avatar actualizado correctamente');
+      toast.success(t('profile.avatarUpdated'));
       setAvatarFile(null);
     } catch (error) {
       console.error(error);
       if (error?.message?.includes('413') || error?.status === 413) {
-        toast.error('La imagen es demasiado grande. El tamaño máximo es de 10MB.');
+        toast.error(t('profile.imageTooLarge'));
       } else {
-        toast.error(error?.error || 'Error al actualizar avatar');
+        toast.error(error?.error || t('profile.avatarUpdateError'));
       }
     } finally {
       setAvatarLoading(false);
@@ -112,10 +112,10 @@ const ProfileForm = ({ user }) => {
       await eliminarAvatar(accessToken);
       const updatedUser = await getProfile(accessToken);
       setUser(updatedUser);
-      toast.success(t('profile.avatarDeleted') || 'Se eliminó la foto de perfil');
+      toast.success(t('profile.avatarDeleted'));
     } catch (error) {
       console.error(error);
-      toast.error(error.error || 'Error al eliminar avatar');
+      toast.error(error.error || t('profile.avatarDeleteError'));
     }
   };
 
@@ -153,7 +153,7 @@ const ProfileForm = ({ user }) => {
       const updatedUser = await getProfile(accessToken);
       setUser(updatedUser);
 
-      toast.success(t('profile.updated') || 'Perfil actualizado correctamente');
+      toast.success(t('profile.updated'));
       setEditable({
         nombre: false,
         apellido: false,
@@ -179,7 +179,7 @@ const ProfileForm = ({ user }) => {
               ? avatarPreview
               : '/icons/user-placeholder.png'
           }
-          alt="Avatar"
+          alt={t('imgAlt.profile')}
         />
         <div className="avatar-edit-overlay" onClick={handleAvatarClick}>
           <FaPencilAlt />
@@ -204,8 +204,8 @@ const ProfileForm = ({ user }) => {
           disabled={avatarLoading}
         >
           {avatarLoading
-            ? t('profile.loading') || 'Subiendo...'
-            : t('profile.saveAvatar') || 'Guardar Avatar'}
+            ? t('profile.loading')
+            : t('profile.saveAvatar')}
         </button>
       )}
 
@@ -216,7 +216,7 @@ const ProfileForm = ({ user }) => {
           className="submit-button avatar-delete-button"
           onClick={handleDeleteAvatar}
         >
-          {t('profile.deleteAvatar') || 'Eliminar foto'}
+          {t('profile.deleteAvatar')}
         </button>
       )}
 
@@ -318,8 +318,8 @@ const ProfileForm = ({ user }) => {
       {anyEditable && (
         <button type="submit" className="submit-button" disabled={loading}>
           {loading
-            ? t('profile.loading') || 'Guardando...'
-            : t('profile.save') || 'Guardar cambios'}
+            ? t('profile.loading')
+            : t('profile.save')}
         </button>
       )}
     </form>
