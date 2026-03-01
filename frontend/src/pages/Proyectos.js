@@ -52,7 +52,7 @@ const Proyectos = () => {
     >
       <h1 className="proyectos-title">{t('projects.title')}</h1>
       <p className="proyectos-description">
-        {t('home.intro').includes('en') ? 'Here I present some examples of projects I have developed.' : t('home.intro').includes('pt') ? 'Aqui apresento alguns exemplos de projetos que desenvolvi.' : 'Aquí presento algunos ejemplos de proyectos que he desarrollado.'}
+        {t('projects.description')}
       </p>
       <SliderInfinito
         slides={slides}
