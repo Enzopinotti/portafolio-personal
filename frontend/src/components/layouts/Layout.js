@@ -25,19 +25,19 @@ const Layout = () => {
 export default Layout;
 function getBackground(pathname) {
   if (pathname.startsWith('/proyectos/') && pathname.split('/')[2]) {
-    return { url: '/videos/FondoProyectos.webm', key: 'detalleProyecto' };
+    return { url: '/videos/FondoProyectos.mp4', key: 'detalleProyecto' };
   }
   switch (pathname) {
     case '/':
-      return { url: '/videos/videoInicio.webm', key: 'inicio' };
+      return { url: '/videos/videoInicio.mp4', key: 'inicio' };
     case '/servicios':
-      return { url: '/videos/fondoServicios.webm', key: 'servicios' };
+      return { url: '/videos/fondoServicios.mp4', key: 'servicios' };
     case '/proyectos':
-      return { url: '/videos/FondoProyectos.webm', key: 'proyectos' };
+      return { url: '/videos/FondoProyectos.mp4', key: 'proyectos' };
     case '/blog':
       return { url: '/images/fondoBlog.webp', key: 'blog' };
     case '/contacto':
-      return { url: '/videos/fondoContacto.webm', key: 'contacto' };
+      return { url: '/videos/fondoContacto.mp4', key: 'contacto' };
     default:
       return { url: '/images/background-default.jpg', key: 'default' };
   }

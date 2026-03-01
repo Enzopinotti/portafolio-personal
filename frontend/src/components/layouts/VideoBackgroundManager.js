@@ -2,11 +2,11 @@
 import React, { useEffect, useRef } from 'react';
 
 const VIDEO_URLS = {
-  inicio: '/videos/videoInicio.webm',
-  servicios: '/videos/fondoServicios.webm',
-  proyectos: '/videos/FondoProyectos.webm',
-  contacto: '/videos/fondoContacto.webm',
-  detalleProyecto: '/videos/FondoProyectos.webm',
+  inicio: '/videos/videoInicio.mp4',
+  servicios: '/videos/fondoServicios.mp4',
+  proyectos: '/videos/FondoProyectos.mp4',
+  contacto: '/videos/fondoContacto.mp4',
+  detalleProyecto: '/videos/FondoProyectos.mp4',
 };
 
 const VideoBackgroundManager = () => {
