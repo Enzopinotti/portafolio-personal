@@ -1,0 +1,70 @@
+services:
+  db:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_DATABASE: ${DB_NAME:-portafolio}
+      MYSQL_USER: ${DB_USER:-enzo}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-3001}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-3001}
+    ports:
+      - "3306:3306" # Expuesto para desarrollo local
+    volumes:
+      - mysql_dev_data:/var/lib/mysql
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 10s
+    networks:
+      - dev_network
+
+  backend:
+    image: node:18-alpine
+    working_dir: /app
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=development
+      - DB_HOST=db
+      - DB_USER=${DB_USER:-enzo}
+      - DB_PASSWORD=${DB_PASSWORD:-VGPKDpOHVfwheBNLfybduGaZHTPllJvF}
+      - DB_NAME=${DB_NAME:-railway}
+      - DB_PORT=3306
+      - FRONTEND_URL=http://localhost:3000
+      - CORS_ORIGIN=http://localhost:3000,http://localhost:3001
+      - GOOGLE_CALLBACK_URL=http://localhost:3001/api/usuarios/auth/google/callback
+      - JWT_SECRET=fee03885a5596cc977919b8d51006a8d4d51ac11e6ca875a5e4b2653b5164b201352101a5c8eaec5e1a7a470ad3f862484e8386311b0b6fe5d83a03f8cdd2df5
+      - JWT_REFRESH_SECRET=fee03885a5596cc977919b8d51006a8d4d51ac11e6ca875a5e4b2653b5164b201352101a5c8eaec5e1a7a470ad3f862484e8386311b0b6fe5d83a03f8cdd2df5
+    volumes:
+      - ./backend:/app
+      - /app/node_modules # Evita que se sobrescriban los node_modules del contenedor
+    command: sh -c "if [ ! -d '/app/node_modules' ]; then npm install; fi && npm run start:dev"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - dev_network
+
+  frontend:
+    image: node:18-alpine
+    working_dir: /app
+    ports:
+      - "3000:3000"
+    environment:
+      - REACT_APP_API_URL=http://localhost:3001/api
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true # Ayuda con el hot reload en algunos sistemas
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules # Evita que se sobrescriban los node_modules del contenedor
+    command: sh -c "if [ ! -d '/app/node_modules' ]; then npm install --legacy-peer-deps; fi && npm start"
+    depends_on:
+      - backend
+    networks:
+      - dev_network
+
+networks:
+  dev_network:
+    driver: bridge
+
+volumes:
+  mysql_dev_data:
