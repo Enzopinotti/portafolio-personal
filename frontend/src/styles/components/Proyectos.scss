@@ -34,6 +34,7 @@
     -moz-transition: opacity 0.4s ease, text-shadow 0.4s ease, transform 0.3s ease;
     -ms-transition: opacity 0.4s ease, text-shadow 0.4s ease, transform 0.3s ease;
     -o-transition: opacity 0.4s ease, text-shadow 0.4s ease, transform 0.3s ease;
+    text-align: center;
 
     &::before {
       content: '';
@@ -157,14 +158,10 @@
 
 .slider-track {
   display: flex;
-  animation: scroll linear infinite;
-  /* La duración se establece en línea desde React (prop velocidad) */
-
-  @media (hover: hover) {
-    &:hover {
-      animation-play-state: paused;
-    }
-  }
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
+  will-change: transform;
 }
 
 .slide {
@@ -173,104 +170,65 @@
   padding: 0.5rem;
 }
 
-/* Animación base para sliderA: recorre la longitud de la lista original */
-@keyframes scroll {
-  0% {
-    transform: translateX(0);
-  }
+/* La animación automática y el drag son gestionados por Framer Motion (SliderInfinito.js) */
 
-  100% {
-    transform: translateX(calc(-1 * var(--scroll-distance)));
-  }
-}
-
-/* Animación para sliderB (inversa): parte de -scroll-distance y llega a 0 */
-@keyframes scroll-reverse {
-  0% {
-    transform: translateX(calc(-1 * var(--scroll-distance)));
-  }
-
-  100% {
-    transform: translateX(0);
-  }
-}
-
-/* Asigna la animación inversa a sliderB */
-.sliderB .slider-track {
-  animation-name: scroll-reverse;
-}
-
-/* Estilos para la "pastilla" del proyecto */
 .proyecto-pill {
   background: #fff;
   border: 1px solid #ccc;
-
   min-height: 150px;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-
   transition: transform 0.1s ease, box-shadow 0.1s ease;
   border-radius: 100%;
   -webkit-border-radius: 100%;
   -moz-border-radius: 100%;
   -ms-border-radius: 100%;
   -o-border-radius: 100%;
-
   position: relative;
+  overflow: hidden; // Evita que el overlay se salga de la pastilla
 
   &:hover .pill-overlay {
     opacity: 1;
   }
 
-  /* Overlay oscuro */
+  /* Overlay oscuro - el recorte lo hace .proyecto-pill con overflow:hidden */
   .pill-overlay {
     position: absolute;
-    border-radius: 100px;
-    -webkit-border-radius: 100px;
-    -moz-border-radius: 100px;
-    -ms-border-radius: 100px;
-    -o-border-radius: 100px;
-    top: 0;
-    left: 0;
-    right: 0;
-    /*Alturavariable,subedesdeabajo*/
-    height: 100%;
-    background: rgba(0, 0, 0, 0.65);
-    /*Semitransparenteoscuro*/
+    inset: 0; // Cubre exactamente el 100% del padre
+    background: rgba(0, 0, 0, 0.72);
     color: #fff;
     display: flex;
     flex-direction: column;
-    padding: 0.5rem;
+    padding: 1rem;
     opacity: 0;
     transition: opacity 0.3s ease;
-    /*Alineartextoabajo*/
-    justify-content: flex-start;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    // Sin border-radius propio: lo recorta el overflow:hidden del padre
   }
 
   .pill-overlay h3 {
-    margin: 0 0 0.25rem 0;
-    font-size: 1rem;
+    margin: 0 0 0.4rem 0;
+    font-size: 0.95rem;
     font-weight: bold;
     color: $color-white;
-    margin-top: 1.5rem;
+    max-height: 2.8em; // ~2 líneas
+    overflow: hidden;
+    max-width: 90%;
   }
 
   .pill-overlay .pill-desc {
     margin: 0;
-    font-size: 0.85rem;
-    margin-top: 0.9rem;
-    line-height: 1.2;
+    font-size: 0.78rem;
+    line-height: 1.3;
     color: $color-white;
-    /* Para truncar texto con 3 líneas y puntos suspensivos */
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    line-clamp: 3;
-    -webkit-box-orient: vertical;
+    max-height: 4.2em; // ~3 líneas
     overflow: hidden;
-    text-overflow: ellipsis;
+    max-width: 90%;
   }
 
   h3 {
@@ -357,5 +315,22 @@
   100% {
     transform: scale(1.5);
     opacity: 0;
+  }
+}
+
+/* Mobile: reducir título y descripción */
+@media (max-width: 768px) {
+  .proyectos-page {
+    .proyectos-title {
+      font-size: 3.5rem;
+      margin: 0.5rem 0 1rem;
+    }
+
+    .proyectos-description {
+      font-size: 0.85rem;
+      line-height: 1.5;
+      margin: 0 auto 1.2rem;
+      max-width: 70%;
+    }
   }
 }
