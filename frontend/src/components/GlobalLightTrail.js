@@ -17,15 +17,32 @@ const GlobalLightTrail = () => {
 
     const draw = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      if (trail.current.length > 0) {
+        trail.current = trail.current.filter(p => {
+          p.life = (p.life || 1) - 0.04;
+          p.x += (Math.random() - 0.5) * 1.2;
+          p.y += (Math.random() - 0.5) * 1.2;
+          return p.life > 0;
+        });
+      }
+
       for (let i = 0; i < trail.current.length; i++) {
         const point = trail.current[i];
-        const alpha = (1 - i / trail.current.length) ** 2.5;
-        const radius = Math.max(1, 8 - i * 0.3);
+        const life = point.life || 1;
+        const radius = Math.max(1.5, (10 - i * 0.35) * life);
+
         ctx.beginPath();
         ctx.arc(point.x, point.y, radius, 0, 2 * Math.PI);
-        ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
-        ctx.shadowBlur = 30;
-        ctx.shadowColor = 'rgba(255,255,255,1)';
+
+        const gradient = ctx.createRadialGradient(point.x, point.y, 0, point.x, point.y, radius * 2);
+        gradient.addColorStop(0, `rgba(255, 255, 255, ${life})`);
+        gradient.addColorStop(0.5, `rgba(255, 255, 255, ${life * 0.5})`);
+        gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+
+        ctx.fillStyle = gradient;
+        ctx.shadowBlur = i === 0 ? 25 * life : 15 * life;
+        ctx.shadowColor = 'white';
         ctx.fill();
       }
     };
@@ -35,20 +52,32 @@ const GlobalLightTrail = () => {
       animationFrameId = requestAnimationFrame(animate);
     };
 
-    const handleMouseMove = e => {
-      trail.current.unshift({ x: e.clientX, y: e.clientY });
-      if (trail.current.length > 30) trail.current.pop();
+    const handlePointerMove = e => {
+      const x = e.clientX || (e.touches && e.touches[0] ? e.touches[0].clientX : undefined);
+      const y = e.clientY || (e.touches && e.touches[0] ? e.touches[0].clientY : undefined);
+
+      if (x !== undefined && y !== undefined) {
+        const lastPoint = trail.current[0];
+        if (!lastPoint || Math.hypot(x - lastPoint.x, y - lastPoint.y) > 3) {
+          trail.current.unshift({ x, y, life: 1 });
+          if (trail.current.length > 30) trail.current.pop();
+        }
+      }
     };
 
     updateCanvasSize();
     window.addEventListener('resize', updateCanvasSize);
-    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mousemove', handlePointerMove);
+    window.addEventListener('touchstart', handlePointerMove, { passive: true });
+    window.addEventListener('touchmove', handlePointerMove, { passive: true });
     animate();
 
     return () => {
       cancelAnimationFrame(animationFrameId);
       window.removeEventListener('resize', updateCanvasSize);
-      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mousemove', handlePointerMove);
+      window.removeEventListener('touchstart', handlePointerMove);
+      window.removeEventListener('touchmove', handlePointerMove);
     };
   }, []);
 
