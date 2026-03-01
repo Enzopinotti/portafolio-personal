@@ -4,7 +4,12 @@ import { fileURLToPath } from 'url';
 import { dirname, resolve } from 'path';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-dotenv.config({ path: resolve(__dirname, '.env.production') });
+
+// Seleccionar el archivo .env según el entorno
+const envFile = process.env.NODE_ENV === 'development' ? '.env.development' : '.env.production';
+dotenv.config({ path: resolve(__dirname, envFile) });
+// NO cargar el .env de la raíz para evitar que variables de producción (como FRONTEND_URL de enzopinotti.dev) 
+// se filtren en el entorno de desarrollo local.
 
 
 import http from 'http';

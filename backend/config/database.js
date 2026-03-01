@@ -1,9 +1,10 @@
 import { Sequelize } from 'sequelize';
 import dotenv from 'dotenv';
 
-// Prefer .env.production if explicitly needed, then fallback to .env
-dotenv.config({ path: '.env.production' });
-dotenv.config();
+// Cargar .env.development en desarrollo o .env.production en producción
+const envFile = process.env.NODE_ENV === 'development' ? '.env.development' : '.env.production';
+dotenv.config({ path: envFile });
+dotenv.config(); // Fallback al .env principal
 
 
 const sequelize = new Sequelize(

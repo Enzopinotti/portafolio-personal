@@ -346,7 +346,8 @@
     "interestedService": "Service of interest",
     "selectService": "Select a service",
     "message": "Message",
-    "send": "Send"
+    "send": "Send",
+    "whatsapp_message_prefix": "Hello Enzo, I am interested in"
   },
   "proyectoDetalle": {
     "loading": "Loading...",
@@ -356,10 +357,31 @@
     "noServices": "No services specified for this project."
   },
   "projects": {
-    "title": "My Projects"
+    "title": "My Projects",
+    "description": "Here I present some examples of projects I have developed."
   },
   "services": {
-    "title": "My Services"
+    "title": "My Services",
+    "viewMore": "View more",
+    "priceLabel": "From",
+    "items": {
+      "bi": {
+        "name": "Data Analysis (BI)",
+        "description": "Interactive dashboard design, KPI definition, and requirement gathering to facilitate decision-making with Power BI and Excel."
+      },
+      "fullstack": {
+        "name": "Full-Stack Web Development",
+        "description": "Building modern interfaces (React, Vite) and backend support. Oriented to conversion, API integrations, and data handling."
+      },
+      "techlead": {
+        "name": "Technical Lead (Tech Lead)",
+        "description": "Team leadership, code review, quality assurance, and agile coordination among stakeholders."
+      },
+      "automation": {
+        "name": "Process Automation",
+        "description": "Creating automations with Google Apps Script and other tools for repetitive operational tasks."
+      }
+    }
   },
   "footer": {
     "copyright": "© Enzo Pinotti - All rights reserved"

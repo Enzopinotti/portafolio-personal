@@ -346,7 +346,8 @@
     "interestedService": "Servicio de interés",
     "selectService": "Selecciona un servicio",
     "message": "Mensaje",
-    "send": "Enviar"
+    "send": "Enviar",
+    "whatsapp_message_prefix": "Hola Enzo, me interesa el servicio de"
   },
   "proyectoDetalle": {
     "loading": "Cargando...",
@@ -356,10 +357,31 @@
     "noServices": "No se especificaron servicios para este proyecto."
   },
   "projects": {
-    "title": "Mis Proyectos"
+    "title": "Mis Proyectos",
+    "description": "Aquí presento algunos ejemplos de proyectos que he desarrollado."
   },
   "services": {
-    "title": "Mis Servicios"
+    "title": "Mis Servicios",
+    "viewMore": "Ver más",
+    "priceLabel": "Desde",
+    "items": {
+      "bi": {
+        "name": "Análisis de Datos (BI)",
+        "description": "Diseño de dashboards interactivos, definición de KPIs y levantamiento de requerimientos para facilitar decisiones con Power BI y Excel."
+      },
+      "fullstack": {
+        "name": "Desarrollo Web Full-Stack",
+        "description": "Construcción de interfaces modernas (React, Vite) y soporte backend. Orientado a conversión, integraciones de APIs y manejo de datos."
+      },
+      "techlead": {
+        "name": "Liderazgo Técnico (Tech Lead)",
+        "description": "Liderazgo de equipos, revisión de código, aseguramiento de calidad y coordinación ágil entre stakeholders."
+      },
+      "automation": {
+        "name": "Automatización de Procesos",
+        "description": "Creación de automatizaciones con Google Apps Script y otras herramientas para tareas operativas repetitivas."
+      }
+    }
   },
   "footer": {
     "copyright": "© Enzo Pinotti - Todos los derechos reservados"

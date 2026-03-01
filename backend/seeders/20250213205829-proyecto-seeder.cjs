@@ -10,7 +10,7 @@ module.exports = {
         fecha_inicio: new Date("2023-08-10"),
         fecha_fin: new Date("2023-11-20"),
         enlace: null,
-        imagen_pastilla: "3.png",
+        imagen_pastilla: "/images/pastilla2.png",
         max_imagenes: 5
       },
       {
@@ -20,7 +20,7 @@ module.exports = {
         fecha_inicio: new Date("2023-03-05"),
         fecha_fin: new Date("2023-05-15"),
         enlace: null,
-        imagen_pastilla: "pastilla2.png",
+        imagen_pastilla: "/images/pastilla3.png",
         max_imagenes: 5
       }
     ], {

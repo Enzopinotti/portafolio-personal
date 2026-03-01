@@ -1,9 +1,8 @@
 // config/passport.js
-import dotenv from 'dotenv';
+// Las variables de entorno ya se cargaron en index.js
 import { fileURLToPath } from 'url';
 import { dirname, resolve } from 'path';
 
-dotenv.config();
 import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';

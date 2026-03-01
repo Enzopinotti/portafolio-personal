@@ -5,7 +5,7 @@ import { dirname, resolve } from 'path';
 
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-dotenv.config();
+// Las variables de entorno ya se cargaron en index.js
 
 
 import express from 'express';
@@ -87,8 +87,9 @@ app.use((err, req, res, next) => {
 });
 
 
-sequelize.sync()
-  .then(() => logger.info('Base de datos sincronizada'))
-  .catch((error) => logger.error('Error al sincronizar la base de datos:', error));
+// Usar migraciones en lugar de sync() para mayor control
+// sequelize.sync()
+//   .then(() => logger.info('Base de datos sincronizada'))
+//   .catch((error) => logger.error('Error al sincronizar la base de datos:', error));
 
 export default app;
