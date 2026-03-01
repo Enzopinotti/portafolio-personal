@@ -7,6 +7,9 @@
   height: calc(100vh - 112px);
   overflow: hidden;
 
+  /* Darken the background video for better contrast */
+  background: rgba(0, 0, 0, 0.4);
+
   .servicios-container {
     display: flex;
     flex-direction: column;
@@ -15,11 +18,11 @@
 
     /* Mobile-first: títulos en vertical */
     .servicios-left {
-      cursor: none;
       width: 100%;
       text-align: center;
       margin-top: 3rem;
       position: relative;
+
       .titulo-servicios {
         font-size: 3rem;
         color: transparent;
@@ -29,17 +32,16 @@
         transition: opacity 0.4s ease, text-shadow 0.4s ease, transform 0.3s ease;
         user-select: none;
         z-index: 1;
-        cursor: none;
-      
+
         &::before {
           content: '';
           position: absolute;
           inset: 0;
-          background: radial-gradient(ellipse at center, rgba(255,255,255,0.1), transparent 70%);
+          background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.1), transparent 70%);
           pointer-events: none;
           z-index: -1;
         }
-      
+
         // Glow y opacidad en hover
         &:hover {
           opacity: 1;
@@ -50,30 +52,70 @@
           transform: scale(1.02);
         }
       }
-      
+
       // Clases por opacidad original
-      .op1 { opacity: 1; }
-      .op0_9 { opacity: 0.9; }
-      .op0_8 { opacity: 0.8; }
-      .op0_7 { opacity: 0.7; }
-      .op0_6 { opacity: 0.6; }
-      .op0_5 { opacity: 0.5; }
-      .op0_4 { opacity: 0.4; }
-      .op0_3 { opacity: 0.3; }
-      .op0_2 { opacity: 0.2; }
-      .op0_1 { opacity: 0.1; }
+      .op1 {
+        opacity: 1;
+      }
+
+      .op0_9 {
+        opacity: 0.9;
+      }
+
+      .op0_8 {
+        opacity: 0.8;
+      }
+
+      .op0_7 {
+        opacity: 0.7;
+      }
+
+      .op0_6 {
+        opacity: 0.6;
+      }
+
+      .op0_5 {
+        opacity: 0.5;
+      }
+
+      .op0_4 {
+        opacity: 0.4;
+      }
+
+      .op0_3 {
+        opacity: 0.3;
+      }
+
+      .op0_2 {
+        opacity: 0.2;
+      }
+
+      .op0_1 {
+        opacity: 0.1;
+      }
     }
+
     .servicios-right {
       width: 100%;
-      height: 400px; // Altura para mobile
+      height: 75vh;
       display: flex;
       justify-content: center;
-      .vertical-slider-container {
+      align-items: center;
+
+      .servicios-slider-wrapper {
         width: 100%;
         height: 100%;
+        overflow: hidden;
+        position: relative;
         display: flex;
-        align-items: center;
         justify-content: center;
+        align-items: center;
+        // Suavizamos el degradado de los bordes
+        -webkit-mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent);
+        mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent);
+
+        // Evitar que el sistema intercepte el scroll táctil para que framer-motion lo maneje
+        touch-action: none;
       }
     }
   }
@@ -81,6 +123,7 @@
 
 /* Desktop: layout en dos columnas */
 @media (min-width: 1080px) {
+
   /* Vertical Infinite Slider Styles */
   .vertical-slider-container {
     width: 100%;
@@ -88,22 +131,24 @@
     overflow: hidden;
     position: relative;
     display: flex;
-    justify-content: start !important;
-    padding-left: 1rem;
+    justify-content: center !important;
+    padding: 2rem 0;
 
     .vertical-slider-track {
       display: flex;
-      
+
       flex-direction: column;
-      gap: 1.5rem;
+      gap: 3rem; // Espacio generoso entre tarjetas
     }
   }
+
   .page.servicios-page {
     .servicios-container {
       flex-direction: row;
-      align-items: stretch; /* Ambas columnas tienen la misma altura */
+      align-items: stretch;
+      /* Ambas columnas tienen la misma altura */
       justify-content: space-between;
-      
+
       .servicios-left {
         width: 60%;
         display: flex;
@@ -112,17 +157,27 @@
         padding: 2rem;
         padding-top: 0 !important;
         margin-top: 0;
+
         .titulo-servicios {
           font-size: 4rem;
           margin-bottom: 1rem;
         }
       }
+
       .servicios-right {
-        width: 40%;
-        height: calc(100vh - 112px); // Altura de la pantalla menos el header
+        width: 45%; // Un poco más ancho ahora que no hay texto
+        height: calc(100vh - 112px);
         display: flex;
         align-items: center;
         justify-content: center;
+
+        .servicios-slider-wrapper {
+          width: 100%;
+          height: 100%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
       }
     }
   }
@@ -130,22 +185,20 @@
 
 
 
-/* Servicio Card Styles */
+/* Servicio Card Styles - Premium Redesign */
 .servicio-card {
-  
-  width: 250px;
-  height: 150px;
-  margin: 0 auto;
+  width: 320px; // Un poco más ancha
+  min-height: 220px; // Más alta para evitar que se vea apretada
   perspective: 1000px;
   position: relative;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border-radius: 16px;
+  cursor: pointer;
 
   .card-inner {
     position: relative;
     width: 100%;
     height: 100%;
-    text-align: center;
-    transition: transform 0.6s;
+    transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
     transform-style: preserve-3d;
   }
 
@@ -159,45 +212,287 @@
     width: 100%;
     height: 100%;
     backface-visibility: hidden;
-    border-radius: 15px;
-    padding: 1rem;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  }
-
-  .card-front {
-    color: $color-gray-dark;
+    border-radius: 20px;
+    padding: 1.5rem;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    h3 {
-      margin: 0.5rem 0 0;
-      font-size: 2.2rem;
-      color: $color-white;
+    overflow: hidden;
+
+    /* Glassmorphism base */
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    transition: all 0.4s ease;
+  }
+
+  /* Overlay for text readability over images */
+  .overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom,
+        rgba(15, 23, 42, 0.4) 0%,
+        rgba(15, 23, 42, 0.8) 100%);
+    z-index: -1;
+    border-radius: 16px;
+  }
+
+  .card-front {
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.03) !important; // Obligamos a que sea claro
+
+    .card-content {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      h3 {
+        margin: 0;
+        font-size: 1.8rem;
+        font-weight: 800;
+        color: #ffffff !important; // Texto siempre blanco
+        letter-spacing: 0.5px;
+        text-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+      }
+
+      .click-indicator {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        transition: all 0.3s ease;
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(5px);
+
+        span {
+          margin-top: -2px;
+        }
+      }
     }
   }
 
   .card-back {
-    color: $color-white;
+    color: rgba(255, 255, 255, 0.9);
     transform: rotateY(180deg);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+
+    /* Stronger overlay on back for reading */
+    .overlay.back {
+      background: linear-gradient(to bottom,
+          rgba(15, 23, 42, 0.7) 0%,
+          rgba(15, 23, 42, 0.95) 100%);
+    }
+
     p {
       margin: 0;
       font-size: 1rem;
+      line-height: 1.5;
+      font-weight: 300;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+      z-index: 2;
     }
+  }
+
+  /* In-Line Expansion Styles */
+  &.is-expanded {
+    // Ya no especificamos ancho aquí para que conserve el de la card normal
+    min-height: 260px; // Altura mínima para que el despliegue se note
+    z-index: 50;
+
+    .card-front {
+      border-color: rgba(255, 255, 255, 0.4);
+      background: rgba(15, 23, 42, 0.98) !important; // Más sólido
+      backdrop-filter: blur(10px);
+    }
+
+    .card-content {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 0 !important;
+
+      h3 {
+        font-size: 1.15rem; // Más pequeño
+        margin-bottom: 0.8rem !important; // Añadido padding abajo del título
+      }
+    }
+  }
+
+  .expanded-card-info {
+    margin-top: 0.1rem;
+    width: 100%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 !important;
+
+    .card-description {
+      font-size: 0.9rem; // Reducido de 0.95rem
+      line-height: 1.4;
+      font-weight: 300;
+      color: #cbd5e1;
+      margin-bottom: 1rem; // Reducido de 1.2rem
+      max-width: 92%;
+      max-height: 150px; // Más restrictivo
+      overflow-y: auto;
+      padding-right: 5px;
+
+      &::-webkit-scrollbar {
+        width: 3px;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 10px;
+      }
+    }
+
+    .card-cta {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 0.8rem; // Reducido de 1rem
+      width: 100%;
+
+      .card-price {
+        font-size: 1.3rem; // Reducido de 1.5rem
+        font-weight: 800;
+        color: #fff;
+      }
+
+      .card-contact-btn {
+        background: white;
+        color: #0f172a;
+        border: none;
+        padding: 0.4rem 1rem; // Más compacto
+        border-radius: 8px;
+        font-size: 0.85rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: transform 0.2s;
+
+        &:hover {
+          transform: scale(1.05);
+        }
+      }
+    }
+  }
+
+  /* Hover Effects */
+  &:hover:not(.is-expanded) {
+
+    .card-front {
+      border-color: rgba(255, 255, 255, 0.4);
+      box-shadow:
+        0 15px 45px 0 rgba(0, 0, 0, 0.6),
+        inset 0 0 15px rgba(255, 255, 255, 0.1),
+        0 0 20px rgba(59, 130, 246, 0.2); // Sutil brillo azul
+    }
+
+    .card-back {
+      border-color: rgba(255, 255, 255, 0.3);
+      box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(255, 255, 255, 0.05);
+    }
+
+    .click-indicator {
+      transform: scale(1.1);
+      background: white;
+      color: black;
+      border-color: white;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .servicio-card {
+    width: 90vw;
+    height: 120px; // Un poco más alto
+    margin: 0.4rem auto;
+
+    &.is-expanded {
+      // Sin cambio de ancho en móvil tampoco
+      min-height: 260px; // Expande más hacia abajo
+
+      .card-content {
+        padding: 0px !important;
+
+        h3 {
+          font-size: 1.2rem; // Título más grande
+          line-height: 1.2;
+          margin-bottom: 0.6rem !important;
+        }
+      }
+    }
+
+    .expanded-card-info {
+      margin-top: 0.2rem;
+      padding: 0 !important;
+
+      .card-description {
+        font-size: 0.85rem; // Más legible
+        line-height: 1.3;
+        margin-bottom: 0.5rem;
+        max-height: 90px;
+      }
+
+      .card-cta {
+        flex-direction: row;
+        justify-content: space-around;
+        gap: 0.5rem;
+        padding: 0.6rem 0.5rem 0.2rem 0.5rem;
+        width: 100%;
+
+        .card-price {
+          font-size: 1.3rem;
+        }
+
+        .card-contact-btn {
+          padding: 0.45rem 1rem;
+          font-size: 1rem;
+          border-radius: 8px;
+        }
+      }
+    }
+  }
+
+  .servicios-slider-wrapper {
+    height: 60vh; // Un poco más alto para el scroll
   }
 }
 
 @media (min-width: 1080px) {
   .servicio-card {
-    width: 300px;
-    height: 150px;
+    width: 380px;
+    height: 250px;
   }
 }
 
 @keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

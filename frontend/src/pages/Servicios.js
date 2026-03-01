@@ -21,18 +21,44 @@ const Servicios = () => {
   useEffect(() => {
     listServicios()
       .then(data => {
-        const mapped = data.servicios.map(servicio => ({
-          id: servicio.idServicio,
-          titulo: servicio.nombre,
-          descripcion: servicio.descripcion,
-          imagen: servicio.Imagen ? servicio.Imagen.ruta : null,
-        }));
+        // Fallback robusto para el mapeo de campos de imagen
+        const mapped = data.servicios.map(servicio => {
+          const imgPath = (servicio.Imagen && servicio.Imagen.ruta) || (servicio.imagen && servicio.imagen.ruta) || null;
+          return {
+            id: servicio.idServicio,
+            titulo: servicio.nombre,
+            descripcion: servicio.descripcion,
+            imagen: imgPath,
+          };
+        });
         setServicios(mapped);
       })
       .catch(err => console.error('Error al cargar servicios:', err));
   }, []);
 
-  // renderDesktopTitles and renderMobileTitles functions are removed as they are no longer used.
+  const renderDesktopTitles = () => {
+    return [1, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1].map((opacity, i) => (
+      <h2
+        key={i}
+        className={`titulo-servicios op${opacity.toString().replace('.', '_')}`}
+        style={{ zIndex: 10 - i }}
+      >
+        {t('services.title')}
+      </h2>
+    ));
+  };
+
+  const renderMobileTitles = () => {
+    return [1, 0.7, 0.4, 0.1].map((opacity, i) => (
+      <h2
+        key={i}
+        className={`titulo-servicios op${opacity.toString().replace('.', '_')}`}
+        style={{ zIndex: 4 - i }}
+      >
+        {t('services.title')}
+      </h2>
+    ));
+  };
 
   return (
     <motion.div
@@ -42,13 +68,15 @@ const Servicios = () => {
       exit={{ opacity: 0, y: -20 }} // Kept original exit prop, as instruction was malformed
       transition={{ duration: 0.5, ease: 'easeInOut' }} // Kept original ease, as instruction omitted it
     >
-      <h1 className="servicios-title">{t('services.title')}</h1>
-      <p className="servicios-description">
-        {t('home.intro').includes('en') ? 'Discover the different ways I can help you boost your business or digital project.' : t('home.intro').includes('pt') ? 'Descubra as diferentes maneiras de ajudá-lo a impulsionar o seu negócio ou projeto digital.' : 'Descubre las diferentes formas en las que puedo ayudarte a potenciar tu negocio o proyecto digital.'}
-      </p>
-
-      <div className="servicios-list-container">
-        <VerticalInfiniteSlider items={servicios} />
+      <div className="servicios-container">
+        <div className="servicios-left">
+          {isDesktop ? renderDesktopTitles() : renderMobileTitles()}
+        </div>
+        <div className="servicios-right">
+          <div className="servicios-slider-wrapper">
+            <VerticalInfiniteSlider items={servicios} />
+          </div>
+        </div>
       </div>
     </motion.div>
   );
