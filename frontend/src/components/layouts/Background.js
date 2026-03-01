@@ -6,17 +6,22 @@ const VideoBackground = ({ src, poster }) => {
   const videoRef = useRef(null);
 
   useEffect(() => {
-    // Forzar play() cuando el video se monta, previene problemas de navegadores bloqueando autoPlay
+    // Forzar load() y play() cuando el video se monta o cambia de src
     if (videoRef.current) {
-      videoRef.current.play().catch(error => {
-        console.warn("Video autplay prevented:", error);
-      });
+      videoRef.current.load(); // Crucial cuando se usa <source>
+      const playPromise = videoRef.current.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(error => {
+          console.warn("Video autoplay prevented:", error);
+        });
+      }
     }
   }, [src]);
 
   return (
     <motion.video
       ref={videoRef}
+      src={src}
       autoPlay
       loop
       muted
@@ -35,10 +40,7 @@ const VideoBackground = ({ src, poster }) => {
         height: '100%',
         backgroundColor: '#000'
       }}
-    >
-      {/* Añadimos src directamente al video element para mejor compatibilidad */}
-      <source src={src} type="video/webm" />
-    </motion.video>
+    />
   );
 };
 
