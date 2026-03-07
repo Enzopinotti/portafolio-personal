@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { deleteImage, deletePortadaProyecto } from '../services/projectService.js';
+import { FaFileUpload } from 'react-icons/fa';
 
 const AdminProjectForm = ({
   newProject,
@@ -175,14 +176,28 @@ const AdminProjectForm = ({
   };
 
   // Skills (checkbox)
-  const handleSkillCheckbox = (e) => {
-    const val = parseInt(e.target.value, 10);
+  const handleSkillCheckbox = (skill) => {
+    const id = skill.idSkill;
     const current = newProject.skills || [];
-    if (e.target.checked) {
-      setNewProject({ ...newProject, skills: [...current, val] });
+    const isSelected = current.some(s => (typeof s === 'object' ? s.idSkill === id : s === id));
+
+    if (!isSelected) {
+      setNewProject({ ...newProject, skills: [...current, { idSkill: id, nivel: skill.nivel || 80 }] });
     } else {
-      setNewProject({ ...newProject, skills: current.filter((id) => id !== val) });
+      setNewProject({ ...newProject, skills: current.filter(s => (typeof s === 'object' ? s.idSkill !== id : s !== id)) });
     }
+  };
+
+  const handleSkillNivelChange = (id, newNivel) => {
+    const current = newProject.skills || [];
+    setNewProject({
+      ...newProject,
+      skills: current.map(s => {
+        const sId = typeof s === 'object' ? s.idSkill : s;
+        if (sId === id) return { idSkill: id, nivel: parseInt(newNivel, 10) };
+        return s;
+      })
+    });
   };
 
   // Servicios (checkbox)
@@ -258,12 +273,20 @@ const AdminProjectForm = ({
 
       {/* ========== Portada ========== */}
       <label htmlFor="imagenPastilla">{t('adminProjectForm.coverImage')}</label>
-      <input
-        id="imagenPastilla"
-        type="file"
-        accept="image/*"
-        onChange={handlePastillaChange}
-      />
+      <div className="file-upload-wrapper">
+        <FaFileUpload className="upload-icon" />
+        <div className="upload-text">
+          {pendingPastilla ? pendingPastilla.file.name : (
+            <><span>{t('adminProjectForm.uploadClick', 'Haz click')}</span> {t('adminProjectForm.uploadOrSelection', 'para seleccionar la portada')}</>
+          )}
+        </div>
+        <input
+          id="imagenPastilla"
+          type="file"
+          accept="image/*"
+          onChange={handlePastillaChange}
+        />
+      </div>
 
       {/* (A) Vista previa local de la NUEVA portada */}
       {pendingPastilla && (
@@ -306,13 +329,24 @@ const AdminProjectForm = ({
 
       {/* ========== Imágenes extras ========== */}
       <label htmlFor="imagenesExtras">{t('adminProjectForm.extraImages')}</label>
-      <input
-        id="imagenesExtras"
-        type="file"
-        accept="image/*"
-        multiple
-        onChange={handleExtrasChange}
-      />
+      <div className="file-upload-wrapper">
+        <FaFileUpload className="upload-icon" />
+        <div className="upload-text">
+          {pendingImages.length > 0
+            ? `${pendingImages.length} ${t('adminProjectForm.imagesSelected', 'imágenes seleccionadas')}`
+            : (
+              <><span>{t('adminProjectForm.uploadClick', 'Haz click')}</span> {t('adminProjectForm.uploadOrSelectionExtra', 'para añadir imágenes extras')}</>
+            )
+          }
+        </div>
+        <input
+          id="imagenesExtras"
+          type="file"
+          accept="image/*"
+          multiple
+          onChange={handleExtrasChange}
+        />
+      </div>
 
       {/* (1) Imágenes extras en BD */}
       {isEditing && newProject.imagenesActuales?.length > 0 && (
@@ -361,17 +395,35 @@ const AdminProjectForm = ({
       {/* Skills */}
       <label>{t('adminProjectForm.linkSkills')}</label>
       <div className="skills-checkboxes">
-        {availableSkills.map((skill) => (
-          <label key={skill.idSkill}>
-            <input
-              type="checkbox"
-              value={skill.idSkill}
-              checked={newProject.skills?.includes(skill.idSkill) || false}
-              onChange={handleSkillCheckbox}
-            />
-            <span>{skill.nombre}</span>
-          </label>
-        ))}
+        {availableSkills.map((skill) => {
+          const selectedItem = newProject.skills?.find(s => (typeof s === 'object' ? s.idSkill === skill.idSkill : s === skill.idSkill));
+          const isChecked = !!selectedItem;
+
+          return (
+            <div key={skill.idSkill} className="skill-option">
+              <label className={isChecked ? 'selected' : ''}>
+                <input
+                  type="checkbox"
+                  checked={isChecked}
+                  onChange={() => handleSkillCheckbox(skill)}
+                />
+                <span>{skill.nombre}</span>
+              </label>
+              {isChecked && (
+                <div className="nivel-input">
+                  <input
+                    type="number"
+                    min="0"
+                    max="100"
+                    value={typeof selectedItem === 'object' ? selectedItem.nivel : 80}
+                    onChange={(e) => handleSkillNivelChange(skill.idSkill, e.target.value)}
+                  />
+                  <span>%</span>
+                </div>
+              )}
+            </div>
+          );
+        })}
       </div>
 
       {/* Paginación Skills */}
@@ -398,17 +450,20 @@ const AdminProjectForm = ({
       {/* Servicios */}
       <label>{t('adminProjectForm.linkServices')}</label>
       <div className="services-checkboxes">
-        {availableServices.map((serv) => (
-          <label key={serv.idServicio}>
-            <input
-              type="checkbox"
-              value={serv.idServicio}
-              checked={newProject.servicios?.includes(serv.idServicio) || false}
-              onChange={handleServiceCheckbox}
-            />
-            <span>{serv.nombre}</span>
-          </label>
-        ))}
+        {availableServices.map((serv) => {
+          const isSelected = newProject.servicios?.includes(serv.idServicio) || false;
+          return (
+            <label key={serv.idServicio} className={isSelected ? 'selected' : ''}>
+              <input
+                type="checkbox"
+                value={serv.idServicio}
+                checked={isSelected}
+                onChange={handleServiceCheckbox}
+              />
+              <span>{serv.nombre}</span>
+            </label>
+          );
+        })}
       </div>
 
       {/* Paginación Servicios */}
@@ -433,7 +488,7 @@ const AdminProjectForm = ({
       </div>
 
       {/* Botón final de submit */}
-      <button type="submit">
+      <button type="submit" className="submit-btn btn-standard">
         {t(isEditing ? 'adminProjectForm.editButton' : 'adminProjectForm.submitButton')}
       </button>
     </form>

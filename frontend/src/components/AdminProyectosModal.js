@@ -141,8 +141,8 @@ const AdminProyectosModal = ({ isOpen, onClose, direction = 'forward' }) => {
   }, [isOpen, servicePage]);
 
   // Filtro de proyectos
-  const filteredProjects = projects.filter(project =>
-    project.titulo.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredProjects = (projects || []).filter(project =>
+    project?.titulo?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   // =========================
@@ -174,13 +174,13 @@ const AdminProyectosModal = ({ isOpen, onClose, direction = 'forward' }) => {
   // =========================
   const handleCreate = async (e) => {
     e.preventDefault();
-  
+
     // Validar campos básicos
     if (!newProject.titulo.trim() || !newProject.fechaInicio.trim()) {
       toast.error(t('adminProjectsModal.toast.createMissingFields'));
       return;
     }
-  
+
     try {
       // (1) Crear proyecto en BD (sin imágenes)
       const projectData = {
@@ -193,13 +193,13 @@ const AdminProyectosModal = ({ isOpen, onClose, direction = 'forward' }) => {
         skills: newProject.skills,
         servicios: newProject.servicios
       };
-  
+
       const response = await createProject(projectData, accessToken);
       const createdProject = response.proyecto;
-  
+
       // (2) Subir portada si es un File
       if (
-        newProject.imagenPastilla && 
+        newProject.imagenPastilla &&
         typeof newProject.imagenPastilla !== 'string'
       ) {
         const respPastilla = await uploadPastilla(
@@ -209,7 +209,7 @@ const AdminProyectosModal = ({ isOpen, onClose, direction = 'forward' }) => {
         );
         Object.assign(createdProject, respPastilla.proyecto);
       }
-  
+
       // (3) Subir imágenes extras (si hay)
       if (newProject.imagenesExtras && newProject.imagenesExtras.length > 0) {
         await uploadProjectImages(
@@ -218,12 +218,12 @@ const AdminProyectosModal = ({ isOpen, onClose, direction = 'forward' }) => {
           accessToken
         );
       }
-  
+
       // (4) Refrescar la lista de proyectos
       listProjects()
         .then((data) => setProjects(data))
         .catch(console.error);
-  
+
       // (5) Limpiar formulario
       setNewProject({
         titulo: '',
@@ -237,7 +237,7 @@ const AdminProyectosModal = ({ isOpen, onClose, direction = 'forward' }) => {
         imagenPastilla: null,
         imagenesExtras: null
       });
-  
+
       toast.success(t('adminProjectsModal.toast.createSuccess'));
     } catch (err) {
       console.error('Error al crear proyecto:', err);
@@ -258,9 +258,9 @@ const AdminProyectosModal = ({ isOpen, onClose, direction = 'forward' }) => {
     setProjectToAssignSkills(project);
     setAssignSkillModalOpen(true);
   };
-  const handleSaveSkillAssignment = (selectedSkillIds) => {
+  const handleSaveSkillAssignment = (selectedSkills) => {
     if (!projectToAssignSkills) return;
-    assignSkillsToProject(projectToAssignSkills.idProyecto, selectedSkillIds, accessToken)
+    assignSkillsToProject(projectToAssignSkills.idProyecto, selectedSkills, accessToken)
       .then(res => {
         // Actualiza la lista local
         setProjects(prev => prev.map(p => {
@@ -346,9 +346,9 @@ const AdminProyectosModal = ({ isOpen, onClose, direction = 'forward' }) => {
                 </button>
               </div>
 
-              <div className="admin-modal-body proyectos">
+              <div className="admin-modal-body">
                 {/* Lado Izquierdo */}
-                <div className="leftModal proyectos">
+                <div className="leftModal">
                   <img src={imageSrc} alt={t('adminProjectsModal.altImage')} />
                 </div>
 
@@ -367,6 +367,10 @@ const AdminProyectosModal = ({ isOpen, onClose, direction = 'forward' }) => {
                   {loading && <p>{t('adminProjectsModal.loading')}</p>}
                   {error && <p className="error">{error}</p>}
 
+
+                  <div className="admin-section-title">
+                    {t('adminProjectsModal.currentProjects', 'Proyectos Actuales')}
+                  </div>
                   {/* Listado de proyectos */}
                   <div className="projects-list">
                     {filteredProjects.map((project) => (
@@ -387,7 +391,7 @@ const AdminProyectosModal = ({ isOpen, onClose, direction = 'forward' }) => {
                               : t('adminProjectsModal.noServices')}
                           </p>
                         </div>
-                              
+
                         <ProjectActionsDropdown
                           onAssignSkills={() => handleAssignSkills(project)}
                           onAssignServices={() => handleAssignServicios(project)}
@@ -398,6 +402,9 @@ const AdminProyectosModal = ({ isOpen, onClose, direction = 'forward' }) => {
                     ))}
                   </div>
 
+                  <div className="admin-section-title">
+                    {t('adminProjectsModal.addNew', 'Nuevo Proyecto')}
+                  </div>
                   {/* Form para crear PROYECTO */}
                   <AdminProjectForm
                     newProject={newProject}

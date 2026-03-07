@@ -20,7 +20,7 @@ dotenv.config();
 
 export const registrarVisitante = async (req, res, next) => {
   try {
-    const { nombre, apellido ,email, contraseña, clientURI } = req.body;
+    const { nombre, apellido, email, contraseña, clientURI } = req.body;
     const usuarioExistente = await Usuario.findOne({ where: { email } });
     if (usuarioExistente) {
       logger.info(`Registro fallido: email ${email} ya registrado.`);
@@ -258,7 +258,7 @@ export const forgotPassword = async (req, res, next) => {
 
 export const resetPassword = async (req, res, next) => {
   try {
-    logger.info ('Intentando restablecer contraseña...');
+    logger.info('Intentando restablecer contraseña...');
     const { token, newPassword } = req.body;
     if (!token || !newPassword) {
       return next(Boom.badRequest('Se requieren el token y la nueva contraseña.'));
@@ -357,7 +357,7 @@ export const verPerfil = async (req, res, next) => {
 
 export const editarPerfil = async (req, res, next) => {
   try {
-    const { nombre, apellido ,email, contraseña } = req.body;
+    const { nombre, apellido, email, contraseña } = req.body;
     const usuario = await Usuario.findByPk(req.usuario.idUsuario);
     if (!usuario) {
       logger.info(`Editar perfil fallido: Usuario ${req.usuario.idUsuario} no encontrado.`);

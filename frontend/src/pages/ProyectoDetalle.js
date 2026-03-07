@@ -1,19 +1,18 @@
 // src/pages/DetalleProyecto.jsx
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 import { getProjectById } from '../services/projectService.js';
 import { getImagenesByProyecto } from '../services/imageService.js';
 
-// Tu carrusel actual
-import GaleriaProyecto from '../components/GaleriaProyecto.js';
-// El nuevo slider vertical infinito
-import VerticalInfiniteSliderImages from '../components/VerticalInfiniteSliderImages.js';
+// La nueva galería unificada
+import ProyectoGallery from '../components/ProyectoGallery.js';
+import DualSkillBar from '../components/DualSkillBar.js';
 
-// Opcional: si usas Recharts para Skills
-import { RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, Legend } from 'recharts';
+// Gráfico Radar tipo Stats para Skills
+import { RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, ResponsiveContainer } from 'recharts';
 
 const variantsContainer = {
   hidden: { opacity: 0, y: 20 },
@@ -51,7 +50,7 @@ const DetalleProyecto = () => {
   // Por si usas Recharts en skills
   const skillData = proyecto.Skills?.map(skill => ({
     skill: skill.nombre,
-    nivel: skill.nivel || 80,
+    nivel: skill.ProyectoSkill?.nivel || skill.nivel || 80,
   })) || [];
 
   return (
@@ -63,61 +62,66 @@ const DetalleProyecto = () => {
     >
       <div className="detalle-proyecto-container">
 
-        {/* Sección de imágenes */}
-        {imagenes.length > 0 && (
-          isDesktop ? (
-            // Desktop → slider vertical infinito
-            <VerticalInfiniteSliderImages
-              imagenes={imagenes}
-              velocidad={40}
-            />
-          ) : (
-            // Mobile → carrusel horizontal
-            <GaleriaProyecto imagenes={imagenes} />
-          )
-        )}
+        {/* Sección de galería unificada */}
+        <ProyectoGallery items={imagenes} />
 
         {/* Resto del contenido */}
-        <div className="detalle-proyecto-contenido">
+        <div className={`detalle-proyecto-contenido ${imagenes.length === 0 ? 'centrado' : ''}`}>
           <h1>{proyecto.titulo}</h1>
           <p>{proyecto.descripcion}</p>
 
-          {proyecto.enlace && (
-            <a
-              href={proyecto.enlace}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Ver Proyecto
-            </a>
-          )}
-          {proyecto.enlaceGithub && (
-            <a
-              href={proyecto.enlaceGithub}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Ver Código en GitHub
-            </a>
-          )}
+          <div className="project-links">
+            {proyecto.enlace && (
+              <a
+                href={proyecto.enlace}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Ver Proyecto
+              </a>
+            )}
+            {proyecto.enlaceGithub && (
+              <a
+                href={proyecto.enlaceGithub}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Ver Código en GitHub
+              </a>
+            )}
+          </div>
 
-          {/* Skills section con RadarChart (opcional) */}
+          {/* Skills section con gráficos radiales tipo Stats (Radar) o Dual Bar */}
           <motion.div className="skills-section">
             <h3>{t('proyectoDetalle.skillsUsed')}</h3>
-            {skillData.length > 0 ? (
-              <RadarChart outerRadius={90} width={400} height={300} data={skillData}>
-                <PolarGrid />
-                <PolarAngleAxis dataKey="skill" />
-                <PolarRadiusAxis angle={30} domain={[0, 100]} />
-                <Radar
-                  name="Nivel de Skill"
-                  dataKey="nivel"
-                  stroke="#8884d8"
-                  fill="#8884d8"
-                  fillOpacity={0.7}
-                />
-                <Legend />
-              </RadarChart>
+            {skillData.length >= 3 ? (
+              <div className="radar-chart-container">
+                <ResponsiveContainer width="100%" height={300}>
+                  <RadarChart cx="50%" cy="50%" outerRadius="70%" data={skillData}>
+                    <PolarGrid stroke="rgba(255, 255, 255, 0.2)" />
+                    <PolarAngleAxis
+                      dataKey="skill"
+                      tick={{ fill: '#ffffff', fontSize: 14, fontWeight: 'bold' }}
+                    />
+                    <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
+                    <Radar
+                      name="Skills"
+                      dataKey="nivel"
+                      stroke="#3344DC" // $color-primary
+                      strokeWidth={3}
+                      fill="#3344DC"
+                      fillOpacity={0.5}
+                      style={{ filter: 'drop-shadow(0px 0px 8px rgba(51, 68, 220, 0.8))' }}
+                    />
+                  </RadarChart>
+                </ResponsiveContainer>
+              </div>
+            ) : skillData.length === 2 ? (
+              <DualSkillBar skills={skillData} />
+            ) : skillData.length === 1 ? (
+              <div className="single-skill-fallback">
+                <span className="skill-badge">{skillData[0].skill}</span>
+              </div>
             ) : (
               <p>{t('proyectoDetalle.noSkills')}</p>
             )}
@@ -129,7 +133,11 @@ const DetalleProyecto = () => {
             {proyecto.Servicios?.length ? (
               <ul>
                 {proyecto.Servicios.map(servicio => (
-                  <li key={servicio.idServicio}>{servicio.nombre}</li>
+                  <li key={servicio.idServicio}>
+                    <Link to={`/servicios?id=${servicio.idServicio}`}>
+                      {servicio.nombre}
+                    </Link>
+                  </li>
                 ))}
               </ul>
             ) : (

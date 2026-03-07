@@ -17,7 +17,7 @@ const AdminUserForm = ({ newUser, setNewUser, handleCreate, roles }) => {
   return (
     <form className="new-project-form" onSubmit={handleCreate}>
       <h3 className="titulo-form">{t('adminUserForm.formTitle')}</h3>
-      
+
       <label htmlFor="nombre">{t('adminUserForm.nameLabel')}</label>
       <input
         id="nombre"
@@ -79,20 +79,23 @@ const AdminUserForm = ({ newUser, setNewUser, handleCreate, roles }) => {
         ))}
       </select>
 
-      <div className="checkbox-group">
-        <label htmlFor="sendEmail">{t('adminUserForm.sendEmailLabel')}</label>
-        <input
-          id="sendEmail"
-          name="sendEmail"
-          type="checkbox"
-          checked={newUser.sendEmail || false}
-          onChange={(e) =>
-            setNewUser({ ...newUser, sendEmail: e.target.checked })
-          }
-        />
+      <div className="checkbox-pro-group">
+        <label className={`checkbox-pro ${newUser.sendEmail ? 'selected' : ''}`}>
+          <input
+            id="sendEmail"
+            name="sendEmail"
+            type="checkbox"
+            checked={newUser.sendEmail || false}
+            onChange={(e) =>
+              setNewUser({ ...newUser, sendEmail: e.target.checked })
+            }
+          />
+          <span className="checkbox-pro-mark">✓</span>
+          <span>{t('adminUserForm.sendEmailLabel')}</span>
+        </label>
       </div>
-      
-      <button type="submit">{t('adminUserForm.submitButton')}</button>
+
+      <button type="submit" className="submit-btn">{t('adminUserForm.submitButton')}</button>
     </form>
   );
 };

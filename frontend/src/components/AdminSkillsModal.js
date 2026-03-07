@@ -14,31 +14,31 @@ import { useTranslation } from 'react-i18next';
 const getModalVariants = (direction = 'forward') => {
   return direction === 'forward'
     ? {
-        hidden: { opacity: 0, x: '100vw' },
-        visible: { opacity: 1, x: '0' },
-        exit: { opacity: 0, x: '-100vw' }
-      }
+      hidden: { opacity: 0, x: '100vw' },
+      visible: { opacity: 1, x: '0' },
+      exit: { opacity: 0, x: '-100vw' }
+    }
     : {
-        hidden: { opacity: 0, x: '-100vw' },
-        visible: { opacity: 1, x: '0' },
-        exit: { opacity: 0, x: '100vw' }
-      };
+      hidden: { opacity: 0, x: '-100vw' },
+      visible: { opacity: 1, x: '0' },
+      exit: { opacity: 0, x: '100vw' }
+    };
 };
 
 const AdminSkillsModal = ({ isOpen, onClose, direction = 'forward' }) => {
   const { t } = useTranslation();
   const { accessToken } = useContext(AuthContext);
   const variants = getModalVariants(direction);
-  
+
   const [skills, setSkills] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  
+
   const [searchTerm, setSearchTerm] = useState('');
   const [newSkill, setNewSkill] = useState({ nombre: '', nivel: '', idCategoriaSkill: '' });
-  
+
   const [availableCategories, setAvailableCategories] = useState([]);
-  
+
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [skillToDelete, setSkillToDelete] = useState(null);
 
@@ -70,11 +70,11 @@ const AdminSkillsModal = ({ isOpen, onClose, direction = 'forward' }) => {
         console.error('Error al cargar categorías de skills:', err);
       });
   }, [isOpen, t]);
-  
+
   const filteredSkills = skills.filter(skill =>
     skill.nombre.toLowerCase().includes(searchTerm.toLowerCase())
   );
-  
+
   const confirmDelete = () => {
     if (!skillToDelete) return;
     deleteSkill(skillToDelete, accessToken)
@@ -91,12 +91,12 @@ const AdminSkillsModal = ({ isOpen, onClose, direction = 'forward' }) => {
         setSkillToDelete(null);
       });
   };
-  
+
   const handleDelete = (id) => {
     setSkillToDelete(id);
     setConfirmOpen(true);
   };
-  
+
   const handleCreate = (e) => {
     e.preventDefault();
     if (!newSkill.nombre.trim() || !newSkill.idCategoriaSkill) {
@@ -143,7 +143,7 @@ const AdminSkillsModal = ({ isOpen, onClose, direction = 'forward' }) => {
         setSkillToAssign(null);
       });
   };
-  
+
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   useEffect(() => {
     const handleResize = () => setWindowWidth(window.innerWidth);
@@ -186,12 +186,11 @@ const AdminSkillsModal = ({ isOpen, onClose, direction = 'forward' }) => {
                   <FaTimes />
                 </button>
               </div>
-              <div className="admin-modal-body skills">
-                <div className="leftModal skills">
+              <div className="admin-modal-body">
+                <div className="leftModal">
                   <img src={imageSrc} alt={t('adminSkillsModal.altImage')} />
                 </div>
-                <div className="rightModal skills">
-                  <h2>{t('adminSkillsModal.title')}</h2>
+                <div className="rightModal">
                   <div className="search-container">
                     <input
                       type="text"
@@ -200,8 +199,13 @@ const AdminSkillsModal = ({ isOpen, onClose, direction = 'forward' }) => {
                       onChange={(e) => setSearchTerm(e.target.value)}
                     />
                   </div>
+
                   {loading && <p>{t('adminSkillsModal.loading')}</p>}
                   {error && <p className="error">{error}</p>}
+
+                  <div className="admin-section-title">
+                    {t('adminSkillsModal.currentSkills', 'Actuales')}
+                  </div>
                   <div className="projects-list">
                     {filteredSkills.map((skill) => (
                       <div key={skill.idSkill} className="project-item">
@@ -209,7 +213,7 @@ const AdminSkillsModal = ({ isOpen, onClose, direction = 'forward' }) => {
                           <h3>{skill.nombre}</h3>
                           <p>{t('adminSkillsModal.actions.level')}: {skill.nivel}%</p>
                           <p className="categoria">
-                          {t('adminSkillsModal.actions.categories')}: {skill.Categorias && skill.Categorias.length > 0
+                            {t('adminSkillsModal.actions.categories')}: {skill.Categorias && skill.Categorias.length > 0
                               ? skill.Categorias.map((cat) => cat.nombre).join(', ')
                               : t('adminSkillsModal.noCategory')}
                           </p>
@@ -232,6 +236,9 @@ const AdminSkillsModal = ({ isOpen, onClose, direction = 'forward' }) => {
                         </div>
                       </div>
                     ))}
+                  </div>
+                  <div className="admin-section-title">
+                    {t('adminSkillsModal.addNew', 'Nuevo Skill')}
                   </div>
                   <AdminSkillForm
                     newSkill={newSkill}

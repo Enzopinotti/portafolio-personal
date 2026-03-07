@@ -86,7 +86,7 @@ const Header = () => {
                   {t('header.myProfile')}
                 </button>
 
-                {user.Rol.nombre === "admin" && (
+                {(user.Rol?.nombre === "admin" || user.rol?.nombre === "admin") && (
                   <button
                     type="button"
                     onClick={() => {
@@ -147,7 +147,7 @@ const Header = () => {
       )}
 
       {/* Modal de admin: se abre solo si el usuario tiene rol admin */}
-      {user && user.Rol.nombre === "admin" && (
+      {user && (user.Rol?.nombre === "admin" || user.rol?.nombre === "admin") && (
         <AdminModal isOpen={isAdminOpen} onClose={closeAdminModal} />
       )}
     </header>

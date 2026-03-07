@@ -33,11 +33,16 @@ export const crearProyecto = async (req, res, next) => {
 
     // Asignar skills manualmente si se han enviado
     if (skills && Array.isArray(skills) && skills.length > 0) {
-      const skillIds = skills.map(id => parseInt(id, 10));
-      const nuevosRegistrosSkills = skillIds.map(idSkill => ({
-        id_proyecto: nuevoProyecto.idProyecto,
-        id_skill: idSkill,
-      }));
+      const nuevosRegistrosSkills = skills.map(skillItem => {
+        // Puede venir como ID (número) o como Objeto { idSkill, nivel }
+        const idSkill = typeof skillItem === 'object' ? skillItem.idSkill : parseInt(skillItem, 10);
+        const nivel = typeof skillItem === 'object' ? skillItem.nivel : null;
+        return {
+          id_proyecto: nuevoProyecto.idProyecto,
+          id_skill: idSkill,
+          nivel: nivel
+        };
+      });
       await ProyectoSkill.bulkCreate(nuevosRegistrosSkills);
       logger.info(`Crear Proyecto: Se asociaron ${skills.length} skills al proyecto.`);
     }
@@ -61,7 +66,7 @@ export const crearProyecto = async (req, res, next) => {
       details: { titulo, descripcion },
       req,
     });
-    
+
 
     // Devolver el proyecto recién creado (con su idProyecto)
     res.status(201).json({
@@ -174,8 +179,20 @@ export const editarProyecto = async (req, res, next) => {
     if (enlaceGithub) proyecto.enlaceGithub = enlaceGithub;
 
     await proyecto.save();
-    if (skills && skills.length > 0) {
-      await proyecto.setSkills(skills);
+    if (skills && Array.isArray(skills)) {
+      // Para editar, primero borramos las asociaciones previas
+      await ProyectoSkill.destroy({ where: { id_proyecto: id } });
+
+      const nuevosRegistros = skills.map(skillItem => {
+        const idSkill = typeof skillItem === 'object' ? skillItem.idSkill : parseInt(skillItem, 10);
+        const nivel = typeof skillItem === 'object' ? skillItem.nivel : null;
+        return {
+          id_proyecto: id,
+          id_skill: idSkill,
+          nivel: nivel
+        };
+      });
+      await ProyectoSkill.bulkCreate(nuevosRegistros);
       logger.info(`Editar Proyecto: Se actualizaron las skills asociadas al proyecto ID ${id}.`);
     }
     await registrarEvento({
@@ -202,7 +219,7 @@ export const eliminarProyecto = async (req, res, next) => {
       logger.info(`Eliminar Proyecto: Proyecto ID ${id} no encontrado.`);
       return next(Boom.notFound('Proyecto no encontrado.'));
     }
-    
+
     await proyecto.destroy();
     logger.info(`Eliminar Proyecto: Proyecto ID ${id} eliminado exitosamente.`);
     await registrarEvento({
@@ -226,8 +243,8 @@ export const listarProyectos = async (req, res, next) => {
       include: [
         {
           model: Skill,
-          attributes: ['idSkill', 'nombre'],
-          through: { attributes: [] },
+          attributes: ['idSkill', 'nombre', 'nivel'],
+          through: { attributes: ['nivel'] },
         },
         {
           model: Imagen,
@@ -256,8 +273,8 @@ export const verProyecto = async (req, res, next) => {
       include: [
         {
           model: Skill,
-          attributes: ['idSkill', 'nombre'],
-          through: { attributes: [] },
+          attributes: ['idSkill', 'nombre', 'nivel'],
+          through: { attributes: ['nivel'] },
         },
         {
           model: Imagen,
@@ -317,32 +334,44 @@ export const asignarSkillsAProyecto = async (req, res, next) => {
     const { idProyecto } = req.params;
     const { skills } = req.body; // Se espera un array de IDs
     logger.info(`Asignar Skills: Asignando skills al proyecto con ID ${idProyecto}`);
-    
+
     if (!Array.isArray(skills)) {
       return next(Boom.badRequest('Se espera un array de IDs en skills.'));
     }
-    
+
     // Convertir los IDs a números
     const skillIds = skills.map(id => parseInt(id, 10));
-    
+
     const proyecto = await Proyecto.findByPk(idProyecto);
     if (!proyecto) {
       logger.info(`Asignar Skills: Proyecto con ID ${idProyecto} no encontrado.`);
       return next(Boom.notFound('Proyecto no encontrado.'));
     }
-    
-    // Asignar las skills usando el método generado por la asociación (setSkills)
-    await proyecto.setSkills(skillIds);
-    
+
+    // Primero borramos las previas para insertar las nuevas con nivel
+    await ProyectoSkill.destroy({ where: { id_proyecto: idProyecto } });
+
+    const nuevosRegistros = skills.map(skillItem => {
+      const idSkill = typeof skillItem === 'object' ? skillItem.idSkill : parseInt(skillItem, 10);
+      const nivel = typeof skillItem === 'object' ? skillItem.nivel : null;
+      return {
+        id_proyecto: idProyecto,
+        id_skill: idSkill,
+        nivel: nivel
+      };
+    });
+
+    await ProyectoSkill.bulkCreate(nuevosRegistros);
+
     // Recargar el proyecto con las skills asignadas
     const proyectoActualizado = await Proyecto.findByPk(idProyecto, {
       include: [{
-         model: Skill,
-         attributes: ['idSkill', 'nombre', 'nivel'],
-         through: { attributes: [] }
+        model: Skill,
+        attributes: ['idSkill', 'nombre', 'nivel'],
+        through: { attributes: ['nivel'] }
       }]
     });
-    
+
     logger.info(`Asignar Skills: Skills asignadas exitosamente al proyecto con ID ${idProyecto}`);
     res.status(200).json({ mensaje: 'Skills asignadas exitosamente al proyecto.', proyecto: proyectoActualizado });
   } catch (error) {

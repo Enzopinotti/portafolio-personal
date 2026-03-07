@@ -12,15 +12,15 @@ import { useTranslation } from 'react-i18next';
 const getModalVariants = (direction = 'forward') => {
   return direction === 'forward'
     ? {
-        hidden: { opacity: 0, x: '100vw' },
-        visible: { opacity: 1, x: '0' },
-        exit: { opacity: 0, x: '-100vw' }
-      }
+      hidden: { opacity: 0, x: '100vw' },
+      visible: { opacity: 1, x: '0' },
+      exit: { opacity: 0, x: '-100vw' }
+    }
     : {
-        hidden: { opacity: 0, x: '-100vw' },
-        visible: { opacity: 1, x: '0' },
-        exit: { opacity: 0, x: '100vw' }
-      };
+      hidden: { opacity: 0, x: '-100vw' },
+      visible: { opacity: 1, x: '0' },
+      exit: { opacity: 0, x: '100vw' }
+    };
 };
 
 const AdminCategoriasModal = ({ isOpen, onClose, direction = 'forward' }) => {
@@ -63,8 +63,8 @@ const AdminCategoriasModal = ({ isOpen, onClose, direction = 'forward' }) => {
       });
   }, [isOpen, t]);
 
-  const filteredCategorias = categorias.filter(cat =>
-    cat.nombre.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredCategorias = (categorias || []).filter(cat =>
+    cat?.nombre?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const confirmDelete = () => {
@@ -141,11 +141,11 @@ const AdminCategoriasModal = ({ isOpen, onClose, direction = 'forward' }) => {
                   <FaTimes />
                 </button>
               </div>
-              <div className="admin-modal-body categorias">
-                <div className="leftModal categorias">
+              <div className="admin-modal-body">
+                <div className="leftModal">
                   <img src={imageSrc} alt={t('adminCategoriasModal.altImage')} />
                 </div>
-                <div className="rightModal categorias">
+                <div className="rightModal">
                   <h2>{t('adminCategoriasModal.title')}</h2>
                   <div className="search-container">
                     <input
@@ -154,6 +154,13 @@ const AdminCategoriasModal = ({ isOpen, onClose, direction = 'forward' }) => {
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
                     />
+                  </div>
+
+                  {loading && <p>{t('adminCategoriasModal.loading')}</p>}
+                  {error && <p className="error">{error}</p>}
+
+                  <div className="admin-section-title">
+                    {t('adminCategoriasModal.currentCategories', 'Actuales')}
                   </div>
                   {loading && <p>{t('adminCategoriasModal.loading')}</p>}
                   {error && <p className="error">{error}</p>}
@@ -171,6 +178,9 @@ const AdminCategoriasModal = ({ isOpen, onClose, direction = 'forward' }) => {
                         </button>
                       </div>
                     ))}
+                  </div>
+                  <div className="admin-section-title">
+                    {t('adminCategoriasModal.addNew', 'Nueva Categoría')}
                   </div>
                   <AdminCategoriaForm
                     newCategoria={newCategoria}

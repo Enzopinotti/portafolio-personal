@@ -22,15 +22,15 @@ import { useTranslation } from 'react-i18next';
 const getModalVariants = (direction = 'forward') => {
   return direction === 'forward'
     ? {
-        hidden: { opacity: 0, x: '100vw' },
-        visible: { opacity: 1, x: '0' },
-        exit: { opacity: 0, x: '-100vw' },
-      }
+      hidden: { opacity: 0, x: '100vw' },
+      visible: { opacity: 1, x: '0' },
+      exit: { opacity: 0, x: '-100vw' },
+    }
     : {
-        hidden: { opacity: 0, x: '-100vw' },
-        visible: { opacity: 1, x: '0' },
-        exit: { opacity: 0, x: '100vw' },
-      };
+      hidden: { opacity: 0, x: '-100vw' },
+      visible: { opacity: 1, x: '0' },
+      exit: { opacity: 0, x: '100vw' },
+    };
 };
 
 const AdminServiciosModal = ({ isOpen, onClose, direction = 'forward' }) => {
@@ -60,14 +60,13 @@ const AdminServiciosModal = ({ isOpen, onClose, direction = 'forward' }) => {
   // Edición: modal
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [servicioToEdit, setServicioToEdit] = useState(null);
-  console.log('Servicio a editar:', servicioToEdit);
+
   // Efecto: cargar lista de servicios al abrir el modal
   useEffect(() => {
     if (!isOpen) return;
     setLoading(true);
     listServicios()
       .then((data) => {
-        // data puede ser { servicios, ... } o un array
         setServicios(data.servicios || data);
         setLoading(false);
       })
@@ -80,8 +79,8 @@ const AdminServiciosModal = ({ isOpen, onClose, direction = 'forward' }) => {
   }, [isOpen, t]);
 
   // Filtrar por searchTerm
-  const filteredServicios = servicios.filter((servicio) =>
-    servicio.nombre.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredServicios = (servicios || []).filter((servicio) =>
+    servicio?.nombre?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   // Crear servicio
@@ -140,7 +139,6 @@ const AdminServiciosModal = ({ isOpen, onClose, direction = 'forward' }) => {
   }, []);
   const imageSrc = windowWidth < 800 ? '/images/PatronDos.png' : '/images/patronUno.png';
 
-  // Cerrar el modal si se hace click afuera (overlay)
   const handleOverlayClick = (e) => {
     const selectedText = window.getSelection().toString();
     if (selectedText.length > 0) return;
@@ -167,7 +165,6 @@ const AdminServiciosModal = ({ isOpen, onClose, direction = 'forward' }) => {
               transition={{ duration: 0.5 }}
               onClick={(e) => e.stopPropagation()}
             >
-              {/* Header */}
               <div className="admin-submodal-header">
                 <button className="back-button" onClick={onClose}>
                   <FaArrowLeft />
@@ -177,15 +174,12 @@ const AdminServiciosModal = ({ isOpen, onClose, direction = 'forward' }) => {
                 </button>
               </div>
 
-              {/* Body */}
-              <div className="admin-modal-body servicios">
-                {/* Left Panel */}
-                <div className="leftModal servicios">
+              <div className="admin-modal-body">
+                <div className="leftModal">
                   <img src={imageSrc} alt={t('adminServiciosModal.altImage')} />
                 </div>
 
-                {/* Right Panel */}
-                <div className="rightModal servicios">
+                <div className="rightModal">
                   <h2>{t('adminServiciosModal.title')}</h2>
 
                   <div className="search-container">
@@ -200,7 +194,22 @@ const AdminServiciosModal = ({ isOpen, onClose, direction = 'forward' }) => {
                   {loading && <p>{t('adminServiciosModal.loading')}</p>}
                   {error && <p className="error">{error}</p>}
 
-                  {/* Lista de servicios */}
+                  <div className="search-container">
+                    <input
+                      type="text"
+                      placeholder={t('adminServiciosModal.searchPlaceholder')}
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                    />
+                  </div>
+
+                  {loading && <p>{t('adminServiciosModal.loading')}</p>}
+                  {error && <p className="error">{error}</p>}
+
+                  <div className="admin-section-title">
+                    {t('adminServiciosModal.currentServices', 'Actuales')}
+                  </div>
+
                   <div className="projects-list">
                     {filteredServicios.map((servicio) => (
                       <div key={servicio.idServicio} className="project-item">
@@ -211,8 +220,6 @@ const AdminServiciosModal = ({ isOpen, onClose, direction = 'forward' }) => {
                             {t('adminServicioForm.priceLabel')}: ${servicio.precio}
                           </p>
                         </div>
-
-                        {/* Dropdown con editar/eliminar */}
                         <ServiceActionsDropdown
                           onEdit={() => handleEditService(servicio)}
                           onDelete={() => handleDelete(servicio.idServicio)}
@@ -221,7 +228,10 @@ const AdminServiciosModal = ({ isOpen, onClose, direction = 'forward' }) => {
                     ))}
                   </div>
 
-                  {/* Formulario para crear servicio */}
+                  <div className="admin-section-title">
+                    {t('adminServiciosModal.addNew', 'Nuevo Servicio')}
+                  </div>
+
                   <AdminServicioForm
                     newServicio={newServicio}
                     setNewServicio={setNewServicio}
@@ -234,7 +244,6 @@ const AdminServiciosModal = ({ isOpen, onClose, direction = 'forward' }) => {
         )}
       </AnimatePresence>
 
-      {/* Modal de confirmación para eliminar */}
       <ConfirmModal
         isOpen={confirmOpen}
         message={t('adminServiciosModal.confirmMessage')}
@@ -245,7 +254,6 @@ const AdminServiciosModal = ({ isOpen, onClose, direction = 'forward' }) => {
         }}
       />
 
-      {/* Modal para editar */}
       <EditServiceModal
         isOpen={editModalOpen}
         service={servicioToEdit}
@@ -254,7 +262,6 @@ const AdminServiciosModal = ({ isOpen, onClose, direction = 'forward' }) => {
           setServicioToEdit(null);
         }}
         onSave={(updatedServicio) => {
-          // Reemplazar en el estado local
           setServicios((prev) =>
             prev.map((s) => (s.idServicio === updatedServicio.idServicio ? updatedServicio : s))
           );

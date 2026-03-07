@@ -23,21 +23,26 @@
   text-align: center;
   display: flex;
   flex-direction: column;
-  .error{
+
+  .error {
     color: red;
     margin-bottom: 1rem;
   }
-  .leftModal{
+
+  .leftModal {
     display: flex;
-    img{
+
+    img {
       height: 100%;
     }
   }
-  .rightModal{
+
+  .rightModal {
     margin-bottom: 2rem;
+
     .close-icon {
       cursor: none;
-        user-select: none;
+      user-select: none;
       position: absolute;
       top: 1rem;
       right: 1rem;
@@ -45,26 +50,27 @@
       border: none;
       font-size: 1.5rem;
       color: $color-gray-dark;
-      
+
       transition: transform 0.3s ease, color 0.3s ease;
+
       &:hover {
         transform: rotate(90deg);
         color: $color-primary;
       }
     }
-  
+
     h2 {
       margin: 0 0 0.5rem;
       font-size: 1.5rem;
       color: $color-gray-dark;
     }
-  
+
     .welcome-text {
       margin-bottom: 1.5rem;
       font-size: 1rem;
       color: $color-gray-dark;
     }
-  
+
     .google-button {
       cursor: none;
       user-select: none;
@@ -79,69 +85,73 @@
       border-radius: 4px;
       font-size: 1rem;
       user-select: none;
-      
+
       transition: background 0.3s ease, color 0.3s ease, transform 0.3s ease;
-      
+
       &:hover {
         background: rgba($color-blue, 0.55);
         color: $color-white;
         transform: translateY(-2px);
       }
-      
+
       .google-icon {
         margin-right: 0.5rem;
         transition: transform 0.3s ease;
       }
-      
+
       &:hover .google-icon {
         transform: rotate(10deg);
       }
     }
-    
+
     .login-form {
       display: flex;
       flex-direction: column;
       width: 100%;
-      
-      .password-field{
+
+      .password-field {
         position: relative;
+
         input {
           user-select: none;
           cursor: none;
           padding-right: 2.5rem;
           width: 100%;
         }
+
         .toggle-password {
           position: absolute;
           top: 40%;
           right: 0.75rem;
           transform: translateY(-50%);
-          
+
           color: $color-gray-medium;
           font-size: 1.2rem;
+
           &:hover {
             color: $color-blue;
           }
         }
       }
-      
-      input{
+
+      input {
         padding: 0.75rem;
-          margin-bottom: 1rem;
-          border: 1px solid $color-gray-medium;
-          border-radius: 4px;
-          font-size: 1rem;
-          transition: border-color 0.3s ease;
-          user-select: none;
-          &:focus {
-            outline: none;
-            border-color: $color-blue;
-          }
+        margin-bottom: 1rem;
+        border: 1px solid $color-gray-medium;
+        border-radius: 4px;
+        font-size: 1rem;
+        transition: border-color 0.3s ease;
+        user-select: none;
+
+        &:focus {
+          outline: none;
+          border-color: $color-blue;
+        }
       }
-      
+
       .submit-button {
         user-select: none;
-          cursor: none;
+        cursor: none;
         background: linear-gradient(90deg, $color-primary 0%, $color-secondary 100%);
         background-size: 200% auto;
         background-position: left center;
@@ -152,48 +162,51 @@
         border-radius: 25px;
         font-size: 1rem;
         user-select: none;
-        
+
         transition: background 0.3s ease, transform 0.3s ease;
         -webkit-border-radius: 25px;
         -moz-border-radius: 25px;
         -ms-border-radius: 25px;
         -o-border-radius: 25px;
-        
+
         &:hover {
           background-position: right center; // desplazamos el fondo al hover
           transform: scale(1.05); // efecto de agrandamiento
         }
       }
-      
+
     }
-  
+
     .links-container {
       display: flex;
       justify-content: space-between;
       margin-top: 1rem;
+
       .text-button {
         background: none;
         border: none;
         color: $color-blue;
         font-size: 0.9rem;
-        
+
         transition: color 0.3s ease;
+
         &:hover {
           color: $color-blue-dark;
         }
       }
     }
   }
-  
+
 }
 
 @media (min-width: 768px) {
   .modal-content {
     max-width: 450px;
-    .leftModal{
-    }
-    .login-form{
-      
+
+    .leftModal {}
+
+    .login-form {
+
       .submit-button {
         background: linear-gradient(90deg, $color-primary 0%, $color-secondary 100%);
         background-size: 200% auto;
@@ -205,40 +218,46 @@
         border-radius: 25px;
         font-size: 1rem;
         user-select: none;
-        
+
         transition: background 0.3s ease, transform 0.3s ease;
         -webkit-border-radius: 25px;
         -moz-border-radius: 25px;
         -ms-border-radius: 25px;
         -o-border-radius: 25px;
-        
+
         &:hover {
           background-position: right center; // desplazamos el fondo al hover
           transform: scale(1.05); // efecto de agrandamiento
         }
       }
     }
-    
+
     h2 {
       font-size: 1.75rem;
       margin-bottom: 1rem;
     }
+
     .welcome-text {
       font-size: 1.125rem;
     }
-    .google-button, .login-form .submit-button {
+
+    .google-button,
+    .login-form .submit-button {
       font-size: 1.125rem;
     }
+
     .login-form input {
       font-size: 1rem;
-      
+
     }
+
     .links-container .text-button {
       font-size: 1rem;
     }
+
     .close-icon {
       cursor: none;
-        user-select: none;
+      user-select: none;
       font-size: 1.75rem;
     }
   }

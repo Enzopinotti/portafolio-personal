@@ -15,26 +15,47 @@ const AssignSkillModal = ({
   currentSkills = []
 }) => {
   const { t } = useTranslation();
+
+  // Guardamos un array de objetos { idSkill, nivel }
   const [selectedSkills, setSelectedSkills] = useState(
-    currentSkills.map(skill => skill.idSkill)
+    currentSkills.map(skill => ({
+      idSkill: skill.idSkill,
+      nivel: skill.ProyectoSkill?.nivel || skill.nivel || 80
+    }))
   );
   const prevRef = useRef(currentSkills);
 
   useEffect(() => {
-    const newIds = currentSkills.map(skill => skill.idSkill);
-    if (JSON.stringify(newIds) !== JSON.stringify(prevRef.current.map(s => s.idSkill))) {
-      setSelectedSkills(newIds);
-      prevRef.current = currentSkills;
+    const newSkills = currentSkills.map(skill => ({
+      idSkill: skill.idSkill,
+      nivel: skill.ProyectoSkill?.nivel || skill.nivel || 80
+    }));
+    // Comparación simple por IDs para evitar bucles si no hay cambios reales
+    const currentIds = newSkills.map(s => s.idSkill).sort().join(',');
+    const prevIds = selectedSkills.map(s => s.idSkill).sort().join(',');
+
+    if (currentIds !== prevIds) {
+      setSelectedSkills(newSkills);
     }
   }, [currentSkills]);
 
-  const handleCheckboxChange = (e) => {
-    const value = parseInt(e.target.value, 10);
-    if (e.target.checked) {
-      setSelectedSkills(prev => [...prev, value]);
+  const handleCheckboxChange = (skill) => {
+    const id = skill.idSkill;
+    const isSelected = selectedSkills.some(s => s.idSkill === id);
+
+    if (!isSelected) {
+      // Agregar con nivel por defecto
+      setSelectedSkills(prev => [...prev, { idSkill: id, nivel: skill.nivel || 80 }]);
     } else {
-      setSelectedSkills(prev => prev.filter(id => id !== value));
+      // Quitar
+      setSelectedSkills(prev => prev.filter(s => s.idSkill !== id));
     }
+  };
+
+  const handleNivelChange = (id, newNivel) => {
+    setSelectedSkills(prev => prev.map(s =>
+      s.idSkill === id ? { ...s, nivel: parseInt(newNivel, 10) } : s
+    ));
   };
 
   const handleSave = () => {
@@ -72,17 +93,36 @@ const AssignSkillModal = ({
             <h3>{t('assignSkillModal.title')}</h3>
 
             <div className="skill-list">
-              {availableSkills.map(skill => (
-                <label key={skill.idSkill}>
-                  <input
-                    type="checkbox"
-                    value={skill.idSkill}
-                    checked={selectedSkills.includes(skill.idSkill)}
-                    onChange={handleCheckboxChange}
-                  />
-                  <span>{skill.nombre} ({skill.nivel}%)</span>
-                </label>
-              ))}
+              {availableSkills.map(skill => {
+                const selectedItem = selectedSkills.find(s => s.idSkill === skill.idSkill);
+                const isChecked = !!selectedItem;
+
+                return (
+                  <div key={skill.idSkill} className="skill-option">
+                    <label className={isChecked ? 'selected' : ''}>
+                      <input
+                        type="checkbox"
+                        checked={isChecked}
+                        onChange={() => handleCheckboxChange(skill)}
+                      />
+                      <span>{skill.nombre}</span>
+                    </label>
+                    {isChecked && (
+                      <div className="nivel-input">
+                        <span className="nivel-label">Nivel:</span>
+                        <input
+                          type="number"
+                          min="0"
+                          max="100"
+                          value={selectedItem.nivel}
+                          onChange={(e) => handleNivelChange(skill.idSkill, e.target.value)}
+                        />
+                        <span>%</span>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
             </div>
 
             {/* Controles de paginación de SKILLS, 

@@ -1,0 +1,24 @@
+@import '../abstracts/_variables.scss';
+
+/* ==========================================================================
+   Admin Users Modal
+   Inherits from AdminModal base layout.
+   ========================================================================== */
+
+.modal-content.admin-submodal.usuarios {
+    /* Layout handled by base .admin-submodal */
+
+    .new-user-form {
+        margin-top: 1rem;
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+
+            @media (max-width: 600px) {
+                grid-template-columns: 1fr;
+            }
+        }
+    }
+}

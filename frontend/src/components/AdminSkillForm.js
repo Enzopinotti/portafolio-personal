@@ -16,7 +16,7 @@ const AdminSkillForm = ({ newSkill, setNewSkill, handleCreate, availableCategori
   return (
     <form className="new-skill-form" onSubmit={handleCreate}>
       <h3 className="titulo-form">{t('adminSkillForm.formTitle')}</h3>
-      
+
       <label htmlFor="nombre">{t('adminSkillForm.nameLabel')}</label>
       <input
         id="nombre"
@@ -27,7 +27,7 @@ const AdminSkillForm = ({ newSkill, setNewSkill, handleCreate, availableCategori
           setNewSkill({ ...newSkill, nombre: e.target.value })
         }
       />
-      
+
       <label htmlFor="nivel">
         {t('adminSkillForm.levelLabel', { level: newSkill.nivel ? newSkill.nivel : 0 })}
       </label>
@@ -39,7 +39,7 @@ const AdminSkillForm = ({ newSkill, setNewSkill, handleCreate, availableCategori
         value={newSkill.nivel || 0}
         onChange={handleNivelChange}
       />
-      
+
       <label htmlFor="categoria">{t('adminSkillForm.categoryLabel')}</label>
       <select
         id="categoria"
@@ -54,8 +54,8 @@ const AdminSkillForm = ({ newSkill, setNewSkill, handleCreate, availableCategori
             </option>
           ))}
       </select>
-      
-      <button type="submit">{t('adminSkillForm.submitButton')}</button>
+
+      <button type="submit" className="submit-btn btn-standard">{t('adminSkillForm.submitButton')}</button>
     </form>
   );
 };

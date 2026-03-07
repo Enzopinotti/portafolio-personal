@@ -70,8 +70,8 @@ const AdminUsersModal = ({ isOpen, onClose, direction = 'forward' }) => {
       });
   }, [isOpen]);
 
-  const filteredUsers = users.filter(user =>
-    user.nombre.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredUsers = (users || []).filter(user =>
+    user?.nombre?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const confirmDelete = () => {
@@ -150,11 +150,11 @@ const AdminUsersModal = ({ isOpen, onClose, direction = 'forward' }) => {
                   <FaTimes />
                 </button>
               </div>
-              <div className="admin-modal-body usuarios">
-                <div className="leftModal usuarios">
+              <div className="admin-modal-body">
+                <div className="leftModal">
                   <img src={imageSrc} alt={t('adminUsersModal.altImage', 'Users Pattern')} />
                 </div>
-                <div className="rightModal usuarios">
+                <div className="rightModal">
                   <h2>{t('adminUsersModal.title')}</h2>
                   <div className="search-container">
                     <input
@@ -166,6 +166,10 @@ const AdminUsersModal = ({ isOpen, onClose, direction = 'forward' }) => {
                   </div>
                   {loading && <p>{t('adminUsersModal.loading')}</p>}
                   {error && <p className="error">{error}</p>}
+
+                  <div className="admin-section-title">
+                    {t('adminUsersModal.currentUsers', 'Usuarios Actuales')}
+                  </div>
                   <div className="projects-list">
                     {filteredUsers.length > 0 ? (
                       filteredUsers.map((user) => (
@@ -186,6 +190,9 @@ const AdminUsersModal = ({ isOpen, onClose, direction = 'forward' }) => {
                     ) : (
                       <p>{t('adminUsersModal.noUsers')}</p>
                     )}
+                  </div>
+                  <div className="admin-section-title">
+                    {t('adminUsersModal.addNew', 'Nuevo Usuario')}
                   </div>
                   <AdminUserForm
                     newUser={newUser}

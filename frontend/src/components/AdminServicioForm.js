@@ -42,7 +42,9 @@ const AdminServicioForm = ({ newServicio, setNewServicio, handleCreate }) => {
         value={newServicio.precio || ''}
         onChange={handleInputChange}
       />
-      <button type="submit">{t('adminServicioForm.submitButton')}</button>
+      <button type="submit" className="submit-btn btn-standard">
+        {t('adminServicioForm.submitButton')}
+      </button>
     </form>
   );
 };

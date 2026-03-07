@@ -18,15 +18,15 @@ import SkillCategoria from './SkillCategoria.js';
 
 // Relaciones Usuario - Rol
 Usuario.belongsTo(Rol, {
-    foreignKey: 'id_rol',
-    onDelete: 'RESTRICT', // o 'CASCADE' según tus necesidades
-    onUpdate: 'CASCADE',
-  });
-  Rol.hasMany(Usuario, {
-    foreignKey: 'id_rol',
-    onDelete: 'RESTRICT', // o 'CASCADE' según tus necesidades
-    onUpdate: 'CASCADE',
-  });
+  foreignKey: 'id_rol',
+  onDelete: 'RESTRICT', // o 'CASCADE' según tus necesidades
+  onUpdate: 'CASCADE',
+});
+Rol.hasMany(Usuario, {
+  foreignKey: 'id_rol',
+  onDelete: 'RESTRICT', // o 'CASCADE' según tus necesidades
+  onUpdate: 'CASCADE',
+});
 // Relaciones Usuario - Proyecto (muchos a muchos)
 Usuario.belongsToMany(Proyecto, {
   through: 'usuario_proyecto',
@@ -99,23 +99,13 @@ Servicio.belongsToMany(Proyecto, {
   otherKey: 'id_proyecto',
 });
 
-Proyecto.belongsToMany(Skill, {
-  through: ProyectoSkill,
-  foreignKey: 'id_proyecto',
-  otherKey: 'id_skill',
-});
-Skill.belongsToMany(Proyecto, {
-  through: ProyectoSkill,
-  foreignKey: 'id_skill',
-  otherKey: 'id_proyecto',
-});
 
 AuditLog.belongsTo(Usuario, {
-  foreignKey: 'userId' 
+  foreignKey: 'userId'
 });
 
 Usuario.hasMany(AuditLog, {
-  foreignKey: 'userId' 
+  foreignKey: 'userId'
 });
 
 Skill.belongsToMany(CategoriaSkill, {

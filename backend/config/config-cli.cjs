@@ -1,7 +1,9 @@
 const dotenv = require('dotenv');
+const path = require('path');
 
 // Load environment variables from .env if present (useful for local development outside Docker)
-dotenv.config();
+const envFile = process.env.NODE_ENV === 'production' ? '.env.production' : '.env.development';
+dotenv.config({ path: path.resolve(process.cwd(), envFile) });
 
 // If we are in Docker, the environment variables are already in process.env
 // and dotenv will not override them if already defined.

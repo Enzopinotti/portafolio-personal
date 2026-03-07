@@ -18,7 +18,7 @@ const AdminCategoriaForm = ({ newCategoria, setNewCategoria, handleCreate }) => 
           setNewCategoria({ ...newCategoria, nombre: e.target.value })
         }
       />
-      <button type="submit">{t('adminCategoriaForm.submitButton')}</button>
+      <button type="submit" className="submit-btn btn-standard">{t('adminCategoriaForm.submitButton')}</button>
     </form>
   );
 };

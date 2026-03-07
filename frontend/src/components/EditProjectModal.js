@@ -62,7 +62,10 @@ const EditProjectModal = ({ isOpen, project, onClose, onSave }) => {
         fechaFin: project.fechaFin || '',
         enlace: project.enlace || '',
         enlaceGithub: project.enlaceGithub || '',
-        skills: project.Skills?.map(sk => sk.idSkill) || [],
+        skills: project.Skills?.map(sk => ({
+          idSkill: sk.idSkill,
+          nivel: sk.ProyectoSkill?.nivel || sk.nivel || 80
+        })) || [],
         servicios: project.Servicios?.map(sv => sv.idServicio) || [],
         // Asumimos "project.Imagens" o "project.Imagenes" para extras en BD
         imagenPastilla: project.imagenPastilla || null,

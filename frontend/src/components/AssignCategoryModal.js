@@ -72,17 +72,20 @@ const AssignCategoryModal = ({
             </button>
             <h3>{t('assignCategoryModal.title')}</h3>
             <div className="category-list">
-              {availableCategories.map((cat) => (
-                <label key={cat.idCategoriaSkill} className="category-label">
-                  <input
-                    type="checkbox"
-                    value={cat.idCategoriaSkill}
-                    checked={selectedCategories.includes(cat.idCategoriaSkill)}
-                    onChange={handleCheckboxChange}
-                  />
-                  <span>{cat.nombre}</span>
-                </label>
-              ))}
+              {availableCategories.map((cat) => {
+                const isSelected = selectedCategories.includes(cat.idCategoriaSkill);
+                return (
+                  <label key={cat.idCategoriaSkill} className={`category-label ${isSelected ? 'selected' : ''}`}>
+                    <input
+                      type="checkbox"
+                      value={cat.idCategoriaSkill}
+                      checked={selectedCategories.includes(cat.idCategoriaSkill)}
+                      onChange={handleCheckboxChange}
+                    />
+                    <span>{cat.nombre}</span>
+                  </label>
+                );
+              })}
             </div>
             <div className="assign-buttons">
               <button className="btn-save" onClick={handleSave}>

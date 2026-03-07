@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect, useCallback } from 'react';
 import { motion, useAnimation, useMotionValue } from 'framer-motion';
 import ServicioCard from './ServicioCard.js';
 
-const VerticalInfiniteSlider = ({ items, velocidad = 30 }) => {
+const VerticalInfiniteSlider = ({ items, velocidad = 30, initialExpandedId }) => {
   const containerRef = useRef(null);
   const trackRef = useRef(null);
   const controls = useAnimation();
@@ -12,6 +12,21 @@ const VerticalInfiniteSlider = ({ items, velocidad = 30 }) => {
 
   // Triplicamos los items para el efecto infinito
   const triplicatedItems = [...items, ...items, ...items];
+
+  // Efecto para expandir el servicio inicial si viene por prop (deep link)
+  useEffect(() => {
+    if (initialExpandedId && items.length > 0) {
+      // Buscamos el índice en el primer tercio o segundo tercio
+      const index = items.findIndex(item => String(item.id) === String(initialExpandedId));
+      if (index !== -1) {
+        // Expandimos el del centro para que sea más probable que esté en vista
+        setExpandedId(index + items.length);
+
+        // Opcional: Podríamos centrar el scroll aquí si fuera necesario, 
+        // pero por ahora solo expandimos.
+      }
+    }
+  }, [initialExpandedId, items]);
 
   const startAnimation = useCallback(async () => {
     if (!trackRef.current) return;

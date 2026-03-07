@@ -11,23 +11,23 @@
   align-items: center;
   z-index: 2200;
 
-.edit-service-modal {
-  background: $color-white;
-  padding: 1.5rem;
-  border-radius: 10px;
-  width: 90%;
-  max-width: 500px;
-  position: relative;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  text-align: center;
-  margin-top: 2rem;
-  overflow-y: auto;
-    }
+  .edit-service-modal {
+    background: $color-white;
+    padding: 1.5rem;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 500px;
+    position: relative;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    text-align: center;
+    margin-top: 2rem;
+    overflow-y: auto;
+  }
 
   .close-btn,
   .close-icon {
     cursor: none;
-        user-select: none;
+    user-select: none;
     position: absolute;
     top: 0.5rem;
     right: 0.5rem;
@@ -35,7 +35,7 @@
     border: none;
     font-size: 1.2rem;
     color: $color-gray-dark;
-    
+
     transition: transform 0.3s ease;
 
     &:hover {
@@ -43,7 +43,8 @@
     }
   }
 
-  h3, h2 {
+  h3,
+  h2 {
     margin-bottom: 1rem;
     font-size: 1.5rem;
     color: $color-gray-dark;
@@ -83,7 +84,7 @@
       border-radius: 25px;
       color: $color-white;
       font-size: 1rem;
-      
+
       transition: background 0.3s ease, transform 0.3s ease;
       margin-top: 1rem;
 
@@ -118,7 +119,7 @@
       font-size: 1rem;
       line-height: 24px;
       text-align: center;
-      
+
       transition: background 0.3s, transform 0.2s;
       padding: 0 !important;
 

@@ -17,6 +17,12 @@ const ProyectoSkill = sequelize.define(
       primaryKey: true,
       field: 'id_skill',
     },
+    nivel: {
+      type: DataTypes.TINYINT.UNSIGNED,
+      allowNull: true,
+      defaultValue: null,
+      field: 'nivel',
+    },
   },
   {
     tableName: 'proyecto_skill',

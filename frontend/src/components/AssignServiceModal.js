@@ -85,17 +85,20 @@ const AssignServiceModal = ({
             <h3>{t('assignServiceModal.title')}</h3>
 
             <div className="service-list">
-              {availableServices.map((serv) => (
-                <label key={serv.idServicio} className="service-label">
-                  <input
-                    type="checkbox"
-                    value={serv.idServicio}
-                    checked={selectedServices.includes(serv.idServicio)}
-                    onChange={handleCheckboxChange}
-                  />
-                  <span>{serv.nombre}</span>
-                </label>
-              ))}
+              {availableServices.map((serv) => {
+                const isSelected = selectedServices.includes(serv.idServicio);
+                return (
+                  <label key={serv.idServicio} className={`service-label ${isSelected ? 'selected' : ''}`}>
+                    <input
+                      type="checkbox"
+                      value={serv.idServicio}
+                      checked={selectedServices.includes(serv.idServicio)}
+                      onChange={handleCheckboxChange}
+                    />
+                    <span>{serv.nombre}</span>
+                  </label>
+                );
+              })}
             </div>
 
             {/* Controles de paginación abajo de la lista */}

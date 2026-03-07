@@ -1,12 +1,12 @@
 // src/components/AdminModal.jsx
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  FaTimes, 
-  FaProjectDiagram, 
-  FaUsers, 
-  FaCog, 
-  FaWrench, 
+import {
+  FaTimes,
+  FaProjectDiagram,
+  FaUsers,
+  FaCog,
+  FaWrench,
   FaTags,
   FaConciergeBell  // ícono para servicios
 } from 'react-icons/fa';
@@ -14,22 +14,22 @@ import { useTranslation } from 'react-i18next';
 import AdminProyectosModal from './AdminProyectosModal.js';
 import AdminSkillsModal from './AdminSkillsModal.js';
 import AdminCategoriasModal from './AdminCategoriasModal.js';
-import AdminServiciosModal from './AdminServiciosModal.js'; 
+import AdminServiciosModal from './AdminServiciosModal.js';
 import AdminUsersModal from './AdminUsersModal.js';
 import AdminSettingsModal from './AdminSettingsModal.js';
 
 const getModalVariants = (direction = 'forward') => {
   return direction === 'forward'
     ? {
-        hidden: { opacity: 0, y: '-100vh' },
-        visible: { opacity: 1, y: '0' },
-        exit: { opacity: 0, y: '100vh' }
-      }
+      hidden: { opacity: 0, y: '-100vh' },
+      visible: { opacity: 1, y: '0' },
+      exit: { opacity: 0, y: '100vh' }
+    }
     : {
-        hidden: { opacity: 0, y: '100vh' },
-        visible: { opacity: 1, y: '0' },
-        exit: { opacity: 0, y: '-100vh' }
-      };
+      hidden: { opacity: 0, y: '100vh' },
+      visible: { opacity: 1, y: '0' },
+      exit: { opacity: 0, y: '-100vh' }
+    };
 };
 
 const AdminModal = ({ isOpen, onClose }) => {
@@ -90,27 +90,39 @@ const AdminModal = ({ isOpen, onClose }) => {
                 <h2>{t('adminModal.title')}</h2>
                 <div className="admin-buttons">
                   <button onClick={() => handleSwitch('proyectos')}>
-                    <FaProjectDiagram size={48} />
+                    <div className="icon-wrapper">
+                      <FaProjectDiagram />
+                    </div>
                     <span>{t('adminModal.buttons.projects')}</span>
                   </button>
                   <button onClick={() => handleSwitch('usuarios')}>
-                    <FaUsers size={48} />
+                    <div className="icon-wrapper">
+                      <FaUsers />
+                    </div>
                     <span>{t('adminModal.buttons.users')}</span>
                   </button>
                   <button onClick={() => handleSwitch('skills')}>
-                    <FaWrench size={48} />
+                    <div className="icon-wrapper">
+                      <FaWrench />
+                    </div>
                     <span>{t('adminModal.buttons.skills')}</span>
                   </button>
                   <button onClick={() => handleSwitch('categorias')}>
-                    <FaTags size={48} />
+                    <div className="icon-wrapper">
+                      <FaTags />
+                    </div>
                     <span>{t('adminModal.buttons.categories')}</span>
                   </button>
                   <button onClick={() => handleSwitch('servicios')}>
-                    <FaConciergeBell size={48} />
+                    <div className="icon-wrapper">
+                      <FaConciergeBell />
+                    </div>
                     <span>{t('adminModal.buttons.services')}</span>
                   </button>
                   <button onClick={() => handleSwitch('config')}>
-                    <FaCog size={48} />
+                    <div className="icon-wrapper">
+                      <FaCog />
+                    </div>
                     <span>{t('adminModal.buttons.settings')}</span>
                   </button>
                 </div>

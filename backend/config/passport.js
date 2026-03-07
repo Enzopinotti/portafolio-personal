@@ -48,17 +48,27 @@ passport.use(new GoogleStrategy({
     logger.info(`GoogleStrategy: Inicio autenticación para usuario de Google: ${profile.displayName}`);
     const { displayName, emails } = profile;
     let usuario = await Usuario.findOne({ where: { email: emails[0].value } });
+
+    // Determinar el rol: si el email está en ADMIN_EMAILS, asignar idRol: 1 (admin)
+    const adminEmails = process.env.ADMIN_EMAILS ? process.env.ADMIN_EMAILS.split(',').map(e => e.trim().toLowerCase()) : [];
+    const userEmail = emails[0].value.toLowerCase();
+    const assignedRol = adminEmails.includes(userEmail) ? 1 : 2;
+
     if (!usuario) {
       logger.info(`GoogleStrategy: Usuario no encontrado para email ${emails[0].value}. Creando nuevo usuario.`);
-      // Al crear el usuario, establecemos emailConfirmed a true
       usuario = await Usuario.create({
         nombre: displayName,
         email: emails[0].value,
         password: '', // No se utiliza para OAuth
-        idRol: 2,     // Por ejemplo, rol de "usuario"
+        idRol: assignedRol,
         emailConfirmed: true, // Marca el email como confirmado
       });
+    } else if (usuario.idRol !== assignedRol) {
+      logger.info(`GoogleStrategy: Actualizando rol de usuario ${usuario.email} a ${assignedRol === 1 ? 'Admin' : 'Usuario'}`);
+      usuario.idRol = assignedRol;
+      await usuario.save();
     }
+
     // Generar tokens sin usar sesiones.
     const accessJwt = generarAccessToken({ idUsuario: usuario.idUsuario, idRol: usuario.idRol });
     const refreshJwt = generarRefreshToken({ idUsuario: usuario.idUsuario });

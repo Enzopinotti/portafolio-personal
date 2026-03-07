@@ -4,10 +4,15 @@ import { listServicios } from '../services/servicioService.js';
 import VerticalInfiniteSlider from '../components/VerticalInfiniteSlider.js';
 import ServicioCard from '../components/ServicioCard.js'; // Added as per instruction
 import { useTranslation } from 'react-i18next';
+import { useLocation } from 'react-router-dom';
 import { NavigationContext } from '../context/NavigationContext.js';
 
 const Servicios = () => {
   const { t } = useTranslation();
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const initialServiceId = queryParams.get('id');
+
   const { navigationDirection } = useContext(NavigationContext); // Added as per instruction
   const [servicios, setServicios] = useState([]);
   const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 1080);
@@ -74,7 +79,10 @@ const Servicios = () => {
         </div>
         <div className="servicios-right">
           <div className="servicios-slider-wrapper">
-            <VerticalInfiniteSlider items={servicios} />
+            <VerticalInfiniteSlider
+              items={servicios}
+              initialExpandedId={initialServiceId}
+            />
           </div>
         </div>
       </div>
