@@ -16,6 +16,7 @@ import Skill from './Skill.js';
 import SkillCategoria from './SkillCategoria.js';
 import Testimonio from './Testimonio.js';
 import Usuario from './Usuario.js';
+import Noticia from './Noticia.js';
 
 // Import associations to ensure relationships are set up
 import './associations.js';
@@ -36,6 +37,7 @@ const db = {
   SkillCategoria,
   Testimonio,
   Usuario,
+  Noticia,
   sequelize,
   Sequelize
 };

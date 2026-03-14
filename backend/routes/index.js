@@ -13,6 +13,7 @@ import categoriaSkillRoutes from './categoriaSkillRoutes.js';
 import adminUsuarioRoutes from './adminUsuarioRoutes.js';
 import settingsRoutes from './settingsRoutes.js';
 import ImagenesRotes from './imagenRoutes.js';
+import noticiasRoutes from './noticiasRoutes.js';
 
 const router = Router();
 
@@ -30,5 +31,6 @@ router.use('/categorias', categoriaSkillRoutes);
 router.use('/admin/usuarios', adminUsuarioRoutes);
 router.use('/settings', settingsRoutes);
 router.use('/imagenes', ImagenesRotes);
+router.use('/noticias', noticiasRoutes);
 
 export default router;

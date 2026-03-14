@@ -14,8 +14,10 @@ dotenv.config({ path: resolve(__dirname, envFile) });
 
 import http from 'http';
 import { Server } from 'socket.io';
+import cron from 'node-cron';
 import app from './app.js';
 import logger from './config/logger.js';
+import { scrapeTechNews } from './services/scraperService.js';
 
 const server = http.createServer(app);
 
@@ -33,4 +35,13 @@ io.on('connection', (socket) => {
 const PORT = process.env.PORT || 3001;
 server.listen(PORT, () => {
   logger.info(`Servidor iniciado en el puerto ${PORT}`);
+  
+  // Programar el scraper para que se ejecute cada 6 horas
+  cron.schedule('0 */6 * * *', async () => {
+    logger.info('[Cron] Ejecutando scraper de noticias...');
+    await scrapeTechNews();
+  });
+  
+  // Ejecutar una vez al iniciar el servidor para tener datos iniciales
+  scrapeTechNews();
 });
