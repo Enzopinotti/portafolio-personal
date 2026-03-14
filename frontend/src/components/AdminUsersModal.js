@@ -1,9 +1,11 @@
 // src/components/AdminUsersModal.jsx
 import React, { useState, useEffect, useContext } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaArrowLeft, FaTimes } from 'react-icons/fa';
+import { FaArrowLeft, FaTimes, FaEdit } from 'react-icons/fa';
 import AdminUserForm from './AdminUserForm.js';
 import ConfirmModal from './ConfirmModal.js';
+import EditUserModal from './EditUserModal.js';
+import Loader from './shared/Loader.js';
 import { listAdminUsers, createAdminUser, deleteAdminUser } from '../services/userService.js';
 import { listRoles } from '../services/rolService.js'; // Asegúrate de tener esta función
 import { AuthContext } from '../context/AuthContext.js';
@@ -27,9 +29,11 @@ const AdminUsersModal = ({ isOpen, onClose, direction = 'forward' }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [newUser, setNewUser] = useState({ nombre: '', apellido: '', email: '', contraseña: '', idRol: '' });
 
-  // Estado para confirmación de eliminación
+  // Estado para confirmación de eliminación y edición
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [userToDelete, setUserToDelete] = useState(null);
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [userToEdit, setUserToEdit] = useState(null);
 
   // Responsive: imagen de fondo
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
@@ -70,9 +74,10 @@ const AdminUsersModal = ({ isOpen, onClose, direction = 'forward' }) => {
       });
   }, [isOpen]);
 
-  const filteredUsers = (users || []).filter(user =>
-    user?.nombre?.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredUsers = (users || []).filter(user => {
+    const name = user?.nombre || '';
+    return name.toLowerCase().includes(searchTerm.toLowerCase());
+  });
 
   const confirmDelete = () => {
     if (!userToDelete) return;
@@ -94,6 +99,11 @@ const AdminUsersModal = ({ isOpen, onClose, direction = 'forward' }) => {
   const handleDelete = (id) => {
     setUserToDelete(id);
     setConfirmOpen(true);
+  };
+
+  const handleEditUser = (user) => {
+    setUserToEdit(user);
+    setEditModalOpen(true);
   };
 
   const handleCreate = (e) => {
@@ -164,7 +174,7 @@ const AdminUsersModal = ({ isOpen, onClose, direction = 'forward' }) => {
                       onChange={(e) => setSearchTerm(e.target.value)}
                     />
                   </div>
-                  {loading && <p>{t('adminUsersModal.loading')}</p>}
+                  {loading && <Loader message={t('adminUsersModal.loading')} />}
                   {error && <p className="error">{error}</p>}
 
                   <div className="admin-section-title">
@@ -178,13 +188,23 @@ const AdminUsersModal = ({ isOpen, onClose, direction = 'forward' }) => {
                             <h3>{user.nombre}</h3>
                             <p>{user.email}</p>
                           </div>
-                          <button
-                            className="delete-button"
-                            onClick={() => handleDelete(user.idUsuario)}
-                            title={t('adminUsersModal.actions.deleteUser')}
-                          >
-                            <FaTimes />
-                          </button>
+                          <div className="item-actions" style={{ display: 'flex', gap: '0.8rem' }}>
+                            <button
+                              className="edit-button"
+                              onClick={() => handleEditUser(user)}
+                              title={t('adminUsersModal.actions.editUser', 'Editar Usuario')}
+                              style={{ background: '#ebf4ff', border: 'none', color: '#3182ce', width: '38px', height: '38px', borderRadius: '10px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.1rem' }}
+                            >
+                              <FaEdit />
+                            </button>
+                            <button
+                              className="delete-button"
+                              onClick={() => handleDelete(user.idUsuario)}
+                              title={t('adminUsersModal.actions.deleteUser')}
+                            >
+                              <FaTimes />
+                            </button>
+                          </div>
                         </div>
                       ))
                     ) : (
@@ -213,6 +233,20 @@ const AdminUsersModal = ({ isOpen, onClose, direction = 'forward' }) => {
         onCancel={() => {
           setConfirmOpen(false);
           setUserToDelete(null);
+        }}
+      />
+      <EditUserModal
+        isOpen={editModalOpen}
+        user={userToEdit}
+        roles={roles}
+        onClose={() => {
+          setEditModalOpen(false);
+          setUserToEdit(null);
+        }}
+        onSave={(updatedUser) => {
+          setUsers(prev => prev.map(u => u.idUsuario === updatedUser.idUsuario ? updatedUser : u));
+          setEditModalOpen(false);
+          setUserToEdit(null);
         }}
       />
     </>

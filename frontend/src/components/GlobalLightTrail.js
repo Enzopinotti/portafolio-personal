@@ -32,17 +32,20 @@ const GlobalLightTrail = () => {
         const life = point.life || 1;
         const radius = Math.max(1.5, (10 - i * 0.35) * life);
 
+        const pointColor = point.color || '255, 255, 255';
+        const pointShadow = point.shadow || 'white';
+
         ctx.beginPath();
         ctx.arc(point.x, point.y, radius, 0, 2 * Math.PI);
 
         const gradient = ctx.createRadialGradient(point.x, point.y, 0, point.x, point.y, radius * 2);
-        gradient.addColorStop(0, `rgba(255, 255, 255, ${life})`);
-        gradient.addColorStop(0.5, `rgba(255, 255, 255, ${life * 0.5})`);
-        gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+        gradient.addColorStop(0, `rgba(${pointColor}, ${life})`);
+        gradient.addColorStop(0.5, `rgba(${pointColor}, ${life * 0.5})`);
+        gradient.addColorStop(1, `rgba(${pointColor}, 0)`);
 
         ctx.fillStyle = gradient;
         ctx.shadowBlur = i === 0 ? 25 * life : 15 * life;
-        ctx.shadowColor = 'white';
+        ctx.shadowColor = pointShadow;
         ctx.fill();
       }
     };
@@ -57,9 +60,16 @@ const GlobalLightTrail = () => {
       const y = e.clientY || (e.touches && e.touches[0] ? e.touches[0].clientY : undefined);
 
       if (x !== undefined && y !== undefined) {
+        // Detectar si el puntero está sobre un área blanca (modales)
+        const target = document.elementFromPoint(x, y);
+        const isWhiteArea = !!target?.closest('.modal-content, .admin-submodal, .admin-modal, .profile-modal-content, .auth-modal-content, .confirm-modal-content');
+
+        const pointColor = isWhiteArea ? '0, 0, 0' : '255, 255, 255';
+        const pointShadow = isWhiteArea ? 'rgba(0,0,0,0.5)' : 'white';
+
         const lastPoint = trail.current[0];
         if (!lastPoint || Math.hypot(x - lastPoint.x, y - lastPoint.y) > 3) {
-          trail.current.unshift({ x, y, life: 1 });
+          trail.current.unshift({ x, y, life: 1, color: pointColor, shadow: pointShadow });
           if (trail.current.length > 30) trail.current.pop();
         }
       }
@@ -90,7 +100,7 @@ const GlobalLightTrail = () => {
         left: 0,
         pointerEvents: 'none',
         zIndex: 9999,
-        mixBlendMode: 'screen',
+        mixBlendMode: 'normal',
       }}
     />
   );

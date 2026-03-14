@@ -8,6 +8,7 @@ import { listCategoriaSkills, createCategoriaSkill, deleteCategoriaSkill } from 
 import { AuthContext } from '../context/AuthContext.js';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
+import Loader from './shared/Loader.js';
 
 const getModalVariants = (direction = 'forward') => {
   return direction === 'forward'
@@ -63,9 +64,10 @@ const AdminCategoriasModal = ({ isOpen, onClose, direction = 'forward' }) => {
       });
   }, [isOpen, t]);
 
-  const filteredCategorias = (categorias || []).filter(cat =>
-    cat?.nombre?.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredCategorias = (categorias || []).filter(cat => {
+    const displayName = cat?.nombre?.includes('.') ? t(cat.nombre) : (cat?.nombre || '');
+    return displayName.toLowerCase().includes(searchTerm.toLowerCase());
+  });
 
   const confirmDelete = () => {
     if (!categoriaToDelete) return;
@@ -155,20 +157,13 @@ const AdminCategoriasModal = ({ isOpen, onClose, direction = 'forward' }) => {
                       onChange={(e) => setSearchTerm(e.target.value)}
                     />
                   </div>
-
-                  {loading && <p>{t('adminCategoriasModal.loading')}</p>}
-                  {error && <p className="error">{error}</p>}
-
-                  <div className="admin-section-title">
-                    {t('adminCategoriasModal.currentCategories', 'Actuales')}
-                  </div>
-                  {loading && <p>{t('adminCategoriasModal.loading')}</p>}
+                  {loading && <Loader message={t('adminCategoriasModal.loading')} />}
                   {error && <p className="error">{error}</p>}
                   <div className="projects-list">
                     {filteredCategorias.map((cat) => (
                       <div key={cat.idCategoriaSkill} className="project-item">
                         <div className="project-info">
-                          <h3>{cat.nombre}</h3>
+                          <h3>{cat.nombre?.includes('.') ? t(cat.nombre) : cat.nombre}</h3>
                         </div>
                         <button
                           className="delete-button"

@@ -407,7 +407,7 @@ const AdminProjectForm = ({
                   checked={isChecked}
                   onChange={() => handleSkillCheckbox(skill)}
                 />
-                <span>{skill.nombre}</span>
+                <span>{skill.nombre?.includes('.') ? t(skill.nombre) : skill.nombre}</span>
               </label>
               {isChecked && (
                 <div className="nivel-input">
@@ -460,7 +460,7 @@ const AdminProjectForm = ({
                 checked={isSelected}
                 onChange={handleServiceCheckbox}
               />
-              <span>{serv.nombre}</span>
+              <span>{serv.nombre?.includes('.') ? t(serv.nombre) : serv.nombre}</span>
             </label>
           );
         })}

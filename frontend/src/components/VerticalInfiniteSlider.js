@@ -16,17 +16,33 @@ const VerticalInfiniteSlider = ({ items, velocidad = 30, initialExpandedId }) =>
   // Efecto para expandir el servicio inicial si viene por prop (deep link)
   useEffect(() => {
     if (initialExpandedId && items.length > 0) {
-      // Buscamos el índice en el primer tercio o segundo tercio
       const index = items.findIndex(item => String(item.id) === String(initialExpandedId));
       if (index !== -1) {
-        // Expandimos el del centro para que sea más probable que esté en vista
-        setExpandedId(index + items.length);
+        // Expandimos el del centro (segundo tercio)
+        const targetIdx = index + items.length;
+        setExpandedId(targetIdx);
 
-        // Opcional: Podríamos centrar el scroll aquí si fuera necesario, 
-        // pero por ahora solo expandimos.
+        // Scroll suave hacia el elemento expandido
+        setTimeout(() => {
+          const track = trackRef.current;
+          if (track) {
+            const children = track.children;
+            if (children[targetIdx]) {
+              const element = children[targetIdx];
+              const containerHeight = containerRef.current.offsetHeight;
+              const elementOffset = element.offsetTop;
+              const elementHeight = element.offsetHeight;
+
+              // Centramos el elemento en el contenedor con un offset relativo
+              const scrollToY = -(elementOffset - (containerHeight / 2) + (elementHeight / 2));
+              y.set(scrollToY);
+              controls.stop(); // Paramos la animación automática para que se quede ahí
+            }
+          }
+        }, 300);
       }
     }
-  }, [initialExpandedId, items]);
+  }, [initialExpandedId, items, y, controls]);
 
   const startAnimation = useCallback(async () => {
     if (!trackRef.current) return;

@@ -10,6 +10,7 @@ import { toast } from 'react-toastify';
 import ConfirmModal from './ConfirmModal.js';
 import AssignCategoryModal from './AssignCategoryModal.js';
 import { useTranslation } from 'react-i18next';
+import Loader from './shared/Loader.js';
 
 const getModalVariants = (direction = 'forward') => {
   return direction === 'forward'
@@ -71,9 +72,10 @@ const AdminSkillsModal = ({ isOpen, onClose, direction = 'forward' }) => {
       });
   }, [isOpen, t]);
 
-  const filteredSkills = skills.filter(skill =>
-    skill.nombre.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredSkills = skills.filter(skill => {
+    const displayName = skill.nombre?.includes('.') ? t(skill.nombre) : (skill.nombre || '');
+    return displayName.toLowerCase().includes(searchTerm.toLowerCase());
+  });
 
   const confirmDelete = () => {
     if (!skillToDelete) return;
@@ -200,7 +202,7 @@ const AdminSkillsModal = ({ isOpen, onClose, direction = 'forward' }) => {
                     />
                   </div>
 
-                  {loading && <p>{t('adminSkillsModal.loading')}</p>}
+                  {loading && <Loader message={t('adminSkillsModal.loading')} />}
                   {error && <p className="error">{error}</p>}
 
                   <div className="admin-section-title">
@@ -210,11 +212,11 @@ const AdminSkillsModal = ({ isOpen, onClose, direction = 'forward' }) => {
                     {filteredSkills.map((skill) => (
                       <div key={skill.idSkill} className="project-item">
                         <div className="project-info">
-                          <h3>{skill.nombre}</h3>
+                          <h3>{skill.nombre?.includes('.') ? t(skill.nombre) : skill.nombre}</h3>
                           <p>{t('adminSkillsModal.actions.level')}: {skill.nivel}%</p>
                           <p className="categoria">
                             {t('adminSkillsModal.actions.categories')}: {skill.Categorias && skill.Categorias.length > 0
-                              ? skill.Categorias.map((cat) => cat.nombre).join(', ')
+                              ? skill.Categorias.map((cat) => cat.nombre?.includes('.') ? t(cat.nombre) : cat.nombre).join(', ')
                               : t('adminSkillsModal.noCategory')}
                           </p>
                         </div>

@@ -105,7 +105,7 @@ const AssignSkillModal = ({
                         checked={isChecked}
                         onChange={() => handleCheckboxChange(skill)}
                       />
-                      <span>{skill.nombre}</span>
+                      <span>{skill.nombre?.includes('.') ? t(skill.nombre) : skill.nombre}</span>
                     </label>
                     {isChecked && (
                       <div className="nivel-input">

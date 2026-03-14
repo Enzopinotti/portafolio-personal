@@ -8,12 +8,6 @@
 .modal-content.admin-submodal.settings {
   /* Layout handled by base .admin-submodal */
 
-  .admin-modal-body {
-    /* Settings doesn't usually have a left image in the same way, 
-       but we added a patron Uno/Dos in the JS. 
-       Let's ensure it follows the structure. */
-  }
-
   .settings-form {
     padding-top: 1rem;
 
@@ -44,12 +38,26 @@
         gap: 1.5rem;
 
         .form-group {
+          &.full-width {
+            grid-column: 1 / -1;
+          }
+
           label {
-            display: block;
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
             font-size: 0.9rem;
             font-weight: 600;
             color: #555;
             margin-bottom: 0.5rem;
+
+            .field-explanation {
+              font-size: 0.75rem;
+              font-weight: 400;
+              color: $color-gray-dark;
+              opacity: 0.8;
+              font-style: italic;
+            }
           }
 
           input {

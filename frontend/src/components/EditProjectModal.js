@@ -104,7 +104,7 @@ const EditProjectModal = ({ isOpen, project, onClose, onSave }) => {
     e.preventDefault();
     try {
       // (1) Editar parte textual
-      await editProject(editedProject.idProyecto, {
+      const res = await editProject(editedProject.idProyecto, {
         titulo: editedProject.titulo,
         descripcion: editedProject.descripcion,
         fechaInicio: editedProject.fechaInicio,
@@ -115,16 +115,19 @@ const EditProjectModal = ({ isOpen, project, onClose, onSave }) => {
         servicios: editedProject.servicios,
       }, accessToken);
 
+      let finalProject = res.proyecto;
+
       // (2) Subir portada si es un File
       if (
         editedProject.imagenPastilla &&
         typeof editedProject.imagenPastilla !== 'string'
       ) {
-        await uploadPastilla(
+        const resPastilla = await uploadPastilla(
           editedProject.idProyecto,
           editedProject.imagenPastilla,
           accessToken
         );
+        finalProject = resPastilla.proyecto;
       }
 
       // (3) Subir imágenes extras si hay un FileList
@@ -137,11 +140,13 @@ const EditProjectModal = ({ isOpen, project, onClose, onSave }) => {
           editedProject.imagenesExtras,
           accessToken
         );
+        // Note: Ideally we'd re-fetch here if we want the Imagens array updated immediately,
+        // but for now the user will see the refresh on F5 or list update.
       }
 
-      // (4) Notificar al padre
+      // (4) Notificar al padre con el proyecto actualizado de la BD
       if (onSave) {
-        onSave(editedProject);
+        onSave(finalProject || editedProject);
       }
 
       toast.success('Proyecto editado con éxito');
@@ -156,37 +161,48 @@ const EditProjectModal = ({ isOpen, project, onClose, onSave }) => {
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          className="edit-project-overlay"
+          className="modal-overlay admin-overlay"
+          style={{ zIndex: 2200 }}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
+          onClick={onClose}
         >
           <motion.div
-            className="edit-project-modal"
+            className="modal-content admin-submodal proyectos"
             initial={{ y: 50 }}
             animate={{ y: 0 }}
             exit={{ y: -50 }}
+            onClick={(e) => e.stopPropagation()}
+            style={{ maxHeight: '90vh' }}
           >
-            <button className="close-btn" onClick={onClose}>
-              <FaTimes />
-            </button>
-            <h3>{t('editProjectModal.title')}</h3>
+            <div className="admin-submodal-header">
+              <button className="close-icon" onClick={onClose}>
+                <FaTimes />
+              </button>
+            </div>
 
-            <AdminProjectForm
-              newProject={editedProject}
-              setNewProject={setEditedProject}
-              handleCreate={handleSave}    // Se ejecuta al submit
-              availableSkills={availableSkills}
-              skillPage={skillPage}
-              skillPages={skillPages}
-              setSkillPage={setSkillPage}
-              availableServices={availableServices}
-              servicePage={servicePage}
-              servicePages={servicePages}
-              setServicePage={setServicePage}
-              isEditing={true}
-              accessToken={accessToken}    // Opcional, si quieres eliminar imágenes en DB
-            />
+            <div className="admin-modal-body">
+              <div className="rightModal" style={{ width: '100%', maxWidth: '100%' }}>
+                <h2>{t('editProjectModal.title', 'Editar Proyecto')}</h2>
+
+                <AdminProjectForm
+                  newProject={editedProject}
+                  setNewProject={setEditedProject}
+                  handleCreate={handleSave}
+                  availableSkills={availableSkills}
+                  skillPage={skillPage}
+                  skillPages={skillPages}
+                  setSkillPage={setSkillPage}
+                  availableServices={availableServices}
+                  servicePage={servicePage}
+                  servicePages={servicePages}
+                  setServicePage={setServicePage}
+                  isEditing={true}
+                  accessToken={accessToken}
+                />
+              </div>
+            </div>
           </motion.div>
         </motion.div>
       )}

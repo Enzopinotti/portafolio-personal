@@ -5,6 +5,7 @@ import { FaArrowLeft, FaTimes } from 'react-icons/fa';
 import { useTranslation } from 'react-i18next';
 import { getSettings, updateSettings } from '../services/adminSettingsService.js';
 import { toast } from 'react-toastify';
+import { SettingsContext } from '../context/SettingsContext.js';
 
 const getModalVariants = (direction = 'forward') => {
   return direction === 'forward'
@@ -14,6 +15,7 @@ const getModalVariants = (direction = 'forward') => {
 
 const AdminSettingsModal = ({ isOpen, onClose, direction = 'forward' }) => {
   const { t } = useTranslation();
+  const { refreshSettings } = React.useContext(SettingsContext);
   const variants = getModalVariants(direction);
 
   const [settings, setSettings] = useState({
@@ -27,7 +29,10 @@ const AdminSettingsModal = ({ isOpen, onClose, direction = 'forward' }) => {
     primaryColor: '',
     secondaryColor: '',
     backgroundColor: '',
-    textColor: ''
+    textColor: '',
+    typewriterWordsES: '',
+    typewriterWordsEN: '',
+    typewriterWordsPT: ''
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -49,7 +54,10 @@ const AdminSettingsModal = ({ isOpen, onClose, direction = 'forward' }) => {
           primaryColor: data.primaryColor || '',
           secondaryColor: data.secondaryColor || '',
           backgroundColor: data.backgroundColor || '',
-          textColor: data.textColor || ''
+          textColor: data.textColor || '',
+          typewriterWordsES: data.typewriterWordsES || '',
+          typewriterWordsEN: data.typewriterWordsEN || '',
+          typewriterWordsPT: data.typewriterWordsPT || ''
         });
         setLoading(false);
       })
@@ -73,6 +81,7 @@ const AdminSettingsModal = ({ isOpen, onClose, direction = 'forward' }) => {
     updateSettings(settings)
       .then(() => {
         toast.success(t('adminSettingsModal.toast.updateSuccess'));
+        if (refreshSettings) refreshSettings();
         onClose();
       })
       .catch((err) => {
@@ -155,6 +164,44 @@ const AdminSettingsModal = ({ isOpen, onClose, direction = 'forward' }) => {
                             type="text"
                             placeholder={t('adminSettingsModal.siteDescriptionPlaceholder')}
                             value={settings.siteDescription}
+                            onChange={handleInputChange}
+                          />
+                        </div>
+                        <div className="form-group full-width">
+                          <label htmlFor="typewriterWordsES">
+                            {t('adminSettingsModal.typewriterWordsESLabel')}
+                            <span className="field-explanation">
+                              {t('adminSettingsModal.typewriterExplanation')}
+                            </span>
+                          </label>
+                          <input
+                            id="typewriterWordsES"
+                            name="typewriterWordsES"
+                            type="text"
+                            placeholder={t('adminSettingsModal.typewriterWordsPlaceholder')}
+                            value={settings.typewriterWordsES}
+                            onChange={handleInputChange}
+                          />
+                        </div>
+                        <div className="form-group full-width">
+                          <label htmlFor="typewriterWordsEN">{t('adminSettingsModal.typewriterWordsENLabel')}</label>
+                          <input
+                            id="typewriterWordsEN"
+                            name="typewriterWordsEN"
+                            type="text"
+                            placeholder={t('adminSettingsModal.typewriterWordsPlaceholder')}
+                            value={settings.typewriterWordsEN}
+                            onChange={handleInputChange}
+                          />
+                        </div>
+                        <div className="form-group full-width">
+                          <label htmlFor="typewriterWordsPT">{t('adminSettingsModal.typewriterWordsPTLabel')}</label>
+                          <input
+                            id="typewriterWordsPT"
+                            name="typewriterWordsPT"
+                            type="text"
+                            placeholder={t('adminSettingsModal.typewriterWordsPlaceholder')}
+                            value={settings.typewriterWordsPT}
                             onChange={handleInputChange}
                           />
                         </div>

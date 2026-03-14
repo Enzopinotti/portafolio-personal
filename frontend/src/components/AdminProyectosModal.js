@@ -27,6 +27,7 @@ import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
 import ProjectActionsDropdown from './ProjectActionsDropdown.js';
 import EditProjectModal from './EditProjectModal.js';
+import Loader from './shared/Loader.js';
 
 const getModalVariants = (direction = 'forward') => {
   return direction === 'forward'
@@ -141,9 +142,10 @@ const AdminProyectosModal = ({ isOpen, onClose, direction = 'forward' }) => {
   }, [isOpen, servicePage]);
 
   // Filtro de proyectos
-  const filteredProjects = (projects || []).filter(project =>
-    project?.titulo?.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredProjects = (projects || []).filter(project => {
+    const title = project?.titulo || '';
+    return title.toLowerCase().includes(searchTerm.toLowerCase());
+  });
 
   // =========================
   // Eliminar Proyecto
@@ -364,7 +366,7 @@ const AdminProyectosModal = ({ isOpen, onClose, direction = 'forward' }) => {
                       onChange={(e) => setSearchTerm(e.target.value)}
                     />
                   </div>
-                  {loading && <p>{t('adminProjectsModal.loading')}</p>}
+                  {loading && <Loader message={t('adminProjectsModal.loading')} />}
                   {error && <p className="error">{error}</p>}
 
 
@@ -381,13 +383,13 @@ const AdminProyectosModal = ({ isOpen, onClose, direction = 'forward' }) => {
                           <p>
                             {t('adminProjectsModal.actions.skills')}:{" "}
                             {project.Skills?.length
-                              ? project.Skills.map(sk => sk.nombre).join(', ')
+                              ? project.Skills.map(sk => sk.nombre?.includes('.') ? t(sk.nombre) : sk.nombre).join(', ')
                               : t('adminProjectsModal.noSkills')}
                           </p>
                           <p>
                             {t('adminProjectsModal.actions.services')}:{" "}
                             {project.Servicios?.length
-                              ? project.Servicios.map(sv => sv.nombre).join(', ')
+                              ? project.Servicios.map(sv => sv.nombre?.includes('.') ? t(sv.nombre) : sv.nombre).join(', ')
                               : t('adminProjectsModal.noServices')}
                           </p>
                         </div>
@@ -462,24 +464,14 @@ const AdminProyectosModal = ({ isOpen, onClose, direction = 'forward' }) => {
           setProjectToEdit(null);
         }}
         onSave={(updatedProject) => {
-          editProject(updatedProject.idProyecto, updatedProject, accessToken)
-            .then(() => {
-              // Actualiza en la lista local
-              setProjects(prev =>
-                prev.map(p =>
-                  p.idProyecto === updatedProject.idProyecto ? updatedProject : p
-                )
-              );
-              toast.success('Proyecto editado con éxito');
-            })
-            .catch(err => {
-              toast.error('Error al editar el proyecto');
-              console.error(err);
-            })
-            .finally(() => {
-              setEditModalOpen(false);
-              setProjectToEdit(null);
-            });
+          // El modal ya hizo el editProject, solo actualizamos el estado local.
+          setProjects(prev =>
+            prev.map(p =>
+              p.idProyecto === updatedProject.idProyecto ? updatedProject : p
+            )
+          );
+          setEditModalOpen(false);
+          setProjectToEdit(null);
         }}
       />
 

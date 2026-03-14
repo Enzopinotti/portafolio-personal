@@ -21,6 +21,8 @@ const DualSkillBar = ({ skills }) => {
         visible: { opacity: 1, scale: 1, transition: { duration: 0.6, delay: 0.8 } }
     };
 
+    const { t } = useTranslation();
+
     return (
         <div className="dual-skill-container">
             {/* Etiqueta Superior */}
@@ -31,7 +33,7 @@ const DualSkillBar = ({ skills }) => {
                 viewport={{ once: true }}
                 variants={textVariants}
             >
-                <span className="skill-name">{topSkill.skill}</span>
+                <span className="skill-name">{topSkill.skill?.includes('.') ? t(topSkill.skill) : topSkill.skill}</span>
                 {/* <span className="skill-level">{topSkill.nivel}%</span> */}
             </motion.div>
 
@@ -69,7 +71,7 @@ const DualSkillBar = ({ skills }) => {
                 viewport={{ once: true }}
                 variants={textVariants}
             >
-                <span className="skill-name">{bottomSkill.skill}</span>
+                <span className="skill-name">{bottomSkill.skill?.includes('.') ? t(bottomSkill.skill) : bottomSkill.skill}</span>
                 {/* <span className="skill-level">{bottomSkill.nivel}%</span> */}
             </motion.div>
         </div>

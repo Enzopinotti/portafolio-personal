@@ -1,0 +1,133 @@
+// src/styles/components/shared/_loader.scss
+@import '../../abstracts/_variables.scss';
+
+.premium-loader-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    width: 100%;
+    min-height: 150px;
+
+    &.full-screen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: transparent;
+        z-index: 9999;
+    }
+
+    &.white {
+        .loader-mesh {
+            .loader-ring {
+                border-color: rgba($color-white, 0.1);
+                border-top-color: $color-white;
+            }
+
+            .loader-dot {
+                background: $color-white;
+                box-shadow: 0 0 15px rgba($color-white, 0.5);
+            }
+        }
+
+        .loader-message {
+            color: $color-white;
+        }
+    }
+
+    &.small {
+        min-height: auto;
+        padding: 1rem;
+
+        .loader-mesh {
+            width: 40px;
+            height: 40px;
+
+            .loader-ring {
+                border-width: 3px;
+            }
+
+            .loader-dot {
+                width: 8px;
+                height: 8px;
+            }
+        }
+
+        .loader-message {
+            font-size: 0.8rem;
+        }
+    }
+
+    &.large {
+        .loader-mesh {
+            width: 80px;
+            height: 80px;
+
+            .loader-ring {
+                border-width: 5px;
+            }
+
+            .loader-dot {
+                width: 14px;
+                height: 14px;
+            }
+        }
+
+        .loader-message {
+            font-size: 1.2rem;
+        }
+    }
+
+    .loader-mesh {
+        position: relative;
+        width: 60px;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .loader-ring {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 4px solid rgba($color-primary, 0.1);
+            border-top-color: $color-primary;
+            border-radius: 50%;
+        }
+
+        .loader-dot {
+            width: 10px;
+            height: 10px;
+            background: $color-primary;
+            border-radius: 50%;
+            box-shadow: 0 0 15px rgba($color-primary, 0.5);
+        }
+    }
+
+    .loader-message {
+        margin-top: 1.5rem;
+        font-weight: 700;
+        color: $color-primary;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-size: 0.9rem;
+        animation: pulseText 2s infinite ease-in-out;
+    }
+}
+
+@keyframes pulseText {
+
+    0%,
+    100% {
+        opacity: 0.6;
+        transform: scale(0.98);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}

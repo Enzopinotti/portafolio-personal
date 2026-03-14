@@ -7,19 +7,12 @@ const ServicioCard = ({ servicio, isExpanded, onToggle }) => {
   const cardRef = useRef(null);
   const dragStartPos = useRef({ x: 0, y: 0 });
 
-  // Mapeo simple de nombres de DB a claves de traducción
-  const getTranslationKey = (name) => {
-    if (!name) return null;
-    if (name.includes('Análisis')) return 'bi';
-    if (name.includes('Full-Stack')) return 'fullstack';
-    if (name.includes('Liderazgo') || name.includes('Tech')) return 'techlead';
-    if (name.includes('Automatización')) return 'automation';
-    return null;
-  };
+  const nameKey = servicio.nombre || servicio.titulo;
+  const descKey = servicio.descripcion;
 
-  const key = getTranslationKey(servicio.nombre || servicio.titulo);
-  const translatedName = key ? t(`services.items.${key}.name`) : (servicio.nombre || servicio.titulo || '');
-  const translatedDesc = key ? t(`services.items.${key}.description`) : (servicio.descripcion || '');
+  // Si el string contiene un ".", asumimos que es una clave de traducción
+  const translatedName = nameKey?.includes('.') ? t(nameKey) : (nameKey || '');
+  const translatedDesc = descKey?.includes('.') ? t(descKey) : (descKey || '');
 
   const handlePointerDown = (e) => {
     dragStartPos.current = { x: e.clientX, y: e.clientY };

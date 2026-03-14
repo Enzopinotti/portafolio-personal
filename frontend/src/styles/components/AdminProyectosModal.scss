@@ -8,58 +8,66 @@
 .modal-content.admin-submodal.proyectos {
   /* Layout handled by base .admin-submodal */
 
-  /* Image Previews */
+  /* Admin Image Previews (Pastilla & Extras) */
   .preview-pastilla,
-  .preview-imagenes-extras,
-  .preview-imagenes-nuevas {
-    margin: 1.5rem 0;
+  .preview-item {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    width: 80px;
+    height: 80px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    border: 2px solid $color-white;
+    flex-shrink: 0;
+    background: #f8f8f8;
+    margin: 0.5rem 0;
 
-    .imagenes-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-      gap: 1rem;
-      padding: 1rem;
-      background: rgba(0, 0, 0, 0.02);
-      border-radius: 12px;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
 
+    .close-button {
+      position: absolute;
+      top: 3px;
+      right: 3px;
+      background: rgba(255, 50, 50, 0.95);
+      color: white;
+      border: none;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 0.7rem;
+      transition: all 0.2s ease;
+      z-index: 10;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+
+      &:hover {
+        background: #ff0000;
+        transform: scale(1.15);
+      }
+    }
+  }
+
+  .preview-imagenes-extras,
+  .preview-imagenes-nuevas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding: 0.8rem;
+    background: rgba(0, 0, 0, 0.03);
+    border-radius: 14px;
+    border: 1px dashed #ddd;
+
+    /* Items inside use the shared style above */
     .preview-item {
-      position: relative;
-      border-radius: 10px;
-      overflow: hidden;
-      aspect-ratio: 16/10;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      border: 2px solid $color-white;
-
-      img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
-
-      .close-button {
-        position: absolute;
-        top: 5px;
-        right: 5px;
-        background: rgba(255, 77, 77, 0.9);
-        color: white;
-        border: none;
-        width: 22px;
-        height: 22px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        font-size: 0.7rem;
-        transition: all 0.2s ease;
-        backdrop-filter: blur(2px);
-
-        &:hover {
-          background: #ff0000;
-          transform: scale(1.1);
-        }
-      }
+      margin: 0; // Reset margin if inside flex container
     }
   }
 
@@ -205,6 +213,7 @@
     font-weight: 800;
     letter-spacing: -0.5px;
     background: linear-gradient(135deg, #fff 0%, #aaa 100%);
+    background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }

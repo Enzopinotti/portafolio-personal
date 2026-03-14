@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
-const AdminUserForm = ({ newUser, setNewUser, handleCreate, roles }) => {
+const AdminUserForm = ({ newUser, setNewUser, handleCreate, roles, isEditing }) => {
   const { t } = useTranslation();
   const [showPassword, setShowPassword] = useState(false);
 
@@ -16,7 +16,7 @@ const AdminUserForm = ({ newUser, setNewUser, handleCreate, roles }) => {
 
   return (
     <form className="new-project-form" onSubmit={handleCreate}>
-      <h3 className="titulo-form">{t('adminUserForm.formTitle')}</h3>
+      <h3 className="titulo-form">{isEditing ? t('adminUserForm.editTitle', 'Editar Usuario') : t('adminUserForm.formTitle')}</h3>
 
       <label htmlFor="nombre">{t('adminUserForm.nameLabel')}</label>
       <input
@@ -57,7 +57,7 @@ const AdminUserForm = ({ newUser, setNewUser, handleCreate, roles }) => {
           placeholder={t('adminUserForm.passwordPlaceholder')}
           value={newUser.contraseña || ''}
           onChange={handleInputChange}
-          required
+          required={!isEditing}
         />
         <span className="toggle-password" onClick={() => setShowPassword(!showPassword)}>
           {showPassword ? <FaEyeSlash /> : <FaEye />}
@@ -79,23 +79,25 @@ const AdminUserForm = ({ newUser, setNewUser, handleCreate, roles }) => {
         ))}
       </select>
 
-      <div className="checkbox-pro-group">
-        <label className={`checkbox-pro ${newUser.sendEmail ? 'selected' : ''}`}>
-          <input
-            id="sendEmail"
-            name="sendEmail"
-            type="checkbox"
-            checked={newUser.sendEmail || false}
-            onChange={(e) =>
-              setNewUser({ ...newUser, sendEmail: e.target.checked })
-            }
-          />
-          <span className="checkbox-pro-mark">✓</span>
-          <span>{t('adminUserForm.sendEmailLabel')}</span>
-        </label>
-      </div>
+      {!isEditing && (
+        <div className="checkbox-pro-group">
+          <label className={`checkbox-pro ${newUser.sendEmail ? 'selected' : ''}`}>
+            <input
+              id="sendEmail"
+              name="sendEmail"
+              type="checkbox"
+              checked={newUser.sendEmail || false}
+              onChange={(e) =>
+                setNewUser({ ...newUser, sendEmail: e.target.checked })
+              }
+            />
+            <span className="checkbox-pro-mark">✓</span>
+            <span>{t('adminUserForm.sendEmailLabel')}</span>
+          </label>
+        </div>
+      )}
 
-      <button type="submit" className="submit-btn">{t('adminUserForm.submitButton')}</button>
+      <button type="submit" className="submit-btn">{isEditing ? t('adminUserForm.saveButton', 'Guardar Cambios') : t('adminUserForm.submitButton')}</button>
     </form>
   );
 };

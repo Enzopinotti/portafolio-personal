@@ -95,7 +95,7 @@ const AssignServiceModal = ({
                       checked={selectedServices.includes(serv.idServicio)}
                       onChange={handleCheckboxChange}
                     />
-                    <span>{serv.nombre}</span>
+                    <span>{serv.nombre?.includes('.') ? t(serv.nombre) : serv.nombre}</span>
                   </label>
                 );
               })}

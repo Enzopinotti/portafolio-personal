@@ -7,6 +7,7 @@ import AdminServicioForm from './AdminServicioForm.js';
 import ServiceActionsDropdown from './ServiceActionsDropdown.js';
 import ConfirmModal from './ConfirmModal.js';
 import EditServiceModal from './EditServiceModal.js'; // Modal de edición
+import Loader from './shared/Loader.js';
 
 import {
   listServicios,
@@ -190,20 +191,7 @@ const AdminServiciosModal = ({ isOpen, onClose, direction = 'forward' }) => {
                       onChange={(e) => setSearchTerm(e.target.value)}
                     />
                   </div>
-
-                  {loading && <p>{t('adminServiciosModal.loading')}</p>}
-                  {error && <p className="error">{error}</p>}
-
-                  <div className="search-container">
-                    <input
-                      type="text"
-                      placeholder={t('adminServiciosModal.searchPlaceholder')}
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                    />
-                  </div>
-
-                  {loading && <p>{t('adminServiciosModal.loading')}</p>}
+                  {loading && <Loader message={t('adminServiciosModal.loading')} />}
                   {error && <p className="error">{error}</p>}
 
                   <div className="admin-section-title">
