@@ -1,11 +1,29 @@
-// Contacto.js — Layout original a la derecha con dropdown mejorado
-import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+// Contacto.js (completo mejorado)
+import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { toast } from 'react-toastify';
 import { enviarMensajeContacto } from '../services/contactoService.js';
 import { listServicios } from '../services/servicioService.js';
 import { useTranslation } from 'react-i18next';
-import { FaChevronDown } from 'react-icons/fa';
+
+const formVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { staggerChildren: 0.1, duration: 0.5, ease: 'easeInOut' }
+  }
+};
+
+const inputVariants = {
+  hidden: { opacity: 0, x: -20 },
+  visible: { opacity: 1, x: 0 }
+};
+
+const buttonVariants = {
+  hidden: { opacity: 0, scale: 0.8 },
+  visible: { opacity: 1, scale: 1 }
+};
 
 const Contacto = () => {
   const { t } = useTranslation();
@@ -15,49 +33,28 @@ const Contacto = () => {
   const [servicioInteres, setServicioInteres] = useState('');
   const [servicios, setServicios] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const dropdownRef = useRef(null);
 
   useEffect(() => {
     listServicios()
       .then(data => setServicios(data.servicios || data))
-      .catch(() => toast.error('Error al cargar los servicios'));
-  }, []);
-
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-        setIsDropdownOpen(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+      .catch(err => toast.error('Error al cargar los servicios'));
   }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (isLoading) return;
-    if (!servicioInteres) {
-      toast.error(t('contacto.selectService'));
-      return;
-    }
+
     setIsLoading(true);
     enviarMensajeContacto({ nombreCompleto, email, mensaje, servicioInteres })
       .then(() => {
-        toast.success('¡Mensaje enviado con éxito!');
-        setNombreCompleto(''); setEmail(''); setMensaje(''); setServicioInteres('');
+        toast.success('Mensaje enviado con éxito');
+        setNombreCompleto('');
+        setEmail('');
+        setMensaje('');
+        setServicioInteres('');
       })
       .catch(() => toast.error('Error al enviar el mensaje'))
       .finally(() => setIsLoading(false));
-  };
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { staggerChildren: 0.08 } }
-  };
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.4 } }
   };
 
   return (
@@ -65,104 +62,80 @@ const Contacto = () => {
       className="page contacto-page"
       initial="hidden"
       animate="visible"
-      exit={{ opacity: 0, y: -20 }}
-      variants={containerVariants}
+      exit="exit"
+      variants={formVariants}
     >
       <div className="contacto-container">
-        <h3>{t('contacto.title')}</h3>
-
-        <motion.form onSubmit={handleSubmit} variants={containerVariants}>
-
-          <div className="form-group">
-            <label>{t('contacto.fullName')}</label>
-            <input
-              type="text" required
-              value={nombreCompleto}
-              onChange={e => setNombreCompleto(e.target.value)}
-              placeholder="Tu nombre completo"
-              autoComplete="name"
-            />
+        <div className="contacto-right">
+          <div className="contacto-info">
+            <h2>{t('contacto.title')}</h2>
+            <p>{t('contacto.email')} <a href="mailto:enzopinottii@gmail.com">enzopinottii@gmail.com</a></p>
+            <p>{t('contacto.phone')} <a className='telefonoContacto' href="tel:+542346304036">+54 2346 304036</a></p>
+            <p className='direccion'>{t('contacto.address')}</p>
           </div>
 
-          <div className="form-group">
-            <label>{t('contacto.emailLabel')}</label>
-            <input
-              type="email" required
-              value={email}
-              onChange={e => setEmail(e.target.value)}
-              placeholder="tu@email.com"
-              autoComplete="email"
-            />
+          <div className="contacto-form">
+            <h3>{t('contacto.sendMessage')}</h3>
+            <motion.form onSubmit={handleSubmit} variants={formVariants}>
+              <motion.div className="form-group" variants={inputVariants}>
+                <label htmlFor="nombre">{t('contacto.fullName')}</label>
+                <input
+                  type="text"
+                  id="nombre"
+                  name="nombre"
+                  required
+                  value={nombreCompleto}
+                  onChange={(e) => setNombreCompleto(e.target.value)}
+                  autoComplete="name"
+                />
+              </motion.div>
+
+              <motion.div className="form-group" variants={inputVariants}>
+                <label htmlFor="email">{t('contacto.emailLabel')}</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  autoComplete="email"
+                />
+              </motion.div>
+
+              <motion.div className="form-group" variants={inputVariants}>
+                <label htmlFor="servicio">{t('contacto.interestedService')}</label>
+                <select
+                  id="servicio"
+                  required
+                  value={servicioInteres}
+                  onChange={(e) => setServicioInteres(e.target.value)}
+                >
+                  <option value="">{t('contacto.selectService')}</option>
+                  {servicios.map(servicio => (
+                    <option key={servicio.idServicio} value={servicio.nombre}>{servicio.nombre}</option>
+                  ))}
+                </select>
+              </motion.div>
+
+              <motion.div className="form-group" variants={inputVariants}>
+                <label htmlFor="mensaje">{t('contacto.message')}</label>
+                <textarea
+                  id="mensaje"
+                  name="mensaje"
+                  rows="5"
+                  required
+                  value={mensaje}
+                  onChange={(e) => setMensaje(e.target.value)}
+                ></textarea>
+              </motion.div>
+
+              <motion.button type="submit" variants={buttonVariants} disabled={isLoading}>
+                {isLoading ? <span className="loader"></span> : t('contacto.send')}
+              </motion.button>
+            </motion.form>
           </div>
-
-          {/* Custom dropdown servicios */}
-          <div className="custom-select-group" ref={dropdownRef}>
-            <label>{t('contacto.interestedService')}</label>
-            <div
-              className={`custom-select ${isDropdownOpen ? 'open' : ''}`}
-              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            >
-              <div className="select-trigger">
-                <span className={!servicioInteres ? 'placeholder' : ''}>
-                  {servicioInteres
-                    ? (servicioInteres.includes('.') ? t(servicioInteres) : servicioInteres)
-                    : t('contacto.selectService')}
-                </span>
-                <FaChevronDown className={`dropdown-icon ${isDropdownOpen ? 'rotated' : ''}`} />
-              </div>
-              <AnimatePresence>
-                {isDropdownOpen && (
-                  <motion.div
-                    className="select-options"
-                    initial={{ opacity: 0, y: -8, scaleY: 0.95 }}
-                    animate={{ opacity: 1, y: 0, scaleY: 1 }}
-                    exit={{ opacity: 0, y: -8, scaleY: 0.95 }}
-                    transition={{ duration: 0.15 }}
-                    style={{ originY: 0 }}
-                  >
-                    <div
-                      className={`select-option ${!servicioInteres ? 'selected' : ''}`}
-                      onClick={() => { setServicioInteres(''); setIsDropdownOpen(false); }}
-                    >
-                      {t('contacto.selectService')}
-                    </div>
-                    {servicios.map(s => (
-                      <div
-                        key={s.idServicio}
-                        className={`select-option ${servicioInteres === s.nombre ? 'selected' : ''}`}
-                        onClick={e => { e.stopPropagation(); setServicioInteres(s.nombre); setIsDropdownOpen(false); }}
-                      >
-                        {s.nombre?.includes('.') ? t(s.nombre) : s.nombre}
-                      </div>
-                    ))}
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          </div>
-
-          <div className="form-group">
-            <label>{t('contacto.message')}</label>
-            <textarea
-              rows="4" required
-              value={mensaje}
-              onChange={e => setMensaje(e.target.value)}
-              placeholder="Contame en qué te puedo ayudar..."
-            />
-          </div>
-
-          <motion.button
-            type="submit"
-            className="submit-btn"
-            variants={itemVariants}
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.97 }}
-            disabled={isLoading}
-          >
-            {isLoading ? <span className="loader" /> : t('contacto.send')}
-          </motion.button>
-
-        </motion.form>
+        </div>
       </div>
     </motion.div>
   );
