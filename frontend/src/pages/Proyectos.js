@@ -5,6 +5,7 @@ import SliderInfinito from '../components/SliderInfinito.js';
 import { listProjectsPublicos } from '../services/projectService.js';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import Loader from '../components/shared/Loader.js';
 
 const Proyectos = () => {
   const { t } = useTranslation();
@@ -12,10 +13,19 @@ const Proyectos = () => {
   const [proyectos, setProyectos] = useState([]);
   const navigate = useNavigate();
 
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
+    setLoading(true);
     listProjectsPublicos()
-      .then(data => setProyectos(data))
-      .catch(err => console.error('Error al cargar proyectos:', err));
+      .then(data => {
+        setProyectos(data);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error('Error al cargar proyectos:', err);
+        setLoading(false);
+      });
   }, []);
 
   const variants = {
@@ -54,18 +64,24 @@ const Proyectos = () => {
       <p className="proyectos-description">
         {t('projects.description')}
       </p>
-      <SliderInfinito
-        slides={slides}
-        velocidad="50s"
-        direccion="izq"
-        onSlideClick={handleSlideClick}
-      />
-      <SliderInfinito
-        slides={slides}
-        velocidad="30s"
-        direccion="der"
-        onSlideClick={handleSlideClick}
-      />
+      {loading ? (
+        <Loader variant="white" message={t('adminProjectsModal.loading', 'Cargando proyectos...')} />
+      ) : (
+        <>
+          <SliderInfinito
+            slides={slides}
+            velocidad="50s"
+            direccion="izq"
+            onSlideClick={handleSlideClick}
+          />
+          <SliderInfinito
+            slides={slides}
+            velocidad="30s"
+            direccion="der"
+            onSlideClick={handleSlideClick}
+          />
+        </>
+      )}
     </motion.div>
   );
 };

@@ -6,6 +6,7 @@ import ServicioCard from '../components/ServicioCard.js'; // Added as per instru
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
 import { NavigationContext } from '../context/NavigationContext.js';
+import Loader from '../components/shared/Loader.js';
 
 const Servicios = () => {
   const { t } = useTranslation();
@@ -16,6 +17,7 @@ const Servicios = () => {
   const { navigationDirection } = useContext(NavigationContext); // Added as per instruction
   const [servicios, setServicios] = useState([]);
   const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 1080);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const handleResize = () => setIsDesktop(window.innerWidth >= 1080);
@@ -24,6 +26,7 @@ const Servicios = () => {
   }, []);
 
   useEffect(() => {
+    setLoading(true);
     listServicios()
       .then(data => {
         // Fallback robusto para el mapeo de campos de imagen
@@ -37,8 +40,12 @@ const Servicios = () => {
           };
         });
         setServicios(mapped);
+        setLoading(false);
       })
-      .catch(err => console.error('Error al cargar servicios:', err));
+      .catch(err => {
+        console.error('Error al cargar servicios:', err);
+        setLoading(false);
+      });
   }, []);
 
   const renderDesktopTitles = () => {
@@ -79,10 +86,14 @@ const Servicios = () => {
         </div>
         <div className="servicios-right">
           <div className="servicios-slider-wrapper">
-            <VerticalInfiniteSlider
-              items={servicios}
-              initialExpandedId={initialServiceId}
-            />
+            {loading ? (
+              <Loader variant="white" message={t('adminServiciosModal.loading', 'Cargando servicios...')} />
+            ) : (
+              <VerticalInfiniteSlider
+                items={servicios}
+                initialExpandedId={initialServiceId}
+              />
+            )}
           </div>
         </div>
       </div>

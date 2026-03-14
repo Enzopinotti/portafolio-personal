@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useParams, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { FaExternalLinkAlt, FaGithub } from 'react-icons/fa';
 
 import { getProjectById } from '../services/projectService.js';
 import { getImagenesByProyecto } from '../services/imageService.js';
@@ -13,6 +14,7 @@ import DualSkillBar from '../components/DualSkillBar.js';
 
 // Gráfico Radar tipo Stats para Skills
 import { RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, ResponsiveContainer } from 'recharts';
+import Loader from '../components/shared/Loader.js';
 
 const variantsContainer = {
   hidden: { opacity: 0, y: 20 },
@@ -37,7 +39,13 @@ const DetalleProyecto = () => {
   // Cargar datos del proyecto e imágenes
   useEffect(() => {
     getProjectById(idProyecto)
-      .then(data => setProyecto(data))
+      .then(data => {
+        console.log('Detalle Proyecto Data:', data);
+        if (data.Servicios) {
+          console.log('Servicios del Proyecto:', data.Servicios.length, data.Servicios);
+        }
+        setProyecto(data);
+      })
       .catch(err => console.error('Error cargando proyecto:', err));
 
     getImagenesByProyecto(idProyecto)
@@ -45,11 +53,11 @@ const DetalleProyecto = () => {
       .catch(err => console.error('Error cargando imágenes:', err));
   }, [idProyecto]);
 
-  if (!proyecto) return <div className="loading">{t('proyectoDetalle.loading')}</div>;
+  if (!proyecto) return <Loader fullScreen={true} variant="white" message={t('proyectoDetalle.loading')} />;
 
   // Por si usas Recharts en skills
   const skillData = proyecto.Skills?.map(skill => ({
-    skill: skill.nombre,
+    skill: skill.nombre?.includes('.') ? t(skill.nombre) : (skill.nombre || ''),
     nivel: skill.ProyectoSkill?.nivel || skill.nivel || 80,
   })) || [];
 
@@ -67,6 +75,26 @@ const DetalleProyecto = () => {
 
         {/* Resto del contenido */}
         <div className={`detalle-proyecto-contenido ${imagenes.length === 0 ? 'centrado' : ''}`}>
+          {/* Badge de Categoría */}
+          {proyecto.Skills && proyecto.Skills.length > 0 && (
+            <div className="proyecto-category-badge">
+              {(() => {
+                const counts = {};
+                proyecto.Skills.forEach(sk => {
+                  if (sk.Categorias && sk.Categorias.length > 0) {
+                    const catName = sk.Categorias[0].nombre;
+                    counts[catName] = (counts[catName] || 0) + 1;
+                  }
+                });
+                const topCat = Object.entries(counts).sort((a, b) => b[1] - a[1])[0];
+                if (topCat) {
+                  const catKey = topCat[0];
+                  return catKey.includes('.') ? t(catKey) : catKey;
+                }
+                return null;
+              })()}
+            </div>
+          )}
           <h1>{proyecto.titulo}</h1>
           <p>{proyecto.descripcion}</p>
 
@@ -76,8 +104,9 @@ const DetalleProyecto = () => {
                 href={proyecto.enlace}
                 target="_blank"
                 rel="noopener noreferrer"
+                className="link-btn live-link"
               >
-                Ver Proyecto
+                <FaExternalLinkAlt /> {t('proyectoDetalle.viewProject', 'Ver Proyecto')}
               </a>
             )}
             {proyecto.enlaceGithub && (
@@ -85,8 +114,9 @@ const DetalleProyecto = () => {
                 href={proyecto.enlaceGithub}
                 target="_blank"
                 rel="noopener noreferrer"
+                className="link-btn github-link"
               >
-                Ver Código en GitHub
+                <FaGithub /> {t('proyectoDetalle.viewCode', 'Ver Código')}
               </a>
             )}
           </div>
@@ -131,15 +161,17 @@ const DetalleProyecto = () => {
           <motion.div className="servicios-section">
             <h3>{t('proyectoDetalle.servicesOffered')}</h3>
             {proyecto.Servicios?.length ? (
-              <ul>
+              <div className="services-badges">
                 {proyecto.Servicios.map(servicio => (
-                  <li key={servicio.idServicio}>
-                    <Link to={`/servicios?id=${servicio.idServicio}`}>
-                      {servicio.nombre}
-                    </Link>
-                  </li>
+                  <Link
+                    key={servicio.idServicio}
+                    to={`/servicios?id=${servicio.idServicio}`}
+                    className="service-badge"
+                  >
+                    {servicio.nombre?.includes('.') ? t(servicio.nombre) : (servicio.nombre || '')}
+                  </Link>
                 ))}
-              </ul>
+              </div>
             ) : (
               <p>{t('proyectoDetalle.noServices')}</p>
             )}
