@@ -1,5 +1,6 @@
 // backend/controllers/noticiaController.js
-const { Noticia } = require('../models');
+import db from '../models/index.js';
+const { Noticia } = db;
 
 // Obtener las últimas noticias
 const getLatestNoticias = async (req, res) => {
@@ -22,6 +23,6 @@ const getLatestNoticias = async (req, res) => {
   }
 };
 
-module.exports = {
+export {
   getLatestNoticias
 };

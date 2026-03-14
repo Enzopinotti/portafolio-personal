@@ -1,7 +1,8 @@
 // backend/services/scraperService.js
-const axios = require('axios');
-const cheerio = require('cheerio');
-const { Noticia } = require('../models');
+import axios from 'axios';
+import * as cheerio from 'cheerio';
+import db from '../models/index.js';
+const { Noticia } = db;
 
 /**
  * Función para scrapear artículos de dev.to
@@ -69,6 +70,6 @@ const scrapeTechNews = async () => {
   }
 };
 
-module.exports = {
+export {
   scrapeTechNews
 };

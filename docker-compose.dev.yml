@@ -18,7 +18,7 @@ services:
       - dev_network
 
   backend:
-    image: node:18-alpine
+    image: node:20-alpine
     working_dir: /app
     env_file:
       - .env
@@ -47,7 +47,7 @@ services:
       - dev_network
 
   frontend:
-    image: node:18-alpine
+    image: node:20-alpine
     working_dir: /app
     ports:
       - "3000:3000"

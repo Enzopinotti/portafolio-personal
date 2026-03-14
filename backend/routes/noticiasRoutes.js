@@ -1,9 +1,8 @@
-// backend/routes/noticias.js
-const { Router } = require('express');
-const { getLatestNoticias } = require('../controllers/noticiaController');
+import { Router } from 'express';
+import { getLatestNoticias } from '../controllers/noticiaController.js';
 
 const router = Router();
 
 router.get('/', getLatestNoticias);
 
-module.exports = router;
+export default router;
