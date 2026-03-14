@@ -163,32 +163,13 @@
       margin: 0 auto;
       text-align: center;
 
-      .proyecto-category-badge {
-        margin: 0 auto 1.5rem auto;
-      }
-
       .radar-chart-container {
         justify-content: center;
       }
 
-      .services-badges {
+      .servicios-section ul {
         justify-content: center;
       }
-    }
-
-    .proyecto-category-badge {
-      display: inline-block;
-      padding: 0.4rem 1.2rem;
-      background: rgba($color-primary, 0.15);
-      border: 1px solid rgba($color-primary, 0.3);
-      border-radius: 50px;
-      color: $color-primary;
-      font-size: 0.9rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      margin-bottom: 1rem;
-      backdrop-filter: blur(5px);
     }
 
     h1 {
@@ -214,48 +195,22 @@
       gap: 1.5rem;
       margin-bottom: 3rem;
 
-      .link-btn {
+      a {
         display: flex;
         align-items: center;
-        gap: 0.8rem;
-        padding: 0.9rem 2.2rem;
-        border-radius: 50px;
+        gap: 0.5rem;
+        padding: 0.8rem 1.8rem;
+        background: linear-gradient(135deg, $color-primary, $color-secondary);
+        border-radius: 30px;
         color: $color-white;
         text-decoration: none;
-        font-weight: 700;
-        font-size: 1rem;
-        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-
-        svg {
-          font-size: 1.1rem;
-        }
-
-        &.live-link {
-          background: linear-gradient(135deg, $color-primary, darken($color-primary, 15%));
-          box-shadow: 0 5px 20px rgba($color-primary, 0.4);
-
-          &:hover {
-            box-shadow: 0 8px 30px rgba($color-primary, 0.6);
-            border-color: rgba(255, 255, 255, 0.3);
-          }
-        }
-
-        &.github-link {
-          background: rgba(255, 255, 255, 0.08);
-          backdrop-filter: blur(10px);
-
-          &:hover {
-            background: rgba(255, 255, 255, 0.15);
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
-            transform: translateY(-5px) scale(1.02);
-            border-color: rgba(255, 255, 255, 0.4);
-          }
-        }
+        font-weight: 600;
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        box-shadow: 0 5px 15px rgba($color-primary, 0.3);
 
         &:hover {
           transform: translateY(-5px);
+          box-shadow: 0 10px 25px rgba($color-primary, 0.5);
         }
       }
     }
@@ -294,29 +249,33 @@
         }
       }
 
-      .services-badges {
+      ul {
         display: flex;
         flex-wrap: wrap;
         gap: 1rem;
-        margin-top: 1.5rem;
+        list-style: none;
+        padding: 0;
 
-        .service-badge {
-          display: inline-block;
-          padding: 0.6rem 1.2rem;
+        li {
           background: rgba(255, 255, 255, 0.05);
           border: 1px solid rgba(255, 255, 255, 0.1);
           border-radius: 50px;
           font-weight: 500;
-          color: $color-white;
-          text-decoration: none;
           transition: all 0.4s ease;
+          overflow: hidden;
+
+          a {
+            display: block;
+            padding: 0.6rem 1.2rem;
+            color: inherit;
+            text-decoration: none;
+          }
 
           &:hover {
             background: rgba($color-primary, 0.2);
             border-color: $color-primary;
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            color: $color-white;
+            transform: scale(1.05);
+            color: $color-primary;
           }
         }
       }
@@ -334,21 +293,11 @@
       margin: 2rem 0;
 
       .skill-badge {
-        display: inline-block;
-        padding: 0.6rem 2rem;
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        font-size: 1.2rem;
+        background: linear-gradient(135deg, $color-primary, $color-secondary);
+        padding: 0.8rem 2rem;
         border-radius: 50px;
-        font-weight: 500;
-        color: $color-white;
-        transition: all 0.4s ease;
-
-        &:hover {
-          background: rgba($color-primary, 0.2);
-          border-color: $color-primary;
-          transform: translateY(-3px);
-          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
+        box-shadow: 0 5px 15px rgba($color-primary, 0.4);
       }
     }
   }
