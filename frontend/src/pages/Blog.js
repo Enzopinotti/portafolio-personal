@@ -2,15 +2,21 @@ import React, { useContext, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { NavigationContext } from '../context/NavigationContext.js';
 import { getArticles } from '../services/articleService.js';
+import { getLatestNoticias } from '../services/noticiaService.js';
 import DeviceReels from '../components/DeviceReels.js';
 import useWindowWidth from '../hooks/useWindowWidth.js';
 import { useTranslation } from 'react-i18next';
+import Loader from '../components/shared/Loader.js';
+import { FaExternalLinkAlt } from 'react-icons/fa';
 
 const Blog = () => {
   const { t } = useTranslation();
   const { navigationDirection } = useContext(NavigationContext);
   const [articulos, setArticulos] = useState([]);
+  const [noticias, setNoticias] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(true);
+  const [noticiasLoading, setNoticiasLoading] = useState(true);
   const itemsPerPage = 9;
   const windowWidth = useWindowWidth();
 
@@ -35,7 +41,23 @@ const Blog = () => {
   }
 
   useEffect(() => {
-    getArticles().then(data => setArticulos(data.articulos));
+    setLoading(true);
+    getArticles()
+      .then(data => {
+        setArticulos(data.articulos || []);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error('Error al cargar artículos:', err);
+        setLoading(false);
+      });
+
+    getLatestNoticias(8)
+      .then(data => {
+        setNoticias(data.data || []);
+        setNoticiasLoading(false);
+      })
+      .catch(() => setNoticiasLoading(false));
   }, []);
 
   const indexLast = currentPage * itemsPerPage;
@@ -48,6 +70,11 @@ const Blog = () => {
   };
   const handleNext = () => {
     if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+  };
+
+  const formatDate = (dateStr) => {
+    if (!dateStr) return '';
+    return new Date(dateStr).toLocaleDateString('es-AR', { day: '2-digit', month: 'short', year: 'numeric' });
   };
 
   const variants = {
@@ -82,20 +109,26 @@ const Blog = () => {
       </div>
 
       <div className="blog-cards">
-        {currentArticles.map((articulo) => (
-          <div key={articulo.idArticulo} className="blog-card">
-            <div className="card-img" />
-            <div className="card-author">
-              <img src="/img/avatar-default.jpg" alt={t('altTexts.avatar')} />
-              <span>{articulo.autor}</span>
-              <span className="arrow">→</span>
+        {loading ? (
+          <Loader variant="white" message={t('blog.loading', 'Cargando artículos...')} />
+        ) : (
+          currentArticles.map((articulo) => (
+            <div key={articulo.idArticulo} className="blog-card">
+              <div className="card-img-wrapper">
+                <div className="card-img" />
+              </div>
+              <div className="card-author">
+                <img src="/img/avatar-default.jpg" alt={t('altTexts.avatar')} />
+                <span>{articulo.autor}</span>
+                <span className="arrow">→</span>
+              </div>
+              <div className="card-content">
+                <h3>{articulo.titulo}</h3>
+                <p>{articulo.contenido.slice(0, 120)}...</p>
+              </div>
             </div>
-            <div className="card-content">
-              <h3>{articulo.titulo}</h3>
-              <p>{articulo.contenido.slice(0, 120)}...</p>
-            </div>
-          </div>
-        ))}
+          ))
+        )}
       </div>
 
       <div className="pagination">
@@ -104,6 +137,42 @@ const Blog = () => {
           {t('adminProjectForm.page')} {currentPage} / {totalPages}
         </span>
         <button onClick={handleNext} disabled={currentPage === totalPages}>{t('blog.next')}</button>
+      </div>
+
+      {/* ===== NOTICIAS TECH ===== */}
+      <div className="news-section">
+        <h2 className="news-section__title">Tech Digest <span>— lo que se esta hablando ahora</span></h2>
+        <div className="news-grid">
+          {noticiasLoading
+            ? [...Array(6)].map((_, i) => (
+                <div key={i} className="news-item news-item--skeleton">
+                  <div className="ni-img skeleton-el" />
+                  <div className="ni-body">
+                    <div className="skeleton-el" style={{ height: '14px', width: '80%', marginBottom: '8px' }} />
+                    <div className="skeleton-el" style={{ height: '10px', width: '45%' }} />
+                  </div>
+                </div>
+              ))
+            : noticias.length === 0
+              ? <p className="news-empty">No hay noticias disponibles aún. El scraper correrá en breve.</p>
+              : noticias.map(n => (
+                  <a key={n.idNoticia} href={n.enlace} target="_blank" rel="noopener noreferrer" className="news-item">
+                    <div className="ni-img">
+                      {n.imagen
+                        ? <img src={n.imagen} alt={n.titulo} onError={e => { e.target.style.display = 'none'; }} />
+                        : <div className="ni-img-placeholder" />}
+                    </div>
+                    <div className="ni-body">
+                      <p className="ni-title">{n.titulo}</p>
+                      <div className="ni-meta">
+                        <span className="ni-date">{formatDate(n.fecha)}</span>
+                        <FaExternalLinkAlt className="ni-icon" />
+                      </div>
+                    </div>
+                  </a>
+                ))
+          }
+        </div>
       </div>
 
       {/* Galería de reels */}
