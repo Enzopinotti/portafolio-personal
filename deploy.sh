@@ -23,7 +23,7 @@ else
 fi
 
 echo "📦 Using $DOCKER_COMPOSE_CMD..."
-$DOCKER_COMPOSE_CMD up -d --build
+$DOCKER_COMPOSE_CMD up -d --build --force-recreate
 
 echo "⏳ Waiting for database to be ready (this may take a minute on first run)..."
 # Wait for the database container to be healthy
