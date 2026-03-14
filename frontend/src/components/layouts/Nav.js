@@ -38,12 +38,6 @@ const Nav = ({ handleMenuToggle }) => {
         </Link>
       </li>
       <li>
-        {/* Blog oculto hasta que esté listo */}
-        {/* <Link to="/blog" onClick={() => handleNavClick('/blog')}>
-          {t('header.nav.blog')}
-        </Link> */}
-      </li>
-      <li>
         <Link to="/contacto" onClick={() => handleNavClick('/contacto')}>
           {t('header.nav.contact')}
         </Link>
