@@ -314,6 +314,11 @@
     "backgroundColorPlaceholder": "Ingrese el color de fondo (hex)",
     "textColorLabel": "Color de Texto",
     "textColorPlaceholder": "Ingrese el color de texto (hex)",
+    "typewriterWordsESLabel": "Texto Animado (ES)",
+    "typewriterWordsENLabel": "Texto Animado (EN)",
+    "typewriterWordsPTLabel": "Texto Animado (PT)",
+    "typewriterWordsPlaceholder": "Ej: Desarrollador, Ingeniero, etc.",
+    "typewriterExplanation": "(Separa las palabras por comas)",
     "submitButton": "Guardar Configuración",
     "toast": {
       "updateSuccess": "Configuración actualizada exitosamente.",
@@ -354,7 +359,9 @@
     "skillsUsed": "Skills utilizadas",
     "noSkills": "No se especificaron skills para este proyecto.",
     "servicesOffered": "Servicios ofrecidos",
-    "noServices": "No se especificaron servicios para este proyecto."
+    "noServices": "No se especificaron servicios para este proyecto.",
+    "viewProject": "Ver Proyecto",
+    "viewCode": "Ver Código"
   },
   "projects": {
     "title": "Mis Proyectos",
@@ -365,23 +372,60 @@
     "viewMore": "Ver más",
     "priceLabel": "Desde",
     "items": {
-      "bi": {
-        "name": "Análisis de Datos (BI)",
-        "description": "Diseño de dashboards interactivos, definición de KPIs y levantamiento de requerimientos para facilitar decisiones con Power BI y Excel."
+      "data": {
+        "name": "Coordinación de Datos & BI",
+        "description": "Diseño de dashboards interactivos, definición de KPIs y arquitectura de datos para decisiones estratégicas con Power BI y Excel."
       },
       "fullstack": {
-        "name": "Desarrollo Web Full-Stack",
-        "description": "Construcción de interfaces modernas (React, Vite) y soporte backend. Orientado a conversión, integraciones de APIs y manejo de datos."
+        "name": "Desarrollo Full-Stack & Landings",
+        "description": "Construcción de interfaces modernas (React, Vite) y robustos backends. Websockets, APIs y optimización de conversión."
       },
       "techlead": {
-        "name": "Liderazgo Técnico (Tech Lead)",
-        "description": "Liderazgo de equipos, revisión de código, aseguramiento de calidad y coordinación ágil entre stakeholders."
+        "name": "Liderazgo Técnico & ERP",
+        "description": "Liderazgo de equipos de desarrollo, análisis de sistemas y ejecución de módulos críticos para ERPs con metodologías ágiles."
       },
       "automation": {
-        "name": "Automatización de Procesos",
-        "description": "Creación de automatizaciones con Google Apps Script y otras herramientas para tareas operativas repetitivas."
+        "name": "Automatización & IA",
+        "description": "Optimización de procesos operativos mediante integraciones con Zapier, Make y Google Apps Script."
       }
     }
+  },
+  "categories": {
+    "frontend": "Desarrollo Web / Frontend",
+    "backend": "Backend & Cloud",
+    "automation": "Automatización & IA",
+    "data": "Data & BI",
+    "marketing": "Marketing & Growth",
+    "management": "Gestión & Soft Skills"
+  },
+  "skills": {
+    "react": "React.js",
+    "vite": "Vite",
+    "javascript": "JavaScript (ES6+)",
+    "html_css": "HTML5 / CSS3",
+    "sass": "SASS / SCSS",
+    "vue": "Vue.js",
+    "mjml": "MJML (Email Responsive)",
+    "nodejs": "Node.js (APIs REST)",
+    "express": "Express.js",
+    "mongodb": "MongoDB",
+    "sql": "SQL (MySQL, SQL Server)",
+    "websockets": "WebSockets / Real-time",
+    "gas": "Google Apps Script",
+    "zapier_make": "Zapier / Make (Integromat)",
+    "process_automation": "Automatización de procesos",
+    "powerbi": "Power BI",
+    "looker": "Looker Studio",
+    "excel_dashboards": "Dashboards avanzados Excel",
+    "kpis": "Definición de KPIs",
+    "digital_mkt": "Marketing Digital",
+    "google_meta_ads": "Google Ads / Meta Ads",
+    "growth_hacking": "Growth Hacking",
+    "email_mkt_crm": "Email Marketing & CRM",
+    "tech_lead": "Tech Lead / Liderazgo",
+    "agile": "Metodologías Ágiles",
+    "requirements": "Relevamiento de Requerimientos",
+    "documentation": "Documentación Técnica"
   },
   "footer": {
     "copyright": "© Enzo Pinotti - Todos los derechos reservados"

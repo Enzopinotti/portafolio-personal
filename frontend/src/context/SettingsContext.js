@@ -22,11 +22,11 @@ export const SettingsProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    //fetchSettings();
+    fetchSettings();
   }, []);
 
   return (
-    <SettingsContext.Provider value={{ settings, setSettings, loading }}>
+    <SettingsContext.Provider value={{ settings, setSettings, loading, refreshSettings: fetchSettings }}>
       {children}
     </SettingsContext.Provider>
   );

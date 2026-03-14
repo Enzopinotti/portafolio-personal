@@ -9,42 +9,41 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // 1) Cargar token de localStorage al inicio
+  // 1) Carga inicial y restauración de sesión
   useEffect(() => {
-    const storedToken = localStorage.getItem('accessToken');
-    if (storedToken) {
-      setAccessToken(storedToken);
-    } else {
-      setLoading(false);
-    }
-  }, []);
+    const initAuth = async () => {
+      const storedToken = localStorage.getItem('accessToken');
 
-  // 2) Cada vez que cambie el accessToken, intentamos obtener el perfil
-  useEffect(() => {
-    const fetchUserProfile = async () => {
-      if (!accessToken) {
-        setUser(null);
-        setLoading(false);
-        return;
+      if (storedToken) {
+        setAccessToken(storedToken);
+        try {
+          const profile = await getProfile(storedToken);
+          setUser(profile);
+        } catch (error) {
+          console.warn('Token guardado inválido o expirado, intentando refresh silencioso...');
+          await handleTokenRefresh();
+        }
+      } else {
+        // Si no hay token en localStorage, intentamos un refresh silencioso 
+        // por si hay una cookie de refreshToken válida
+        await handleTokenRefresh();
       }
-      try {
-        const profile = await getProfile(accessToken);
-        setUser(profile);
-      } catch (error) {
-        console.error('Error al obtener perfil:', error);
-        setUser(null);
-        // Podrías intentar un refresh token aquí si el error es "Token expirado"
-      } finally {
-        setLoading(false);
-      }
+      setLoading(false);
     };
 
-    fetchUserProfile();
+    initAuth();
+  }, []);
+
+  // 2) Sincronizar el token con localStorage cuando cambie el estado
+  useEffect(() => {
+    if (accessToken) {
+      localStorage.setItem('accessToken', accessToken);
+    } else {
+      localStorage.removeItem('accessToken');
+    }
   }, [accessToken]);
 
   const login = (token) => {
-    // Guardar token en localStorage y estado
-    localStorage.setItem('accessToken', token);
     setAccessToken(token);
   };
 
@@ -60,18 +59,23 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
   };
 
-  // 3) Manejo manual de refresh si quieres (opcional)
+  // 3) Manejo de refresh token (silencioso)
   const handleTokenRefresh = async () => {
     try {
-      // Llamar a /usuarios/refresh (ver 2.3)
-      const newToken = await refreshAccessToken(); // Retorna { accessToken }
-      if (newToken?.accessToken) {
-        login(newToken.accessToken);
+      const data = await refreshAccessToken();
+      if (data?.accessToken) {
+        setAccessToken(data.accessToken);
+        const profile = await getProfile(data.accessToken);
+        setUser(profile);
+        return true;
       }
     } catch (err) {
-      console.error('No se pudo refrescar el token:', err);
-      logout(); // o forzar logout
+      console.log('Sesión no encontrada o expirada.');
+      setUser(null);
+      setAccessToken(null);
+      return false;
     }
+    return false;
   };
 
   return (

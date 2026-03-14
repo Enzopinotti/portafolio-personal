@@ -9,13 +9,14 @@ import ProfileModal from '../ProfileModal.js';
 import AdminModal from '../AdminModal.js';
 import { AuthContext } from '../../context/AuthContext.js';
 import { FaUserCircle, FaBars, FaUser, FaSignOutAlt, FaUserShield } from 'react-icons/fa';
+import Loader from '../shared/Loader.js';
 
 const Header = () => {
   const { t } = useTranslation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAuthOpen, setIsAuthOpen] = useState(false);
   const [modalType, setModalType] = useState('login');
-  const { user, logout } = useContext(AuthContext);
+  const { user, logout, loading } = useContext(AuthContext);
   const [showDropdown, setShowDropdown] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isAdminOpen, setIsAdminOpen] = useState(false);
@@ -63,7 +64,10 @@ const Header = () => {
       </nav>
 
       <div className="header-extras">
-        {user ? (
+        {loading ? (
+          /* Loader compacto para el header */
+          <Loader size="small" variant="white" />
+        ) : user ? (
           <div className="user-menu">
             <div
               className="user-info"

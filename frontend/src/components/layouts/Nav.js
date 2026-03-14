@@ -4,7 +4,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { NavigationContext } from '../../context/NavigationContext.js';
 
-const pagesOrder = ['/', '/servicios', '/proyectos', '/contacto'];
+const pagesOrder = ['/', '/servicios', '/proyectos', '/blog', '/contacto'];
 
 const Nav = ({ handleMenuToggle }) => {
   const { t } = useTranslation();
@@ -37,7 +37,12 @@ const Nav = ({ handleMenuToggle }) => {
           {t('header.nav.projects')}
         </Link>
       </li>
-      {/* Blog oculto hasta que esté listo */}
+      <li>
+        {/* Blog oculto hasta que esté listo */}
+        {/* <Link to="/blog" onClick={() => handleNavClick('/blog')}>
+          {t('header.nav.blog')}
+        </Link> */}
+      </li>
       <li>
         <Link to="/contacto" onClick={() => handleNavClick('/contacto')}>
           {t('header.nav.contact')}

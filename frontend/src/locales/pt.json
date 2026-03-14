@@ -314,6 +314,11 @@
     "backgroundColorPlaceholder": "Insira a cor de fundo (hex)",
     "textColorLabel": "Cor do Texto",
     "textColorPlaceholder": "Insira a cor do texto (hex)",
+    "typewriterWordsESLabel": "Palavras do Typewriter (ES)",
+    "typewriterWordsENLabel": "Palavras do Typewriter (EN)",
+    "typewriterWordsPTLabel": "Palavras do Typewriter (PT)",
+    "typewriterWordsPlaceholder": "Ex: Desenvolvedor, Engenheiro, etc.",
+    "typewriterExplanation": "(Separe as palavras por vírgulas)",
     "submitButton": "Salvar Configurações",
     "toast": {
       "updateSuccess": "Configurações atualizadas com sucesso.",
