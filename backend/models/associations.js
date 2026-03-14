@@ -41,12 +41,12 @@ Proyecto.belongsToMany(Usuario, {
 
 // Relaciones Proyecto - Skill (muchos a muchos)
 Proyecto.belongsToMany(Skill, {
-  through: 'proyecto_skill',
+  through: ProyectoSkill,
   foreignKey: 'id_proyecto',
   otherKey: 'id_skill',
 });
 Skill.belongsToMany(Proyecto, {
-  through: 'proyecto_skill',
+  through: ProyectoSkill,
   foreignKey: 'id_skill',
   otherKey: 'id_proyecto',
 });

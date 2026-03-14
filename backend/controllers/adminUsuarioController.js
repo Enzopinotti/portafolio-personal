@@ -173,11 +173,55 @@ export const editarUsuarioAdmin = async (req, res, next) => {
     if (apellido) usuario.apellido = apellido;
     if (email) usuario.email = email;
     if (idRol) {
-      // También podrías validar que el rol exista
       usuario.idRol = idRol;
     }
 
+    // Si el admin envía una nueva contraseña, la hasheamos y guardamos
+    if (req.body.contraseña) {
+      const hashedPassword = await bcrypt.hash(req.body.contraseña, 10);
+      usuario.password = hashedPassword;
+    }
+
     await usuario.save();
+
+    // Enviar notificación por email al usuario
+    try {
+      const loginLink = `${process.env.CLIENT_URI || 'http://localhost:3000'}/login`;
+      const templatePath = path.join(__dirname, '../templates/adminUserUpdated.hbs');
+      const templateSource = fs.readFileSync(templatePath, 'utf8');
+      const template = hbs.compile(templateSource);
+
+      const templateData = {
+        nombre: usuario.nombre,
+        email: usuario.email,
+        loginLink,
+        password: req.body.contraseña || null, // Solo se envía si se cambió
+        colorPrimary: process.env.COLOR_PRIMARY || '#007bff',
+        colorSecondary: process.env.COLOR_SECONDARY || '#00aaff',
+        colorWhite: process.env.COLOR_WHITE || '#ffffff',
+        colorTextDark: process.env.COLOR_TEXT_DARK || '#333333',
+        spacingUnit: process.env.SPACING_UNIT || '8px'
+      };
+
+      const htmlToSend = template(templateData);
+
+      const mailOptions = {
+        from: process.env.EMAIL_FROM,
+        to: usuario.email,
+        subject: 'Actualización de datos de tu cuenta',
+        html: htmlToSend
+      };
+
+      transporter.sendMail(mailOptions, (err, info) => {
+        if (err) {
+          logger.error(`Admin - Error al enviar correo de edición: ${err.message}`);
+        } else {
+          logger.info(`Admin - Mensaje enviado: ${info.response}`);
+        }
+      });
+    } catch (emailError) {
+      logger.error(`Admin - Error procesando plantilla de email: ${emailError.message}`);
+    }
 
     logger.info(`Admin - Usuario con ID ${id} actualizado exitosamente.`);
     res.status(200).json({

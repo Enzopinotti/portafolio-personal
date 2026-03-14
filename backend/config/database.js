@@ -16,10 +16,16 @@ const sequelize = new Sequelize(
     port: process.env.DB_PORT,
     dialect: 'mysql',
     logging: false,
+    pool: {
+      max: 10,
+      min: 0,
+      acquire: 60000,
+      idle: 10000
+    },
     define: {
-      underscored: true, // Convierte nombres de atributos y tablas a snake_case
-      freezeTableName: true, // Evita que Sequelize pluralice los nombres de las tablas
-      timestamps: false, // Desactiva los campos createdAt y updatedAt
+      underscored: true,
+      freezeTableName: true,
+      timestamps: false,
     },
   }
 );

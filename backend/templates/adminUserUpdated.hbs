@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Datos de acceso actualizados</title>
+  <style>
+    body {
+      font-family: 'Work Sans', sans-serif;
+      background-color: {{colorWhite}};
+      margin: 0;
+      padding: {{spacingUnit}};
+    }
+    .container {
+      max-width: 600px;
+      margin: 20px auto;
+      background: #ffffff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      border: 1px solid #f0f0f0;
+    }
+    .header {
+      background: linear-gradient(135deg, {{colorPrimary}} 0%, {{colorSecondary}} 100%);
+      padding: 30px;
+      text-align: center;
+    }
+    .header h1 {
+      color: #ffffff;
+      margin: 0;
+      font-size: 24px;
+    }
+    .content {
+      padding: 30px;
+      color: {{colorTextDark}};
+      line-height: 1.6;
+    }
+    .credentials {
+      background: #f8fafc;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
+      border: 1px solid #edf2f7;
+    }
+    .btn {
+      display: inline-block;
+      padding: 14px 28px;
+      background: {{colorPrimary}};
+      color: #ffffff !important;
+      text-decoration: none;
+      border-radius: 30px;
+      font-weight: bold;
+      margin-top: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .footer {
+      padding: 20px;
+      text-align: center;
+      font-size: 12px;
+      color: #a0aec0;
+      background: #f7fafc;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Perfil Actualizado</h1>
+    </div>
+    <div class="content">
+      <p>Hola <strong>{{nombre}}</strong>,</p>
+      <p>Un administrador ha actualizado los datos de tu cuenta en la plataforma. Aquí tienes tu resumen de acceso actualizado:</p>
+      
+      <div class="credentials">
+        <p style="margin: 5px 0;"><strong>Email:</strong> {{email}}</p>
+        {{#if password}}
+        <p style="margin: 5px 0;"><strong>Nueva Contraseña:</strong> {{password}}</p>
+        <p style="font-size: 13px; color: #718096; margin-top: 10px;"><em>Por seguridad, te recomendamos cambiar esta contraseña al ingresar.</em></p>
+        {{else}}
+        <p style="margin: 5px 0; color: #718096;"><em>Tu contraseña no ha sido modificada.</em></p>
+        {{/if}}
+      </div>
+
+      <p>Puedes acceder a la plataforma haciendo clic en el siguiente botón:</p>
+      <div style="text-align: center;">
+        <a href="{{loginLink}}" class="btn">Entrar al Portal</a>
+      </div>
+    </div>
+    <div class="footer">
+      <p>Si no reconoces este cambio, por favor contacta con soporte técnico de inmediato.</p>
+    </div>
+  </div>
+</body>
+</html>

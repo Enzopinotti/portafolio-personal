@@ -20,6 +20,8 @@ services:
   backend:
     image: node:18-alpine
     working_dir: /app
+    env_file:
+      - .env
     ports:
       - "3001:3001"
     environment:

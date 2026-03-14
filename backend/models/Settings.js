@@ -60,6 +60,21 @@ const Settings = sequelize.define('Settings', {
     type: DataTypes.STRING,
     allowNull: false,
     defaultValue: '#333333'
+  },
+  typewriterWordsES: {
+    type: DataTypes.TEXT,
+    allowNull: true,
+    defaultValue: 'Ingeniero industrial, Desarrollador Fullstack, Analista de Sistemas, Diseñador UX/UI'
+  },
+  typewriterWordsEN: {
+    type: DataTypes.TEXT,
+    allowNull: true,
+    defaultValue: 'Industrial Engineer, Fullstack Developer, Systems Analyst, UX/UI Designer'
+  },
+  typewriterWordsPT: {
+    type: DataTypes.TEXT,
+    allowNull: true,
+    defaultValue: 'Engenheiro Industrial, Desarrollador Fullstack, Analista de Sistemas, Designer UX/UI'
   }
 }, {
   tableName: 'settings',

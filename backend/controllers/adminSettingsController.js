@@ -7,9 +7,14 @@ const SHEET_URL = 'https://script.google.com/macros/s/AKfycbwpf5VZzQGDV8QirJNxQ9
 
 export const getSettingsController = async (req, res, next) => {
   try {
-    const settings = await Settings.findOne();
+    let settings = await Settings.findOne();
     if (!settings) {
-      return next(Boom.notFound('Settings not found.'));
+      logger.info('Settings not found, creating default settings.');
+      settings = await Settings.create({
+        siteTitle: 'Enzo Pinotti Portfolio',
+        siteDescription: 'Fullstack Developer & Industrial Engineer',
+        supportEmail: 'enzopinottii@gmail.com'
+      });
     }
     res.status(200).json(settings);
   } catch (error) {

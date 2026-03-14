@@ -12,6 +12,7 @@ import Servicio from '../models/Servicio.js';
 import ProyectoServicio from '../models/ProyectoServicio.js';
 import cloudinary from '../config/cloudinary.js';
 import fs from 'fs';
+import CategoriaSkill from '../models/CategoriaSkill.js';
 
 export const crearProyecto = async (req, res, next) => {
   try {
@@ -38,8 +39,8 @@ export const crearProyecto = async (req, res, next) => {
         const idSkill = typeof skillItem === 'object' ? skillItem.idSkill : parseInt(skillItem, 10);
         const nivel = typeof skillItem === 'object' ? skillItem.nivel : null;
         return {
-          id_proyecto: nuevoProyecto.idProyecto,
-          id_skill: idSkill,
+          idProyecto: nuevoProyecto.idProyecto,
+          idSkill: idSkill,
           nivel: nivel
         };
       });
@@ -51,8 +52,8 @@ export const crearProyecto = async (req, res, next) => {
     if (servicios && Array.isArray(servicios) && servicios.length > 0) {
       const servicioIds = servicios.map(id => parseInt(id, 10));
       const nuevosRegistrosServicios = servicioIds.map(idServicio => ({
-        id_proyecto: nuevoProyecto.idProyecto,
-        id_servicio: idServicio,
+        idProyecto: nuevoProyecto.idProyecto,
+        idServicio: idServicio,
       }));
       await ProyectoServicio.bulkCreate(nuevosRegistrosServicios);
       logger.info(`Crear Proyecto: Se asociaron ${servicios.length} servicios al proyecto.`);
@@ -69,9 +70,35 @@ export const crearProyecto = async (req, res, next) => {
 
 
     // Devolver el proyecto recién creado (con su idProyecto)
+    // Devolver el proyecto recién creado con todas sus asociaciones
+    const proyectoCompleto = await Proyecto.findByPk(nuevoProyecto.idProyecto, {
+      include: [
+        {
+          model: Skill,
+          attributes: ['idSkill', 'nombre', 'nivel'],
+          include: [{
+            model: CategoriaSkill,
+            as: 'Categorias',
+            attributes: ['idCategoriaSkill', 'nombre'],
+            through: { attributes: [] }
+          }],
+          through: { attributes: ['nivel'] },
+        },
+        {
+          model: Imagen,
+          attributes: ['idImagen', 'ruta', 'descripcion'],
+        },
+        {
+          model: Servicio,
+          attributes: ['idServicio', 'nombre', 'descripcion', 'precio'],
+          through: { attributes: [] },
+        },
+      ]
+    });
+
     res.status(201).json({
       mensaje: 'Proyecto creado exitosamente.',
-      proyecto: nuevoProyecto,
+      proyecto: proyectoCompleto,
     });
   } catch (error) {
     logger.error(`Error crearProyecto: ${error.message}`);
@@ -159,51 +186,97 @@ export const subirImagenesProyecto = async (req, res, next) => {
 export const editarProyecto = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { titulo, descripcion, fechaInicio, fechaFin, enlace, skills, enlaceGithub } = req.body;
-    logger.info(`Editar Proyecto: Usuario ${req.usuario.idUsuario} intenta editar el proyecto ID ${id}`);
-    const proyecto = await Proyecto.findByPk(id);
+    const projectID = parseInt(id, 10);
+    const { titulo, descripcion, fechaInicio, fechaFin, enlace, skills, servicios, enlaceGithub } = req.body;
+
+    logger.info(`Editar Proyecto: ID ${projectID}. Skills: ${JSON.stringify(skills)}, Servicios: ${JSON.stringify(servicios)}`);
+
+    const proyecto = await Proyecto.findByPk(projectID);
     if (!proyecto) {
-      logger.info(`Editar Proyecto: Proyecto ID ${id} no encontrado.`);
+      logger.info(`Editar Proyecto: Proyecto ID ${projectID} no encontrado.`);
       return next(Boom.notFound('Proyecto no encontrado.'));
     }
-    const usuarios = await proyecto.getUsuarios({ where: { idUsuario: req.usuario.idUsuario } });
-    if (usuarios.length === 0) {
-      logger.info(`Editar Proyecto: Usuario ${req.usuario.idUsuario} sin permisos para editar el proyecto ID ${id}.`);
-      return next(Boom.forbidden('No tienes permiso para editar este proyecto.'));
-    }
-    if (titulo) proyecto.titulo = titulo;
-    if (descripcion) proyecto.descripcion = descripcion;
-    if (fechaInicio) proyecto.fechaInicio = fechaInicio;
-    if (fechaFin) proyecto.fechaFin = fechaFin;
-    if (enlace) proyecto.enlace = enlace;
-    if (enlaceGithub) proyecto.enlaceGithub = enlaceGithub;
+
+    if (titulo !== undefined) proyecto.titulo = titulo;
+    if (descripcion !== undefined) proyecto.descripcion = descripcion;
+    if (fechaInicio !== undefined) proyecto.fechaInicio = fechaInicio;
+    if (fechaFin !== undefined) proyecto.fechaFin = fechaFin;
+    if (enlace !== undefined) proyecto.enlace = enlace;
+    if (enlaceGithub !== undefined) proyecto.enlaceGithub = enlaceGithub;
 
     await proyecto.save();
-    if (skills && Array.isArray(skills)) {
-      // Para editar, primero borramos las asociaciones previas
-      await ProyectoSkill.destroy({ where: { id_proyecto: id } });
 
-      const nuevosRegistros = skills.map(skillItem => {
-        const idSkill = typeof skillItem === 'object' ? skillItem.idSkill : parseInt(skillItem, 10);
-        const nivel = typeof skillItem === 'object' ? skillItem.nivel : null;
-        return {
-          id_proyecto: id,
-          id_skill: idSkill,
-          nivel: nivel
-        };
-      });
-      await ProyectoSkill.bulkCreate(nuevosRegistros);
-      logger.info(`Editar Proyecto: Se actualizaron las skills asociadas al proyecto ID ${id}.`);
+    // Actualizar Skills
+    if (skills !== undefined && Array.isArray(skills)) {
+      logger.info(`Editar Proyecto: Borrando skills previas para el proyecto ${projectID}`);
+      await ProyectoSkill.destroy({ where: { idProyecto: projectID } });
+
+      if (skills.length > 0) {
+        const nuevosRegistrosSkills = skills.map(skillItem => {
+          const idSkill = typeof skillItem === 'object' ? skillItem.idSkill : parseInt(skillItem, 10);
+          const nivel = typeof skillItem === 'object' ? skillItem.nivel : null;
+          return {
+            idProyecto: projectID,
+            idSkill: parseInt(idSkill, 10),
+            nivel: nivel !== null ? parseInt(nivel, 10) : null
+          };
+        });
+        await ProyectoSkill.bulkCreate(nuevosRegistrosSkills);
+        logger.info(`Editar Proyecto: Creadas ${nuevosRegistrosSkills.length} nuevas asociaciones de skills.`);
+      }
     }
+
+    // Actualizar Servicios
+    if (servicios !== undefined && Array.isArray(servicios)) {
+      logger.info(`Editar Proyecto: Borrando servicios previos para el proyecto ${projectID}`);
+      await ProyectoServicio.destroy({ where: { idProyecto: projectID } });
+
+      if (servicios.length > 0) {
+        const nuevosRegistrosServicios = servicios.map(idServicio => ({
+          idProyecto: projectID,
+          idServicio: parseInt(idServicio, 10),
+        }));
+        await ProyectoServicio.bulkCreate(nuevosRegistrosServicios);
+        logger.info(`Editar Proyecto: Creadas ${nuevosRegistrosServicios.length} nuevas asociaciones de servicios.`);
+      }
+    }
+
     await registrarEvento({
       userId: req.usuario.idUsuario,
       action: 'EDIT_PROYECTO',
       target: 'proyecto',
-      details: { proyectoId: id, cambios: { titulo, descripcion, fechaInicio, fechaFin, enlace } },
+      details: { proyectoId: projectID, cambios: { titulo, descripcion, fechaInicio, fechaFin, enlace } },
       req,
     });
-    logger.info(`Editar Proyecto: Proyecto ID ${id} actualizado exitosamente.`);
-    res.status(200).json({ mensaje: 'Proyecto actualizado exitosamente.', proyecto });
+
+    // Recargar el proyecto con todas sus asociaciones para devolverlo completo
+    const proyectoActualizado = await Proyecto.findByPk(projectID, {
+      include: [
+        {
+          model: Skill,
+          attributes: ['idSkill', 'nombre', 'nivel'],
+          include: [{
+            model: CategoriaSkill,
+            as: 'Categorias',
+            attributes: ['idCategoriaSkill', 'nombre'],
+            through: { attributes: [] }
+          }],
+          through: { attributes: ['nivel'] },
+        },
+        {
+          model: Imagen,
+          attributes: ['idImagen', 'ruta', 'descripcion'],
+        },
+        {
+          model: Servicio,
+          attributes: ['idServicio', 'nombre', 'descripcion', 'precio'],
+          through: { attributes: [] },
+        },
+      ],
+    });
+
+    logger.info(`Editar Proyecto: Proyecto ID ${projectID} actualizado exitosamente.`);
+    res.status(200).json({ mensaje: 'Proyecto actualizado exitosamente.', proyecto: proyectoActualizado });
   } catch (error) {
     logger.error(`Error en editarProyecto: ${error.message}`);
     return next(Boom.internal(error.message));
@@ -244,6 +317,12 @@ export const listarProyectos = async (req, res, next) => {
         {
           model: Skill,
           attributes: ['idSkill', 'nombre', 'nivel'],
+          include: [{
+            model: CategoriaSkill,
+            as: 'Categorias',
+            attributes: ['idCategoriaSkill', 'nombre'],
+            through: { attributes: [] }
+          }],
           through: { attributes: ['nivel'] },
         },
         {
@@ -274,6 +353,12 @@ export const verProyecto = async (req, res, next) => {
         {
           model: Skill,
           attributes: ['idSkill', 'nombre', 'nivel'],
+          include: [{
+            model: CategoriaSkill,
+            as: 'Categorias',
+            attributes: ['idCategoriaSkill', 'nombre'],
+            through: { attributes: [] }
+          }],
           through: { attributes: ['nivel'] },
         },
         {
@@ -320,7 +405,31 @@ export const buscarProyectos = async (req, res, next) => {
     if (fechaFin) {
       whereClause.fechaFin = { [Op.lte]: fechaFin };
     }
-    const proyectos = await Proyecto.findAll({ where: whereClause });
+    const proyectos = await Proyecto.findAll({
+      where: whereClause,
+      include: [
+        {
+          model: Skill,
+          attributes: ['idSkill', 'nombre', 'nivel'],
+          include: [{
+            model: CategoriaSkill,
+            as: 'Categorias',
+            attributes: ['idCategoriaSkill', 'nombre'],
+            through: { attributes: [] }
+          }],
+          through: { attributes: ['nivel'] },
+        },
+        {
+          model: Imagen,
+          attributes: ['idImagen', 'ruta', 'descripcion'],
+        },
+        {
+          model: Servicio,
+          attributes: ['idServicio', 'nombre', 'descripcion', 'precio'],
+          through: { attributes: [] },
+        },
+      ],
+    });
     logger.info(`Buscar Proyectos: Se encontraron ${proyectos.length} proyectos.`);
     res.status(200).json(proyectos);
   } catch (error) {
@@ -332,87 +441,84 @@ export const buscarProyectos = async (req, res, next) => {
 export const asignarSkillsAProyecto = async (req, res, next) => {
   try {
     const { idProyecto } = req.params;
-    const { skills } = req.body; // Se espera un array de IDs
-    logger.info(`Asignar Skills: Asignando skills al proyecto con ID ${idProyecto}`);
+    const projectID = parseInt(idProyecto, 10);
+    const { skills } = req.body;
+    logger.info(`Asignar Skills: Proyecto ID ${projectID}`);
 
     if (!Array.isArray(skills)) {
-      return next(Boom.badRequest('Se espera un array de IDs en skills.'));
+      return next(Boom.badRequest('Se espera un array de objetos en skills.'));
     }
 
-    // Convertir los IDs a números
-    const skillIds = skills.map(id => parseInt(id, 10));
-
-    const proyecto = await Proyecto.findByPk(idProyecto);
+    const proyecto = await Proyecto.findByPk(projectID);
     if (!proyecto) {
-      logger.info(`Asignar Skills: Proyecto con ID ${idProyecto} no encontrado.`);
       return next(Boom.notFound('Proyecto no encontrado.'));
     }
 
-    // Primero borramos las previas para insertar las nuevas con nivel
-    await ProyectoSkill.destroy({ where: { id_proyecto: idProyecto } });
+    await ProyectoSkill.destroy({ where: { idProyecto: projectID } });
 
-    const nuevosRegistros = skills.map(skillItem => {
-      const idSkill = typeof skillItem === 'object' ? skillItem.idSkill : parseInt(skillItem, 10);
-      const nivel = typeof skillItem === 'object' ? skillItem.nivel : null;
-      return {
-        id_proyecto: idProyecto,
-        id_skill: idSkill,
-        nivel: nivel
-      };
-    });
+    if (skills.length > 0) {
+      const nuevosRegistros = skills.map(skillItem => {
+        const idSkill = typeof skillItem === 'object' ? skillItem.idSkill : parseInt(skillItem, 10);
+        const nivel = typeof skillItem === 'object' ? skillItem.nivel : null;
+        return {
+          idProyecto: projectID,
+          idSkill: parseInt(idSkill, 10),
+          nivel: nivel !== null ? parseInt(nivel, 10) : null
+        };
+      });
 
-    await ProyectoSkill.bulkCreate(nuevosRegistros);
+      await ProyectoSkill.bulkCreate(nuevosRegistros);
+    }
 
-    // Recargar el proyecto con las skills asignadas
-    const proyectoActualizado = await Proyecto.findByPk(idProyecto, {
+    const proyectoActualizado = await Proyecto.findByPk(projectID, {
       include: [{
         model: Skill,
         attributes: ['idSkill', 'nombre', 'nivel'],
+        include: [{
+          model: CategoriaSkill,
+          as: 'Categorias',
+          attributes: ['idCategoriaSkill', 'nombre'],
+          through: { attributes: [] }
+        }],
         through: { attributes: ['nivel'] }
       }]
     });
 
-    logger.info(`Asignar Skills: Skills asignadas exitosamente al proyecto con ID ${idProyecto}`);
-    res.status(200).json({ mensaje: 'Skills asignadas exitosamente al proyecto.', proyecto: proyectoActualizado });
+    res.status(200).json({ mensaje: 'Skills asignadas exitosamente.', proyecto: proyectoActualizado });
   } catch (error) {
-    logger.error(`Error al asignar skills al proyecto: ${error.message}`);
-    return next(Boom.internal(error.message || 'Error al asignar skills'));
+    logger.error(`Error al asignar skills: ${error.message}`);
+    return next(Boom.internal(error.message));
   }
 };
 
 export const asignarServiciosAProyecto = async (req, res, next) => {
   try {
     const { idProyecto } = req.params;
-    const { servicios } = req.body; // Se espera un array de IDs
-    logger.info(`Asignar Servicios: Asignando servicios al proyecto con ID ${idProyecto}`);
+    const projectID = parseInt(idProyecto, 10);
+    const { servicios } = req.body;
+    logger.info(`Asignar Servicios: Proyecto ID ${projectID}`);
 
     if (!Array.isArray(servicios)) {
       return next(Boom.badRequest('Se espera un array de IDs en servicios.'));
     }
 
-    // Convertir los IDs a números
-    const servicioIds = servicios.map(id => parseInt(id, 10));
-
-    const proyecto = await Proyecto.findByPk(idProyecto);
+    const proyecto = await Proyecto.findByPk(projectID);
     if (!proyecto) {
-      logger.info(`Asignar Servicios: Proyecto con ID ${idProyecto} no encontrado.`);
       return next(Boom.notFound('Proyecto no encontrado.'));
     }
 
-    // Paso 1: Eliminar las asociaciones previas en la tabla intermedia
-    await ProyectoServicio.destroy({ where: { id_proyecto: idProyecto } });
+    await ProyectoServicio.destroy({ where: { idProyecto: projectID } });
 
-    // Paso 2: Preparar los nuevos registros
-    const nuevosRegistros = servicioIds.map(idServicio => ({
-      id_proyecto: idProyecto,
-      id_servicio: idServicio,
-    }));
+    if (servicios.length > 0) {
+      const nuevosRegistros = servicios.map(idServicio => ({
+        idProyecto: projectID,
+        idServicio: parseInt(idServicio, 10),
+      }));
 
-    // Paso 3: Insertar las nuevas asociaciones manualmente
-    await ProyectoServicio.bulkCreate(nuevosRegistros);
+      await ProyectoServicio.bulkCreate(nuevosRegistros);
+    }
 
-    // Recargar el proyecto con los servicios asignados
-    const proyectoActualizado = await Proyecto.findByPk(idProyecto, {
+    const proyectoActualizado = await Proyecto.findByPk(projectID, {
       include: [{
         model: Servicio,
         attributes: ['idServicio', 'nombre', 'descripcion', 'precio'],
@@ -420,11 +526,10 @@ export const asignarServiciosAProyecto = async (req, res, next) => {
       }],
     });
 
-    logger.info(`Asignar Servicios: Servicios asignados exitosamente al proyecto con ID ${idProyecto}`);
-    res.status(200).json({ mensaje: 'Servicios asignados exitosamente al proyecto.', proyecto: proyectoActualizado });
+    res.status(200).json({ mensaje: 'Servicios asignados exitosamente.', proyecto: proyectoActualizado });
   } catch (error) {
-    logger.error(`Error al asignar servicios al proyecto: ${error.message}`);
-    return next(Boom.internal(error.message || 'Error al asignar servicios'));
+    logger.error(`Error al asignar servicios: ${error.message}`);
+    return next(Boom.internal(error.message));
   }
 };
 
