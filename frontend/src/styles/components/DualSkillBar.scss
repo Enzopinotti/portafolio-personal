@@ -1,0 +1,78 @@
+@import '../abstracts/_variables.scss';
+
+.dual-skill-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    padding: 2rem 0;
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+
+    .skill-label {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        
+        .skill-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: $color-white;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        &.top {
+            margin-bottom: 0.5rem;
+        }
+
+        &.bottom {
+            margin-top: 0.5rem;
+        }
+    }
+
+    .bar-track {
+        position: relative;
+        width: 12px;
+        height: 200px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        overflow: visible;
+
+        .bar-fill {
+            position: absolute;
+            width: 100%;
+            border-radius: 10px;
+            background: linear-gradient(to bottom, $color-primary, $color-secondary);
+            box-shadow: 0 0 15px rgba($color-primary, 0.5);
+
+            &.fill-top {
+                bottom: 50%;
+                background: linear-gradient(to top, $color-primary, #6366f1);
+            }
+
+            &.fill-bottom {
+                top: 50%;
+                background: linear-gradient(to bottom, $color-primary, #f43f5e);
+            }
+        }
+
+        .bar-center-dot {
+            width: 20px;
+            height: 20px;
+            background: $color-white;
+            border-radius: 50%;
+            z-index: 2;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.8),
+                        0 0 20px $color-primary;
+            border: 3px solid #1a1a1a;
+        }
+    }
+}

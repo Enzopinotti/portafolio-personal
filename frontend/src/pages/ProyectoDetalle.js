@@ -49,7 +49,8 @@ const DetalleProyecto = () => {
 
   // Por si usas Recharts en skills
   const skillData = proyecto.Skills?.map(skill => ({
-    skill: skill.nombre,
+    // Si el nombre contiene un punto (ej: skills.react), lo traducimos
+    skill: skill.nombre?.includes('.') ? t(skill.nombre) : skill.nombre,
     nivel: skill.ProyectoSkill?.nivel || skill.nivel || 80,
   })) || [];
 
@@ -135,7 +136,7 @@ const DetalleProyecto = () => {
                 {proyecto.Servicios.map(servicio => (
                   <li key={servicio.idServicio}>
                     <Link to={`/servicios?id=${servicio.idServicio}`}>
-                      {servicio.nombre}
+                      {servicio.nombre?.includes('.') ? t(servicio.nombre) : servicio.nombre}
                     </Link>
                   </li>
                 ))}
