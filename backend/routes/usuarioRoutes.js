@@ -53,7 +53,21 @@ router.post('/forgot', validateForgotPassword, forgotPassword);
 router.post('/reset-password', resetPassword);
 router.post('/resend-confirmation', resendConfirmationEmail);
 router.post('/confirm-email', confirmEmail);
-router.post('/logout', verificarToken, cerrarSesion);
+router.post('/logout', (req, res, next) => {
+  // Middleware suave: si hay token lo decodifica, si no ignora y sigue
+  const authHeader = req.headers.authorization;
+  if (authHeader) {
+    const token = authHeader.split(' ')[1];
+    if (token) {
+      jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+        if (!err) req.usuario = decoded;
+        next();
+      });
+      return;
+    }
+  }
+  next();
+}, cerrarSesion);
 router.get('/perfil', verificarToken, verPerfil);
 router.put('/perfil', verificarToken, editarPerfil);
 router.post('/avatar', verificarToken, upload.single('avatar'), actualizarAvatar);

@@ -171,30 +171,30 @@ export const loginGoogleController = async (req, res, next) => {
 
 export const cerrarSesion = async (req, res, next) => {
   try {
-    const usuario = await Usuario.findByPk(req.usuario.idUsuario);
-    if (!usuario) {
-      logger.info(`Cerrar sesión fallido: Usuario ${req.usuario.idUsuario} no encontrado.`);
-      return next(Boom.notFound('Usuario no encontrado.'));
+    // Si hay un token válido, intentamos limpiar la BD
+    if (req.usuario && req.usuario.idUsuario) {
+      const usuario = await Usuario.findByPk(req.usuario.idUsuario);
+      if (usuario) {
+        usuario.refreshToken = null;
+        await usuario.save();
+        logger.info(`Usuario ${usuario.email} cerró sesión: Refresh token eliminado de BD.`);
+      }
     }
-    await registrarEvento({
-      userId: usuario.idUsuario,
-      action: 'LOGOUT',
-      target: 'usuario',
-      details: { message: 'Cierre de sesión exitoso' },
-      req,
-    });
-    logger.info(`Usuario ${usuario.email} cerró sesión exitosamente.`);
-    usuario.refreshToken = null;
-    await usuario.save();
+    
+    // SIEMPRE limpiamos la cookie, incluso si no hay usuario autenticado
     res.clearCookie('refreshToken', {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
+      path: '/' // Nos aseguramos de limpiar el path raíz
     });
+
     res.status(200).json({ mensaje: 'Cierre de sesión exitoso.' });
   } catch (error) {
     logger.error(`Error en cerrarSesion: ${error.message}`);
-    return next(Boom.internal(error.message));
+    // Incluso con error, intentamos decir que salió bien para que el front no se trabe
+    res.clearCookie('refreshToken');
+    res.status(200).json({ mensaje: 'Cierre de sesión procesado.' });
   }
 };
 
