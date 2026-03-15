@@ -186,6 +186,11 @@ export const cerrarSesion = async (req, res, next) => {
     logger.info(`Usuario ${usuario.email} cerró sesión exitosamente.`);
     usuario.refreshToken = null;
     await usuario.save();
+    res.clearCookie('refreshToken', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+    });
     res.status(200).json({ mensaje: 'Cierre de sesión exitoso.' });
   } catch (error) {
     logger.error(`Error en cerrarSesion: ${error.message}`);
