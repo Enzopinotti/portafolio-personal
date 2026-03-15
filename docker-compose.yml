@@ -46,6 +46,7 @@ services:
       - GOOGLE_CALLBACK_URL=${GOOGLE_CALLBACK_URL}
       - CORS_ORIGIN=${CORS_ORIGIN}
       - FRONTEND_URL=${FRONTEND_URL}
+      - ADMIN_EMAILS=${ADMIN_EMAILS}
     depends_on:
       db:
         condition: service_healthy
