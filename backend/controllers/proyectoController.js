@@ -18,12 +18,12 @@ export const crearProyecto = async (req, res, next) => {
   try {
     const { titulo, descripcion, fechaInicio, fechaFin, enlace, skills, servicios, enlaceGithub } = req.body;
     console.log('enlace de github: ', enlaceGithub);
-    // Crear el proyecto en BD (sin imagenPastilla)
+    // Crear el proyecto en BD (sanitizando fechas)
     const nuevoProyecto = await Proyecto.create({
       titulo,
       descripcion,
-      fechaInicio,
-      fechaFin: fechaFin || null,
+      fechaInicio: (fechaInicio && !isNaN(Date.parse(fechaInicio))) ? fechaInicio : null,
+      fechaFin: (fechaFin && !isNaN(Date.parse(fechaFin))) ? fechaFin : null,
       enlace,
       enlaceGithub,
     });
@@ -199,8 +199,15 @@ export const editarProyecto = async (req, res, next) => {
 
     if (titulo !== undefined) proyecto.titulo = titulo;
     if (descripcion !== undefined) proyecto.descripcion = descripcion;
-    if (fechaInicio !== undefined) proyecto.fechaInicio = fechaInicio;
-    if (fechaFin !== undefined) proyecto.fechaFin = fechaFin;
+    
+    // Sanitizar fechas: si vienen vacías o son inválidas, poner NULL
+    if (fechaInicio !== undefined) {
+      proyecto.fechaInicio = (fechaInicio && !isNaN(Date.parse(fechaInicio))) ? fechaInicio : null;
+    }
+    if (fechaFin !== undefined) {
+      proyecto.fechaFin = (fechaFin && !isNaN(Date.parse(fechaFin))) ? fechaFin : null;
+    }
+
     if (enlace !== undefined) proyecto.enlace = enlace;
     if (enlaceGithub !== undefined) proyecto.enlaceGithub = enlaceGithub;
 
