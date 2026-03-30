@@ -5,7 +5,6 @@ import { useParams, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 import { getProjectById } from '../services/projectService.js';
-import { getImagenesByProyecto } from '../services/imageService.js';
 
 // La nueva galería unificada
 import ProyectoGallery from '../components/ProyectoGallery.js';
@@ -30,19 +29,18 @@ const DetalleProyecto = () => {
   useEffect(() => {
     const handleResize = () => setIsDesktop(window.innerWidth >= 1080);
     window.addEventListener('resize', handleResize);
-
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Cargar datos del proyecto e imágenes
+  // Cargar datos del proyecto - las imágenes ya vienen incluidas en la respuesta
   useEffect(() => {
     getProjectById(idProyecto)
-      .then(data => setProyecto(data))
+      .then(data => {
+        setProyecto(data);
+        // Usar las imágenes embebidas en la respuesta del proyecto
+        setImagenes(data.Imagenes || data.Imagens || []);
+      })
       .catch(err => console.error('Error cargando proyecto:', err));
-
-    getImagenesByProyecto(idProyecto)
-      .then(res => setImagenes(res.imagenes || []))
-      .catch(err => console.error('Error cargando imágenes:', err));
   }, [idProyecto]);
 
   if (!proyecto) return <div className="loading">{t('proyectoDetalle.loading')}</div>;
