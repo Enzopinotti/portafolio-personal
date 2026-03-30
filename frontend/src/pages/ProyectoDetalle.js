@@ -46,14 +46,6 @@ const DetalleProyecto = () => {
   }, [idProyecto]);
 
   if (!proyecto) return <div className="loading">{t('proyectoDetalle.loading')}</div>;
-  
-  // Combinar imagen de pastilla (portada) con imágenes extra para la galería
-  const allMedia = [];
-  if (proyecto.imagenPastilla) {
-    allMedia.push({ ruta: proyecto.imagenPastilla, descripcion: proyecto.titulo });
-  }
-  // Añadir las imágenes de la galería (ya traen .ruta)
-  allMedia.push(...imagenes);
 
   // Por si usas Recharts en skills
   const skillData = proyecto.Skills?.map(skill => ({
@@ -72,10 +64,10 @@ const DetalleProyecto = () => {
       <div className="detalle-proyecto-container">
 
         {/* Sección de galería unificada */}
-        <ProyectoGallery items={allMedia} />
+        <ProyectoGallery items={imagenes} />
 
         {/* Resto del contenido */}
-        <div className={`detalle-proyecto-contenido ${allMedia.length === 0 ? 'centrado' : ''}`}>
+        <div className={`detalle-proyecto-contenido ${imagenes.length === 0 ? 'centrado' : ''}`}>
           <h1>{proyecto.titulo}</h1>
           <div 
             className="proyecto-descripcion-html"

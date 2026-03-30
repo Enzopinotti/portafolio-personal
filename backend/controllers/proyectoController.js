@@ -86,6 +86,7 @@ export const crearProyecto = async (req, res, next) => {
         },
         {
           model: Imagen,
+          as: 'Imagenes',
           attributes: ['idImagen', 'ruta', 'descripcion'],
         },
         {
@@ -274,6 +275,7 @@ export const editarProyecto = async (req, res, next) => {
         },
         {
           model: Imagen,
+          as: 'Imagenes',
           attributes: ['idImagen', 'ruta', 'descripcion'],
         },
         {
@@ -352,6 +354,7 @@ export const listarProyectos = async (req, res, next) => {
         },
         {
           model: Imagen,
+          as: 'Imagenes',
           attributes: ['idImagen', 'ruta', 'descripcion'],
         },
         {
@@ -388,6 +391,7 @@ export const verProyecto = async (req, res, next) => {
         },
         {
           model: Imagen,
+          as: 'Imagenes',
           attributes: ['idImagen', 'ruta', 'descripcion'],
         },
         {
@@ -446,6 +450,7 @@ export const buscarProyectos = async (req, res, next) => {
         },
         {
           model: Imagen,
+          as: 'Imagenes',
           attributes: ['idImagen', 'ruta', 'descripcion'],
         },
         {

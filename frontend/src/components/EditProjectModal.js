@@ -70,7 +70,7 @@ const EditProjectModal = ({ isOpen, project, onClose, onSave }) => {
         servicios: project.Servicios?.map(sv => sv.idServicio) || [],
         // Asumimos "project.Imagens" o "project.Imagenes" para extras en BD
         imagenPastilla: project.imagenPastilla || null,
-        imagenesActuales: project.Imagens || [],
+        imagenesActuales: project.Imagenes || [],
         imagenesExtras: null,
       });
     }
