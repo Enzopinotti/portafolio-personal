@@ -15,11 +15,14 @@ echo "📥 Pulling latest changes from Git..."
 git pull origin main || echo "⚠️ Warning: git pull failed or is not a git repository. Continuing deployment..."
 
 # 2. Build and start containers
-# Determine if we should use 'docker-compose' or 'docker compose'
-if command -v docker-compose &> /dev/null; then
+# Robust detection of docker-compose vs docker compose
+if docker-compose --version &> /dev/null; then
     DOCKER_COMPOSE_CMD="docker-compose"
-else
+elif docker compose version &> /dev/null; then
     DOCKER_COMPOSE_CMD="docker compose"
+else
+    echo "❌ Error: Neither 'docker-compose' nor 'docker compose' was found."
+    exit 1
 fi
 
 echo "📦 Using $DOCKER_COMPOSE_CMD..."
@@ -33,13 +36,11 @@ until [ "$(docker inspect -f '{{.State.Health.Status}}' portafolio-db 2>/dev/nul
 done
 
 echo "⚙️ Running Database Migrations..."
-docker exec -it portafolio-backend npx sequelize-cli db:migrate
+docker exec portafolio-backend npx sequelize-cli db:migrate
 
 echo "🌱 Running Seeders (Optional)..."
-read -p "Do you want to run seeders? (y/N): " run_seeders
-if [[ $run_seeders =~ ^[Yy]$ ]]; then
-    docker exec -it portafolio-backend npx sequelize-cli db:seed:all
-fi
+# No usar read -p -it en scripts si no es necesario, o dar un timeout
+echo "Para ejecutar seeders manualmente: docker exec portafolio-backend npx sequelize-cli db:seed:all"
 
 echo "✅ Deployment completed successfully!"
 
