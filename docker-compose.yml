@@ -62,6 +62,10 @@ services:
     restart: always
     ports:
       - "8080:80"
+    volumes:
+      # Los videos de fondo viven en el VPS, se montan en el contenedor en runtime
+      # Asegúrate de que /var/www/portafolio/frontend/public/videos exista en el VPS
+      - /var/www/portafolio/frontend/public/videos:/usr/share/nginx/html/videos:ro
     depends_on:
       - backend
     networks:
