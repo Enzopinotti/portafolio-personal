@@ -168,11 +168,11 @@
     "nextPage": "Siguiente",
     "prevPage": "Anterior",
     "editButton": "Editar Proyecto",
-    "coverImage": "Imagen Pastilla (portada)",
+    "coverImage": "Imagen/Video de Pastilla (portada)",
     "newCover": "Nueva Portada",
     "currentCover": "Portada Actual BD",
-    "extraImages": "Imágenes Extras (máx 5)",
-    "dbImage": "Imagen BD"
+    "extraImages": "Multimedia Extra (máx 10 items)",
+    "dbImage": "Archivo BD"
   },
   "adminSkillsModal": {
     "altImage": "Patrón de Skills",

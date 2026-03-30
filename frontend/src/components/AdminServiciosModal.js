@@ -79,10 +79,11 @@ const AdminServiciosModal = ({ isOpen, onClose, direction = 'forward' }) => {
       });
   }, [isOpen, t]);
 
-  // Filtrar por searchTerm
-  const filteredServicios = (servicios || []).filter((servicio) =>
-    servicio?.nombre?.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // Filtrar por searchTerm (incluye nombres traducidos)
+  const filteredServicios = (servicios || []).filter((servicio) => {
+    const displayName = servicio.nombre?.includes('.') ? t(servicio.nombre) : (servicio.nombre || '');
+    return displayName.toLowerCase().includes(searchTerm.toLowerCase());
+  });
 
   // Crear servicio
   const handleCreate = async (e) => {
@@ -202,8 +203,8 @@ const AdminServiciosModal = ({ isOpen, onClose, direction = 'forward' }) => {
                     {filteredServicios.map((servicio) => (
                       <div key={servicio.idServicio} className="project-item">
                         <div className="project-info">
-                          <h3>{servicio.nombre}</h3>
-                          <p>{servicio.descripcion}</p>
+                          <h3>{servicio.nombre?.includes('.') ? t(servicio.nombre) : servicio.nombre}</h3>
+                          <p>{servicio.descripcion?.includes('.') ? t(servicio.descripcion) : servicio.descripcion}</p>
                           <p>
                             {t('adminServicioForm.priceLabel')}: ${servicio.precio}
                           </p>

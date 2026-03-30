@@ -3,6 +3,26 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { deleteImage, deletePortadaProyecto } from '../services/projectService.js';
 import { FaFileUpload } from 'react-icons/fa';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+
+// Configuración de módulos para Quill
+const quillModules = {
+  toolbar: [
+    [{ 'header': [1, 2, false] }],
+    ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+    [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
+    ['link'],
+    ['clean']
+  ],
+};
+
+const quillFormats = [
+  'header',
+  'bold', 'italic', 'underline', 'strike', 'blockquote',
+  'list', 'bullet', 'indent',
+  'link'
+];
 
 const AdminProjectForm = ({
   newProject,
@@ -41,15 +61,15 @@ const AdminProjectForm = ({
     const file = e.target.files?.[0];
     if (!file) return;
 
+    // Validación de tamaño (50MB)
+    if (file.size > 50 * 1024 * 1024) {
+      toast.error('La portada no puede superar los 50MB.');
+      return;
+    }
+
     const localUrl = URL.createObjectURL(file);
     setPendingPastilla({ file, localUrl });
-
-    // Actualizamos newProject para que, al hacer submit,
-    // se suba este File al backend.
-    setNewProject({
-      ...newProject,
-      imagenPastilla: file,
-    });
+    setNewProject({ ...newProject, imagenPastilla: file });
   };
 
   /**
@@ -112,10 +132,18 @@ const AdminProjectForm = ({
     const totalActualBD = newProject.imagenesActuales?.length || 0;
     const totalLocal = pendingImages.length;
     const totalSuma = totalActualBD + totalLocal + nuevosArchivos.length;
-    if (totalSuma > 5) {
-      toast.error(`Máx 5 imágenes extras. Ya tienes ${totalActualBD + totalLocal}.`);
+    if (totalSuma > 10) {
+      toast.error(`Máx 10 archivos multimedia. Ya tienes ${totalActualBD + totalLocal}.`);
       return;
     }
+
+    // Validación de tamaño (50MB)
+    const filesTooLarge = nuevosArchivos.filter(f => f.size > 50 * 1024 * 1024);
+    if (filesTooLarge.length > 0) {
+      toast.error('Algunos archivos superan los 50MB y no fueron añadidos.');
+    }
+    const filteredFiles = nuevosArchivos.filter(f => f.size <= 50 * 1024 * 1024);
+    if (!filteredFiles.length) return;
 
     // Creamos previews locales
     const newPreviews = nuevosArchivos.map((file) => ({
@@ -238,16 +266,20 @@ const AdminProjectForm = ({
         }
       />
 
-      {/* Descripción */}
-      <label htmlFor="descripcion">{t('adminProjectForm.descriptionLabel')}</label>
-      <textarea
-        id="descripcion"
-        placeholder={t('adminProjectForm.descriptionPlaceholder')}
-        value={newProject.descripcion || ''}
-        onChange={(e) =>
-          setNewProject({ ...newProject, descripcion: e.target.value })
-        }
-      />
+      {/* Descripción con Rich Text */}
+      <label>{t('adminProjectForm.descriptionLabel')}</label>
+      <div className="quill-editor-wrapper">
+        <ReactQuill
+          theme="snow"
+          value={newProject.descripcion || ''}
+          onChange={(content) =>
+            setNewProject({ ...newProject, descripcion: content })
+          }
+          modules={quillModules}
+          formats={quillFormats}
+          placeholder={t('adminProjectForm.descriptionPlaceholder')}
+        />
+      </div>
 
       {/* Enlace de despliegue */}
       <label htmlFor="enlace">URL Despliegue</label>
@@ -277,13 +309,13 @@ const AdminProjectForm = ({
         <FaFileUpload className="upload-icon" />
         <div className="upload-text">
           {pendingPastilla ? pendingPastilla.file.name : (
-            <><span>{t('adminProjectForm.uploadClick', 'Haz click')}</span> {t('adminProjectForm.uploadOrSelection', 'para seleccionar la portada')}</>
+            <><span>{t('adminProjectForm.uploadClick', 'Haz click')}</span> {t('adminProjectForm.uploadOrSelection', 'para seleccionar la portada (foto o video)')}</>
           )}
         </div>
         <input
           id="imagenPastilla"
           type="file"
-          accept="image/*"
+          accept="image/*,video/*"
           onChange={handlePastillaChange}
         />
       </div>
@@ -291,11 +323,15 @@ const AdminProjectForm = ({
       {/* (A) Vista previa local de la NUEVA portada */}
       {pendingPastilla && (
         <div className="preview-pastilla">
-          <img
-            src={pendingPastilla.localUrl}
-            alt={t('adminProjectForm.newCover')}
-            className="preview-img"
-          />
+          {pendingPastilla.file.type.startsWith('video/') ? (
+            <video src={pendingPastilla.localUrl} className="preview-img" muted />
+          ) : (
+            <img
+              src={pendingPastilla.localUrl}
+              alt={t('adminProjectForm.newCover')}
+              className="preview-img"
+            />
+          )}
           <button
             type="button"
             className="close-button"
@@ -312,11 +348,15 @@ const AdminProjectForm = ({
         typeof newProject.imagenPastilla === 'string' &&
         newProject.imagenPastilla && (
           <div className="preview-pastilla">
-            <img
-              src={newProject.imagenPastilla}
-              alt={t('adminProjectForm.currentCover')}
-              className="preview-img"
-            />
+            {newProject.imagenPastilla?.toLowerCase().match(/\.(mp4|webm|mov|ogg|quicktime)$/) || newProject.imagenPastilla?.includes('/video/upload/') ? (
+              <video src={newProject.imagenPastilla} className="preview-img" muted />
+            ) : (
+              <img
+                src={newProject.imagenPastilla}
+                alt={t('adminProjectForm.currentCover')}
+                className="preview-img"
+              />
+            )}
             <button
               type="button"
               className="close-button"
@@ -333,16 +373,16 @@ const AdminProjectForm = ({
         <FaFileUpload className="upload-icon" />
         <div className="upload-text">
           {pendingImages.length > 0
-            ? `${pendingImages.length} ${t('adminProjectForm.imagesSelected', 'imágenes seleccionadas')}`
+            ? `${pendingImages.length} ${t('adminProjectForm.itemsSelected', 'archivos seleccionados')}`
             : (
-              <><span>{t('adminProjectForm.uploadClick', 'Haz click')}</span> {t('adminProjectForm.uploadOrSelectionExtra', 'para añadir imágenes extras')}</>
+              <><span>{t('adminProjectForm.uploadClick', 'Haz click')}</span> {t('adminProjectForm.uploadOrSelectionExtra', 'para añadir archivos multimedia extra (máx 10)')}</>
             )
           }
         </div>
         <input
           id="imagenesExtras"
           type="file"
-          accept="image/*"
+          accept="image/*,video/*"
           multiple
           onChange={handleExtrasChange}
         />
@@ -353,11 +393,15 @@ const AdminProjectForm = ({
         <div className="preview-imagenes-extras">
           {newProject.imagenesActuales.map((img) => (
             <div key={img.idImagen} className="preview-item">
-              <img
-                src={img.ruta}
-                alt={t('adminProjectForm.dbImage')}
-                className="preview-img"
-              />
+              {img.ruta?.toLowerCase().match(/\.(mp4|webm|mov|ogg|quicktime)$/) || img.ruta?.includes('/video/upload/') ? (
+                <video src={img.ruta} className="preview-img" muted />
+              ) : (
+                <img
+                  src={img.ruta}
+                  alt={t('adminProjectForm.dbImage')}
+                  className="preview-img"
+                />
+              )}
               <button
                 type="button"
                 className="close-button"
@@ -375,11 +419,15 @@ const AdminProjectForm = ({
         <div className="preview-imagenes-nuevas">
           {pendingImages.map((p, idx) => (
             <div key={idx} className="preview-item">
-              <img
-                src={p.localUrl}
-                alt={`Nueva Imagen ${idx}`}
-                className="preview-img"
-              />
+              {p.file.type.startsWith('video/') ? (
+                <video src={p.localUrl} className="preview-img" muted />
+              ) : (
+                <img
+                  src={p.localUrl}
+                  alt={`Nueva Imagen ${idx}`}
+                  className="preview-img"
+                />
+              )}
               <button
                 type="button"
                 className="close-button"

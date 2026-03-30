@@ -23,19 +23,19 @@ const storage = multer.diskStorage({
   },
 });
 
-// Filtro: solo imágenes
+// Filtro: imágenes y videos
 const fileFilter = (req, file, cb) => {
-  if (file.mimetype.startsWith('image/')) {
+  if (file.mimetype.startsWith('image/') || file.mimetype.startsWith('video/')) {
     cb(null, true);
   } else {
-    cb(new Error('El archivo no es una imagen válida.'), false);
+    cb(new Error('El archivo no es una imagen o video válido.'), false);
   }
 };
 
 const uploadProjects = multer({
   storage,
   fileFilter,
-  limits: { fileSize: 5 * 1024 * 1024 }, // máximo 5MB por imagen
+  limits: { fileSize: 50 * 1024 * 1024 }, // máximo 50MB
 });
 
 export default uploadProjects;

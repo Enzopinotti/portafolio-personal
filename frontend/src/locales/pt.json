@@ -168,11 +168,11 @@
     "nextPage": "Próxima página",
     "prevPage": "Página anterior",
     "editButton": "Editar Projeto",
-    "coverImage": "Imagem de Capa",
+    "coverImage": "Imagem/Vídeo de Capa",
     "newCover": "Nova Capa",
     "currentCover": "Capa Atual",
-    "extraImages": "Imagens Extras (máx. 5)",
-    "dbImage": "Imagem BD"
+    "extraImages": "Multimídia Extra (máx. 10 itens)",
+    "dbImage": "Arquivo BD"
   },
   "adminSkillsModal": {
     "altImage": "Padrão de Skills",

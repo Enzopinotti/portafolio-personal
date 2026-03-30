@@ -182,11 +182,33 @@
       font-weight: 800;
     }
 
-    p {
+    .proyecto-descripcion-html {
       font-size: 1.1rem;
       line-height: 1.7;
-      margin-bottom: 2rem;
+      margin-bottom: 3.5rem; // Espacio aumentado con los botones
       color: rgba(255, 255, 255, 0.85);
+
+      ul, ol {
+        margin: 1rem 0;
+        padding-left: 2rem;
+        
+        li {
+          margin-bottom: 0.5rem;
+          list-style: inherit;
+        }
+      }
+
+      blockquote {
+        border-left: 4px solid $color-primary;
+        padding-left: 1.5rem;
+        margin: 1.5rem 0;
+        font-style: italic;
+        color: rgba(255, 255, 255, 0.7);
+      }
+
+      p {
+        margin-bottom: 1.2rem;
+      }
     }
 
     .project-links {

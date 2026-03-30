@@ -75,8 +75,8 @@
     }
   }
 
-  .slider-a {
-    margin-bottom: 3rem;
+  .sliderB{
+    margin-bottom: 6rem;
   }
 
 
@@ -224,11 +224,15 @@
   .pill-overlay .pill-desc {
     margin: 0;
     font-size: 0.78rem;
-    line-height: 1.3;
+    line-height: 1.4;
     color: $color-white;
-    max-height: 4.2em; // ~3 líneas
+    display: -webkit-box;
+    -webkit-line-clamp: 4; // Hasta 4 líneas
+    line-clamp: 4;
+    -webkit-box-orient: vertical;
     overflow: hidden;
-    max-width: 90%;
+    max-width: 85%;
+    text-overflow: ellipsis;
   }
 
   h3 {

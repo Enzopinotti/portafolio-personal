@@ -168,11 +168,11 @@
     "nextPage": "Next Page",
     "prevPage": "Previous Page",
     "editButton": "Edit Project",
-    "coverImage": "Cover Image",
+    "coverImage": "Cover Image/Video",
     "newCover": "New Cover",
     "currentCover": "Current Cover",
-    "extraImages": "Extra Images (max 5)",
-    "dbImage": "DB Image"
+    "extraImages": "Extra Multimedia (max 10 items)",
+    "dbImage": "DB File"
   },
   "adminSkillsModal": {
     "altImage": "Skills Pattern",

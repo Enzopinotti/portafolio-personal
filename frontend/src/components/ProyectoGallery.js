@@ -6,7 +6,9 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/effect-fade';
 import 'swiper/css/effect-coverflow';
+import 'swiper/css/effect-coverflow';
 import FullScreenGallery from './FullScreenGallery.js';
+import { optimizeCloudinaryUrl } from '../utils/cloudinaryUtils.js';
 
 const ProyectoGallery = ({ items = [] }) => {
     const [fsOpen, setFsOpen] = React.useState(false);
@@ -20,7 +22,13 @@ const ProyectoGallery = ({ items = [] }) => {
     };
 
     const renderMedia = (item, isSingle = false) => {
-        const isVideo = item.ruta?.toLowerCase().match(/\.(mp4|webm)$/);
+        // Detectar si es video: por extensión (incluyendo .mov) o si la URL de Cloudinary contiene /video/upload/
+        const isVideo = 
+            item.ruta?.toLowerCase().match(/\.(mp4|webm|mov|ogg|quicktime)$/) || 
+            item.ruta?.includes('/video/upload/');
+
+        const optimizedUrl = optimizeCloudinaryUrl(item.ruta);
+
         const commonStyles = {
             width: '100%',
             height: '100%',
@@ -34,12 +42,12 @@ const ProyectoGallery = ({ items = [] }) => {
             return (
                 <div className="media-wrapper video-wrapper">
                     <video
-                        src={item.ruta}
+                        src={optimizedUrl}
                         autoPlay
                         loop
                         muted
                         playsInline
-                        poster={item.ruta.replace(/\.(mp4|webm)$/i, '.webp')}
+                        poster={optimizedUrl.replace(/\.(mp4|webm|mov|ogg)$/i, '.webp')}
                         style={commonStyles}
                         ref={(el) => {
                             if (el) {
@@ -57,7 +65,7 @@ const ProyectoGallery = ({ items = [] }) => {
         return (
             <div className="media-wrapper image-wrapper">
                 <img
-                    src={item.ruta}
+                    src={optimizedUrl}
                     alt={item.descripcion || 'Media del Proyecto'}
                     style={commonStyles}
                     loading="lazy"
@@ -92,7 +100,7 @@ const ProyectoGallery = ({ items = [] }) => {
                 loop={true}
                 watchSlidesProgress={true}
                 autoplay={{
-                    delay: 2500,
+                    delay: 5000,
                     disableOnInteraction: false,
                     pauseOnMouseEnter: false
                 }}

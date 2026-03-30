@@ -106,16 +106,41 @@ const SliderInfinito = ({
             className="slide"
             onPointerUp={(e) => handleSlidePointerUp(e, item)}
           >
-            <div
-              className="proyecto-pill"
-              style={{
-                backgroundImage: `url(${item.imagen})`,
-                backgroundSize: '110%',
-                backgroundPosition: 'center',
-              }}
-            >
-              <div className="rayo" />
-              <div className="pill-overlay">
+            <div className="proyecto-pill">
+              {item.imagen?.toLowerCase().match(/\.(mp4|webm|mov|ogg|quicktime)$/) || item.imagen?.includes('/video/upload/') ? (
+                <video
+                  src={item.imagen}
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  className="pill-video"
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    position: 'absolute',
+                    inset: 0,
+                    zIndex: 0
+                  }}
+                />
+              ) : (
+                <div
+                  className="pill-bg"
+                  style={{
+                    backgroundImage: `url(${item.imagen})`,
+                    backgroundSize: '110%',
+                    backgroundPosition: 'center',
+                    width: '100%',
+                    height: '100%',
+                    position: 'absolute',
+                    inset: 0,
+                    zIndex: 0
+                  }}
+                />
+              )}
+              <div className="rayo" style={{ zIndex: 1 }} />
+              <div className="pill-overlay" style={{ zIndex: 2 }}>
                 <h3>{item.titulo}</h3>
                 <p className="pill-desc">{item.descripcion}</p>
               </div>

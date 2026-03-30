@@ -41,7 +41,7 @@ const Proyecto = sequelize.define(
     maxImagenes: {
       type: DataTypes.INTEGER.UNSIGNED,
       allowNull: false,
-      defaultValue: 5,
+      defaultValue: 10,
       field: 'max_imagenes',
     },
     imagenPastilla: {

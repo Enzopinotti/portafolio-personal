@@ -69,7 +69,10 @@ const DetalleProyecto = () => {
         {/* Resto del contenido */}
         <div className={`detalle-proyecto-contenido ${imagenes.length === 0 ? 'centrado' : ''}`}>
           <h1>{proyecto.titulo}</h1>
-          <p>{proyecto.descripcion}</p>
+          <div 
+            className="proyecto-descripcion-html"
+            dangerouslySetInnerHTML={{ __html: proyecto.descripcion }} 
+          />
 
           <div className="project-links">
             {proyecto.enlace && (

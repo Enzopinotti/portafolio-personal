@@ -5,6 +5,7 @@ import SliderInfinito from '../components/SliderInfinito.js';
 import { listProjectsPublicos } from '../services/projectService.js';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { optimizeCloudinaryUrl } from '../utils/cloudinaryUtils.js';
 
 const Proyectos = () => {
   const { t } = useTranslation();
@@ -33,7 +34,7 @@ const Proyectos = () => {
   const slides = proyectos.map(p => ({
     id: p.idProyecto,
     titulo: p.titulo,
-    imagen: p.imagenPastilla,
+    imagen: optimizeCloudinaryUrl(p.imagenPastilla),
     descripcion: p.descripcion
   }));
 

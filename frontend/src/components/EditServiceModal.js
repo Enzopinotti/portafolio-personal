@@ -105,6 +105,11 @@ const EditServiceModal = ({ isOpen, service, onClose, onSave, accessToken }) => 
             value={formValues.nombre}
             onChange={handleChange}
           />
+          {formValues.nombre?.includes('.') && (
+            <p className="field-hint" style={{ fontSize: '0.85rem', color: '#666', marginTop: '4px' }}>
+              <strong>Preview:</strong> {t(formValues.nombre)}
+            </p>
+          )}
 
           <label htmlFor="descripcion">{t('editServiceModal.description')}</label>
           <textarea
@@ -113,6 +118,11 @@ const EditServiceModal = ({ isOpen, service, onClose, onSave, accessToken }) => 
             value={formValues.descripcion}
             onChange={handleChange}
           />
+          {formValues.descripcion?.includes('.') && (
+            <p className="field-hint" style={{ fontSize: '0.85rem', color: '#666', marginTop: '4px' }}>
+              <strong>Preview:</strong> {t(formValues.descripcion)}
+            </p>
+          )}
 
           <label htmlFor="precio">{t('editServiceModal.price')}</label>
           <input

@@ -119,6 +119,7 @@ export const subirImagenPastilla = async (req, res, next) => {
     // Subir a Cloudinary
     const resultado = await cloudinary.uploader.upload(req.file.path, {
       folder: 'proyectos/portada',
+      resource_type: 'auto',
     });
 
     // Borrar archivo local
@@ -162,6 +163,7 @@ export const subirImagenesProyecto = async (req, res, next) => {
     for (const file of req.files) {
       const resultado = await cloudinary.uploader.upload(file.path, {
         folder: `proyectos/${idProyecto}`,
+        resource_type: 'auto',
       });
       fs.unlinkSync(file.path);
 
@@ -300,8 +302,24 @@ export const eliminarProyecto = async (req, res, next) => {
       return next(Boom.notFound('Proyecto no encontrado.'));
     }
 
+    // 1) Borrar la portada de Cloudinary si existe
+    if (proyecto.publicIdPastilla) {
+      await cloudinary.uploader.destroy(proyecto.publicIdPastilla);
+      logger.info(`Eliminar Proyecto: Borrada portada Cloudinary ID ${proyecto.publicIdPastilla}`);
+    }
+
+    // 2) Obtener imágenes extras y borrarlas de Cloudinary
+    const imagenesExtras = await Imagen.findAll({ where: { idProyecto: id } });
+    for (const img of imagenesExtras) {
+      if (img.publicId) {
+        await cloudinary.uploader.destroy(img.publicId);
+        logger.info(`Eliminar Proyecto: Borrada imagen extra Cloudinary ID ${img.publicId}`);
+      }
+      await img.destroy();
+    }
+
     await proyecto.destroy();
-    logger.info(`Eliminar Proyecto: Proyecto ID ${id} eliminado exitosamente.`);
+    logger.info(`Eliminar Proyecto: Proyecto ID ${id} eliminado exitosamente de la BD.`);
     await registrarEvento({
       userId: req.usuario.idUsuario,
       action: 'DELETE_PROYECTO',

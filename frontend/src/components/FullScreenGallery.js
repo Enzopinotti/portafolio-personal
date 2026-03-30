@@ -4,6 +4,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Keyboard, Mousewheel } from 'swiper/modules';
 import { motion, AnimatePresence } from 'framer-motion';
 import { IoCloseOutline, IoArrowBackOutline, IoArrowForwardOutline } from 'react-icons/io5';
+import { optimizeCloudinaryUrl } from '../utils/cloudinaryUtils.js';
 
 // Swiper styles
 import 'swiper/css';
@@ -30,11 +31,16 @@ const FullScreenGallery = ({ isOpen, items, initialIndex, onClose }) => {
     }, [isOpen, handleKeyDown]);
 
     const renderMedia = (item) => {
-        const isVideo = item.ruta?.toLowerCase().match(/\.(mp4|webm)$/);
+        const isVideo = 
+            item.ruta?.toLowerCase().match(/\.(mp4|webm|mov|ogg|quicktime)$/) || 
+            item.ruta?.includes('/video/upload/');
+
+        const optimizedUrl = optimizeCloudinaryUrl(item.ruta);
+
         if (isVideo) {
             return (
                 <video
-                    src={item.ruta}
+                    src={optimizedUrl}
                     controls
                     autoPlay
                     className="fullscreen-media"
@@ -44,7 +50,7 @@ const FullScreenGallery = ({ isOpen, items, initialIndex, onClose }) => {
         }
         return (
             <img
-                src={item.ruta}
+                src={optimizedUrl}
                 alt={item.descripcion || 'Imagen Fullscreen'}
                 className="fullscreen-media"
                 onClick={(e) => e.stopPropagation()}

@@ -54,6 +54,7 @@ const EditProjectModal = ({ isOpen, project, onClose, onSave }) => {
   // Cargar data del "project" en "editedProject"
   useEffect(() => {
     if (project) {
+      console.log('Project prop in EditProjectModal:', project);
       setEditedProject({
         idProyecto: project.idProyecto,
         titulo: project.titulo || '',
@@ -102,6 +103,7 @@ const EditProjectModal = ({ isOpen, project, onClose, onSave }) => {
   // handleSave: Edita y sube imágenes
   const handleSave = async (e) => {
     e.preventDefault();
+    console.log('Sending ID to editProject:', editedProject.idProyecto);
     try {
       // (1) Editar parte textual
       const res = await editProject(editedProject.idProyecto, {
