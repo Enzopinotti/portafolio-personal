@@ -9,4 +9,7 @@ npm-debug.log
 *.md
 Dockerfile
 docker-compose.yml
+public/videos
+# Ignorar también el build local si existe
+build
 

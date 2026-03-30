@@ -11,8 +11,8 @@ COPY . .
 # We pass labels during build if needed
 ARG REACT_APP_API_URL
 ENV REACT_APP_API_URL=$REACT_APP_API_URL
-
-RUN npm run build
+# Aumentar memoria para el build si el VPS es pequeño (ej. 1.5GB)
+RUN NODE_OPTIONS=--max-old-space-size=2048 npm run build
 
 # Stage 2: Serve with Nginx
 FROM nginx:stable-alpine
