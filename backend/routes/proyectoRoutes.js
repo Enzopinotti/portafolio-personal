@@ -38,30 +38,34 @@ router.post(
   subirImagenPastilla
 );
 
-// (2.2) Subir imágenes extras (hasta 5)
+// (2.2) Subir imágenes extras
 router.post(
   '/:idProyecto/imagenes',
   verificarToken,
   verificarRolAdmin,
-  uploadProjects.array('imagenes', 5),
+  uploadProjects.array('imagenes', 10),
   subirImagenesProyecto
 );
 
-// Ruta para editar un proyecto existente (requiere autenticación)
-router.put('/:id', verificarToken, verificarRolAdmin ,editarProyecto);
-
-// Ruta para eliminar un proyecto (requiere autenticación)
-router.delete('/:id', verificarToken, verificarRolAdmin ,eliminarProyecto);
+// ⚠️ IMPORTANT: Static routes MUST come before dynamic /:id routes
 
 // Ruta para listar todos los proyectos
 router.get('/', listarProyectos);
 
+// Ruta para listar proyectos públicos (con pastilla)
 router.get('/publicos', listarProyectosPublicos);
 
-// Ruta para ver detalles de un proyecto específico
+// Ruta para buscar proyectos
+router.get('/buscar', buscarProyectos);
+
+// Ruta para ver detalles de un proyecto específico (va al final entre las GETs)
 router.get('/:id', verProyecto);
 
-router.get('/buscar', buscarProyectos);
+// Ruta para editar un proyecto existente (requiere autenticación)
+router.put('/:id', verificarToken, verificarRolAdmin, editarProyecto);
+
+// Ruta para eliminar un proyecto (requiere autenticación)
+router.delete('/:id', verificarToken, verificarRolAdmin, eliminarProyecto);
 
 router.post('/:idProyecto/skills', verificarToken, verificarRolAdmin, asignarSkillsAProyecto);
 
@@ -73,7 +77,5 @@ router.delete(
   verificarRolAdmin,
   eliminarPortadaProyecto
 );
-
-
 
 export default router;

@@ -10,7 +10,8 @@ import AdminProjectForm from './AdminProjectForm.js';
 import {
   editProject,
   uploadPastilla,
-  uploadProjectImages
+  uploadProjectImages,
+  getProjectById,
 } from '../services/projectService.js';
 
 // Si necesitas AuthContext para el token
@@ -37,10 +38,12 @@ const EditProjectModal = ({ isOpen, project, onClose, onSave }) => {
     enlaceGithub: '',
     skills: [],
     servicios: [],
-    imagenPastilla: null,       // puede ser string (URL) o File
-    imagenesActuales: [],       // array de imágenes en BD
-    imagenesExtras: null,       // FileList con imágenes nuevas
+    imagenPastilla: null,
+    imagenesActuales: [],
+    imagenesExtras: null,
   });
+
+  const [loadingProject, setLoadingProject] = useState(false);
 
   // Paginación
   const [availableSkills, setAvailableSkills] = useState([]);
@@ -51,30 +54,37 @@ const EditProjectModal = ({ isOpen, project, onClose, onSave }) => {
   const [servicePage, setServicePage] = useState(1);
   const [servicePages, setServicePages] = useState(1);
 
-  // Cargar data del "project" en "editedProject"
+  // Cargar data fresca del proyecto por ID cuando se abre el modal
   useEffect(() => {
-    if (project) {
-      console.log('Project prop in EditProjectModal:', project);
-      setEditedProject({
-        idProyecto: project.idProyecto,
-        titulo: project.titulo || '',
-        descripcion: project.descripcion || '',
-        fechaInicio: project.fechaInicio || '',
-        fechaFin: project.fechaFin || '',
-        enlace: project.enlace || '',
-        enlaceGithub: project.enlaceGithub || '',
-        skills: project.Skills?.map(sk => ({
-          idSkill: sk.idSkill,
-          nivel: sk.ProyectoSkill?.nivel || sk.nivel || 80
-        })) || [],
-        servicios: project.Servicios?.map(sv => sv.idServicio) || [],
-        // Asumimos "project.Imagens" o "project.Imagenes" para extras en BD
-        imagenPastilla: project.imagenPastilla || null,
-        imagenesActuales: project.Imagenes || [],
-        imagenesExtras: null,
-      });
+    if (isOpen && project?.idProyecto) {
+      setLoadingProject(true);
+      getProjectById(project.idProyecto)
+        .then((data) => {
+          console.log('Project fetched in EditProjectModal:', data);
+          setEditedProject({
+            idProyecto: data.idProyecto,
+            titulo: data.titulo || '',
+            descripcion: data.descripcion || '',
+            fechaInicio: data.fechaInicio || '',
+            fechaFin: data.fechaFin || '',
+            enlace: data.enlace || '',
+            enlaceGithub: data.enlaceGithub || '',
+            skills: data.Skills?.map(sk => ({
+              idSkill: sk.idSkill,
+              nivel: sk.ProyectoSkill?.nivel || sk.nivel || 80
+            })) || [],
+            servicios: data.Servicios?.map(sv => sv.idServicio) || [],
+            imagenPastilla: data.imagenPastilla || null,
+            imagenesActuales: data.Imagenes || data.Imagens || [],
+          });
+        })
+        .catch((err) => {
+          console.error('Error fetching project:', err);
+          toast.error('Error al cargar los datos del proyecto');
+        })
+        .finally(() => setLoadingProject(false));
     }
-  }, [project]);
+  }, [isOpen, project?.idProyecto]);
 
   // Cargar Skills (si usas paginación)
   useEffect(() => {
@@ -142,8 +152,6 @@ const EditProjectModal = ({ isOpen, project, onClose, onSave }) => {
           editedProject.imagenesExtras,
           accessToken
         );
-        // Note: Ideally we'd re-fetch here if we want the Imagens array updated immediately,
-        // but for now the user will see the refresh on F5 or list update.
       }
 
       // (4) Notificar al padre con el proyecto actualizado de la BD
@@ -188,21 +196,25 @@ const EditProjectModal = ({ isOpen, project, onClose, onSave }) => {
               <div className="rightModal" style={{ width: '100%', maxWidth: '100%' }}>
                 <h2>{t('editProjectModal.title', 'Editar Proyecto')}</h2>
 
-                <AdminProjectForm
-                  newProject={editedProject}
-                  setNewProject={setEditedProject}
-                  handleCreate={handleSave}
-                  availableSkills={availableSkills}
-                  skillPage={skillPage}
-                  skillPages={skillPages}
-                  setSkillPage={setSkillPage}
-                  availableServices={availableServices}
-                  servicePage={servicePage}
-                  servicePages={servicePages}
-                  setServicePage={setServicePage}
-                  isEditing={true}
-                  accessToken={accessToken}
-                />
+                {loadingProject ? (
+                  <p style={{ textAlign: 'center', padding: '2rem' }}>Cargando datos del proyecto...</p>
+                ) : (
+                  <AdminProjectForm
+                    newProject={editedProject}
+                    setNewProject={setEditedProject}
+                    handleCreate={handleSave}
+                    availableSkills={availableSkills}
+                    skillPage={skillPage}
+                    skillPages={skillPages}
+                    setSkillPage={setSkillPage}
+                    availableServices={availableServices}
+                    servicePage={servicePage}
+                    servicePages={servicePages}
+                    setServicePage={setServicePage}
+                    isEditing={true}
+                    accessToken={accessToken}
+                  />
+                )}
               </div>
             </div>
           </motion.div>

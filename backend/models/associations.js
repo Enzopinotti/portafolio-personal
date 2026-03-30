@@ -57,7 +57,7 @@ Imagen.hasOne(Skill, { foreignKey: 'id_imagen' });
 
 // Relaciones Proyecto - Imagen
 Proyecto.hasMany(Imagen, { foreignKey: 'id_proyecto', as: 'Imagenes' });
-Imagen.belongsTo(Proyecto, { foreignKey: 'id_proyecto', allowNull: true });
+Imagen.belongsTo(Proyecto, { foreignKey: 'id_proyecto', as: 'Proyecto' });
 
 // Relaciones MensajeContacto - Usuario (opcional)
 MensajeContacto.belongsTo(Usuario, { foreignKey: 'id_usuario', allowNull: true });
