@@ -98,13 +98,13 @@ const DetalleProyecto = () => {
             <h3>{t('proyectoDetalle.skillsUsed')}</h3>
             {skillData.length >= 3 ? (
               <div className="radar-chart-container">
-                <ResponsiveContainer width="100%" height={300}>
+                <ResponsiveContainer width="100%" height={350}>
                   <RadarChart 
                     cx="50%" 
                     cy="50%" 
-                    outerRadius="50%" 
+                    outerRadius="60%" 
                     data={skillData}
-                    margin={{ top: 10, right: 30, bottom: 10, left: 30 }}
+                    margin={{ top: 10, right: 60, bottom: 10, left: 60 }}
                   >
                     <PolarGrid stroke="rgba(255, 255, 255, 0.2)" />
                     <PolarAngleAxis

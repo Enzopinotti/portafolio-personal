@@ -231,38 +231,45 @@
   }
 
   .pill-overlay h3 {
-    margin: 0 0 0.3rem 0;
-    font-size: 0.85rem; // Un poco más chico para que entre
+    margin: 0 0 0.2rem 0;
+    font-size: 0.75rem; // Más pequeño para que entren títulos largos
     font-weight: 800;
     color: #ffffff !important;
-    line-height: 1.2;
+    line-height: 1.1;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
-    max-width: 95%;
+    max-width: 90%;
+    word-break: break-word;
+    text-transform: uppercase;
   }
 
   .pill-overlay .pill-desc {
     margin: 0 auto;
-    font-size: 0.65rem;
+    font-size: 0.62rem; // Un toque más chico
     line-height: 1.3;
-    color: #ffffff !important;
-    max-height: 65px; 
+    max-height: 60px; 
     overflow: hidden;
     max-width: 95%;
     text-align: center;
     
-    // Soporte para HTML
-    p { margin-bottom: 0.3rem; }
-    strong, b { font-weight: bold; color: #ffffff !important; }
+    // Forzar color y tamaño en TODO lo que venga de Quill (p, strong, span, etc)
+    &, * {
+      color: #ffffff !important;
+      font-size: inherit !important;
+      margin: 0 !important; // Evitar que <p> deforme con márgenes
+      padding: 0 !important;
+    }
+
+    strong, b { font-weight: bold; }
+    
     ul, ol { 
-      padding-left: 0.8rem; 
+      padding-left: 0.8rem !important; 
       text-align: left;
-      font-size: 0.65rem;
-      margin: 0.3rem 0;
-      li { list-style: disc; margin-bottom: 1px; }
+      margin: 0.2rem 0 !important;
+      li { list-style: disc; margin-bottom: 1px; display: list-item; }
     }
   }
 
