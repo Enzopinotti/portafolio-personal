@@ -75,7 +75,7 @@
     }
   }
 
-  .sliderB{
+  .sliderB {
     margin-bottom: 6rem;
   }
 
@@ -127,18 +127,24 @@
 
 // Estilos para el listado de proyectos en el Admin (Rich Text)
 .project-description-list {
-  ul, ol {
+
+  ul,
+  ol {
     padding-left: 1.5rem;
     margin: 0.5rem 0;
+
     li {
       list-style: disc;
       margin-bottom: 0.2rem;
     }
   }
-  strong, b {
+
+  strong,
+  b {
     font-weight: bold;
     color: #fff;
   }
+
   p {
     margin-bottom: 0.5rem;
   }
@@ -213,10 +219,10 @@
     opacity: 1;
   }
 
-  /* Overlay oscuro - el recorte lo hace .proyecto-pill con overflow:hidden */
+  /* --- ESTILOS DEL OVERLAY (Lo que aparece al hacer HOVER) --- */
   .pill-overlay {
     position: absolute;
-    inset: 0; // Cubre exactamente el 100% del padre
+    inset: 0;
     background: rgba(0, 0, 0, 0.72);
     color: #fff;
     display: flex;
@@ -227,97 +233,88 @@
     justify-content: center;
     align-items: center;
     text-align: center;
-    // Sin border-radius propio: lo recorta el overflow:hidden del padre
-  }
+    z-index: 2;
 
-  .pill-overlay h3 {
-    margin: 0 0 0.2rem 0;
-    font-size: 0.75rem; // Más pequeño para que entren títulos largos
-    font-weight: 800;
-    color: #ffffff !important;
-    line-height: 1.1;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    max-width: 90%;
-    word-break: break-word;
-    text-transform: uppercase;
-  }
-
-  .pill-overlay .pill-desc {
-    margin: 0 auto;
-    font-size: 0.45rem; // Incluso más chico
-    line-height: 1.1;
-    max-height: 60px; 
-    overflow: hidden;
-    max-width: 95%;
-    text-align: center;
-    
-    // Forzar color y tamaño en TODO lo que venga de Quill (p, strong, span, etc)
-    &, * {
+    /* TÍTULO DEL PROYECTO EN EL OVERLAY */
+    h3 {
+      margin: 0 0 0.2rem 0;
+      font-size: 1rem; /* <--- CAMBIA EL TAMAÑO DEL TÍTULO AQUÍ */
+      font-weight: 800;
+      padding-bottom: 0.3rem;
       color: #ffffff !important;
-      font-size: inherit !important;
-      margin: 0 !important; // Evitar que <p> deforme con márgenes
-      padding: 0 !important;
+      line-height: 1.1;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      max-width: 90%;
+      word-break: break-word;
+      text-transform: uppercase;
     }
 
-    strong, b { font-weight: bold; }
-    
-    ul, ol { 
-      padding-left: 0.8rem !important; 
-      text-align: left;
-      margin: 0.2rem 0 !important;
-      li { list-style: disc; margin-bottom: 1px; display: list-item; }
+    /* DESCRIPCIÓN DEL PROYECTO EN EL OVERLAY */
+    .pill-desc {
+      margin: 0 auto;
+      font-size: 0.75rem !important; /* <--- CAMBIA EL TAMAÑO DE LA DESCRIPCIÓN AQUÍ */
+      line-height: 1.2;
+      max-height: 60px; 
+      overflow: hidden;
+      max-width: 95%;
+      text-align: center;
+      
+      // Forzar color y tamaño en TODO lo que venga de Quill (p, strong, span, etc)
+      &, * {
+        color: #ffffff !important;
+        font-size: inherit; 
+        margin: 0 !important; 
+        padding: 0 !important;
+      }
+
+      strong, b { font-weight: bold; }
+      
+      ul, ol { 
+        padding-left: 0.8rem !important; 
+        text-align: left;
+        margin: 0.2rem 0 !important;
+        li { list-style: disc; margin-bottom: 1px; display: list-item; }
+      }
+    }
+  }
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    }
+
+    &:hover::before {
+      opacity: 1;
+      animation: glowExpand 1.2s ease-out forwards;
+    }
+
+    &:hover .rayo {
+      opacity: 1;
+      animation: rayoParpadeo 0.15s ease-in-out infinite, rayoExplota 0.7s ease-out forwards;
+    }
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: -20%;
+      left: -20%;
+      width: 140%;
+      height: 140%;
+      background: radial-gradient(circle, rgba(0, 255, 255, 0.516) 0%, transparent 80%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: 0;
+    }
+
+    &:hover::before {
+      opacity: 1;
+      animation: glowExpand 1.2s ease-out forwards;
     }
   }
 
-  h3 {
-    margin: 0 0 0.5rem;
-    font-size: 1.25rem;
-    color: #333;
-  }
-
-  p {
-    margin: 0;
-    font-size: 0.75rem;
-    color: #333;
-  }
-
-  &:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
-  }
-
-  &:hover::before {
-    opacity: 1;
-    animation: glowExpand 1.2s ease-out forwards;
-  }
-
-  &:hover .rayo {
-    opacity: 1;
-    animation: rayoParpadeo 0.15s ease-in-out infinite, rayoExplota 0.7s ease-out forwards;
-  }
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: -20%;
-    left: -20%;
-    width: 140%;
-    height: 140%;
-    background: radial-gradient(circle, rgba(0, 255, 255, 0.516) 0%, transparent 80%);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    z-index: 0;
-  }
-
-  &:hover::before {
-    opacity: 1;
-    animation: glowExpand 1.2s ease-out forwards;
-  }
-}
 
 @keyframes rayoParpadeo {
 
