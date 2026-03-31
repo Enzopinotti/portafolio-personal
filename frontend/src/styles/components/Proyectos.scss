@@ -231,23 +231,27 @@
   }
 
   .pill-overlay h3 {
-    margin: 0 0 0.4rem 0;
-    font-size: 0.95rem;
-    font-weight: bold;
-    color: $color-white;
-    max-height: 2.8em; // ~2 líneas
+    margin: 0 0 0.3rem 0;
+    font-size: 0.85rem; // Un poco más chico para que entre
+    font-weight: 800;
+    color: #ffffff !important;
+    line-height: 1.2;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
     overflow: hidden;
-    max-width: 90%;
+    max-width: 95%;
   }
 
   .pill-overlay .pill-desc {
     margin: 0 auto;
-    font-size: 0.7rem; // Un poco más chico
+    font-size: 0.65rem;
     line-height: 1.3;
-    color: #ffffff !important; // Totalmente blanco
-    max-height: 75px; 
+    color: #ffffff !important;
+    max-height: 65px; 
     overflow: hidden;
-    max-width: 90%;
+    max-width: 95%;
     text-align: center;
     
     // Soporte para HTML
