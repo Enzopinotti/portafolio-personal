@@ -99,11 +99,17 @@ const DetalleProyecto = () => {
             {skillData.length >= 3 ? (
               <div className="radar-chart-container">
                 <ResponsiveContainer width="100%" height={300}>
-                  <RadarChart cx="50%" cy="50%" outerRadius="70%" data={skillData}>
+                  <RadarChart 
+                    cx="50%" 
+                    cy="50%" 
+                    outerRadius="55%" 
+                    data={skillData}
+                    margin={{ top: 10, right: 40, bottom: 10, left: 40 }}
+                  >
                     <PolarGrid stroke="rgba(255, 255, 255, 0.2)" />
                     <PolarAngleAxis
                       dataKey="skill"
-                      tick={{ fill: '#ffffff', fontSize: 14, fontWeight: 'bold' }}
+                      tick={{ fill: '#ffffff', fontSize: 12, fontWeight: 'bold' }}
                     />
                     <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
                     <Radar
