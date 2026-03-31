@@ -102,14 +102,14 @@ const DetalleProyecto = () => {
                   <RadarChart 
                     cx="50%" 
                     cy="50%" 
-                    outerRadius="55%" 
+                    outerRadius="42%" 
                     data={skillData}
-                    margin={{ top: 10, right: 40, bottom: 10, left: 40 }}
+                    margin={{ top: 10, right: 60, bottom: 10, left: 60 }}
                   >
                     <PolarGrid stroke="rgba(255, 255, 255, 0.2)" />
                     <PolarAngleAxis
                       dataKey="skill"
-                      tick={{ fill: '#ffffff', fontSize: 12, fontWeight: 'bold' }}
+                      tick={{ fill: '#ffffff', fontSize: 10, fontWeight: 'bold' }}
                     />
                     <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
                     <Radar

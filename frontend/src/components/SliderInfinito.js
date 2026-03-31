@@ -144,7 +144,11 @@ const SliderInfinito = ({
                 <h3>{item.titulo}</h3>
                 <div 
                   className="pill-desc" 
-                  dangerouslySetInnerHTML={{ __html: item.descripcion }} 
+                  dangerouslySetInnerHTML={{ 
+                    __html: item.descripcion?.length > 110 
+                      ? item.descripcion.substring(0, 110) + '...' 
+                      : item.descripcion 
+                  }} 
                 />
               </div>
             </div>
