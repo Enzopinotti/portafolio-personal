@@ -379,7 +379,18 @@ const AdminProyectosModal = ({ isOpen, onClose, direction = 'forward' }) => {
                       <div key={project.idProyecto} className="project-item">
                         <div className="project-info">
                           <h3>{project.titulo}</h3>
-                          <p>{project.descripcion}</p>
+                          <div 
+                            className="project-description-list" 
+                            style={{ 
+                              fontSize: '0.9rem', 
+                              color: '#ddd', 
+                              marginBottom: '0.5rem',
+                              maxHeight: '100px',
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis'
+                            }}
+                            dangerouslySetInnerHTML={{ __html: project.descripcion }} 
+                          />
                           <p>
                             {t('adminProjectsModal.actions.skills')}:{" "}
                             {project.Skills?.length

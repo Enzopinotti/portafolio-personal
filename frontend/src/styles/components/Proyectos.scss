@@ -125,6 +125,25 @@
   }
 }
 
+// Estilos para el listado de proyectos en el Admin (Rich Text)
+.project-description-list {
+  ul, ol {
+    padding-left: 1.5rem;
+    margin: 0.5rem 0;
+    li {
+      list-style: disc;
+      margin-bottom: 0.2rem;
+    }
+  }
+  strong, b {
+    font-weight: bold;
+    color: #fff;
+  }
+  p {
+    margin-bottom: 0.5rem;
+  }
+}
+
 // src/components/SliderInfinito.scss
 
 // src/components/SliderInfinito.scss
@@ -226,13 +245,20 @@
     font-size: 0.78rem;
     line-height: 1.4;
     color: $color-white;
-    display: -webkit-box;
-    -webkit-line-clamp: 4; // Hasta 4 líneas
-    line-clamp: 4;
-    -webkit-box-orient: vertical;
+    max-height: 80px; // Límite de altura para no romper la pastilla
     overflow: hidden;
-    max-width: 85%;
-    text-overflow: ellipsis;
+    max-width: 90%;
+    text-align: center;
+    
+    // Soporte para HTML
+    p { margin-bottom: 0.5rem; }
+    strong, b { font-weight: bold; }
+    ul, ol { 
+      padding-left: 1rem; 
+      text-align: left;
+      font-size: 0.7rem;
+      li { list-style: disc; margin-bottom: 2px; }
+    }
   }
 
   h3 {

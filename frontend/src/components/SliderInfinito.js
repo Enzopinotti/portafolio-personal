@@ -142,7 +142,10 @@ const SliderInfinito = ({
               <div className="rayo" style={{ zIndex: 1 }} />
               <div className="pill-overlay" style={{ zIndex: 2 }}>
                 <h3>{item.titulo}</h3>
-                <p className="pill-desc">{item.descripcion}</p>
+                <div 
+                  className="pill-desc" 
+                  dangerouslySetInnerHTML={{ __html: item.descripcion }} 
+                />
               </div>
             </div>
           </div>
