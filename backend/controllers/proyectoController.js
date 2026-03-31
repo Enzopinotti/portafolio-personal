@@ -113,6 +113,8 @@ export const subirImagenPastilla = async (req, res, next) => {
     const proyecto = await Proyecto.findByPk(idProyecto);
     if (!proyecto) return next(Boom.notFound('Proyecto no encontrado'));
 
+    logger.info(`Iniciando subida de pastilla para proyecto ${idProyecto}.`);
+
     if (!req.file) {
       return next(Boom.badRequest('No se recibió ninguna imagen'));
     }
@@ -122,6 +124,7 @@ export const subirImagenPastilla = async (req, res, next) => {
       folder: 'proyectos/portada',
       resource_type: 'auto',
     });
+    logger.info(`Pastilla subida a Cloudinary: ${resultado.secure_url}`);
 
     // Borrar archivo local
     fs.unlinkSync(req.file.path);
@@ -141,6 +144,7 @@ export const subirImagenPastilla = async (req, res, next) => {
       proyecto,
     });
   } catch (error) {
+    logger.error(`Error en subirImagenPastilla: ${error.message} - Stack: ${error.stack}`);
     next(Boom.internal(error.message));
   }
 };
@@ -159,14 +163,20 @@ export const subirImagenesProyecto = async (req, res, next) => {
       return next(Boom.badRequest(`Se excede el máximo de ${proyecto.maxImagenes} imágenes.`));
     }
 
+    logger.info(`Iniciando subida de imágenes para el proyecto ${idProyecto}.`);
+
     const imagenesGuardadas = [];
 
     for (const file of req.files) {
+      logger.info(`Subiendo archivo a Cloudinary: ${file.path}`);
       const resultado = await cloudinary.uploader.upload(file.path, {
         folder: `proyectos/${idProyecto}`,
         resource_type: 'auto',
       });
+      logger.info(`Archivo subido exitosamente a Cloudinary: ${resultado.public_id}`);
+      
       fs.unlinkSync(file.path);
+      logger.info(`Archivo local eliminado: ${file.path}`);
 
       const nuevaImagen = await Imagen.create({
         ruta: resultado.secure_url,
@@ -182,6 +192,7 @@ export const subirImagenesProyecto = async (req, res, next) => {
       imagenes: imagenesGuardadas,
     });
   } catch (error) {
+    logger.error(`Error en subirImagenesProyecto: ${error.message} - Stack: ${error.stack}`);
     next(Boom.internal(error.message));
   }
 };
