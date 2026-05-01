@@ -8,13 +8,14 @@ import fs from 'fs';
 
 export const crearServicio = async (req, res, next) => {
   try {
-    const { nombre, descripcion, precio, idImagen } = req.body;
+    const { nombre, descripcion, precio, idImagen, icono } = req.body;
     logger.info(`Crear Servicio: Creando servicio "${nombre}"`);
     const nuevoServicio = await Servicio.create({
       nombre,
       descripcion,
       precio,
       idImagen: idImagen || null,
+      icono: icono || null,
     });
     logger.info(`Servicio creado exitosamente: "${nombre}" (ID: ${nuevoServicio.id_servicio})`);
     res.status(201).json({
@@ -88,7 +89,7 @@ export const verServicio = async (req, res, next) => {
 export const editarServicio = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { nombre, descripcion, precio, idImagen } = req.body;
+    const { nombre, descripcion, precio, idImagen, icono } = req.body;
     logger.info(`Editar Servicio: Editando servicio con ID ${id}`);
     const servicio = await Servicio.findByPk(id);
     if (!servicio) {
@@ -99,6 +100,7 @@ export const editarServicio = async (req, res, next) => {
     if (descripcion) servicio.descripcion = descripcion;
     if (precio || precio === 0) servicio.precio = precio;
     if (idImagen !== undefined) servicio.idImagen = idImagen;
+    if (icono !== undefined) servicio.icono = icono;
     await servicio.save();
     logger.info(`Editar Servicio: Servicio con ID ${id} actualizado.`);
     res.status(200).json({
@@ -132,7 +134,6 @@ export const eliminarServicio = async (req, res, next) => {
 export const subirImagenServicio = async (req, res, next) => {
   try {
     const { id: idServicio } = req.params;
-    console.log('ID Servicio:', idServicio);
     const servicio = await Servicio.findByPk(idServicio);
     if (!servicio) return next(Boom.notFound('Servicio no encontrado'));
 

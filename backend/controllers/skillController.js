@@ -161,9 +161,6 @@ export const asignarCategoriaASkill = async (req, res, next) => {
       return next(Boom.notFound('Skill no encontrada.'));
     }
 
-    console.log('Skill obtenido:', skill.toJSON());
-    console.log('Categorías a setear:', catIds);
-
     // Paso 1: Eliminar todas las asociaciones existentes para esta skill
     await SkillCategoria.destroy({ where: { id_skill: idSkill } });
 

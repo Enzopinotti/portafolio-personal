@@ -2,6 +2,7 @@
 import axios from 'axios';
 import * as cheerio from 'cheerio';
 import db from '../models/index.js';
+import logger from '../config/logger.js';
 const { Noticia } = db;
 
 /**
@@ -10,7 +11,7 @@ const { Noticia } = db;
  */
 const scrapeTechNews = async () => {
   try {
-    console.log('[Scraper] Iniciando scraping de noticias en dev.to...');
+    logger.info('[Scraper] Iniciando scraping de noticias en dev.to...');
     
     // Obtenemos el HTML de la página principal de dev.to
     const { data } = await axios.get('https://dev.to/t/javascript');
@@ -51,7 +52,7 @@ const scrapeTechNews = async () => {
       }
     });
 
-    console.log(`[Scraper] Se encontraron ${articles.length} artículos. Guardando en BD...`);
+    logger.info(`[Scraper] Se encontraron ${articles.length} artículos. Guardando en BD...`);
 
     let noticiasGuardadas = 0;
     // Guardar en la base de datos (evitando duplicados)
@@ -64,9 +65,9 @@ const scrapeTechNews = async () => {
       if (created) noticiasGuardadas++;
     }
 
-    console.log(`[Scraper] Scraping finalizado. ${noticiasGuardadas} nuevas noticias guardadas.`);
+    logger.info(`[Scraper] Scraping finalizado. ${noticiasGuardadas} nuevas noticias guardadas.`);
   } catch (error) {
-    console.error('[Scraper] Error durante el scraping:', error.message);
+    logger.error(`[Scraper] Error durante el scraping: ${error.message}`);
   }
 };
 

@@ -39,7 +39,7 @@ services:
     volumes:
       - ./backend:/app
       - /app/node_modules # Evita que se sobrescriban los node_modules del contenedor
-    command: sh -c "if [ ! -d '/app/node_modules' ]; then npm install; fi && npm run start:dev"
+    command: sh -c "if [ ! -f '/app/node_modules/.bin/nodemon' ]; then npm install; fi && npm run start:dev"
     depends_on:
       db:
         condition: service_healthy
@@ -58,7 +58,7 @@ services:
     volumes:
       - ./frontend:/app
       - /app/node_modules # Evita que se sobrescriban los node_modules del contenedor
-    command: sh -c "if [ ! -d '/app/node_modules' ]; then npm install --legacy-peer-deps; fi && npm start"
+    command: sh -c "if [ ! -f '/app/node_modules/.bin/react-scripts' ]; then npm install --legacy-peer-deps; fi && npm start"
     depends_on:
       - backend
     networks:

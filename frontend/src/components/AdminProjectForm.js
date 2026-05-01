@@ -3,8 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { deleteImage, deletePortadaProyecto } from '../services/projectService.js';
 import { FaFileUpload } from 'react-icons/fa';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import ReactQuill from 'react-quill-new';
+import 'react-quill-new/dist/quill.snow.css';
 
 // Configuración de módulos para Quill
 const quillModules = {

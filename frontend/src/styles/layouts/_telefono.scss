@@ -14,6 +14,25 @@
   padding-bottom: 0.5rem;
   animation: pulse 2s infinite ease-in-out;
   user-select: text;
+  z-index: 20;
+
+  a {
+    color: inherit;
+    display: inline-block;
+    text-decoration: none;
+    transition: color 0.2s ease, text-shadow 0.2s ease;
+
+    &:hover {
+      color: $color-white;
+      text-shadow: 0 0 12px rgba($color-primary, 0.55);
+    }
+
+    &:focus-visible {
+      outline: 2px solid rgba($color-white, 0.86);
+      outline-offset: 5px;
+      border-radius: 4px;
+    }
+  }
 
   @keyframes pulse {
     0%, 100% {
@@ -46,6 +65,20 @@
         transform: translateX(-50%) scale(1.05);
         opacity: 1;
       }
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .telefono {
+    animation: none;
+
+    @media (min-width: 768px) {
+      animation: none;
+    }
+
+    a {
+      transition: none;
     }
   }
 }

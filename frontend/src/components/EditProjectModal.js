@@ -60,7 +60,6 @@ const EditProjectModal = ({ isOpen, project, onClose, onSave }) => {
       setLoadingProject(true);
       getProjectById(project.idProyecto)
         .then((data) => {
-          console.log('Project fetched in EditProjectModal:', data);
           setEditedProject({
             idProyecto: data.idProyecto,
             titulo: data.titulo || '',
@@ -113,7 +112,6 @@ const EditProjectModal = ({ isOpen, project, onClose, onSave }) => {
   // handleSave: Edita y sube imágenes
   const handleSave = async (e) => {
     e.preventDefault();
-    console.log('Sending ID to editProject:', editedProject.idProyecto);
     try {
       // (1) Editar parte textual
       const res = await editProject(editedProject.idProyecto, {

@@ -99,8 +99,22 @@
     "success": "Password updated successfully."
   },
   "home": {
-    "welcome": "Hi, welcome to my web portfolio.",
-    "intro": "My name is Enzo Pinotti, a "
+    "badge": "Industrial engineering · Software · Data · AI",
+    "title": "Hi, I'm Enzo Pinotti.",
+    "lead": "Argentine Industrial Engineer and Fullstack Developer. I design and build digital solutions for companies that need to organize processes, centralize information and scale their operation.",
+    "typewriterIntro": "I develop solutions such as: ",
+    "typewriterWords": [
+      "Management systems",
+      "SaaS platforms",
+      "Web and mobile applications",
+      "BI dashboards",
+      "Automations",
+      "AI bots",
+      "API integrations"
+    ],
+    "secondary": "I combine engineering, software and data to transform real processes into simple, measurable and scalable systems.",
+    "ctaSolutions": "View solutions",
+    "ctaProjects": "View projects"
   },
   "error": {
     "internal": "Internal server error",
@@ -369,24 +383,88 @@
   },
   "services": {
     "title": "My Services",
-    "viewMore": "View more",
-    "priceLabel": "From",
+    "badge": "Digital solutions for businesses",
+    "heading": "Services designed to organize, automate, and scale operations.",
+    "intro": "I build systems, digital products, automations, dashboards, and integrations that turn real processes into simple, measurable tools.",
+    "gridAriaLabel": "Main services",
+    "capabilitiesLabel": "Capabilities",
+    "viewProjects": "View projects",
+    "supportTitle": "I can also help you with",
+    "supportChips": [
+      "Databases",
+      "Meta Developers",
+      "WhatsApp Cloud API",
+      "E-commerce",
+      "APIs",
+      "WebSockets",
+      "Google Apps Script",
+      "Looker Studio",
+      "Power BI",
+      "MVP roadmaps",
+      "Digital consulting"
+    ],
+    "ctaTitle": "Do you have a process to organize or an idea to develop?",
+    "ctaButton": "Let's talk",
     "items": {
-      "data": {
-        "name": "Data Coordination & BI",
-        "description": "Interactive dashboard design, KPI definition, and data architecture for strategic decision-making using Power BI and Excel."
+      "digitalManagement": {
+        "name": "Digital Management",
+        "description": "Custom systems to organize operations, clients, bookings, payments, stock, teams, or internal processes.",
+        "chips": [
+          "Internal systems",
+          "CRM",
+          "ERP",
+          "Bookings"
+        ]
       },
-      "fullstack": {
-        "name": "Full-Stack Development & Landings",
-        "description": "Building modern interfaces (React, Vite) and robust backends. WebSockets, APIs, and conversion optimization."
+      "saasProducts": {
+        "name": "SaaS & Digital Products",
+        "description": "Subscription platforms, MVPs, multi-user dashboards, and scalable applications with real business logic.",
+        "chips": [
+          "SaaS",
+          "MVP",
+          "Plans",
+          "Backoffice"
+        ]
       },
-      "techlead": {
-        "name": "Technical Leadership & ERP",
-        "description": "Leading development teams, systems analysis, and execution of critical ERP modules using agile methodologies."
+      "apps": {
+        "name": "Web & Mobile Apps",
+        "description": "Applications for web, Android, and iOS connected to databases, admin panels, and external services.",
+        "chips": [
+          "React",
+          "Mobile",
+          "APIs",
+          "Panels"
+        ]
+      },
+      "aiBots": {
+        "name": "AI & Bots",
+        "description": "Smart assistants for WhatsApp, websites, or internal systems connected to real business data.",
+        "chips": [
+          "WhatsApp",
+          "Gemini",
+          "Bots",
+          "AI"
+        ]
+      },
+      "biData": {
+        "name": "BI & Real-Time Data",
+        "description": "Dashboards, reports, and analytics that turn business, campaign, social, and operational data into clear decisions.",
+        "chips": [
+          "Power BI",
+          "Looker",
+          "KPIs",
+          "APIs"
+        ]
       },
       "automation": {
-        "name": "Automation & AI",
-        "description": "Optimizing operational processes through integrations with Zapier, Make, and Google Apps Script."
+        "name": "Automation",
+        "description": "Digital workflows to reduce manual tasks, errors, and repetitive processes through integrations, scripts, and APIs.",
+        "chips": [
+          "Apps Script",
+          "Make",
+          "Zapier",
+          "Alerts"
+        ]
       }
     }
   },

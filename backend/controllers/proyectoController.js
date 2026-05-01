@@ -17,7 +17,6 @@ import CategoriaSkill from '../models/CategoriaSkill.js';
 export const crearProyecto = async (req, res, next) => {
   try {
     const { titulo, descripcion, fechaInicio, fechaFin, enlace, skills, servicios, enlaceGithub } = req.body;
-    console.log('enlace de github: ', enlaceGithub);
     // Crear el proyecto en BD (sanitizando fechas)
     const nuevoProyecto = await Proyecto.create({
       titulo,
@@ -610,4 +609,3 @@ export const eliminarPortadaProyecto = async (req, res, next) => {
     return next(Boom.internal(error.message));
   }
 };
-

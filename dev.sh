@@ -9,15 +9,32 @@ if [ ! -f .env ]; then
     exit 1
 fi
 
+# 2. Comprobar si Docker está corriendo
+if ! docker info > /dev/null 2>&1; then
+    echo "❌ Error: Docker no está corriendo. Por favor, inicia Docker Desktop y vuelve a intentarlo."
+    exit 1
+fi
+
+# 3. Función de limpieza para cerrar todo al salir
+cleanup() {
+    echo ""
+    echo "🛑 Apagando el entorno de desarrollo..."
+    # Aseguramos que docker compose se ejecute correctamente
+    docker compose -p portafolio-dev -f docker-compose.dev.yml down
+    echo "✅ Limpieza completada. ¡Nos vemos!"
+    exit
+}
+
+# Capturar Ctrl+C (SIGINT) y otras señales
+trap cleanup SIGINT SIGTERM
+
 echo "🚀 Iniciando entorno de desarrollo con Docker (Hot Reload)..."
 
-# 2. Levantar los contenedores en segundo plano con un nombre de proyecto específico
-# -p portafolio-dev evita conflictos si tienes contenedores de producción corriendo
+# 4. Levantar los contenedores en segundo plano
 docker compose -p portafolio-dev -f docker-compose.dev.yml up -d --build
 
 echo "⏳ Esperando a que la base de datos esté lista..."
 
-# Obtener el ID del contenedor de la DB de forma dinámica
 get_db_status() {
     local id=$(docker compose -p portafolio-dev -f docker-compose.dev.yml ps -q db)
     if [ -z "$id" ]; then
@@ -33,11 +50,10 @@ until [ "$(get_db_status)" = "healthy" ]; do
 done
 
 echo "⚙️  Revisando y Ejecutando Migraciones..."
-# Usamos 'docker compose exec' para que use el nombre del servicio 'backend' directamente
-docker compose -p portafolio-dev -f docker-compose.dev.yml exec backend npx -y sequelize-cli db:migrate
+docker compose -p portafolio-dev -f docker-compose.dev.yml exec backend npx sequelize-cli db:migrate
 
 echo "🌱  Revisando y Ejecutando Seeders..."
-docker compose -p portafolio-dev -f docker-compose.dev.yml exec backend npx -y sequelize-cli db:seed:all
+docker compose -p portafolio-dev -f docker-compose.dev.yml exec backend npx sequelize-cli db:seed:all
 
 echo "✅  Entorno de Desarrollo Listo y Sincronizado!"
 echo "-------------------------------------------------------"
@@ -45,5 +61,5 @@ echo "Frontend (Hot Reload): http://localhost:3000"
 echo "Backend API (Nodemon): http://localhost:3001/api"
 echo "-------------------------------------------------------"
 echo ""
-echo "📺 Mostrando logs (Presiona Ctrl+C para salir, los contenedores seguirán corriendo):"
+echo "📺 Mostrando logs (Presiona Ctrl+C para detener y limpiar los contenedores):"
 docker compose -p portafolio-dev -f docker-compose.dev.yml logs -f --tail=50 backend frontend

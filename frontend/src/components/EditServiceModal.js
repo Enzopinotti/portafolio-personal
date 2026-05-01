@@ -1,9 +1,18 @@
 // src/components/EditServiceModal.jsx
 import React, { useState, useEffect } from 'react';
-import { FaTimes } from 'react-icons/fa';
+import { FaTimes, FaBolt, FaChartLine, FaCubes, FaLayerGroup, FaMobileAlt, FaRobot } from 'react-icons/fa';
 import { editServicio, uploadPortadaServicio, viewServicio } from '../services/servicioService.js';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
+
+const ICON_OPTIONS = [
+  { value: 'layers', label: 'Layers (Gestión Digital)', Icon: FaLayerGroup },
+  { value: 'cubes',  label: 'Cubes (SaaS)',             Icon: FaCubes },
+  { value: 'mobile', label: 'Mobile (Apps)',             Icon: FaMobileAlt },
+  { value: 'robot',  label: 'Robot (IA & Bots)',         Icon: FaRobot },
+  { value: 'chart',  label: 'Chart (BI & Datos)',        Icon: FaChartLine },
+  { value: 'bolt',   label: 'Bolt (Automatización)',     Icon: FaBolt },
+];
 
 const EditServiceModal = ({ isOpen, service, onClose, onSave, accessToken }) => {
   const { t } = useTranslation();
@@ -11,7 +20,8 @@ const EditServiceModal = ({ isOpen, service, onClose, onSave, accessToken }) => 
     nombre: '',
     descripcion: '',
     precio: '',
-    portada: '', // string o File
+    icono: '',
+    portada: '',
   });
 
   const [previewUrl, setPreviewUrl] = useState(null);
@@ -22,6 +32,7 @@ const EditServiceModal = ({ isOpen, service, onClose, onSave, accessToken }) => 
         nombre: service.nombre || '',
         descripcion: service.descripcion || '',
         precio: service.precio || '',
+        icono: service.icono || '',
         portada: service.Imagen?.ruta || '',
       });
       setPreviewUrl(service.Imagen?.ruta || null);
@@ -32,16 +43,12 @@ const EditServiceModal = ({ isOpen, service, onClose, onSave, accessToken }) => 
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormValues((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setFormValues((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleFileChange = (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
-
     setFormValues((prev) => ({ ...prev, portada: file }));
     setPreviewUrl(URL.createObjectURL(file));
   };
@@ -53,26 +60,22 @@ const EditServiceModal = ({ isOpen, service, onClose, onSave, accessToken }) => 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
-      const { nombre, descripcion, precio, portada } = formValues;
+      const { nombre, descripcion, precio, icono, portada } = formValues;
 
-      // (1) Actualizar texto
       await editServicio(service.idServicio, {
         nombre,
         descripcion,
         precio,
+        icono,
         idImagen: service.idImagen || null,
       }, accessToken);
 
-      // (2) Subir nueva portada si hay un File
       if (portada && typeof portada !== 'string') {
         await uploadPortadaServicio(service.idServicio, portada, accessToken);
       }
 
-      // (3) Traer el servicio actualizado (con imagen)
       const finalServicio = await viewServicio(service.idServicio);
-
       toast.success('Servicio actualizado con éxito');
       onSave(finalServicio);
       onClose();
@@ -88,6 +91,8 @@ const EditServiceModal = ({ isOpen, service, onClose, onSave, accessToken }) => 
     onClose();
   };
 
+  const currentIcon = ICON_OPTIONS.find((o) => o.value === formValues.icono);
+
   return (
     <div className="modal-overlay edit-service-overlay" onClick={handleOverlayClick}>
       <div className="modal-content edit-service-modal" onClick={(e) => e.stopPropagation()}>
@@ -97,9 +102,9 @@ const EditServiceModal = ({ isOpen, service, onClose, onSave, accessToken }) => 
         <h3>{t('editServiceModal.title')}</h3>
 
         <form className="new-project-form" onSubmit={handleSubmit}>
-          <label htmlFor="nombre">{t('editServiceModal.serviceName')}</label>
+          <label htmlFor="es-nombre">{t('editServiceModal.serviceName')}</label>
           <input
-            id="nombre"
+            id="es-nombre"
             type="text"
             name="nombre"
             value={formValues.nombre}
@@ -111,9 +116,9 @@ const EditServiceModal = ({ isOpen, service, onClose, onSave, accessToken }) => 
             </p>
           )}
 
-          <label htmlFor="descripcion">{t('editServiceModal.description')}</label>
+          <label htmlFor="es-descripcion">{t('editServiceModal.description')}</label>
           <textarea
-            id="descripcion"
+            id="es-descripcion"
             name="descripcion"
             value={formValues.descripcion}
             onChange={handleChange}
@@ -124,18 +129,37 @@ const EditServiceModal = ({ isOpen, service, onClose, onSave, accessToken }) => 
             </p>
           )}
 
-          <label htmlFor="precio">{t('editServiceModal.price')}</label>
+          <label htmlFor="es-precio">{t('editServiceModal.price')}</label>
           <input
-            id="precio"
+            id="es-precio"
             type="number"
             name="precio"
             value={formValues.precio}
             onChange={handleChange}
           />
 
-          <label htmlFor="portada">{t('editServiceModal.coverImage')}</label>
+          <label htmlFor="es-icono">{t('editServiceModal.icon', 'Ícono')}</label>
+          <select
+            id="es-icono"
+            name="icono"
+            value={formValues.icono}
+            onChange={handleChange}
+            className="admin-icon-select"
+          >
+            <option value="">— Seleccionar ícono —</option>
+            {ICON_OPTIONS.map(({ value, label }) => (
+              <option key={value} value={value}>{label}</option>
+            ))}
+          </select>
+          {currentIcon && (
+            <div className="admin-icon-preview">
+              <currentIcon.Icon /> <span>{currentIcon.label}</span>
+            </div>
+          )}
+
+          <label htmlFor="es-portada">{t('editServiceModal.coverImage')}</label>
           <input
-            id="portada"
+            id="es-portada"
             type="file"
             accept="image/*"
             onChange={handleFileChange}

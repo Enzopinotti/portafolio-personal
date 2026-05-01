@@ -1,6 +1,7 @@
 // middleware/rolMiddleware.js
 import Boom from '@hapi/boom';
 import Rol from '../models/Rol.js';
+import logger from '../config/logger.js';
 
 export const verificarRolAdmin = async (req, res, next) => {
   try {
@@ -8,11 +9,9 @@ export const verificarRolAdmin = async (req, res, next) => {
     const rol = await Rol.findByPk(idRol);
 
     if (!rol) {
-      console.warn(`[RolMiddleware] Usuario ${email} no tiene rol asignado (idRol: ${idRol})`);
+      logger.warn(`[RolMiddleware] Usuario ${email} no tiene rol asignado (idRol: ${idRol})`);
       return next(Boom.forbidden('No tienes autorización para acceder a este recurso (rol no encontrado).'));
     }
-
-    console.log(`[RolMiddleware] Verificando rol para ${email}. Rol encontrado: ${rol.nombre}`);
 
     // Compara con el nombre del rol que quieras restringir
     if (rol.nombre.toLowerCase() !== 'admin') {

@@ -14,7 +14,11 @@ const VideoBackgroundWrapper = ({ background }) => {
     video.load(); // Recarga el source cuando cambia
     const p = video.play();
     if (p !== undefined) {
-      p.catch(e => console.warn('Autoplay bloqueado:', e));
+      p.catch(e => {
+        if (e.name !== 'AbortError') {
+          console.warn('Autoplay bloqueado:', e);
+        }
+      });
     }
   }, [background.url]);
 

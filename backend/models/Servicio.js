@@ -33,6 +33,11 @@ const Servicio = sequelize.define(
       allowNull: true,
       field: 'id_imagen',
     },
+    icono: {
+      type: DataTypes.STRING(64),
+      allowNull: true,
+      field: 'icono',
+    },
   },
   {
     tableName: 'servicio',

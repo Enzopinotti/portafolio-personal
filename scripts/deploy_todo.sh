@@ -21,7 +21,8 @@ sudo mv /tmp/.env.production "$BACKEND_DIR/.env.production"
 
 # 3️⃣  Instalar deps backend + migraciones
 cd "$BACKEND_DIR"
-npm ci --production
+npm ci --omit=dev
+npx sequelize-cli db:migrate
 
 # 4️⃣  PM2 reload
 pm2 startOrRestart ecosystem.config.js --env production

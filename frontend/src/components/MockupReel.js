@@ -8,9 +8,7 @@ const MockupReel = ({ videoSrc, device, color, landscape = false, zoom = 1 }) =>
   const videoRef = useRef(null);
   const [muted, setMuted] = useState(true);
   const [playing, setPlaying] = useState(false);
-  console.log('videoSrc', videoSrc);
-  console.log('device', device);
-  console.log('color', color);
+
   const toggleMute = () => {
     if (videoRef.current) {
       videoRef.current.muted = !videoRef.current.muted;

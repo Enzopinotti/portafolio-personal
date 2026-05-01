@@ -485,7 +485,6 @@ export const cambiarRolUsuario = async (req, res, next) => {
 export const confirmEmail = async (req, res, next) => {
   try {
     // Se espera el token en el body (ya que usamos POST)
-    console.log('entre, token:', req.body.token);
     const { token } = req.body;
     if (!token) {
       return next(Boom.badRequest('Token es requerido.'));

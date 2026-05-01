@@ -48,7 +48,6 @@ const EmailConfirmationModal = ({
       confirmEmail(token)
         .then(() => setStatus('success'))
         .catch((error) => {
-          console.log('Error en confirmación:', error);
           if (error.error === 'El token ha expirado.') {
             setStatus('expired');
           } else {

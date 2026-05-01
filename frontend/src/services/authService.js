@@ -13,7 +13,6 @@ const postData = async (endpoint, data) => {
     credentials: 'include', 
     body: JSON.stringify(data),
   });
-  console.log('respuesta: ', response);
   if (!response.ok) {
     
     const errorData = await response.json();

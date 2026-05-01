@@ -1,47 +1,42 @@
 import React, { useContext } from 'react';
-import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
+import { motion, useReducedMotion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { NavigationContext } from '../context/NavigationContext.js';
-import { SettingsContext } from '../context/SettingsContext.js';
 import TypewriterWithThinking from '../components/TypewriterWithThinking.js';
 
 const Inicio = () => {
-  const { navigationDirection } = useContext(NavigationContext);
-  const { settings } = useContext(SettingsContext);
-  const { t, i18n } = useTranslation();
+  const { navigationDirection, setNavigationDirection } = useContext(NavigationContext);
+  const { t } = useTranslation();
+  const shouldReduceMotion = useReducedMotion();
 
   const variants = {
-    initial: { y: navigationDirection === 'forward' ? '100vh' : '-100vh', opacity: 0 },
+    initial: shouldReduceMotion
+      ? { opacity: 0 }
+      : { y: navigationDirection === 'forward' ? '100vh' : '-100vh', opacity: 0 },
     animate: { y: 0, opacity: 1 },
-    exit: { y: navigationDirection === 'forward' ? '-100vh' : '100vh', opacity: 0 },
+    exit: shouldReduceMotion
+      ? { opacity: 0 }
+      : { y: navigationDirection === 'forward' ? '-100vh' : '100vh', opacity: 0 },
   };
 
-  const currentLang = i18n.language.split('-')[0].toLowerCase();
+  const heroVariants = {
+    initial: {},
+    animate: {
+      transition: shouldReduceMotion ? {} : { staggerChildren: 0.12, delayChildren: 0.1 },
+    },
+  };
 
-  let words = [];
-  if (settings) {
-    const rawWords =
-      currentLang === 'en' ? settings.typewriterWordsEN :
-        currentLang === 'pt' ? settings.typewriterWordsPT :
-          settings.typewriterWordsES;
+  const itemVariants = {
+    initial: shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 24, filter: 'blur(8px)' },
+    animate: shouldReduceMotion ? { opacity: 1 } : { opacity: 1, y: 0, filter: 'blur(0px)' },
+  };
 
-    if (rawWords) {
-      words = rawWords.split(',').map(w => w.trim());
-    }
-  }
+  const translatedWords = t('home.typewriterWords', { returnObjects: true });
+  const words = Array.isArray(translatedWords) && translatedWords.length > 0
+    ? translatedWords
+    : ['Sistemas de gestión'];
 
-  // Fallback if settings not loaded or empty
-  if (words.length === 0) {
-    if (currentLang === 'en') {
-      words = ["Industrial Engineer", "Fullstack Developer", "Systems Analyst", "UX/UI Designer"];
-    } else if (currentLang === 'pt') {
-      words = ["Engenheiro Industrial", "Desenvolvedor Fullstack", "Analista de Sistemas", "Designer UX/UI"];
-    } else {
-      words = ["Ingeniero industrial", "Desarrollador Fullstack", "Analista de Sistemas", "Diseñador UX/UI"];
-    }
-  }
-
-  // Configuración personalizada para el efecto
   const typewriterConfig = {
     thinkingDuration: 1900,
     typingSpeed: 100,
@@ -58,11 +53,42 @@ const Inicio = () => {
       exit="exit"
       transition={{ duration: 0.5 }}
     >
-      <h1>{t('home.welcome')}</h1>
-      <p>
-        {t('home.intro')}
-        <TypewriterWithThinking words={words} config={typewriterConfig} />
-      </p>
+      <div className="home-video-overlay" aria-hidden="true" />
+
+      <motion.section className="home-hero" variants={heroVariants}>
+        <motion.span className="home-hero__badge" variants={itemVariants}>
+          {t('home.badge')}
+        </motion.span>
+
+        <motion.h1 variants={itemVariants}>{t('home.title')}</motion.h1>
+
+        <motion.p className="home-hero__lead" variants={itemVariants}>
+          {t('home.lead')}
+        </motion.p>
+
+        <motion.p className="home-hero__typewriter" variants={itemVariants}>
+          <span>{t('home.typewriterIntro')}</span>
+          <TypewriterWithThinking words={words} config={typewriterConfig} />
+        </motion.p>
+
+
+        <motion.div className="home-hero__actions" variants={itemVariants}>
+          <Link
+            className="home-cta home-cta--primary"
+            to="/servicios"
+            onClick={() => setNavigationDirection('forward')}
+          >
+            {t('home.ctaSolutions')}
+          </Link>
+          <Link
+            className="home-cta home-cta--secondary"
+            to="/proyectos"
+            onClick={() => setNavigationDirection('forward')}
+          >
+            {t('home.ctaProjects')}
+          </Link>
+        </motion.div>
+      </motion.section>
     </motion.div>
   );
 };

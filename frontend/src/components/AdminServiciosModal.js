@@ -1,7 +1,16 @@
 // src/components/AdminServiciosModal.jsx
 import React, { useState, useEffect, useContext } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaArrowLeft, FaTimes } from 'react-icons/fa';
+import { FaArrowLeft, FaTimes, FaBolt, FaChartLine, FaCubes, FaLayerGroup, FaMobileAlt, FaRobot } from 'react-icons/fa';
+
+const iconMap = {
+  bolt: FaBolt,
+  chart: FaChartLine,
+  cubes: FaCubes,
+  layers: FaLayerGroup,
+  mobile: FaMobileAlt,
+  robot: FaRobot,
+};
 
 import AdminServicioForm from './AdminServicioForm.js';
 import ServiceActionsDropdown from './ServiceActionsDropdown.js';
@@ -52,6 +61,7 @@ const AdminServiciosModal = ({ isOpen, onClose, direction = 'forward' }) => {
     nombre: '',
     descripcion: '',
     precio: '',
+    icono: '',
   });
 
   // Confirmación de eliminación
@@ -95,7 +105,7 @@ const AdminServiciosModal = ({ isOpen, onClose, direction = 'forward' }) => {
     try {
       const response = await createServicio(newServicio, accessToken);
       setServicios((prev) => [...prev, response.servicio]);
-      setNewServicio({ nombre: '', descripcion: '', precio: '' });
+      setNewServicio({ nombre: '', descripcion: '', precio: '', icono: '' });
       toast.success(t('adminServiciosModal.toast.createSuccess'));
     } catch (err) {
       console.error('Error al crear servicio:', err);
@@ -200,21 +210,29 @@ const AdminServiciosModal = ({ isOpen, onClose, direction = 'forward' }) => {
                   </div>
 
                   <div className="projects-list">
-                    {filteredServicios.map((servicio) => (
-                      <div key={servicio.idServicio} className="project-item">
-                        <div className="project-info">
-                          <h3>{servicio.nombre?.includes('.') ? t(servicio.nombre) : servicio.nombre}</h3>
-                          <p>{servicio.descripcion?.includes('.') ? t(servicio.descripcion) : servicio.descripcion}</p>
-                          <p>
-                            {t('adminServicioForm.priceLabel')}: ${servicio.precio}
-                          </p>
+                    {filteredServicios.map((servicio) => {
+                      const ServiceIcon = iconMap[servicio.icono] || FaBolt;
+                      return (
+                        <div key={servicio.idServicio} className="project-item">
+                          <div className="project-info">
+                            <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                              <ServiceIcon style={{ opacity: 0.7, flexShrink: 0 }} />
+                              {servicio.nombre?.includes('.') ? t(servicio.nombre) : servicio.nombre}
+                            </h3>
+                            <p>{servicio.descripcion?.includes('.') ? t(servicio.descripcion) : servicio.descripcion}</p>
+                            {servicio.icono && (
+                              <p style={{ fontSize: '0.78rem', opacity: 0.55 }}>
+                                ícono: <code>{servicio.icono}</code>
+                              </p>
+                            )}
+                          </div>
+                          <ServiceActionsDropdown
+                            onEdit={() => handleEditService(servicio)}
+                            onDelete={() => handleDelete(servicio.idServicio)}
+                          />
                         </div>
-                        <ServiceActionsDropdown
-                          onEdit={() => handleEditService(servicio)}
-                          onDelete={() => handleDelete(servicio.idServicio)}
-                        />
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
 
                   <div className="admin-section-title">

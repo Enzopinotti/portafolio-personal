@@ -1,23 +1,26 @@
-import React, { useEffect, useState, useContext } from 'react';
-import { motion } from 'framer-motion';
-import { listServicios } from '../services/servicioService.js';
+import React, { useEffect, useMemo, useState } from 'react';
+import { motion, useReducedMotion } from 'framer-motion';
 import VerticalInfiniteSlider from '../components/VerticalInfiniteSlider.js';
-import ServicioCard from '../components/ServicioCard.js'; // Added as per instruction
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
-import { NavigationContext } from '../context/NavigationContext.js';
-import Loader from '../components/shared/Loader.js';
+import { listServicios } from '../services/servicioService.js';
+
+const desktopOpacities = [1, 0.86, 0.72, 0.58, 0.44, 0.3, 0.18];
+const mobileOpacities = [1, 0.58, 0.24];
+
+const getArrayTranslation = (t, key) => {
+  const value = t(key, { returnObjects: true, defaultValue: [] });
+  return Array.isArray(value) ? value : [];
+};
 
 const Servicios = () => {
   const { t } = useTranslation();
   const location = useLocation();
+  const shouldReduceMotion = useReducedMotion();
   const queryParams = new URLSearchParams(location.search);
   const initialServiceId = queryParams.get('id');
-
-  const { navigationDirection } = useContext(NavigationContext); // Added as per instruction
-  const [servicios, setServicios] = useState([]);
   const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 1080);
-  const [loading, setLoading] = useState(true);
+  const [serviciosDB, setServiciosDB] = useState([]);
 
   useEffect(() => {
     const handleResize = () => setIsDesktop(window.innerWidth >= 1080);
@@ -25,47 +28,51 @@ const Servicios = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  // Cargar servicios desde la API
   useEffect(() => {
-    setLoading(true);
     listServicios()
-      .then(data => {
-        // Fallback robusto para el mapeo de campos de imagen
-        const mapped = data.servicios.map(servicio => {
-          const imgPath = (servicio.Imagen && servicio.Imagen.ruta) || (servicio.imagen && servicio.imagen.ruta) || null;
-          return {
-            id: servicio.idServicio,
-            titulo: servicio.nombre,
-            descripcion: servicio.descripcion,
-            imagen: imgPath,
-          };
-        });
-        setServicios(mapped);
-        setLoading(false);
+      .then((data) => {
+        setServiciosDB(data.servicios || data || []);
       })
-      .catch(err => {
-        console.error('Error al cargar servicios:', err);
-        setLoading(false);
+      .catch((err) => {
+        console.error('Error cargando servicios:', err);
       });
   }, []);
 
-  const renderDesktopTitles = () => {
-    return [1, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1].map((opacity, i) => (
-      <h2
-        key={i}
-        className={`titulo-servicios op${opacity.toString().replace('.', '_')}`}
-        style={{ zIndex: 10 - i }}
-      >
-        {t('services.title')}
-      </h2>
-    ));
-  };
+  // Mapear servicios de la BD al formato que espera el slider/card
+  const servicios = useMemo(() => {
+    return serviciosDB.map((srv) => {
+      // chips: si el nombre es una clave de traducción, intentamos obtener chips de i18n
+      const nameKey = srv.nombre || '';
+      const chips = nameKey.includes('.')
+        ? getArrayTranslation(t, nameKey.replace('.name', '.chips'))
+        : [];
 
-  const renderMobileTitles = () => {
-    return [1, 0.7, 0.4, 0.1].map((opacity, i) => (
+      return {
+        id: srv.idServicio,
+        titulo: nameKey.includes('.') ? t(nameKey) : nameKey,
+        descripcion: srv.descripcion?.includes('.')
+          ? t(srv.descripcion)
+          : (srv.descripcion || ''),
+        chips,
+        icon: srv.icono || 'bolt',
+        precio: srv.precio,
+        imagen: srv.Imagen?.ruta || null,
+      };
+    });
+  }, [serviciosDB, t]);
+
+  const renderTitles = () => {
+    const opacities = isDesktop ? desktopOpacities : mobileOpacities;
+
+    return opacities.map((opacity, index) => (
       <h2
-        key={i}
-        className={`titulo-servicios op${opacity.toString().replace('.', '_')}`}
-        style={{ zIndex: 4 - i }}
+        key={`${opacity}-${index}`}
+        className="titulo-servicios"
+        style={{
+          '--title-opacity': opacity,
+          zIndex: opacities.length - index,
+        }}
       >
         {t('services.title')}
       </h2>
@@ -75,25 +82,23 @@ const Servicios = () => {
   return (
     <motion.div
       className="page servicios-page"
-      initial={{ opacity: 0, y: 20 }}
+      initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -20 }} // Kept original exit prop, as instruction was malformed
-      transition={{ duration: 0.5, ease: 'easeInOut' }} // Kept original ease, as instruction omitted it
+      exit={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: -20 }}
+      transition={{ duration: shouldReduceMotion ? 0 : 0.5, ease: 'easeInOut' }}
     >
       <div className="servicios-container">
-        <div className="servicios-left">
-          {isDesktop ? renderDesktopTitles() : renderMobileTitles()}
+        <div className="servicios-left" aria-hidden="true">
+          {renderTitles()}
         </div>
-        <div className="servicios-right">
+
+        <div className="servicios-right" aria-label={t('services.gridAriaLabel')}>
           <div className="servicios-slider-wrapper">
-            {loading ? (
-              <Loader variant="white" message={t('adminServiciosModal.loading', 'Cargando servicios...')} />
-            ) : (
-              <VerticalInfiniteSlider
-                items={servicios}
-                initialExpandedId={initialServiceId}
-              />
-            )}
+            <VerticalInfiniteSlider
+              items={servicios}
+              initialExpandedId={initialServiceId}
+              velocidad={shouldReduceMotion ? 999999 : 42}
+            />
           </div>
         </div>
       </div>

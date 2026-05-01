@@ -43,8 +43,19 @@ export const AuthProvider = ({ children }) => {
     }
   }, [accessToken]);
 
-  const login = (token) => {
+  const login = async (token) => {
     setAccessToken(token);
+    if (!token) {
+      setUser(null);
+      return;
+    }
+
+    try {
+      const profile = await getProfile(token);
+      setUser(profile);
+    } catch (error) {
+      setUser(null);
+    }
   };
 
   const logout = async () => {
@@ -70,7 +81,6 @@ export const AuthProvider = ({ children }) => {
         return true;
       }
     } catch (err) {
-      console.log('Sesión no encontrada o expirada.');
       setUser(null);
       setAccessToken(null);
       return false;

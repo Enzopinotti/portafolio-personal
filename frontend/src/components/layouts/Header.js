@@ -20,7 +20,6 @@ const Header = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isAdminOpen, setIsAdminOpen] = useState(false);
-  console.log('user', user);
   const toggleMenu = () => setIsMenuOpen((prev) => !prev);
 
   const openAuthModal = (type = 'login') => {
