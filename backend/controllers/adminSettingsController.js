@@ -18,8 +18,8 @@ export const getSettingsController = async (req, res, next) => {
     }
     res.status(200).json(settings);
   } catch (error) {
-    logger.error(`Error fetching settings: ${error.message}`);
-    return next(Boom.internal(error.message));
+    logger.error(`Error fetching settings (Detailed): ${error.stack}`);
+    return next(Boom.internal(`Error en base de datos: ${error.message}`));
   }
 };
 
