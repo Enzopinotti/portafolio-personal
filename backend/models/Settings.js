@@ -12,65 +12,65 @@ const Settings = sequelize.define('Settings', {
     type: DataTypes.STRING,
     allowNull: false,
     defaultValue: 'My Site',
-    field: 'siteTitle'
+    field: 'site_title'
   },
   siteDescription: {
     type: DataTypes.TEXT,
     allowNull: false,
     defaultValue: 'Welcome to my website.',
-    field: 'siteDescription'
+    field: 'site_description'
   },
   supportEmail: {
     type: DataTypes.STRING,
     allowNull: false,
     defaultValue: 'support@example.com',
-    field: 'supportEmail'
+    field: 'support_email'
   },
   // Redes sociales
   facebookUrl: {
     type: DataTypes.STRING,
     allowNull: true,
-    field: 'facebookUrl'
+    field: 'facebook_url'
   },
   twitterUrl: {
     type: DataTypes.STRING,
     allowNull: true,
-    field: 'twitterUrl'
+    field: 'twitter_url'
   },
   instagramUrl: {
     type: DataTypes.STRING,
     allowNull: true,
-    field: 'instagramUrl'
+    field: 'instagram_url'
   },
   linkedinUrl: {
     type: DataTypes.STRING,
     allowNull: true,
-    field: 'linkedinUrl'
+    field: 'linkedin_url'
   },
   // Colores (utilizaremos dos principales, más background y text)
   primaryColor: {
     type: DataTypes.STRING,
     allowNull: false,
     defaultValue: '#3344DC',
-    field: 'primaryColor'
+    field: 'primary_color'
   },
   secondaryColor: {
     type: DataTypes.STRING,
     allowNull: false,
     defaultValue: '#960C28',
-    field: 'secondaryColor'
+    field: 'secondary_color'
   },
   backgroundColor: {
     type: DataTypes.STRING,
     allowNull: false,
     defaultValue: '#ffffff',
-    field: 'backgroundColor'
+    field: 'background_color'
   },
   textColor: {
     type: DataTypes.STRING,
     allowNull: false,
     defaultValue: '#333333',
-    field: 'textColor'
+    field: 'text_color'
   },
   typewriterWordsES: {
     type: DataTypes.TEXT,
