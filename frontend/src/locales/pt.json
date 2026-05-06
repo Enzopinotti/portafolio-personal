@@ -463,6 +463,36 @@
           "Zapier",
           "Alertas"
         ]
+      },
+      "techlead": {
+        "name": "Tech Lead",
+        "description": "Liderança técnica, arquitetura de software e gestão de equipes de desenvolvimento.",
+        "chips": [
+          "Arquitetura",
+          "Liderança",
+          "Code Review",
+          "Escalabilidade"
+        ]
+      },
+      "fullstack": {
+        "name": "Desenvolvimento Fullstack",
+        "description": "Desenvolvimento integral de aplicações web e móveis, desde o design do banco de dados até o deploy.",
+        "chips": [
+          "React",
+          "Node.js",
+          "SQL",
+          "Cloud"
+        ]
+      },
+      "data": {
+        "name": "Análise de Dados & BI",
+        "description": "Transformação de dados em informações acionáveis por meio de painéis dinâmicos e relatórios avançados.",
+        "chips": [
+          "Power BI",
+          "Looker",
+          "KPIs",
+          "ETL"
+        ]
       }
     }
   },

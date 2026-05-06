@@ -465,6 +465,36 @@
           "Zapier",
           "Alerts"
         ]
+      },
+      "techlead": {
+        "name": "Tech Lead",
+        "description": "Technical leadership, software architecture, and development team management.",
+        "chips": [
+          "Architecture",
+          "Leadership",
+          "Code Review",
+          "Scalability"
+        ]
+      },
+      "fullstack": {
+        "name": "Fullstack Development",
+        "description": "End-to-end development of web and mobile applications, from database design to deployment.",
+        "chips": [
+          "React",
+          "Node.js",
+          "SQL",
+          "Cloud"
+        ]
+      },
+      "data": {
+        "name": "Data Analysis & BI",
+        "description": "Transforming data into actionable insights through dynamic dashboards and advanced reporting.",
+        "chips": [
+          "Power BI",
+          "Looker",
+          "KPIs",
+          "ETL"
+        ]
       }
     }
   },
