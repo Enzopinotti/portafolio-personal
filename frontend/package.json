@@ -4,7 +4,6 @@
   "private": true,
   "type": "module",
   "dependencies": {
-    "@pjsalita/react-mouse-trail": "^1.0.8",
     "axios": "^1.15.2",
     "formik": "^2.4.6",
     "framer-motion": "^11.11.8",
