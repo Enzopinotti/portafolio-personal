@@ -1,175 +1,139 @@
+# 📖 Portafolio Personal — Enzo Pinotti
 
-# 📖 Portafolio Personal – Enzo Pinotti
+Aplicación full-stack de portfolio personal construida con **React + Node.js + MySQL**, con autenticación, contenido administrable, integraciones y despliegue real en producción.
 
-¡Bienvenido/a! Este repositorio contiene **mi aplicación de portfolio personal** desarrollada con un stack **React + Node.js + MySQL**.  
-El objetivo es mostrar mis proyectos, artículos, servicios y permitir contacto directo.
+> Demo: **https://enzopinotti.dev**
 
-> Demo en producción: **https://enzopinotti.dev** ✨
+## Arquitectura
 
----
+```text
+browser
+  ↓
+React / CRA frontend
+  ↓ /api
+Node.js / Express backend
+  ↓
+MySQL / Sequelize
 
-## 🗂️ Tabla de contenidos
-1. [Stack & features](#stack--features)  
-2. [Arquitectura del proyecto](#arquitectura-del-proyecto)  
-3. [Requisitos previos](#requisitos-previos)  
-4. [Variables de entorno](#variables-de-entorno)  
-5. [Instalación local (desarrollo)](#instalación-local-desarrollo)  
-6. [Scripts útiles](#scripts-útiles)  
-7. [Despliegue en producción](#despliegue-en-producción)  
-8. [Docker (opcional)](#docker-opcional)  
-9. [Contribuir](#contribuir)  
-10. [Licencia](#licencia)
+external services → Google OAuth · Cloudinary · email
+production       → Docker / Nginx / VPS
+```
 
----
+### Stack actual
 
-## Stack & Features
+| Capa | Tecnologías |
+| --- | --- |
+| Frontend | React 18, CRA / react-scripts, SCSS, React Router, Framer Motion, i18n |
+| Backend | Node.js 20, Express 4, Sequelize, Passport/JWT, Socket.IO, Winston |
+| Data | MySQL 8 / Sequelize migrations & models |
+| Integraciones | Google OAuth, Cloudinary, email |
+| Infra | Docker / Compose, Nginx, VPS, HTTPS |
 
-| Capa | Tecnologías | Highlights |
-|------|-------------|------------|
-| **Frontend** | React 18, CRA, SCSS, React Router 6, Framer Motion, React‑Toastify | UI responsive, i18n, animaciones, trail global, componentes modulares |
-| **Backend**  | Node 20, Express 5, Sequelize, Passport (JWT + Google OAuth), Socket.IO | API REST `/api/*`, autenticación, roles, rate‑limit, i18n, logger, Cloudinary uploads |
-| **Database** | MySQL 8 | Migraciones automáticas (`sequelize.sync()`), relaciones & audit‑log |
-| **Infra**    | DonWeb VPS + Nginx reverse proxy | HTTPS Let’s Encrypt, PM2, backups automáticos |
+## Desarrollo local
 
-### Funcionalidades clave
-- Registro / login local y con Google
-- Confirmación de e‑mail y recuperación de contraseña
-- CRUD de usuarios, skills, proyectos, testimonios, artículos y servicios
-- Subida y transformación de imágenes vía Cloudinary
-- Sistema de roles (`admin`, `usuario`)
-- Audit log completo de acciones sensibles
-- Contact form con envío de mensajes y notificaciones toast
+El repositorio contiene lockfiles independientes para frontend y backend.
 
----
+Backend:
 
-## Arquitectura del proyecto
+```bash
+cd backend
+npm ci
+npm run start:dev
+```
+
+Frontend:
+
+```bash
+cd frontend
+npm ci
+npm start
+```
+
+Para una instalación reproducible, preferí `npm ci` sobre `npm install` cuando trabajes desde los lockfiles del repo.
+
+## Variables de entorno
+
+Copiá el ejemplo raíz y completá los valores únicamente en tu entorno local / servidor:
+
+```bash
+cp .env.example .env
+```
+
+**Nunca se deben versionar archivos `.env`, `.env.production`, `.env.development` ni credenciales reales.** El repositorio sólo conserva `.env.example` con valores de ejemplo.
+
+Los secretos de producción deben vivir en el entorno de despliegue / secret store correspondiente.
+
+## Quality gate
+
+La validación de PR/push está separada del despliegue y no necesita credenciales productivas.
+
+GitHub Actions valida:
+
+```text
+frontend
+  npm ci
+  npm run build
+
+backend
+  npm ci
+  syntax-check de los .js del backend
+
+repository
+  docker compose --env-file .env.example config --quiet
+```
+
+Hoy los scripts `test` de frontend/backend son placeholders y **no se consideran evidencia de tests reales**. La incorporación de tests de comportamiento se sigue por separado; CI no los ejecuta hasta que exista cobertura útil.
+
+## Deploy
+
+El repo mantiene un workflow de despliegue separado de `Quality`. Esa separación es intencional:
+
+- un PR debe poder demostrar que instala/configura/builda sin secretos;
+- producción usa credenciales gestionadas fuera del repositorio;
+- un deploy no reemplaza a CI y CI no debe desplegar por accidente.
+
+También existen `docker-compose.yml`, `docker-compose.dev.yml`, Dockerfiles y scripts operativos para los entornos que los requieran.
+
+## Estructura principal
+
 ```text
 portafolio-personal/
 ├── backend/
-│   ├── app.js              # Express app
-│   ├── index.js            # Arranque + Socket.IO
-│   ├── config/             # DB, Cloudinary, Passport, Logger, i18n
-│   ├── routes/             # Rutas agrupadas por recurso
-│   ├── controllers/        # Lógica de negocio
-│   ├── models/             # Modelos Sequelize + asociaciones
-│   └── middleware/         # Auth, validaciones, etc.
+│   ├── app.js
+│   ├── index.js
+│   ├── config/
+│   ├── routes/
+│   ├── controllers/
+│   ├── models/
+│   ├── middleware/
+│   └── migrations/
 ├── frontend/
 │   ├── public/
-│   ├── src/
-│   │   ├── components/
-│   │   ├── context/
-│   │   ├── pages/
-│   │   ├── styles/
-│   │   └── App.js          # Entry point
-│   └── ...
-└── docs/                   # Diagramas, capturas, etc.
-```
-> **Monorepo:** backend y frontend viven en el mismo repo para facilitar issues, PRs y CI/CD.
-
----
-
-## Requisitos previos
-* **Node.js ≥ 20** y **npm ≥ 10**  
-* **MySQL 8** (o MariaDB equivalente)  
-* (Producción) **Nginx** y **PM2** recomendados  
-* Cuenta **Cloudinary** para imágenes  
-* Credenciales **Google OAuth 2.0** (si usás login con Google)
-
----
-
-## Instalación local (desarrollo)
-
-```bash
-# 1. Clonar el repo
-git clone https://github.com/Enzopinotti/portafolio-personal.git
-cd portafolio-personal
-
-# 2. Backend: instalar dependencias y levantar
-cd backend
-npm install
-npm run dev            # http://localhost:3001
-
-# 3. Frontend: en nueva terminal
-cd ../frontend
-npm install
-npm start              # http://localhost:3000
-
-# 4. Listo 🚀 – CRA se proxeará al backend
+│   └── src/
+├── docs/
+├── .github/workflows/
+├── docker-compose.yml
+├── docker-compose.dev.yml
+└── .env.example
 ```
 
----
+## Funcionalidades
 
-## Scripts útiles
+El proyecto incluye, entre otras piezas:
 
-### Backend (`/backend/package.json`)
+- portfolio/proyectos y contenido público;
+- autenticación local y Google OAuth;
+- roles y rutas protegidas;
+- recursos administrables desde la API;
+- carga/gestión de imágenes mediante Cloudinary;
+- email y formularios de contacto;
+- logging, rate limiting y middleware de seguridad;
+- Socket.IO en el backend para funcionalidades que lo utilizan.
 
-| Script | Descripción |
-|--------|-------------|
-| `npm run dev`   | Arranca con **nodemon** y variables de desarrollo |
-| `npm start`     | Ejecuta en modo producción |
-| `npm run lint`  | Lint + fix con ESLint & Prettier |
+## Contribuciones
 
-### Frontend (`/frontend/package.json`)
-
-| Script | Descripción |
-|--------|-------------|
-| `npm start`     | CRA dev server + HMR |
-| `npm run build` | Compila assets optimizados en `/build` |
-| `npm test`      | Tests con React Testing Library |
-
----
-
-## Despliegue en producción
-
-1. **Build frontend** y copiar estáticos al servidor
-   ```bash
-   cd frontend && npm ci && npm run build
-   cp -r build/* /var/www/enzopinotti.dev/html
-   ```
-2. **Backend**
-   ```bash
-   cd backend && npm ci && NODE_ENV=production pm2 start index.js --name portafolio-api
-   ```
-3. **Nginx**
-   ```nginx
-   server {
-     server_name enzopinotti.dev;
-
-     location / {
-       root /var/www/enzopinotti.dev/html;
-       try_files $uri /index.html;
-     }
-
-     location /api/ {
-       proxy_pass         http://localhost:3001/api/;
-       proxy_http_version 1.1;
-       proxy_set_header   Upgrade $http_upgrade;
-       proxy_set_header   Connection 'upgrade';
-       proxy_set_header   Host $host;
-       proxy_cache_bypass $http_upgrade;
-     }
-   }
-   ```
-4. **SSL** con Let’s Encrypt
-   ```bash
-   sudo certbot --nginx -d enzopinotti.dev -m contacto@enzopinotti.dev --agree-tos --redirect
-   ```
-5. **Backups MySQL** – dump nightly y subir a S3 / Backblaze.
-
----
-
----
-
-## Contribuir
-
-1. **Fork** y rama feature:  
-   ```bash
-   git checkout -b feature/mi-mejora
-   ```
-2. Commits en español siguiendo [Conventional Commits](https://www.conventionalcommits.org/es/v1.0.0/).  
-3. Abre un **Pull Request** 🐙.
-
----
+Los cambios deberían entrar por rama + PR y mantener el quality gate verde. Evitá commits de credenciales, archivos locales del sistema operativo o artefactos generados que no sean autoridad del proyecto.
 
 ## Licencia
-MIT © Enzo Pinotti – 2025
+
+MIT © Enzo Pinotti
