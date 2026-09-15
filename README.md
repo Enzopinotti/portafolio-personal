@@ -88,11 +88,19 @@ Frontend, en otra terminal:
 
 ```bash
 cd frontend
-npm ci
+npm ci --legacy-peer-deps
 npm start
 ```
 
 No se documenta `npm run dev` para el backend porque el script real se llama `start:dev`.
+
+### Deuda de compatibilidad del frontend
+
+El frontend conserva por ahora una dependencia histórica, `@pjsalita/react-mouse-trail@1.0.8`, cuyo peer range declara React 17 aunque la aplicación corre React 18. El código actual no importa ese paquete, pero mientras el lockfile se sanea en un cambio dedicado, la instalación reproducible del frontend usa `npm ci --legacy-peer-deps`.
+
+Ese mismo flag ya forma parte del `frontend/Dockerfile`; el quality gate lo replica para validar la ruta de build que realmente se usa en producción en vez de fingir una instalación distinta en CI.
+
+El objetivo posterior es retirar esa dependencia no utilizada y regenerar el lockfile para volver a `npm ci` sin compatibilidad legacy.
 
 ## Quality gate independiente
 
@@ -107,7 +115,7 @@ Desde la raíz:
 Ejecuta tres contratos reales:
 
 1. **backend** — `npm ci` y validación sintáctica con `node --check` sobre los archivos JavaScript del backend;
-2. **frontend** — `npm ci` y build de producción de Create React App;
+2. **frontend** — `npm ci --legacy-peer-deps` y build de producción de Create React App, alineado con la imagen productiva actual;
 3. **Compose** — `docker compose --env-file .env.example config --quiet`.
 
 También podés correr un carril aislado:
@@ -126,7 +134,7 @@ Hoy el repositorio **no tiene una suite de tests automatizados de producto mante
 
 Por eso CI informa sólo lo que realmente valida:
 
-- instalación reproducible desde ambos lockfiles;
+- instalación reproducible desde ambos lockfiles bajo las reglas actuales de cada aplicación;
 - sintaxis JavaScript del backend;
 - build productivo del frontend;
 - contrato de Docker Compose.
@@ -170,7 +178,7 @@ portafolio-personal/
 
 El repositorio es una aplicación real que evolucionó durante varios ciclos. La modernización pública prioriza primero **seguridad, reproducibilidad y verdad documental** antes de reescribir el stack sólo para usar versiones más nuevas.
 
-Próximos bloques útiles incluyen tests enfocados de comportamiento, revisión aislada del workflow de deploy y limpieza/optimización de assets grandes donde exista una ganancia medible.
+Próximos bloques útiles incluyen retirar dependencias frontend incompatibles/no utilizadas, regenerar el lockfile sin `legacy-peer-deps`, sumar tests enfocados de comportamiento, revisar de forma aislada el workflow de deploy y limpiar/optimizar assets grandes donde exista una ganancia medible.
 
 ## Licencia
 
