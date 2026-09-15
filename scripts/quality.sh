@@ -46,7 +46,10 @@ check_frontend() {
   log "Frontend: clean install + production build"
   (
     cd "$ROOT_DIR/frontend"
-    npm ci
+    # Keep CI aligned with the production Docker build while the legacy
+    # React-17-only peer declaration in @pjsalita/react-mouse-trail is removed
+    # in a dedicated dependency-cleanup change.
+    npm ci --legacy-peer-deps
     npm run build
   )
 }
