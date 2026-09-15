@@ -1,175 +1,177 @@
+# Portafolio Personal — Enzo Pinotti
 
-# 📖 Portafolio Personal – Enzo Pinotti
+Aplicación full-stack de portfolio personal para **enzopinotti.dev**, con frontend React, API Node.js/Express, persistencia MySQL y despliegue containerizado en VPS.
 
-¡Bienvenido/a! Este repositorio contiene **mi aplicación de portfolio personal** desarrollada con un stack **React + Node.js + MySQL**.  
-El objetivo es mostrar mis proyectos, artículos, servicios y permitir contacto directo.
+> Producción: **https://enzopinotti.dev**
 
-> Demo en producción: **https://enzopinotti.dev** ✨
+## Arquitectura actual
 
----
-
-## 🗂️ Tabla de contenidos
-1. [Stack & features](#stack--features)  
-2. [Arquitectura del proyecto](#arquitectura-del-proyecto)  
-3. [Requisitos previos](#requisitos-previos)  
-4. [Variables de entorno](#variables-de-entorno)  
-5. [Instalación local (desarrollo)](#instalación-local-desarrollo)  
-6. [Scripts útiles](#scripts-útiles)  
-7. [Despliegue en producción](#despliegue-en-producción)  
-8. [Docker (opcional)](#docker-opcional)  
-9. [Contribuir](#contribuir)  
-10. [Licencia](#licencia)
-
----
-
-## Stack & Features
-
-| Capa | Tecnologías | Highlights |
-|------|-------------|------------|
-| **Frontend** | React 18, CRA, SCSS, React Router 6, Framer Motion, React‑Toastify | UI responsive, i18n, animaciones, trail global, componentes modulares |
-| **Backend**  | Node 20, Express 5, Sequelize, Passport (JWT + Google OAuth), Socket.IO | API REST `/api/*`, autenticación, roles, rate‑limit, i18n, logger, Cloudinary uploads |
-| **Database** | MySQL 8 | Migraciones automáticas (`sequelize.sync()`), relaciones & audit‑log |
-| **Infra**    | DonWeb VPS + Nginx reverse proxy | HTTPS Let’s Encrypt, PM2, backups automáticos |
-
-### Funcionalidades clave
-- Registro / login local y con Google
-- Confirmación de e‑mail y recuperación de contraseña
-- CRUD de usuarios, skills, proyectos, testimonios, artículos y servicios
-- Subida y transformación de imágenes vía Cloudinary
-- Sistema de roles (`admin`, `usuario`)
-- Audit log completo de acciones sensibles
-- Contact form con envío de mensajes y notificaciones toast
-
----
-
-## Arquitectura del proyecto
 ```text
-portafolio-personal/
-├── backend/
-│   ├── app.js              # Express app
-│   ├── index.js            # Arranque + Socket.IO
-│   ├── config/             # DB, Cloudinary, Passport, Logger, i18n
-│   ├── routes/             # Rutas agrupadas por recurso
-│   ├── controllers/        # Lógica de negocio
-│   ├── models/             # Modelos Sequelize + asociaciones
-│   └── middleware/         # Auth, validaciones, etc.
-├── frontend/
-│   ├── public/
-│   ├── src/
-│   │   ├── components/
-│   │   ├── context/
-│   │   ├── pages/
-│   │   ├── styles/
-│   │   └── App.js          # Entry point
-│   └── ...
-└── docs/                   # Diagramas, capturas, etc.
+browser
+  ↓
+React 18 / Create React App
+  ↓ /api
+Node.js 20 / Express 4
+  ↓
+Sequelize / MySQL 8
+
+production boundary
+  Docker Compose · Nginx/VPS · external integrations
 ```
-> **Monorepo:** backend y frontend viven en el mismo repo para facilitar issues, PRs y CI/CD.
 
----
+El repositorio contiene frontend y backend en un mismo árbol para mantener cambios de producto, infraestructura y documentación coordinados.
 
-## Requisitos previos
-* **Node.js ≥ 20** y **npm ≥ 10**  
-* **MySQL 8** (o MariaDB equivalente)  
-* (Producción) **Nginx** y **PM2** recomendados  
-* Cuenta **Cloudinary** para imágenes  
-* Credenciales **Google OAuth 2.0** (si usás login con Google)
+### Frontend
 
----
+- React 18 + Create React App;
+- React Router 6;
+- SCSS;
+- i18n;
+- Framer Motion y otros componentes visuales;
+- consumo de API mediante Axios.
 
-## Instalación local (desarrollo)
+### Backend
+
+- Node.js 20 como runtime de referencia del quality gate;
+- Express **4.22**, no Express 5;
+- Sequelize + MySQL;
+- Passport/JWT y Google OAuth;
+- Cloudinary;
+- Socket.IO;
+- correo mediante Nodemailer;
+- rate limiting, Helmet, logging e internacionalización.
+
+### Infraestructura
+
+- Docker + Docker Compose;
+- MySQL 8;
+- frontend servido por Nginx dentro de su imagen;
+- despliegue productivo existente hacia VPS mediante un workflow separado.
+
+## Variables de entorno y seguridad
+
+Los archivos de entorno de runtime **no son contenido del repositorio**.
+
+Usá `.env.example` como referencia y creá tus archivos locales/productivos fuera de Git:
 
 ```bash
-# 1. Clonar el repo
-git clone https://github.com/Enzopinotti/portafolio-personal.git
-cd portafolio-personal
-
-# 2. Backend: instalar dependencias y levantar
-cd backend
-npm install
-npm run dev            # http://localhost:3001
-
-# 3. Frontend: en nueva terminal
-cd ../frontend
-npm install
-npm start              # http://localhost:3000
-
-# 4. Listo 🚀 – CRA se proxeará al backend
+cp .env.example .env
 ```
 
----
+El árbol actual ignora `.env` / `.env.*` también dentro de subdirectorios y conserva sólo archivos `.env.example` de documentación.
 
-## Scripts útiles
+### Historial de credenciales
 
-### Backend (`/backend/package.json`)
+En septiembre de 2026 se removieron del árbol actual archivos de entorno de backend que habían sido trackeados previamente.
 
-| Script | Descripción |
-|--------|-------------|
-| `npm run dev`   | Arranca con **nodemon** y variables de desarrollo |
-| `npm start`     | Ejecuta en modo producción |
-| `npm run lint`  | Lint + fix con ESLint & Prettier |
+Eliminar esos archivos de `main` **no revoca secretos que hayan existido en Git history**. Cualquier credencial real expuesta previamente debe considerarse comprometida y rotarse/revocarse de forma independiente. Reescribir historia, si alguna vez se hace, no reemplaza la rotación.
 
-### Frontend (`/frontend/package.json`)
+## Desarrollo local
 
-| Script | Descripción |
-|--------|-------------|
-| `npm start`     | CRA dev server + HMR |
-| `npm run build` | Compila assets optimizados en `/build` |
-| `npm test`      | Tests con React Testing Library |
+Runtime de referencia:
 
----
+```bash
+nvm use
+```
 
-## Despliegue en producción
+La raíz incluye `.nvmrc` con Node.js 20.
 
-1. **Build frontend** y copiar estáticos al servidor
-   ```bash
-   cd frontend && npm ci && npm run build
-   cp -r build/* /var/www/enzopinotti.dev/html
-   ```
-2. **Backend**
-   ```bash
-   cd backend && npm ci && NODE_ENV=production pm2 start index.js --name portafolio-api
-   ```
-3. **Nginx**
-   ```nginx
-   server {
-     server_name enzopinotti.dev;
+Backend:
 
-     location / {
-       root /var/www/enzopinotti.dev/html;
-       try_files $uri /index.html;
-     }
+```bash
+cd backend
+npm ci
+npm run start:dev
+```
 
-     location /api/ {
-       proxy_pass         http://localhost:3001/api/;
-       proxy_http_version 1.1;
-       proxy_set_header   Upgrade $http_upgrade;
-       proxy_set_header   Connection 'upgrade';
-       proxy_set_header   Host $host;
-       proxy_cache_bypass $http_upgrade;
-     }
-   }
-   ```
-4. **SSL** con Let’s Encrypt
-   ```bash
-   sudo certbot --nginx -d enzopinotti.dev -m contacto@enzopinotti.dev --agree-tos --redirect
-   ```
-5. **Backups MySQL** – dump nightly y subir a S3 / Backblaze.
+Frontend, en otra terminal:
 
----
+```bash
+cd frontend
+npm ci
+npm start
+```
 
----
+No se documenta `npm run dev` para el backend porque el script real se llama `start:dev`.
 
-## Contribuir
+## Quality gate independiente
 
-1. **Fork** y rama feature:  
-   ```bash
-   git checkout -b feature/mi-mejora
-   ```
-2. Commits en español siguiendo [Conventional Commits](https://www.conventionalcommits.org/es/v1.0.0/).  
-3. Abre un **Pull Request** 🐙.
+El quality gate del repositorio está separado del despliegue productivo.
 
----
+Desde la raíz:
+
+```bash
+./scripts/quality.sh
+```
+
+Ejecuta tres contratos reales:
+
+1. **backend** — `npm ci` y validación sintáctica con `node --check` sobre los archivos JavaScript del backend;
+2. **frontend** — `npm ci` y build de producción de Create React App;
+3. **Compose** — `docker compose --env-file .env.example config --quiet`.
+
+También podés correr un carril aislado:
+
+```bash
+./scripts/quality.sh backend
+./scripts/quality.sh frontend
+./scripts/quality.sh compose
+```
+
+GitHub Actions ejecuta esos mismos modos en jobs separados y paralelos, con permisos de repositorio `contents: read` y actions de setup fijadas a commits inmutables.
+
+### Qué NO afirma el quality gate
+
+Hoy el repositorio **no tiene una suite de tests automatizados de producto mantenida**. Los antiguos scripts `test` devolvían éxito imprimiendo “Sin tests aún”; se eliminan para que un comando verde no parezca evidencia que no existe.
+
+Por eso CI informa sólo lo que realmente valida:
+
+- instalación reproducible desde ambos lockfiles;
+- sintaxis JavaScript del backend;
+- build productivo del frontend;
+- contrato de Docker Compose.
+
+Tests futuros deberían enfocarse en comportamiento de alto valor —por ejemplo autenticación/autorización, contratos de API o flujos críticos— en lugar de agregar tests vacíos para obtener otro check verde.
+
+## Quality vs. deploy
+
+`.github/workflows/quality.yml` valida PRs y `main` sin usar secretos productivos.
+
+`.github/workflows/deploy.yml` es una superficie distinta: usa credenciales del environment de producción y ejecuta el proceso remoto de despliegue en el VPS. Este hardening no convierte un build de PR en un deploy ni necesita acceso SSH para validar el código.
+
+La seguridad y supply-chain del workflow de deploy deben revisarse en un carril propio antes de modificar ese proceso productivo.
+
+## Docker
+
+Para validar la configuración sin levantar servicios:
+
+```bash
+./scripts/quality.sh compose
+```
+
+Para un entorno completo necesitás valores de runtime reales/no productivos y luego podés utilizar Docker Compose según el entorno correspondiente.
+
+## Estructura principal
+
+```text
+portafolio-personal/
+├── backend/                 # API Express + datos/integraciones
+├── frontend/                # React / CRA
+├── docs/                    # documentación del proyecto
+├── scripts/quality.sh       # contrato local/CI
+├── docker-compose.yml       # stack productivo
+├── docker-compose.dev.yml   # stack de desarrollo
+└── .github/workflows/
+    ├── quality.yml          # validación independiente
+    └── deploy.yml           # despliegue productivo separado
+```
+
+## Estado de madurez
+
+El repositorio es una aplicación real que evolucionó durante varios ciclos. La modernización pública prioriza primero **seguridad, reproducibilidad y verdad documental** antes de reescribir el stack sólo para usar versiones más nuevas.
+
+Próximos bloques útiles incluyen tests enfocados de comportamiento, revisión aislada del workflow de deploy y limpieza/optimización de assets grandes donde exista una ganancia medible.
 
 ## Licencia
-MIT © Enzo Pinotti – 2025
+
+El repositorio no contiene actualmente un archivo de licencia de nivel raíz. No debe inferirse una licencia de reutilización sólo a partir del código público.
